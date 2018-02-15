@@ -166,9 +166,6 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(bindinb, Matrix, createScale);
     REG_STATIC_METHOD(bindinb, Matrix, createRotationFromQuaternion);
     REG_STATIC_METHOD(bindinb, Matrix, createRotationFromAxisAngle);
-    REG_STATIC_METHOD(bindinb, Matrix, createRotationX);
-    REG_STATIC_METHOD(bindinb, Matrix, createRotationY);
-    REG_STATIC_METHOD(bindinb, Matrix, createRotationZ);
     REG_STATIC_METHOD(bindinb, Matrix, createTranslation);
     REG_METHOD(bindinb, Matrix, getScale);
     REG_METHOD(bindinb, Matrix, getTranslation);
@@ -181,9 +178,6 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(bindinb, Matrix, getBackVector);
     REG_METHOD(bindinb, Matrix, rotateByQuaternion);
     REG_METHOD(bindinb, Matrix, rotateByAxisAngle);
-    REG_METHOD(bindinb, Matrix, rotateX);
-    REG_METHOD(bindinb, Matrix, rotateY);
-    REG_METHOD(bindinb, Matrix, rotateZ);
     REG_METHOD(bindinb, Matrix, scaleByScalar);
     REG_METHOD(bindinb, Matrix, scaleByVector);
     REG_METHOD(bindinb, Matrix, translate);

@@ -18,8 +18,8 @@ namespace solo
         auto getWindowTitle() const -> str override final { return windowTitle; }
         void saveScreenshot(const str &path) override final {}
         void setCursorCaptured(bool captured) override final {}
-        auto getCanvasSize() const -> Vector2 override final { return {0, 0}; }
-        auto getDpiIndependentCanvasSize() const -> Vector2 override final { return {0, 0}; }
+        auto getCanvasSize() const -> Vector2 override final { return {1, 1}; }
+        auto getDpiIndependentCanvasSize() const -> Vector2 override final { return {1, 1}; }
         auto getLifetime() const -> float override final { return 0; }
 
     private:

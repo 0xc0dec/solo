@@ -8,20 +8,19 @@
 #include "SoloRay.h"
 #include "SoloCommon.h"
 #include "SoloQuaternion.h"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace solo;
-
-static const float identityMatrix[16] =
-{
-    1.0f, 0.0f, 0.0f, 0.0f,
-    0.0f, 1.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f, 0.0f,
-    0.0f, 0.0f, 0.0f, 1.0f
-};
 
 Matrix::Matrix()
 {
     *this = identity();
+}
+
+Matrix::Matrix(const glm::mat4x4 &data):
+	data(data)
+{
 }
 
 Matrix::Matrix(
@@ -30,27 +29,27 @@ Matrix::Matrix(
     float m31, float m32, float m33, float m34,
     float m41, float m42, float m43, float m44)
 {
-    m[0] = m11;
-    m[1] = m21;
-    m[2] = m31;
-    m[3] = m41;
-    m[4] = m12;
-    m[5] = m22;
-    m[6] = m32;
-    m[7] = m42;
-    m[8] = m13;
-    m[9] = m23;
-    m[10] = m33;
-    m[11] = m43;
-    m[12] = m14;
-    m[13] = m24;
-    m[14] = m34;
-    m[15] = m44;
+    data[0][0] = m11;
+    data[0][1] = m21;
+    data[0][2] = m31;
+    data[0][3] = m41;
+    data[1][0] = m12;
+    data[1][1] = m22;
+    data[1][2] = m32;
+    data[1][3] = m42;
+    data[2][0] = m13;
+    data[2][1] = m23;
+    data[2][2] = m33;
+    data[2][3] = m43;
+    data[3][0] = m14;
+    data[3][1] = m24;
+    data[3][2] = m34;
+    data[3][3] = m44;
 }
 
 Matrix::Matrix(const Matrix &copy)
 {
-    memcpy(m, copy.m, sizeof(Matrix));
+	data = copy.data;
 }
 
 auto Matrix::identity() -> Matrix
@@ -65,72 +64,65 @@ auto Matrix::identity() -> Matrix
 
 auto Matrix::getDeterminant() const -> float
 {
-    const auto a0 = m[0] * m[5] - m[1] * m[4];
-    const auto a1 = m[0] * m[6] - m[2] * m[4];
-    const auto a2 = m[0] * m[7] - m[3] * m[4];
-    const auto a3 = m[1] * m[6] - m[2] * m[5];
-    const auto a4 = m[1] * m[7] - m[3] * m[5];
-    const auto a5 = m[2] * m[7] - m[3] * m[6];
-    const auto b0 = m[8] * m[13] - m[9] * m[12];
-    const auto b1 = m[8] * m[14] - m[10] * m[12];
-    const auto b2 = m[8] * m[15] - m[11] * m[12];
-    const auto b3 = m[9] * m[14] - m[10] * m[13];
-    const auto b4 = m[9] * m[15] - m[11] * m[13];
-    const auto b5 = m[10] * m[15] - m[11] * m[14];
-
-    return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+	return glm::determinant(data);
 }
 
 bool Matrix::invert()
 {
-    const auto a0 = m[0] * m[5] - m[1] * m[4];
-    const auto a1 = m[0] * m[6] - m[2] * m[4];
-    const auto a2 = m[0] * m[7] - m[3] * m[4];
-    const auto a3 = m[1] * m[6] - m[2] * m[5];
-    const auto a4 = m[1] * m[7] - m[3] * m[5];
-    const auto a5 = m[2] * m[7] - m[3] * m[6];
-    const auto b0 = m[8] * m[13] - m[9] * m[12];
-    const auto b1 = m[8] * m[14] - m[10] * m[12];
-    const auto b2 = m[8] * m[15] - m[11] * m[12];
-    const auto b3 = m[9] * m[14] - m[10] * m[13];
-    const auto b4 = m[9] * m[15] - m[11] * m[13];
-    const auto b5 = m[10] * m[15] - m[11] * m[14];
-    const auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
-
-    // Close to zero, can't invert
-    if (math::isZero(det))
-        return false;
-
-    // Support the case where m == dst
-    Matrix inverse;
-    inverse.m[0] = m[5] * b5 - m[6] * b4 + m[7] * b3;
-    inverse.m[1] = -m[1] * b5 + m[2] * b4 - m[3] * b3;
-    inverse.m[2] = m[13] * a5 - m[14] * a4 + m[15] * a3;
-    inverse.m[3] = -m[9] * a5 + m[10] * a4 - m[11] * a3;
-
-    inverse.m[4] = -m[4] * b5 + m[6] * b2 - m[7] * b1;
-    inverse.m[5] = m[0] * b5 - m[2] * b2 + m[3] * b1;
-    inverse.m[6] = -m[12] * a5 + m[14] * a2 - m[15] * a1;
-    inverse.m[7] = m[8] * a5 - m[10] * a2 + m[11] * a1;
-
-    inverse.m[8] = m[4] * b4 - m[5] * b2 + m[7] * b0;
-    inverse.m[9] = -m[0] * b4 + m[1] * b2 - m[3] * b0;
-    inverse.m[10] = m[12] * a4 - m[13] * a2 + m[15] * a0;
-    inverse.m[11] = -m[8] * a4 + m[9] * a2 - m[11] * a0;
-
-    inverse.m[12] = -m[4] * b3 + m[5] * b1 - m[6] * b0;
-    inverse.m[13] = m[0] * b3 - m[1] * b1 + m[2] * b0;
-    inverse.m[14] = -m[12] * a3 + m[13] * a1 - m[14] * a0;
-    inverse.m[15] = m[8] * a3 - m[9] * a1 + m[10] * a0;
-
-    *this = inverse * (1.0f / det);
-
-    return true;
+	data = glm::inverse(data);
+	return true;
+//    const auto a0 = m[0] * m[5] - m[1] * m[4];
+//    const auto a1 = m[0] * m[6] - m[2] * m[4];
+//    const auto a2 = m[0] * m[7] - m[3] * m[4];
+//    const auto a3 = m[1] * m[6] - m[2] * m[5];
+//    const auto a4 = m[1] * m[7] - m[3] * m[5];
+//    const auto a5 = m[2] * m[7] - m[3] * m[6];
+//    const auto b0 = m[8] * m[13] - m[9] * m[12];
+//    const auto b1 = m[8] * m[14] - m[10] * m[12];
+//    const auto b2 = m[8] * m[15] - m[11] * m[12];
+//    const auto b3 = m[9] * m[14] - m[10] * m[13];
+//    const auto b4 = m[9] * m[15] - m[11] * m[13];
+//    const auto b5 = m[10] * m[15] - m[11] * m[14];
+//    const auto det = a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
+//
+//    // Close to zero, can't invert
+//    if (math::isZero(det))
+//        return false;
+//
+//    // Support the case where m == dst
+//    Matrix inverse;
+//    inverse.m[0] = m[5] * b5 - m[6] * b4 + m[7] * b3;
+//    inverse.m[1] = -m[1] * b5 + m[2] * b4 - m[3] * b3;
+//    inverse.m[2] = m[13] * a5 - m[14] * a4 + m[15] * a3;
+//    inverse.m[3] = -m[9] * a5 + m[10] * a4 - m[11] * a3;
+//
+//    inverse.m[4] = -m[4] * b5 + m[6] * b2 - m[7] * b1;
+//    inverse.m[5] = m[0] * b5 - m[2] * b2 + m[3] * b1;
+//    inverse.m[6] = -m[12] * a5 + m[14] * a2 - m[15] * a1;
+//    inverse.m[7] = m[8] * a5 - m[10] * a2 + m[11] * a1;
+//
+//    inverse.m[8] = m[4] * b4 - m[5] * b2 + m[7] * b0;
+//    inverse.m[9] = -m[0] * b4 + m[1] * b2 - m[3] * b0;
+//    inverse.m[10] = m[12] * a4 - m[13] * a2 + m[15] * a0;
+//    inverse.m[11] = -m[8] * a4 + m[9] * a2 - m[11] * a0;
+//
+//    inverse.m[12] = -m[4] * b3 + m[5] * b1 - m[6] * b0;
+//    inverse.m[13] = m[0] * b3 - m[1] * b1 + m[2] * b0;
+//    inverse.m[14] = -m[12] * a3 + m[13] * a1 - m[14] * a0;
+//    inverse.m[15] = m[8] * a3 - m[9] * a1 + m[10] * a0;
+//
+//    *this = inverse * (1.0f / det);
+//
+//    return true;
 }
 
 bool Matrix::isIdentity() const
 {
-    return memcmp(m, identityMatrix, sizeof(Matrix)) == 0;
+	return
+		glm::all(glm::epsilonEqual(data[0], {1.0f, 0.0f, 0.0f, 0.0}, glm::epsilon<float>())) &&
+		glm::all(glm::epsilonEqual(data[1], {0.0f, 1.0f, 0.0f, 0.0}, glm::epsilon<float>())) &&
+		glm::all(glm::epsilonEqual(data[2], {0.0f, 0.0f, 1.0f, 0.0}, glm::epsilon<float>())) &&
+		glm::all(glm::epsilonEqual(data[3], {0.0f, 0.0f, 0.0f, 1.0}, glm::epsilon<float>()));
 }
 
 auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
@@ -145,32 +137,17 @@ auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vecto
     yaxis.normalize();
 
     // Matrix is built already transposed
-    return Matrix(Matrix(
+    return Matrix(
         xaxis.x(), yaxis.x(), zaxis.x(), 0,
         xaxis.y(), yaxis.y(), zaxis.y(), 0,
         xaxis.z(), yaxis.z(), zaxis.z(), 0,
         -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1
-    ));
+    );
 }
 
 auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
 {
-    const auto f_n = 1.0f / (zfar - znear);
-	const auto theta = fieldOfView.toRawRadians() * 0.5f;
-	panicIf(math::isZero(fmod(theta, math::piOver2)));
-
-    const auto divisor = tan(theta);
-    const auto factor = 1.0f / divisor;
-
-    Matrix result;
-    memset(&result.m, 0, sizeof(Matrix));
-    result.m[0] = (1.0f / aspectRatio) * factor;
-    result.m[5] = factor;
-    result.m[10] = -(zfar + znear) * f_n;
-    result.m[11] = -1.0f;
-    result.m[14] = -2.0f * zfar * znear * f_n;
-
-    return Matrix(result);
+	return glm::perspective(fieldOfView.toRawRadians(), aspectRatio, znear, zfar);
 }
 
 auto Matrix::createOrthographic(float width, float height, float near, float far) -> Matrix
@@ -181,24 +158,15 @@ auto Matrix::createOrthographic(float width, float height, float near, float far
     const auto right = halfWidth;
     const auto top = halfHeight;
     const auto bottom = -halfHeight;
-    Matrix result;
-    memset(&result.m, 0, sizeof(Matrix));
-    result.m[0] = 2 / (right - left);
-    result.m[5] = 2 / (top - bottom);
-    result.m[12] = (left + right) / (left - right);
-    result.m[10] = 1 / (near - far);
-    result.m[13] = (top + bottom) / (bottom - top);
-    result.m[14] = near / (near - far);
-    result.m[15] = 1;
-    return Matrix(result);
+	return glm::ortho(left, right, bottom, top, near, far);
 }
 
 auto Matrix::createScale(const Vector3 &scale) -> Matrix
 {
     Matrix result;
-    result.m[0] = scale.x();
-    result.m[5] = scale.y();
-    result.m[10] = scale.z();
+    result.data[0][0] = scale.x();
+    result.data[1][1] = scale.y();
+    result.data[2][2] = scale.z();
     return Matrix(result);
 }
 
@@ -220,27 +188,27 @@ auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 
     Matrix result;
 
-    result.m[0] = 1.0f - yy2 - zz2;
-    result.m[1] = xy2 + wz2;
-    result.m[2] = xz2 - wy2;
-    result.m[3] = 0.0f;
+    result.data[0][0] = 1.0f - yy2 - zz2;
+    result.data[0][1] = xy2 + wz2;
+    result.data[0][2] = xz2 - wy2;
+    result.data[0][3] = 0.0f;
 
-    result.m[4] = xy2 - wz2;
-    result.m[5] = 1.0f - xx2 - zz2;
-    result.m[6] = yz2 + wx2;
-    result.m[7] = 0.0f;
+    result.data[1][0] = xy2 - wz2;
+    result.data[1][1] = 1.0f - xx2 - zz2;
+    result.data[1][2] = yz2 + wx2;
+    result.data[1][3] = 0.0f;
 
-    result.m[8] = xz2 + wy2;
-    result.m[9] = yz2 - wx2;
-    result.m[10] = 1.0f - xx2 - yy2;
-    result.m[11] = 0.0f;
+    result.data[2][0] = xz2 + wy2;
+    result.data[2][1] = yz2 - wx2;
+    result.data[2][2] = 1.0f - xx2 - yy2;
+    result.data[2][3] = 0.0f;
 
-    result.m[12] = 0.0f;
-    result.m[13] = 0.0f;
-    result.m[14] = 0.0f;
-    result.m[15] = 1.0f;
+    result.data[3][0] = 0.0f;
+    result.data[3][1] = 0.0f;
+    result.data[3][2] = 0.0f;
+    result.data[3][3] = 1.0f;
 
-    return Matrix(result);
+    return result;
 }
 
 auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
@@ -281,77 +249,41 @@ auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &ang
 
     Matrix result;
 
-    result.m[0] = c + tx * x;
-    result.m[1] = txy + sz;
-    result.m[2] = txz - sy;
-    result.m[3] = 0.0f;
+    result.data[0][0] = c + tx * x;
+    result.data[0][1] = txy + sz;
+    result.data[0][2] = txz - sy;
+    result.data[0][3] = 0.0f;
 
-    result.m[4] = txy - sz;
-    result.m[5] = c + ty * y;
-    result.m[6] = tyz + sx;
-    result.m[7] = 0.0f;
+    result.data[1][0] = txy - sz;
+    result.data[1][1] = c + ty * y;
+    result.data[1][2] = tyz + sx;
+    result.data[1][3] = 0.0f;
 
-    result.m[8] = txz + sy;
-    result.m[9] = tyz - sx;
-    result.m[10] = c + tz * z;
-    result.m[11] = 0.0f;
+    result.data[2][0] = txz + sy;
+    result.data[2][1] = tyz - sx;
+    result.data[2][2] = c + tz * z;
+    result.data[2][3] = 0.0f;
 
-    result.m[12] = 0.0f;
-    result.m[13] = 0.0f;
-    result.m[14] = 0.0f;
-    result.m[15] = 1.0f;
+    result.data[3][0] = 0.0f;
+    result.data[3][1] = 0.0f;
+    result.data[3][2] = 0.0f;
+    result.data[3][3] = 1.0f;
 
-    return Matrix(result);
-}
-
-auto Matrix::createRotationX(const Radians &angle) -> Matrix
-{
-    const auto c = cosf(angle.toRawRadians());
-    const auto s = sinf(angle.toRawRadians());
-
-    Matrix result;
-    result.m[5] = c;
-    result.m[6] = s;
-    result.m[9] = -s;
-    result.m[10] = c;
-    return Matrix(result);
-}
-
-auto Matrix::createRotationY(const Radians &angle) -> Matrix
-{
-    const auto c = std::cos(angle.toRawRadians());
-    const auto s = std::sin(angle.toRawRadians());
-
-    Matrix result;
-
-    result.m[0] = c;
-    result.m[2] = -s;
-    result.m[8] = s;
-    result.m[10] = c;
-
-    return Matrix(result);
-}
-
-auto Matrix::createRotationZ(const Radians &angle) -> Matrix
-{
-    const auto c = std::cos(angle.toRawRadians());
-    const auto s = std::sin(angle.toRawRadians());
-
-    Matrix result;
-    result.m[0] = c;
-    result.m[1] = s;
-    result.m[4] = -s;
-    result.m[5] = c;
-    return Matrix(result);
+    return result;
 }
 
 auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
 {
     Matrix result;
-    result.m[12] = translation.x();
-    result.m[13] = translation.y();
-    result.m[14] = translation.z();
+    result.data[3][0] = translation.x();
+    result.data[3][1] = translation.y();
+    result.data[3][2] = translation.z();
     return Matrix(result);
+}
+
+auto Matrix::columns() const -> const float*
+{
+	return glm::value_ptr(data);
 }
 
 auto Matrix::getScale() const -> Vector3
@@ -378,26 +310,25 @@ auto Matrix::getTranslation() const -> Vector3
 auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
 {
     return {
-        point.x() * m[0] + point.y() * m[4] + point.z() * m[8] + m[12],
-        point.x() * m[1] + point.y() * m[5] + point.z() * m[9] + m[13],
-        point.x() * m[2] + point.y() * m[6] + point.z() * m[10] + m[14]
+        point.x() * data[0][0] + point.y() * data[1][0] + point.z() * data[2][0] + data[3][0],
+		point.x() * data[0][1] + point.y() * data[1][1] + point.z() * data[2][1] + data[3][1],
+		point.x() * data[0][2] + point.y() * data[1][2] + point.z() * data[2][2] + data[3][2]
     };
 }
 
 auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
 {
     return{
-        dir.x() * m[0] + dir.y() * m[4] + dir.z() * m[8],
-        dir.x() * m[1] + dir.y() * m[5] + dir.z() * m[9],
-        dir.x() * m[2] + dir.y() * m[6] + dir.z() * m[10]
+        dir.x() * data[0][0] + dir.y() * data[1][0] + dir.z() * data[2][0],
+		dir.x() * data[0][1] + dir.y() * data[1][1] + dir.z() * data[2][1],
+		dir.x() * data[0][2] + dir.y() * data[1][2] + dir.z() * data[2][2]
     };
 }
 
 auto Matrix::transformRay(const Ray &ray) const -> Ray
 {
     const auto origin = transformPoint(ray.getOrigin());
-    auto direction = transformDirection(ray.getDirection());
-    direction.normalize();
+    const auto direction = transformDirection(ray.getDirection()).normalized();
     return {origin, direction};
 }
 
@@ -405,21 +336,21 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
 {
     if (translation)
     {
-        translation->x() = m[12];
-        translation->y() = m[13];
-        translation->z() = m[14];
+        translation->x() = data[3][0];
+        translation->y() = data[3][1];
+        translation->z() = data[3][2];
     }
 
     if (scale == nullptr && rotation == nullptr)
         return true;
 
-    Vector3 xaxis(m[0], m[1], m[2]);
+    Vector3 xaxis(data[0][0], data[0][1], data[0][2]);
     const auto scaleX = xaxis.length();
 
-    Vector3 yaxis(m[4], m[5], m[6]);
+    Vector3 yaxis(data[1][0], data[1][1], data[1][2]);
     const auto scaleY = yaxis.length();
 
-    Vector3 zaxis(m[8], m[9], m[10]);
+    Vector3 zaxis(data[2][0], data[2][1], data[2][2]);
     auto scaleZ = zaxis.length();
 
     // Determine if we have a negative scale (true if determinant is less than zero).
@@ -504,168 +435,101 @@ bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translatio
 
 auto Matrix::operator+=(float scalar) -> Matrix &
 {
-    m[0] += scalar;
-    m[1] += scalar;
-    m[2] += scalar;
-    m[3] += scalar;
-    m[4] += scalar;
-    m[5] += scalar;
-    m[6] += scalar;
-    m[7] += scalar;
-    m[8] += scalar;
-    m[9] += scalar;
-    m[10] += scalar;
-    m[11] += scalar;
-    m[12] += scalar;
-    m[13] += scalar;
-    m[14] += scalar;
-    m[15] += scalar;
+	data += scalar;
     return *this;
 }
 
 auto Matrix::operator+=(const Matrix &other) -> Matrix &
 {
-    m[0] += other.m[0];
-    m[1] += other.m[1];
-    m[2] += other.m[2];
-    m[3] += other.m[3];
-    m[4] += other.m[4];
-    m[5] += other.m[5];
-    m[6] += other.m[6];
-    m[7] += other.m[7];
-    m[8] += other.m[8];
-    m[9] += other.m[9];
-    m[10] += other.m[10];
-    m[11] += other.m[11];
-    m[12] += other.m[12];
-    m[13] += other.m[13];
-    m[14] += other.m[14];
-    m[15] += other.m[15];
+	data += other.data;
     return *this;
 }
 
 void Matrix::transpose()
 {
-    float t[16] =
-    {
-        m[0], m[4], m[8], m[12],
-        m[1], m[5], m[9], m[13],
-        m[2], m[6], m[10], m[14],
-        m[3], m[7], m[11], m[15]
-    };
-    memcpy(&m, t, sizeof(Matrix));
+	data = glm::transpose(data);
 }
 
 auto Matrix::operator*=(float scalar) -> Matrix &
 {
-    m[0] *= scalar;
-    m[1] *= scalar;
-    m[2] *= scalar;
-    m[3] *= scalar;
-    m[4] *= scalar;
-    m[5] *= scalar;
-    m[6] *= scalar;
-    m[7] *= scalar;
-    m[8] *= scalar;
-    m[9] *= scalar;
-    m[10] *= scalar;
-    m[11] *= scalar;
-    m[12] *= scalar;
-    m[13] *= scalar;
-    m[14] *= scalar;
-    m[15] *= scalar;
+	data *= scalar;
     return *this;
 }
 
 auto Matrix::operator*=(const Matrix &m2) -> Matrix &
 {
-    float product[16];
-
-    product[0] = m[0] * m2.m[0] + m[4] * m2.m[1] + m[8] * m2.m[2] + m[12] * m2.m[3];
-    product[1] = m[1] * m2.m[0] + m[5] * m2.m[1] + m[9] * m2.m[2] + m[13] * m2.m[3];
-    product[2] = m[2] * m2.m[0] + m[6] * m2.m[1] + m[10] * m2.m[2] + m[14] * m2.m[3];
-    product[3] = m[3] * m2.m[0] + m[7] * m2.m[1] + m[11] * m2.m[2] + m[15] * m2.m[3];
-
-    product[4] = m[0] * m2.m[4] + m[4] * m2.m[5] + m[8] * m2.m[6] + m[12] * m2.m[7];
-    product[5] = m[1] * m2.m[4] + m[5] * m2.m[5] + m[9] * m2.m[6] + m[13] * m2.m[7];
-    product[6] = m[2] * m2.m[4] + m[6] * m2.m[5] + m[10] * m2.m[6] + m[14] * m2.m[7];
-    product[7] = m[3] * m2.m[4] + m[7] * m2.m[5] + m[11] * m2.m[6] + m[15] * m2.m[7];
-
-    product[8] = m[0] * m2.m[8] + m[4] * m2.m[9] + m[8] * m2.m[10] + m[12] * m2.m[11];
-    product[9] = m[1] * m2.m[8] + m[5] * m2.m[9] + m[9] * m2.m[10] + m[13] * m2.m[11];
-    product[10] = m[2] * m2.m[8] + m[6] * m2.m[9] + m[10] * m2.m[10] + m[14] * m2.m[11];
-    product[11] = m[3] * m2.m[8] + m[7] * m2.m[9] + m[11] * m2.m[10] + m[15] * m2.m[11];
-
-    product[12] = m[0] * m2.m[12] + m[4] * m2.m[13] + m[8] * m2.m[14] + m[12] * m2.m[15];
-    product[13] = m[1] * m2.m[12] + m[5] * m2.m[13] + m[9] * m2.m[14] + m[13] * m2.m[15];
-    product[14] = m[2] * m2.m[12] + m[6] * m2.m[13] + m[10] * m2.m[14] + m[14] * m2.m[15];
-    product[15] = m[3] * m2.m[12] + m[7] * m2.m[13] + m[11] * m2.m[14] + m[15] * m2.m[15];
-
-    memcpy(m, product, sizeof(Matrix));
-
+	data *= m2.data;
     return *this;
 }
 
 auto Matrix::operator-=(float scalar) -> Matrix &
 {
-    m[0] -= scalar;
-    m[1] -= scalar;
-    m[2] -= scalar;
-    m[3] -= scalar;
-    m[4] -= scalar;
-    m[5] -= scalar;
-    m[6] -= scalar;
-    m[7] -= scalar;
-    m[8] -= scalar;
-    m[9] -= scalar;
-    m[10] -= scalar;
-    m[11] -= scalar;
-    m[12] -= scalar;
-    m[13] -= scalar;
-    m[14] -= scalar;
-    m[15] -= scalar;
+	data -= scalar;
     return *this;
 }
 
 auto Matrix::operator-=(const Matrix &m2) -> Matrix &
 {
-    m[0] -= m2.m[0];
-    m[1] -= m2.m[1];
-    m[2] -= m2.m[2];
-    m[3] -= m2.m[3];
-    m[4] -= m2.m[4];
-    m[5] -= m2.m[5];
-    m[6] -= m2.m[6];
-    m[7] -= m2.m[7];
-    m[8] -= m2.m[8];
-    m[9] -= m2.m[9];
-    m[10] -= m2.m[10];
-    m[11] -= m2.m[11];
-    m[12] -= m2.m[12];
-    m[13] -= m2.m[13];
-    m[14] -= m2.m[14];
-    m[15] -= m2.m[15];
+	data -= m2.data;
     return *this;
 }
 
 auto Matrix::operator-() const -> Matrix
 {
-    Matrix result;
-    result.m[0] = -m[0];
-    result.m[1] = -m[1];
-    result.m[2] = -m[2];
-    result.m[3] = -m[3];
-    result.m[4] = -m[4];
-    result.m[5] = -m[5];
-    result.m[6] = -m[6];
-    result.m[7] = -m[7];
-    result.m[8] = -m[8];
-    result.m[9] = -m[9];
-    result.m[10] = -m[10];
-    result.m[11] = -m[11];
-    result.m[12] = -m[12];
-    result.m[13] = -m[13];
-    result.m[14] = -m[14];
-    result.m[15] = -m[15];
-    return result;
+	return -data;
+}
+
+void Matrix::scaleByScalar(float value)
+{
+    scaleByVector({value, value, value});
+}
+
+void Matrix::rotateByQuaternion(const Quaternion &q)
+{
+    *this *= createRotationFromQuaternion(q);
+}
+
+void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radians &angle)
+{
+    *this *= createRotationFromAxisAngle(axis, angle);
+}
+
+void Matrix::scaleByVector(const Vector3 &s)
+{
+    *this *= createScale(s);
+}
+
+void Matrix::translate(const Vector3 &t)
+{
+    *this *= createTranslation(t);
+}
+
+auto Matrix::operator+(float scalar) const -> Matrix
+{
+	return data + scalar;
+}
+
+auto Matrix::operator+(const Matrix &m) const -> Matrix
+{
+	return data + m.data;
+}
+
+auto Matrix::operator-(float scalar) const -> Matrix
+{
+	return data - scalar;
+}
+
+auto Matrix::operator-(const Matrix &m) const -> Matrix
+{
+	return data - m.data;
+}
+
+auto Matrix::operator*(float scalar) const -> Matrix
+{
+	return data * scalar;
+}
+
+auto Matrix::operator*(const Matrix &m) const -> Matrix
+{
+	return data * m.data;
 }

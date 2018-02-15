@@ -76,7 +76,7 @@ void OpenGLMaterial::setMatrixParameter(const str &name, const Matrix &value)
     {
         return [location, value](const Camera *, const Transform *)
         {
-            glUniformMatrix4fv(location, 1, GL_FALSE, value.m);
+            glUniformMatrix4fv(location, 1, GL_FALSE, value.columns());
         };
     });
 }
@@ -107,7 +107,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->getWorldMatrix().m;
+                        auto data = nodeTransform->getWorldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -123,7 +123,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (camera)
                     {
-                        auto data = camera->getViewMatrix().m;
+                        auto data = camera->getViewMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -139,7 +139,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (camera)
                     {
-                        auto data = camera->getProjectionMatrix().m;
+                        auto data = camera->getProjectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -155,7 +155,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getWorldViewMatrix(camera).m;
+                        auto data = nodeTransform->getWorldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -171,7 +171,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (camera)
                     {
-                        auto data = camera->getViewProjectionMatrix().m;
+                        auto data = camera->getViewProjectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -187,7 +187,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getWorldViewProjMatrix(camera).m;
+                        auto data = nodeTransform->getWorldViewProjMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -203,7 +203,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->getInvTransposedWorldMatrix().m;
+                        auto data = nodeTransform->getInvTransposedWorldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -219,7 +219,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).m;
+                        auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
