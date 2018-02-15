@@ -7,6 +7,11 @@
 
 using namespace solo;
 
+Vector3::Vector3(const glm::vec3 &data):
+	data(data)
+{
+}
+
 Vector3::Vector3(float all):
     data{all}
 {
@@ -19,9 +24,7 @@ Vector3::Vector3(float x, float y, float z):
 
 auto Vector3::operator+(const Vector3 &v) const -> Vector3
 {
-    auto result(*this);
-    result += v;
-    return result;
+	return data + v.data;
 }
 
 bool Vector3::isZero() const
@@ -45,187 +48,107 @@ auto Vector3::angle(const Vector3 &v) -> Radians
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)
 {
-    if (x() < min.x())
-        x() = min.x();
-    if (x() > max.x())
-        x() = max.x();
-
-    if (y() < min.y())
-        y() = min.y();
-    if (y() > max.y())
-        y() = max.y();
-
-    if (z() < min.z())
-        z() = min.z();
-    if (z() > max.z())
-        z() = max.z();
+	data = glm::clamp(data, min.data, max.data);
 }
 
 auto Vector3::cross(const Vector3 &v) -> Vector3
 {
-    return {
-        y() * v.z() - z() * v.y(),
-        z() * v.x() - x() * v.z(),
-        x() * v.y() - y() * v.x()
-	};
+	return glm::cross(data, v.data);
 }
 
 auto Vector3::distance(const Vector3 &v) const -> float
 {
-    const auto dx = v.x() - x();
-    const auto dy = v.y() - y();
-    const auto dz = v.z() - z();
-    return std::sqrt(dx * dx + dy * dy + dz * dz);
-}
-
-auto Vector3::distanceSquared(const Vector3 &v) const -> float
-{
-    const auto dx = v.x() - x();
-    const auto dy = v.y() - y();
-    const auto dz = v.z() - z();
-    return dx * dx + dy * dy + dz * dz;
+	return glm::distance(data, v.data);
 }
 
 auto Vector3::dot(const Vector3 &v) const -> float
 {
-    return x() * v.x() + y() * v.y() + z() * v.z();
+    return glm::dot(data, v.data);
 }
 
 auto Vector3::length() const -> float
 {
-    return std::sqrt(lengthSquared());
-}
-
-auto Vector3::lengthSquared() const -> float
-{
-    return x() * x() + y() * y() + z() * z();
+    return glm::length(data);
 }
 
 auto Vector3::normalized() const -> Vector3
 {
-    auto result(*this);
-    result.normalize();
-    return result;
+	return glm::normalize(data);
 }
 
 void Vector3::normalize()
 {
-    auto n = lengthSquared();
-    // Already normalized
-    if (math::areEqual(n, 1.0f))
-        return;
-
-    n = std::sqrt(n);
-    if (math::isZero(n))
-        return;
-
-    n = 1.0f / n;
-    x() *= n;
-    y() *= n;
-    z() *= n;
+	if (!isZero())
+		data = glm::normalize(data);
 }
 
 bool Vector3::operator==(const Vector3 &v) const
 {
-    return math::areEqual(x(), v.x()) && math::areEqual(y(), v.y()) && math::areEqual(z(), v.z());
+    return glm::all(glm::epsilonEqual(data, v.data, glm::epsilon<float>()));
 }
 
 auto Vector3::operator+(float scalar) const -> Vector3
 {
-    auto result(*this);
-    result += scalar;
-    return result;
-}
-
-auto operator+(float scalar, const Vector3 &v) -> Vector3
-{
-    return {v.x() + scalar, v.y() + scalar, v.z() + scalar};
+	return data + scalar;
 }
 
 auto Vector3::operator+=(const Vector3 &v) -> Vector3 &
 {
-    x() += v.x();
-    y() += v.y();
-    z() += v.z();
+	data += v.data;
     return *this;
 }
 
 auto Vector3::operator+=(float scalar) -> Vector3 &
 {
-    x() += scalar;
-    y() += scalar;
-    z() += scalar;
+	data += scalar;
     return *this;
 }
 
 auto Vector3::operator-() const -> Vector3
 {
-    Vector3 result;
-    result.x() = -x();
-    result.y() = -y();
-    result.z() = -z();
-    return result;
+	return -data;
 }
 
 auto Vector3::operator-(float scalar) const -> Vector3
 {
-	auto result(*this);
-    result -= scalar;
-    return result;
+	return data - scalar;
 }
 
 auto Vector3::operator-(const Vector3 &v) const -> Vector3
 {
-    auto result(*this);
-    result -= v;
-    return result;
+	return data - v.data;
 }
 
 auto Vector3::operator-=(const Vector3 &v) -> Vector3 &
 {
-    x() -= v.x();
-    y() -= v.y();
-    z() -= v.z();
+	data -= v.data;
     return *this;
 }
 
 auto Vector3::operator-=(float scalar) -> Vector3 &
 {
-    x() -= scalar;
-    y() -= scalar;
-    z() -= scalar;
+	data -= scalar;
     return *this;
 }
 
 auto Vector3::operator*(float scalar) const -> Vector3
 {
-    auto result(*this);
-    result *= scalar;
-    return result;
-}
-
-auto operator*(float scalar, const Vector3 &v) -> Vector3
-{
-    return {v.x() * scalar, v.y() * scalar, v.z() * scalar};
+	return data * scalar;
 }
 
 auto Vector3::operator*=(float scalar) -> Vector3 &
 {
-    x() *= scalar;
-    y() *= scalar;
-    z() *= scalar;
+	data *= scalar;
     return *this;
 }
 
 auto Vector3::operator/(const float scalar) const -> Vector3
 {
-    return {this->x() / scalar, this->y() / scalar, this->z() / scalar};
+    return data / scalar;
 }
 
 auto Vector3::operator/=(float scalar) -> Vector3 &
 {
-    x() /= scalar;
-    y() /= scalar;
-    z() /= scalar;
+	data /= scalar;
     return *this;
 }

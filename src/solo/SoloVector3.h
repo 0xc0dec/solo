@@ -29,9 +29,7 @@ namespace solo
         bool isUnit() const;
 
         auto distance(const Vector3 &v) const -> float;
-        auto distanceSquared(const Vector3 &v) const -> float;
         auto length() const -> float;
-        auto lengthSquared() const -> float;
         auto normalized() const -> Vector3;
         void normalize();
         auto angle(const Vector3 &v) -> Radians;
@@ -60,5 +58,7 @@ namespace solo
 
     private:
 		glm::vec3 data;
+
+		Vector3(const glm::vec3 &data);
     };
 }

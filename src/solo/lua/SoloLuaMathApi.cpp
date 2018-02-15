@@ -56,9 +56,7 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Vector3, isUnit);
     REG_METHOD(binding, Vector3, isZero);
     REG_METHOD(binding, Vector3, distance);
-    REG_METHOD(binding, Vector3, distanceSquared);
     REG_METHOD(binding, Vector3, length);
-    REG_METHOD(binding, Vector3, lengthSquared);
     REG_METHOD(binding, Vector3, normalized);
     REG_METHOD(binding, Vector3, normalize);
     REG_METHOD(binding, Vector3, angle);
