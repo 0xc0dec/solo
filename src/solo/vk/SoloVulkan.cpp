@@ -22,7 +22,7 @@ auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
     return semaphore;
 }
 
-auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> VulkanResource<VkCommandBuffer>
+auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool, bool begin) -> VulkanResource<VkCommandBuffer>
 {
     VkCommandBufferAllocateInfo allocateInfo{};
     allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -34,6 +34,9 @@ auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> Vulk
     VulkanResource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
     SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
 
+	if (begin)
+		vk::beginCommandBuffer(buffer, true);
+
     return buffer;
 }
 
@@ -43,6 +46,13 @@ void vk::beginCommandBuffer(VkCommandBuffer buffer, bool oneTime)
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = oneTime ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
     SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
+}
+
+void vk::flushCommandBuffer(VkCommandBuffer buffer, VkQueue queue)
+{
+	SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
+    queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &buffer);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
 
 void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,

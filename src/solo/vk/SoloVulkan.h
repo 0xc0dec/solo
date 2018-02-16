@@ -29,8 +29,9 @@ namespace solo
     namespace vk
     {
         auto createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>;
-        auto createCommandBuffer(VkDevice device, VkCommandPool commandPool) -> VulkanResource<VkCommandBuffer>;
+        auto createCommandBuffer(VkDevice device, VkCommandPool commandPool, bool begin = false) -> VulkanResource<VkCommandBuffer>;
         void beginCommandBuffer(VkCommandBuffer buffer, bool oneTime);
+		void flushCommandBuffer(VkCommandBuffer buffer, VkQueue queue);
         void queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
             u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
             u32 commandBufferCount, const VkCommandBuffer *commandBuffers);

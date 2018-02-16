@@ -35,19 +35,19 @@ auto VulkanBuffer::createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size
     auto stagingBuffer = createStaging(renderer, size, data);
     auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer, renderer->getQueue(), renderer->getCommandPool());
-    return std::move(buffer);
+    return buffer;
 }
 
 auto VulkanBuffer::createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(renderer, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
-    return std::move(buffer);
+    return buffer;
 }
 
 VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
-    renderer(renderer),
     device(renderer->getDevice()),
+    renderer(renderer),
     size(size)
 {
     VkBufferCreateInfo bufferInfo {};
@@ -93,17 +93,13 @@ void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 
 void VulkanBuffer::transferTo(const VulkanBuffer &dst, VkQueue queue, VkCommandPool cmdPool) const
 {
-    auto cmdBuf = vk::createCommandBuffer(device, cmdPool);
-    vk::beginCommandBuffer(cmdBuf, true);
+	const auto cmdBuf = vk::createCommandBuffer(device, cmdPool, true);
 
     VkBufferCopy copyRegion{};
     copyRegion.size = dst.size;
     vkCmdCopyBuffer(cmdBuf, buffer, dst.buffer, 1, &copyRegion);
 
-    SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuf));
-
-    vk::queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+    vk::flushCommandBuffer(cmdBuf, queue);
 }
 
 #endif

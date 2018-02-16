@@ -335,8 +335,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
 
     if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
     {
-        const auto vs = vkEffect->getVkVertexShader();
-        const auto fs = vkEffect->getVkFragmentShader();
+        const auto vs = vkEffect->getVertexShaderModule();
+        const auto fs = vkEffect->getFragmentShaderModule();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
             .withDescriptorSetLayout(context.descSetLayout)
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE);

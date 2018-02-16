@@ -119,8 +119,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
 
     auto images = getSwapchainImages(this->device, swapchain);
 
-	const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-    vk::beginCommandBuffer(cmdBuf, true);
+	const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
 	VkImageSubresourceRange subresourceRange{};
 	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -145,10 +144,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
 			subresourceRange);
     }
 
-	// TODO Extract similar places to a func
-	vkEndCommandBuffer(cmdBuf);
-    vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+	vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
 
     presentCompleteSem = vk::createSemaphore(this->device);
 }

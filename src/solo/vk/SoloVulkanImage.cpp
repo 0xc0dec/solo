@@ -98,9 +98,8 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 			VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
-    
-    auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-    vk::beginCommandBuffer(initCmdBuf, true);
+
+	const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
     if (size)
     {
@@ -151,13 +150,9 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 				VK_PIPELINE_STAGE_TRANSFER_BIT,
 				VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-            // TODO Refactor, avoid copy-paste in other similar places
-            vkEndCommandBuffer(initCmdBuf);
-            vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &initCmdBuf);
-            SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+			vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
 
-            const auto blitCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-            vk::beginCommandBuffer(blitCmdBuf, true);
+            const auto blitCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
             for (s32 i = 1; i < mipLevels; i++)
             {
@@ -224,9 +219,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
 				VK_PIPELINE_STAGE_TRANSFER_BIT,
 				VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-            vkEndCommandBuffer(blitCmdBuf);
-            vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &blitCmdBuf);
-            SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+            vk::flushCommandBuffer(blitCmdBuf, renderer->getQueue());
         }
         else
         {
@@ -239,9 +232,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
                 VK_PIPELINE_STAGE_TRANSFER_BIT,
                 VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-            vkEndCommandBuffer(initCmdBuf);
-            vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &initCmdBuf);
-            SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+			vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
         }
     }
     else // blank texture
@@ -261,9 +252,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool g
             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, // TODO veeery unsure about this, but validator doesn't complain
             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-        vkEndCommandBuffer(initCmdBuf);
-        vk::queueSubmit(renderer->getQueue(), 0, nullptr, 0, nullptr, 1, &initCmdBuf);
-        SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer->getQueue()));
+		vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
     }
 
     return image;
