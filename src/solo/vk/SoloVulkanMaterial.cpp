@@ -49,12 +49,8 @@ static auto convertBlendFactor(BlendFactor factor) -> VkBlendFactor
     }
 }
 
-VulkanMaterial::VulkanMaterial(sptr<Effect> effect):
+VulkanMaterial::VulkanMaterial(const sptr<Effect> &effect):
     effect(std::static_pointer_cast<VulkanEffect>(effect))
-{
-}
-
-VulkanMaterial::~VulkanMaterial()
 {
 }
 
@@ -158,7 +154,7 @@ void VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
     });
 }
 
-void VulkanMaterial::setUniformParameter(const str &name, ParameterWriteFunc write)
+void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFunc &write)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);

@@ -148,8 +148,6 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
 
 static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
 {
-    // Since all depth formats may be optional, we need to find a suitable depth format to use
-    // Start with the highest precision packed format
     vec<VkFormat> depthFormats =
     {
         VK_FORMAT_D32_SFLOAT_S8_UINT,
@@ -163,7 +161,6 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
     {
         VkFormatProperties formatProps;
         vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
-        // Format must support depth stencil attachment for optimal tiling
         if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
             return format;
     }
@@ -221,7 +218,6 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
     if (!renderPassContexts.count(currentRenderPass))
     {
-        // TODO Clear later
         renderPassContexts[currentRenderPass].cmdBuffer = vk::createCommandBuffer(device, commandPool);
         renderPassContexts[currentRenderPass].completeSemaphore = vk::createSemaphore(device);
     }
@@ -279,6 +275,18 @@ void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
 {
     if (currentCamera)
         drawMeshPart(currentCmdBuffer, *currentRenderPass, material, transform, mesh, currentCamera, part);
+}
+
+static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
+{
+    switch (attr.elementCount)
+    {
+        case 1: return VK_FORMAT_R32_SFLOAT;
+        case 2: return VK_FORMAT_R32G32_SFLOAT;
+        case 3: return VK_FORMAT_R32G32B32_SFLOAT;
+        case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+        default: return panic<VkFormat>("Unsupported vertex attribute element count");
+    }
 }
 
 auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
@@ -345,28 +353,9 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             for (auto attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
             {
                 const auto attr = layout.getAttribute(attrIndex);
-
-                VkFormat format;
-                switch (attr.elementCount)
-                {
-                    case 1:
-                        format = VK_FORMAT_R32_SFLOAT;
-                        break;
-                    case 2:
-                        format = VK_FORMAT_R32G32_SFLOAT;
-                        break;
-                    case 3:
-                        format = VK_FORMAT_R32G32B32_SFLOAT;
-                        break;
-                    case 4:
-                        format = VK_FORMAT_R32G32B32A32_SFLOAT;
-                        break;
-                    default:
-                        panic("Unsupported vertex attribute element count");
-                        break;
-                }
+	            auto format = getVertexAttributeFormat(attr);
                 
-                auto location = attr.location;
+            	auto location = attr.location;
 				auto found = true;
                 if (!attr.name.empty())
                 {
@@ -375,9 +364,10 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
 					else
 						found = false;
                 }
-
 				if (found)
 					pipelineConfig.withVertexAttribute(location, binding, format, offset);
+				else
+					SL_DEBUG_LOG(SL_FMT("Failed to find attribute (name:", attr.name, ", loc:", location, ") in shader"));
 
 				offset += attr.size;
             }
@@ -386,9 +376,6 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.pipeline = VulkanPipeline{device, renderPass, pipelineConfig};
         context.lastMaterialFlagsHash = materialFlagsHash;
         context.lastMeshLayoutHash = meshLayoutHash;
-
-		SL_DEBUG_LOG(SL_FMT("Initialized new pipeline (transform: ",
-			transform, ", camera: ", camera, ", material: ", material, ")"));
     }
 
     return context;
@@ -549,10 +536,7 @@ void VulkanRenderer::cleanupUnusedRenderPassContexts()
 			}
 		}
 		if (removed)
-		{
 			renderPassContexts.erase(key);
-			SL_DEBUG_LOG(SL_FMT("Removed render pass context ", key));
-		}
 	}
 	while (removed);
 }
@@ -575,10 +559,7 @@ void VulkanRenderer::cleanupUnusedPipelineContexts()
 			}
 		}
 		if (removed)
-		{
 			pipelineContexts.erase(key);
-			SL_DEBUG_LOG(SL_FMT("Removed pipeline context ", key));
-		}
 	}
 	while (removed);
 }
