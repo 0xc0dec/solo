@@ -8,9 +8,9 @@
         },
 
         inputs = {
-            position = "vec3",
-            normal = "vec3",
-            texCoord = "vec2"
+            slPosition = "vec3",
+            slNormal = "vec3",
+            slTexCoord = "vec2"
         },
 
         outputs = {
@@ -19,9 +19,9 @@
         },
 
         entry = [[
-            uv = texCoord;
-            n = normalize((#matrices:invTranspWorld# * vec4(normal, 1)).xyz);
-            gl_Position = #matrices:wvp# * vec4(position, 1);
+            uv = slTexCoord;
+            n = normalize((#matrices:invTranspWorld# * vec4(slNormal, 1)).xyz);
+            gl_Position = #matrices:wvp# * vec4(slPosition, 1);
             FIX_UV#uv#;
             FIX_Y#gl_Position#;
         ]]

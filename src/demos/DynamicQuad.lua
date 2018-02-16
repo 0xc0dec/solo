@@ -19,10 +19,6 @@ return function(scene, assetCache)
         })
     end
 
-    local layout = sl.VertexBufferLayout()
-    layout:addNamedAttribute(3, "position");
-    layout:addNamedAttribute(2, "texCoord");
-
     local data = {
         -1, -1, 0, 0, 0,
         -1,  1, 0, 0, 1,
@@ -34,6 +30,10 @@ return function(scene, assetCache)
         0, 1, 2,
         0, 2, 3
     }
+
+    local layout = sl.VertexBufferLayout()
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
 
     local mesh = sl.Mesh.create(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)

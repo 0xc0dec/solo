@@ -9,6 +9,13 @@
 
 namespace solo
 {
+	enum class VertexAttributeSemantics
+	{
+		Position,
+		Normal,
+		TexCoord
+	};
+
     class VertexAttribute final
     {
     public:
@@ -22,8 +29,8 @@ namespace solo
     class VertexBufferLayout final
     {
     public:
-        // TODO "addPrefabAttribute" with "semantics", which simply translates "position" into 0, "normal" into 1, etc.
         void addNamedAttribute(u32 elementCount, const str &name);
+		void addSemanticAttribute(VertexAttributeSemantics semantics);
 
         auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs.size()); }
         auto getAttribute(u32 index) const -> VertexAttribute { return attrs.at(index); }
@@ -35,11 +42,5 @@ namespace solo
         u32 size = 0;
     };
 
-    inline void VertexBufferLayout::addNamedAttribute(u32 elementCount, const str &name)
-    {
-        const auto size = static_cast<u32>(sizeof(float) * elementCount);
-        const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;
-        attrs.push_back(VertexAttribute{name, elementCount, size, 0, offset});
-        this->size += size;
-    }
+    
 }

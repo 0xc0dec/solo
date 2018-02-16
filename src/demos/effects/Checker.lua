@@ -7,8 +7,8 @@
         },
 
         inputs = {
-            position = "vec4",
-            texCoord = "vec2"
+            slPosition = "vec4",
+            slTexCoord = "vec2"
         },
 
         outputs = {
@@ -16,8 +16,8 @@
         },
 
         entry = [[
-            uv = texCoord;
-            gl_Position = #matrices:wvp# * position;
+            uv = slTexCoord;
+            gl_Position = #matrices:wvp# * slPosition;
             FIX_Y#gl_Position#;
         ]]
     },

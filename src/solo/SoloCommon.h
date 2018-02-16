@@ -120,7 +120,7 @@ namespace solo
 
 	template <class T = void> T panic()
 	{
-		return panic("<empty panic message>");
+		return panic("<empty message>");
 	}
 
 	template <class T = void> T panicIf(bool condition, const str &msg)

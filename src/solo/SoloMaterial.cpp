@@ -23,7 +23,7 @@ static const char * const skyboxPrefabEffect = R"(
         },
 
         inputs = {
-            position = "vec4"
+            slPosition = "vec4"
         },
 
         outputs = {
@@ -31,14 +31,14 @@ static const char * const skyboxPrefabEffect = R"(
         },
 
         entry = [[
-			vec4 pos = position;
+			vec4 pos = slPosition;
 			FIX_Y#pos#;
 
             mat4 invProjMatrix = inverse(#matrices:proj#);
 			mat3 invModelViewMatrix = inverse(mat3(#matrices:worldView#));
 			vec3 unprojected = (invProjMatrix * pos).xyz;
 			eyeDir = invModelViewMatrix * unprojected;
-			gl_Position = position;
+			gl_Position = slPosition;
 			FIX_Y#eyeDir#;
         ]]
     },
@@ -68,8 +68,8 @@ static const char * const fontPrefabEffect = R"(
         },
 
         inputs = {
-			texCoord = "vec2",
-            position = "vec4"
+			slPosition = "vec4",
+			slTexCoord = "vec2",
         },
 
         outputs = {
@@ -77,8 +77,8 @@ static const char * const fontPrefabEffect = R"(
         },
 
         entry = [[
-            gl_Position = #matrices:wvp# * position;
-			uv = texCoord;
+            gl_Position = #matrices:wvp# * slPosition;
+			uv = slTexCoord;
 			FIX_Y#gl_Position#;
         ]]
     },

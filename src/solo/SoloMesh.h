@@ -6,8 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVertexFormat.h"
-#include "SoloRenderer.h"
+#include "SoloVertexBufferLayout.h"
 #include "SoloAsyncHandle.h"
 
 namespace solo

@@ -77,8 +77,8 @@ void Mesh::initAsQuadMesh()
     };
 
     VertexBufferLayout layout;
-	layout.addNamedAttribute(3, "position");
-	layout.addNamedAttribute(2, "texCoord");
+	layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+	layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
     addVertexBuffer(layout, vertices, 6);
     setPrimitiveType(PrimitiveType::Triangles);
@@ -113,8 +113,8 @@ void Mesh::initAsCubeMesh()
     };
 
     VertexBufferLayout layout;
-    layout.addNamedAttribute(3, "position");
-	layout.addNamedAttribute(2, "texCoord");
+	layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+	layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
     addVertexBuffer(layout, vertices, 24);
     addPart(indices, 36);

@@ -146,7 +146,6 @@
     <ClInclude Include="..\src\solo\SoloVector2.h" />
     <ClInclude Include="..\src\solo\SoloVector3.h" />
     <ClInclude Include="..\src\solo\SoloVector4.h" />
-    <ClInclude Include="..\src\solo\SoloVertexFormat.h" />
     <ClInclude Include="..\src\solo\SoloStringUtils.h" />
     <ClInclude Include="..\src\solo\SoloTextureData.h" />
     <ClInclude Include="..\src\solo\vk\SoloVulkanDescriptorSetUpdater.h">
@@ -182,6 +181,7 @@
     </ClInclude>
     <ClInclude Include="..\src\solo\SoloDegrees.h" />
     <ClInclude Include="..\src\solo\SoloRadians.h" />
+    <ClInclude Include="..\src\solo\SoloVertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -349,6 +349,7 @@
     <ClCompile Include="..\src\solo\SoloCommon.cpp" />
     <ClCompile Include="..\src\solo\SoloDegrees.cpp" />
     <ClCompile Include="..\src\solo\SoloRadians.cpp" />
+    <ClCompile Include="..\src\solo\SoloVertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

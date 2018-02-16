@@ -87,7 +87,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<Data>
     vec<tinyobj::shape_t> shapes;
     vec<tinyobj::material_t> materials;
     str err;
-    auto loaded = LoadObj(&attrib, &shapes, &materials, &err, file.get());
+	const auto loaded = LoadObj(&attrib, &shapes, &materials, &err, file.get());
     panicIf(!loaded, err);
     
     vec<float> vertexData;
@@ -157,9 +157,9 @@ auto obj::loadMesh(Device *device, const str &path) -> sptr<Mesh>
     auto mesh = Mesh::create(device);
     
     VertexBufferLayout layout; // TODO take layout from effect or smth
-	layout.addNamedAttribute(3, "position");
-	layout.addNamedAttribute(3, "normal");
-	layout.addNamedAttribute(2, "texCoord");
+	layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+	layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
+	layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
     mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
     
@@ -180,10 +180,10 @@ auto obj::loadMeshAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mes
         auto data = results[0];
         auto mesh = Mesh::create(device);
     
-        VertexBufferLayout layout; // TODO take layout from effect or smth
-		layout.addNamedAttribute(3, "position");
-		layout.addNamedAttribute(3, "normal");
-		layout.addNamedAttribute(2, "texCoord");
+        VertexBufferLayout layout;
+		layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+		layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
+		layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
         mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
     

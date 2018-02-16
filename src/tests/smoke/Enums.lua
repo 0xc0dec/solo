@@ -129,3 +129,7 @@ assert(sl.PrimitiveType.TriangleStrip ~= nil)
 assert(sl.PrimitiveType.Lines ~= nil)
 assert(sl.PrimitiveType.LineStrip ~= nil)
 assert(sl.PrimitiveType.Points ~= nil)
+
+assert(sl.VertexAttributeSemantics.Position ~= nil)
+assert(sl.VertexAttributeSemantics.Normal ~= nil)
+assert(sl.VertexAttributeSemantics.TexCoord ~= nil)

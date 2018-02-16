@@ -1,8 +1,8 @@
 {
     vertex = {
         inputs = {
-            position = "vec4",
-            texCoord = "vec2"
+            slPosition = "vec4",
+            slTexCoord = "vec2"
         },
 
         outputs = {
@@ -10,8 +10,8 @@
         },
 
         entry = [[
-            gl_Position = position;
-            uv = texCoord;
+            gl_Position = slPosition;
+            uv = slTexCoord;
             FIX_Y#gl_Position#;
         ]]
     },
