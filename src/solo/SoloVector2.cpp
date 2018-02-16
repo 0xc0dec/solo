@@ -34,7 +34,7 @@ bool Vector2::isUnit() const
 
 auto Vector2::angle(const Vector2 &v) const -> Radians
 {
-    return Radians(std::acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(std::acosf(glm::clamp(dot(v), -1.0f, 1.0f)));
 }
 
 void Vector2::clamp(const Vector2 &min, const Vector2 &max)
@@ -50,6 +50,12 @@ auto Vector2::distance(const Vector2 &v) const -> float
 auto Vector2::dot(const Vector2 &v) const -> float
 {
 	return glm::dot(data, v.data);
+}
+
+auto Vector2::operator=(const glm::vec2 &other) -> Vector2 &
+{
+	data = other;
+	return *this;
 }
 
 auto Vector2::length() const -> float

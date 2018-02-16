@@ -6,7 +6,6 @@
 #pragma once
 
 #include "SoloVector3.h"
-#include <stddef.h> // for size_t
 
 namespace solo
 {
@@ -64,7 +63,7 @@ namespace solo
         auto transformDirection(const Vector3 &dir) const -> Vector3;
         auto transformRay(const Ray &ray) const -> Ray;
 
-        bool decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const;
+        void decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translation) const;
 
         auto operator+(float scalar) const -> Matrix;
         auto operator+(const Matrix &m) const -> Matrix;

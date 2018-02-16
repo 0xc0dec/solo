@@ -6,10 +6,10 @@
 #include "SoloMatrix.h"
 #include "SoloMath.h"
 #include "SoloRay.h"
-#include "SoloCommon.h"
 #include "SoloQuaternion.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 using namespace solo;
 
@@ -148,23 +148,23 @@ auto Matrix::columns() const -> const float*
 
 auto Matrix::getScale() const -> Vector3
 {
-    Vector3 result;
-    decompose(&result, nullptr, nullptr);
-    return result;
+	Quaternion rotation;
+	Vector3 scale, translation;
+    decompose(scale, rotation, translation);
+    return scale;
 }
 
 auto Matrix::getRotation() const -> Quaternion
 {
-    Quaternion result;
-    decompose(nullptr, &result, nullptr);
-    return result;
+    Quaternion rotation;
+	Vector3 scale, translation;
+    decompose(scale, rotation, translation);
+    return rotation;
 }
 
 auto Matrix::getTranslation() const -> Vector3
 {
-    Vector3 result;
-    decompose(nullptr, nullptr, &result);
-    return result;
+	return glm::vec3(data[3]);
 }
 
 auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
@@ -184,100 +184,19 @@ auto Matrix::transformRay(const Ray &ray) const -> Ray
     return {origin, direction};
 }
 
-bool Matrix::decompose(Vector3 *scale, Quaternion *rotation, Vector3 *translation) const
+void Matrix::decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translation) const
 {
-    if (translation)
-    {
-        translation->x() = data[3][0];
-        translation->y() = data[3][1];
-        translation->z() = data[3][2];
-    }
+	glm::vec3 rawScale;
+	glm::quat rawRotation;
+	glm::vec3 rawTranslation;
+	glm::vec3 rawSkew;
+	glm::vec4 rawPerspective;
+	
+	glm::decompose(data, rawScale, rawRotation, rawTranslation, rawSkew, rawPerspective);
 
-    if (scale == nullptr && rotation == nullptr)
-        return true;
-
-    Vector3 xaxis(data[0][0], data[0][1], data[0][2]);
-    const auto scaleX = xaxis.length();
-
-    Vector3 yaxis(data[1][0], data[1][1], data[1][2]);
-    const auto scaleY = yaxis.length();
-
-    Vector3 zaxis(data[2][0], data[2][1], data[2][2]);
-    auto scaleZ = zaxis.length();
-
-    // Determine if we have a negative scale (true if determinant is less than zero).
-    // In this case, we simply negate a single axis of the scale.
-    const auto det = getDeterminant();
-    if (det < 0)
-        scaleZ = -scaleZ;
-
-    if (scale)
-    {
-        scale->x() = scaleX;
-        scale->y() = scaleY;
-        scale->z() = scaleZ;
-    }
-
-    if (rotation == nullptr)
-        return true;
-
-    if (math::isZero(scaleX) || math::isZero(scaleY) || math::isZero(scaleZ))
-        return false;
-
-    auto rn = 1.0f / scaleX;
-    xaxis.x() *= rn;
-    xaxis.y() *= rn;
-    xaxis.z() *= rn;
-
-    rn = 1.0f / scaleY;
-    yaxis.x() *= rn;
-    yaxis.y() *= rn;
-    yaxis.z() *= rn;
-
-    rn = 1.0f / scaleZ;
-    zaxis.x() *= rn;
-    zaxis.y() *= rn;
-    zaxis.z() *= rn;
-
-    const auto trace = xaxis.x() + yaxis.y() + zaxis.z() + 1.0f;
-
-    if (trace > FLT_EPSILON)
-    {
-        const auto s = 0.5f / sqrt(trace);
-        rotation->w() = 0.25f / s;
-        rotation->x() = (yaxis.z() - zaxis.y()) * s;
-        rotation->y() = (zaxis.x() - xaxis.z()) * s;
-        rotation->z() = (xaxis.y() - yaxis.x()) * s;
-    }
-    else
-    {
-        if (xaxis.x() > yaxis.y() && xaxis.x() > zaxis.z())
-        {
-            const auto s = 0.5f / sqrt(1.0f + xaxis.x() - yaxis.y() - zaxis.z());
-            rotation->w() = (yaxis.z() - zaxis.y()) * s;
-            rotation->x() = 0.25f / s;
-            rotation->y() = (yaxis.x() + xaxis.y()) * s;
-            rotation->z() = (zaxis.x() + xaxis.z()) * s;
-        }
-        else if (yaxis.y() > zaxis.z())
-        {
-            const auto s = 0.5f / sqrt(1.0f + yaxis.y() - xaxis.x() - zaxis.z());
-            rotation->w() = (zaxis.x() - xaxis.z()) * s;
-            rotation->x() = (yaxis.x() + xaxis.y()) * s;
-            rotation->y() = 0.25f / s;
-            rotation->z() = (zaxis.y() + yaxis.z()) * s;
-        }
-        else
-        {
-            const auto s = 0.5f / sqrt(1.0f + zaxis.z() - xaxis.x() - yaxis.y());
-            rotation->w() = (xaxis.y() - yaxis.x()) * s;
-            rotation->x() = (zaxis.x() + xaxis.z()) * s;
-            rotation->y() = (zaxis.y() + yaxis.z()) * s;
-            rotation->z() = 0.25f / s;
-        }
-    }
-
-    return true;
+	scale = rawScale;
+	rotation = glm::conjugate(rawRotation);
+	translation = rawTranslation;
 }
 
 auto Matrix::operator+=(float scalar) -> Matrix &

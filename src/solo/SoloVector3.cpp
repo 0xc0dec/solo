@@ -43,7 +43,7 @@ bool Vector3::isUnit() const
 
 auto Vector3::angle(const Vector3 &v) const -> Radians
 {
-    return Radians(std::acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(std::acosf(glm::clamp(dot(v), -1.0f, 1.0f)));
 }
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)
@@ -80,6 +80,12 @@ void Vector3::normalize()
 {
 	if (!isZero())
 		data = glm::normalize(data);
+}
+
+auto Vector3::operator=(const glm::vec3 &other) -> Vector3 &
+{
+	data = other;
+	return *this;
 }
 
 bool Vector3::operator==(const Vector3 &v) const

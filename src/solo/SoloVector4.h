@@ -38,6 +38,8 @@ namespace solo
         void clamp(const Vector4 &min, const Vector4 &max);
         auto dot(const Vector4 &v) const -> float;
 
+		auto operator=(const glm::vec4 &other) -> Vector4&;
+
         bool operator==(const Vector4 &v) const;
 
         auto operator+(float scalar) const -> Vector4;

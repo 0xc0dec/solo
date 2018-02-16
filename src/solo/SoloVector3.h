@@ -40,6 +40,8 @@ namespace solo
 
 		operator glm::vec3() const { return data; }
 
+		auto operator=(const glm::vec3 &other) -> Vector3&;
+
         bool operator==(const Vector3 &v) const;
 
         auto operator+(float scalar) const -> Vector3;

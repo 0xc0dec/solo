@@ -40,7 +40,7 @@ bool Vector4::isUnit() const
 
 auto Vector4::angle(const Vector4 &v) -> Radians
 {
-    return Radians(std::acosf(math::clamp(dot(v), -1, 1)));
+    return Radians(std::acosf(glm::clamp(dot(v), -1.0f, 1.0f)));
 }
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
@@ -56,6 +56,12 @@ auto Vector4::distance(const Vector4 &v) const -> float
 auto Vector4::dot(const Vector4 &v) const -> float
 {
     return glm::dot(data, v.data);
+}
+
+auto Vector4::operator=(const glm::vec4 &other) -> Vector4 &
+{
+	data = other;
+	return *this;
 }
 
 auto Vector4::length() const -> float

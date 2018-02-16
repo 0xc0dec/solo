@@ -22,7 +22,7 @@ auto Radians::operator=(const Degrees &d) -> Radians &
 
 auto Radians::toRawDegrees() const -> float
 {
-    return math::radToDeg(raw);
+    return glm::degrees(raw);
 }
 
 auto Radians::operator+(const Degrees &d) const -> Radians
