@@ -24,7 +24,7 @@ OpenGLFrameBuffer::~OpenGLFrameBuffer()
     glDeleteFramebuffers(1, &handle);
 }
 
-static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
+static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     panicIf(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
 
@@ -42,13 +42,13 @@ static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
     }
 }
 
-void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
+void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
-    vec<sptr<OpenGLTexture2d>> newAttachments;
+    vec<sptr<OpenGLTexture2D>> newAttachments;
     for (const auto &tex : attachments)
-        newAttachments.push_back(std::static_pointer_cast<OpenGLTexture2d>(tex));
+        newAttachments.push_back(std::static_pointer_cast<OpenGLTexture2D>(tex));
 
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 

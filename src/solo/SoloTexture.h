@@ -12,8 +12,8 @@
 namespace solo
 {
     class Device;
-    class Texture2d;
-    class Texture2dData;
+    class Texture2D;
+    class Texture2DData;
     class CubeTexture;
     class CubeTextureData;
 
@@ -79,13 +79,13 @@ namespace solo
         virtual void rebuild() {}
     };
 
-    class Texture2d: public Texture
+    class Texture2D: public Texture
     {
     public:
-        static auto loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2d>;
-        static auto loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2d>>;
-        static auto createFromData(Device *device, Texture2dData *data, bool generateMipmaps) -> sptr<Texture2d>;
-        static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2d>;
+        static auto loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>;
+        static auto loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>;
+        static auto createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<Texture2D>;
+        static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 
@@ -93,7 +93,7 @@ namespace solo
         TextureFormat format;
         Vector2 dimensions;
 
-        explicit Texture2d(Texture2dData *data);
+        explicit Texture2D(Texture2DData *data);
     };
 
     class CubeTexture: public Texture

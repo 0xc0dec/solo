@@ -13,14 +13,14 @@ namespace solo
 {
     class Device;
 
-    class STBTexture2dData final: public Texture2dData
+    class STBTexture2DData final: public Texture2DData
     {
     public:
         static bool canLoadFromFile(const str &path);
-        static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>;
+        static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>;
 
-        STBTexture2dData() = default;
-        ~STBTexture2dData();
+        STBTexture2DData() = default;
+        ~STBTexture2DData();
 
         auto getSize() const -> u32 override final { return width * height * channels; }
         auto getWidth() const -> u32 override final { return width; }
@@ -56,6 +56,6 @@ namespace solo
         auto getFormat() const -> TextureFormat override final;
 
     private:
-        vec<sptr<STBTexture2dData>> faces;
+        vec<sptr<STBTexture2DData>> faces;
     };
 }

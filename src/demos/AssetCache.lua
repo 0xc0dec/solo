@@ -9,7 +9,7 @@ return function()
     local cubeMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
     
-    local cobbleStone = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
+    local cobbleStone = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
     cobbleStone:setAnisotropyLevel(16)
 
     local effectCache = {}

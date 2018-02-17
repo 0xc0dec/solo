@@ -11,7 +11,7 @@
 namespace solo
 {
     class Device;
-    class Texture2d;
+    class Texture2D;
 
     class FrameBuffer: public NoCopyAndMove
     {
@@ -20,7 +20,7 @@ namespace solo
 
 		virtual ~FrameBuffer() = default;
 
-        virtual void setAttachments(const vec<sptr<Texture2d>> &attachments) = 0;
+        virtual void setAttachments(const vec<sptr<Texture2D>> &attachments) = 0;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 

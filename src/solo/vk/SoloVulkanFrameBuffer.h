@@ -21,7 +21,7 @@ namespace solo
         VulkanFrameBuffer(Device *device);
 		~VulkanFrameBuffer() = default;
 
-        void setAttachments(const vec<sptr<Texture2d>> &attachments) override final;
+        void setAttachments(const vec<sptr<Texture2D>> &attachments) override final;
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }

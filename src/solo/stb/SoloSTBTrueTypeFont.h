@@ -24,11 +24,11 @@ namespace solo
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY);
 
-        auto getAtlas() const -> sptr<Texture2d> override final { return atlas; }
+        auto getAtlas() const -> sptr<Texture2D> override final { return atlas; }
         auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
 
     private:
-        sptr<Texture2d> atlas;
+        sptr<Texture2D> atlas;
         u32 firstChar;
         uptr<stbtt_packedchar[]> charInfo;
     };

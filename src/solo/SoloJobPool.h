@@ -15,14 +15,14 @@ namespace solo
     class Job: public NoCopyAndMove
     {
     public:
-        virtual ~Job(){}
+        virtual ~Job() = default;
 
         bool isDone() const { return done; }
 
         virtual void update() = 0;
 
     protected:
-        Job() {}
+        Job() = default;
 
         bool done = false;
     };
@@ -84,7 +84,7 @@ namespace solo
     class JobPool final: public NoCopyAndMove
     {
     public:
-        JobPool() {}
+        JobPool() = default;
 
         bool hasActiveJobs() const { return anyActiveJobs; }
         void addJob(sptr<Job> job);

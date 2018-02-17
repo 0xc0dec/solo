@@ -12,13 +12,13 @@ namespace solo
     enum class TextureFormat;
     class Device;
 
-    class Texture2dData: public NoCopyAndMove
+    class Texture2DData: public NoCopyAndMove
     {
     public:
-        static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>;
-        static auto createFromMemory(u32 width, u32 height, TextureFormat format, const vec<u8> &data) -> sptr<Texture2dData>;
+        static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>;
+        static auto createFromMemory(u32 width, u32 height, TextureFormat format, const vec<u8> &data) -> sptr<Texture2DData>;
 
-		virtual ~Texture2dData() = default;
+		virtual ~Texture2DData() = default;
 
         virtual auto getSize() const -> u32 = 0;
         virtual auto getWidth() const -> u32 = 0;
@@ -27,7 +27,7 @@ namespace solo
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:
-		Texture2dData() = default;
+		Texture2DData() = default;
     };
 
     class CubeTextureData: public NoCopyAndMove

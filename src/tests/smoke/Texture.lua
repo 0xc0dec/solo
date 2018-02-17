@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-assert(sl.Texture2d.loadFromFile)
+assert(sl.Texture2D.loadFromFile)
 
-local rectTex = sl.Texture2d.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
+local rectTex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
 
 assert(rectTex:getHorizontalWrap())
 assert(rectTex:getVerticalWrap())

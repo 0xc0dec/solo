@@ -55,6 +55,6 @@ namespace solo
 
         void cleanupDeleted();
         void visit(std::function<void(Component*)> accept);
-        void visitByTags(u32 tagMask, std::function<void(Component*)> accept);
+        void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
     };
 }

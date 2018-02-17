@@ -20,9 +20,9 @@ namespace solo
         Matrix(const Matrix &copy);
 		Matrix(const glm::mat4x4 &data);
         Matrix(float m11, float m12, float m13, float m14,
-            float m21, float m22, float m23, float m24,
-            float m31, float m32, float m33, float m34,
-            float m41, float m42, float m43, float m44);
+			   float m21, float m22, float m23, float m24,
+			   float m31, float m32, float m33, float m34,
+			   float m41, float m42, float m43, float m44);
 
         static auto identity() -> Matrix;
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix;

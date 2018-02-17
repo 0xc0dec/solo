@@ -13,7 +13,7 @@
 
 using namespace solo;
 
-static void validateNewAttachments(const vec<sptr<Texture2d>> &attachments)
+static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     auto width = -1, height = -1;
     for (auto i = 0; i < attachments.size(); i++)
@@ -35,7 +35,7 @@ VulkanFrameBuffer::VulkanFrameBuffer(Device *device):
 {
 }
 
-void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
+void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
@@ -53,7 +53,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2d>> &attachments)
         VulkanRenderPassConfig config;
         for (const auto &tex: attachments)
         {
-            const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2d>(tex);
+            const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
             config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
             attachmentViews.push_back(vulkanTexture->getImage().getView());
         }

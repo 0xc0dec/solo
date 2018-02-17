@@ -25,20 +25,20 @@ static auto toImageFormat(int components) -> TextureFormat
     }
 }
 
-bool STBTexture2dData::canLoadFromFile(const str &path)
+bool STBTexture2DData::canLoadFromFile(const str &path)
 {
     static vec<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
         [&](const str &ext) { return stringutils::endsWith(path, ext); }) != supportedFormats.end();
 }
 
-STBTexture2dData::~STBTexture2dData()
+STBTexture2DData::~STBTexture2DData()
 {
     if (data)
         stbi_image_free(data);
 }
 
-auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2dData>
+auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
 {
     auto bytes = device->getFileSystem()->readBytes(path);
     int width, height, channels;
@@ -47,7 +47,7 @@ auto STBTexture2dData::loadFromFile(Device *device, const str &path) -> sptr<STB
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &channels, 4);
     panicIf(!data, SL_FMT("Failed to load image ", path));
 
-    const auto result = std::make_shared<STBTexture2dData>();
+    const auto result = std::make_shared<STBTexture2DData>();
     result->channels = 4;
     result->format = toImageFormat(4);
     result->width = width;
@@ -61,12 +61,12 @@ bool STBCubeTextureData::canLoadFromFaceFiles(
 	const str& positiveYPath, const str& negativeYPath,
 	const str& positiveZPath, const str& negativeZPath)
 {
-	return STBTexture2dData::canLoadFromFile(positiveXPath) &&
-		STBTexture2dData::canLoadFromFile(negativeXPath) &&
-		STBTexture2dData::canLoadFromFile(positiveYPath) &&
-		STBTexture2dData::canLoadFromFile(negativeYPath) &&
-		STBTexture2dData::canLoadFromFile(positiveZPath) &&
-		STBTexture2dData::canLoadFromFile(negativeZPath);
+	return STBTexture2DData::canLoadFromFile(positiveXPath) &&
+		STBTexture2DData::canLoadFromFile(negativeXPath) &&
+		STBTexture2DData::canLoadFromFile(positiveYPath) &&
+		STBTexture2DData::canLoadFromFile(negativeYPath) &&
+		STBTexture2DData::canLoadFromFile(positiveZPath) &&
+		STBTexture2DData::canLoadFromFile(negativeZPath);
 }
 
 auto STBCubeTextureData::loadFromFaceFiles(
@@ -76,12 +76,12 @@ auto STBCubeTextureData::loadFromFaceFiles(
 	const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
 {
     auto tex = std::make_shared<STBCubeTextureData>();
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveXPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeXPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveYPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeYPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, positiveZPath));
-    tex->faces.push_back(STBTexture2dData::loadFromFile(device, negativeZPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveXPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeXPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveYPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeYPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveZPath));
+    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeZPath));
     
     SL_DEBUG_BLOCK(
     {

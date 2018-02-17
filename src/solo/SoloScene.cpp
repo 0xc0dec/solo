@@ -60,11 +60,11 @@ void Scene::removeNode(Node *node)
 
 void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
-    auto typeId = cmp->getTypeId();
+    const auto typeId = cmp->getTypeId();
 
     SL_DEBUG_BLOCK(
     {
-        auto node = nodes.find(nodeId);
+        const auto node = nodes.find(nodeId);
         if (node != nodes.end())
         {
             const auto &nodeComponents = node->second;
@@ -107,7 +107,7 @@ void Scene::visit(std::function<void(Component*)> accept)
     return visitByTags(~0, accept);
 }
 
-void Scene::visitByTags(u32 tagMask, std::function<void(Component*)> accept)
+void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &accept)
 {
     for (const auto &node: nodes)
     {

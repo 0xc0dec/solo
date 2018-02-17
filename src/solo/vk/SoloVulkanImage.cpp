@@ -67,7 +67,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, avoid copy-paste
-auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2dData *data, bool generateMipmaps) -> VulkanImage
+auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
     const auto width = data->getWidth();
     const auto height = data->getHeight();

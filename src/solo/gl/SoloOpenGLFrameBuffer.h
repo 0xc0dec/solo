@@ -15,7 +15,7 @@
 namespace solo
 {
     class Device;
-    class OpenGLTexture2d;
+    class OpenGLTexture2D;
 
     class OpenGLFrameBuffer final : public FrameBuffer
     {
@@ -25,12 +25,12 @@ namespace solo
 
         auto getHandle() const -> GLuint { return handle; }
 
-        void setAttachments(const vec<sptr<solo::Texture2d>> &attachments) override final;
+        void setAttachments(const vec<sptr<solo::Texture2D>> &attachments) override final;
 
     private:
         GLuint handle = 0;
         GLuint depthBufferHandle = 0;
-        vec<sptr<OpenGLTexture2d>> attachments;
+        vec<sptr<OpenGLTexture2D>> attachments;
     };
 }
 

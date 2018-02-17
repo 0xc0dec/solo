@@ -112,13 +112,13 @@ OpenGLTexture::~OpenGLTexture()
     glDeleteTextures(1, &handle);
 }
 
-OpenGLTexture2d::OpenGLTexture2d(Texture2dData *data, bool generateMipmaps):
-    Texture2d(data)
+OpenGLTexture2D::OpenGLTexture2D(Texture2DData *data, bool generateMipmaps):
+    Texture2D(data)
 {
     setData(data->getData(), generateMipmaps);
 }
 
-void OpenGLTexture2d::bind()
+void OpenGLTexture2D::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
 
@@ -130,7 +130,7 @@ void OpenGLTexture2d::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
-void OpenGLTexture2d::setData(const void *data, bool generateMipmaps)
+void OpenGLTexture2D::setData(const void *data, bool generateMipmaps)
 {
     const auto internalFormat = toInternalFormat(this->format);
     const auto format = toFormat(this->format);

@@ -26,13 +26,13 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
     tex.endClass();
 }
 
-static void registerTexture2d(CppBindModule<LuaBinding> &module)
+static void registerTexture2D(CppBindModule<LuaBinding> &module)
 {
-    auto rectTex = BEGIN_CLASS_EXTEND(module, Texture2d, Texture);
-    REG_STATIC_METHOD(rectTex, Texture2d, loadFromFile);
-    REG_STATIC_METHOD(rectTex, Texture2d, loadFromFileAsync);
-    REG_STATIC_METHOD(rectTex, Texture2d, createEmpty);
-    REG_METHOD(rectTex, Texture2d, getDimensions);
+    auto rectTex = BEGIN_CLASS_EXTEND(module, Texture2D, Texture);
+    REG_STATIC_METHOD(rectTex, Texture2D, loadFromFile);
+    REG_STATIC_METHOD(rectTex, Texture2D, loadFromFileAsync);
+    REG_STATIC_METHOD(rectTex, Texture2D, createEmpty);
+    REG_METHOD(rectTex, Texture2D, getDimensions);
     rectTex.endClass();
 }
 
@@ -49,6 +49,6 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 void registerTextureApi(CppBindModule<LuaBinding> &module)
 {
     registerTexture(module);
-    registerTexture2d(module);
+    registerTexture2D(module);
     registerCubeTexture(module);
 }

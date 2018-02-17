@@ -9,10 +9,10 @@
 
 namespace solo
 {
-    class NullTexture2d final: public Texture2d
+    class NullTexture2D final: public Texture2D
     {
     public:
-        explicit NullTexture2d(Texture2dData *data): Texture2d(data) {}
+        explicit NullTexture2D(Texture2DData *data): Texture2D(data) {}
     };
 
     class NullCubeTexture final : public CubeTexture

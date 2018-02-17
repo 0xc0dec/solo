@@ -14,14 +14,14 @@
 
 namespace solo
 {
-    class Texture2dData;
+    class Texture2DData;
     class CubeTextureData;
     class VulkanRenderer;
 
     class VulkanImage
     {
     public:
-        static auto create2d(VulkanRenderer *renderer, Texture2dData *data, bool generateMipmaps) -> VulkanImage;
+        static auto create2d(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
         static auto createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage;
 
         VulkanImage() {}

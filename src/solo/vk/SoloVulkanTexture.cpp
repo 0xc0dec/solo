@@ -87,8 +87,8 @@ VulkanTexture::VulkanTexture(Device *device):
 {
 }
 
-VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data, bool generateMipmaps):
-    Texture2d(data),
+VulkanTexture2D::VulkanTexture2D(Device *device, Texture2DData *data, bool generateMipmaps):
+    Texture2D(data),
     VulkanTexture(device)
 {
     const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
@@ -96,13 +96,13 @@ VulkanTexture2d::VulkanTexture2d(Device *device, Texture2dData *data, bool gener
     rebuildSampler();
 }
 
-void VulkanTexture2d::rebuild()
+void VulkanTexture2D::rebuild()
 {
-    Texture2d::rebuild();
+    Texture2D::rebuild();
     rebuildSampler();
 }
 
-void VulkanTexture2d::rebuildSampler()
+void VulkanTexture2D::rebuildSampler()
 {
     sampler = createSampler(
         renderer->getDevice(),

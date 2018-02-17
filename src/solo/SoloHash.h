@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include <functional>
-
 namespace solo
 {
     inline void combineHash(size_t &seed, size_t hash)

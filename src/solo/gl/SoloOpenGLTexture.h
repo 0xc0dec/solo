@@ -28,10 +28,10 @@ namespace solo
         GLuint handle = 0;
     };
 
-    class OpenGLTexture2d final: public Texture2d, public OpenGLTexture
+    class OpenGLTexture2D final: public Texture2D, public OpenGLTexture
     {
     public:
-        explicit OpenGLTexture2d(Texture2dData *data, bool generateMipmaps);
+        explicit OpenGLTexture2D(Texture2DData *data, bool generateMipmaps);
 
         void bind() override final;
 

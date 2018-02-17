@@ -30,10 +30,10 @@ namespace solo
         explicit VulkanTexture(Device *device);
     };
 
-    class VulkanTexture2d final: public Texture2d, public VulkanTexture
+    class VulkanTexture2D final: public Texture2D, public VulkanTexture
     {
     public:
-        VulkanTexture2d(Device *device, Texture2dData *data, bool generateMipmaps);
+        VulkanTexture2D(Device *device, Texture2DData *data, bool generateMipmaps);
 
     protected:
         void rebuild() override final;

@@ -6,7 +6,7 @@
 return function(scene)
 	local canvasSize = sl.device:getCanvasSize()
 
-    local tex = sl.Texture2d.createEmpty(sl.device,
+    local tex = sl.Texture2D.createEmpty(sl.device,
         math.floor(canvasSize.x / 8.0), math.floor(canvasSize.y / 8.0), sl.TextureFormat.RGB)
     tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
     tex:setWrap(sl.TextureWrap.ClampToEdge)

@@ -98,8 +98,8 @@ static void registerRenderer(CppBindModule<LuaBinding> &module)
 
 static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 {
-    auto h1 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2d>, "Texture2dAsyncHandle");
-    REG_METHOD(h1, AsyncHandle<Texture2d>, done);
+    auto h1 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2D>, "Texture2DAsyncHandle");
+    REG_METHOD(h1, AsyncHandle<Texture2D>, done);
     h1.endClass();
 
     auto h2 = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");

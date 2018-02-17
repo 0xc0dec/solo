@@ -8,10 +8,10 @@
 
 namespace solo
 {
-    class InMemoryTexture2dData final: public Texture2dData
+    class InMemoryTexture2DData final: public Texture2DData
     {
     public:
-        explicit InMemoryTexture2dData(u32 width, u32 height, TextureFormat format, const vec<u8> &data):
+        explicit InMemoryTexture2DData(u32 width, u32 height, TextureFormat format, const vec<u8> &data):
             width(width),
             height(height),
             format(format),
@@ -35,17 +35,17 @@ namespace solo
 
 using namespace solo;
 
-auto Texture2dData::loadFromFile(Device *device, const str &path) -> sptr<Texture2dData>
+auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
-    if (STBTexture2dData::canLoadFromFile(path))
-        return STBTexture2dData::loadFromFile(device, path);
+    if (STBTexture2DData::canLoadFromFile(path))
+        return STBTexture2DData::loadFromFile(device, path);
     return panic<nullptr_t>(SL_FMT("Unsupported cube texture file ", path));
 }
 
-auto Texture2dData::createFromMemory(u32 width, u32 height, TextureFormat format,
-    const vec<u8> &data) -> sptr<Texture2dData>
+auto Texture2DData::createFromMemory(u32 width, u32 height, TextureFormat format,
+    const vec<u8> &data) -> sptr<Texture2DData>
 {
-    return std::make_shared<InMemoryTexture2dData>(width, height, format, data);
+    return std::make_shared<InMemoryTexture2DData>(width, height, format, data);
 }
 
 auto CubeTextureData::loadFromFaceFiles(

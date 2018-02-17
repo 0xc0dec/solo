@@ -33,7 +33,7 @@ local function init1(camera, assetCache)
     local canvasSize = sl.device:getCanvasSize()
 
     local createTarget = function()
-        local tex = sl.Texture2d.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
+        local tex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB)
         tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
         
@@ -99,7 +99,7 @@ local function init2(camera, assetCache)
     local stitchWidth = 30
     local canvasSize = sl.device:getCanvasSize()
 
-    local stitchTex = sl.Texture2d.loadFromFile(sl.device, getAssetPath("textures/Stitches.png"))
+    local stitchTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Stitches.png"))
     stitchTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
 
     local stitchTexSize = stitchTex:getDimensions()
@@ -114,7 +114,7 @@ local function init2(camera, assetCache)
 
     local stitchCount = vec2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
 
-    local fbTex = sl.Texture2d.createEmpty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB)
+    local fbTex = sl.Texture2D.createEmpty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB)
     fbTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
     fbTex:setWrap(sl.TextureWrap.ClampToEdge)
     local target = sl.FrameBuffer.create(sl.device)
