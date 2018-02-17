@@ -16,9 +16,9 @@ using namespace solo;
 static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     auto width = -1, height = -1;
-    for (auto i = 0; i < attachments.size(); i++)
+    for (const auto &attachment : attachments)
     {
-        auto size = attachments.at(i)->getDimensions();
+        auto size = attachment->getDimensions();
         if (width < 0)
         {
             width = size.x();
@@ -44,7 +44,7 @@ void VulkanFrameBuffer::setAttachments(const vec<sptr<Texture2D>> &attachments)
 
     renderPass = VulkanRenderPass();
     depthStencil = VulkanImage();
-    dimensions = {0, 0};
+    dimensions = Vector2{0, 0};
     colorAttachmentCount = 0;
 
     if (!attachments.empty())

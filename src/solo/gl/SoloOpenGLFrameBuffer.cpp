@@ -66,7 +66,7 @@ void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2D>> &attachments)
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, handle, 0);
     }
 
-    dimensions = {0, 0};
+    dimensions = Vector2{0, 0};
 
     if (newCount > 0)
     {

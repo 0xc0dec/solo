@@ -92,7 +92,7 @@ VulkanTexture2D::VulkanTexture2D(Device *device, Texture2DData *data, bool gener
     VulkanTexture(device)
 {
     const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-    image = VulkanImage::create2d(renderer, data, generateMipmaps);
+    image = VulkanImage::create2D(renderer, data, generateMipmaps);
     rebuildSampler();
 }
 

@@ -21,10 +21,10 @@ namespace solo
     class VulkanImage
     {
     public:
-        static auto create2d(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
+        static auto create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
         static auto createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage;
 
-        VulkanImage() {}
+        VulkanImage() = default;
         VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
             VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
         VulkanImage(const VulkanImage &other) = delete;

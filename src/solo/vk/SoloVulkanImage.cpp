@@ -67,7 +67,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, avoid copy-paste
-auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
+auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
     const auto width = data->getWidth();
     const auto height = data->getHeight();
@@ -85,7 +85,7 @@ auto VulkanImage::create2d(VulkanRenderer *renderer, Texture2DData *data, bool g
             panicIf(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_DST_BIT));
         });
 
-        mipLevels = floor(log2((std::max)(width, height))) + 1;
+        mipLevels = std::floor(std::log2((std::max)(width, height))) + 1;
     }
 
     auto image = VulkanImage(
