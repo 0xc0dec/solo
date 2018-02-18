@@ -12,12 +12,12 @@ namespace solo
     class NullTexture2D final: public Texture2D
     {
     public:
-        explicit NullTexture2D(Texture2DData *data): Texture2D(data) {}
+        explicit NullTexture2D(TextureFormat format, Vector2 dimensions): Texture2D(format, dimensions) {}
     };
 
     class NullCubeTexture final : public CubeTexture
     {
     public:
-        explicit NullCubeTexture(CubeTextureData *data): CubeTexture(data) {}
+        explicit NullCubeTexture(TextureFormat format, u32 dimension): CubeTexture(format, dimension) {}
     };
 }

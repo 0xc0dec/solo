@@ -85,20 +85,20 @@ auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generat
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLTexture2D>(data, generateMipmaps);
+            return OpenGLTexture2D::createFromData(data, generateMipmaps);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanTexture2D>(device, data, generateMipmaps);
+            return VulkanTexture2D::createFromData(device, data, generateMipmaps);
 #endif
         default:
-            return std::make_shared<NullTexture2D>(data);
+            return std::make_shared<NullTexture2D>(data->getFormat(), data->getDimensions());
     }
 }
 
-Texture2D::Texture2D(Texture2DData *data):
-    format(data->getFormat()),
-    dimensions{static_cast<float>(data->getWidth()), static_cast<float>(data->getHeight())}
+Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
+    format(format),
+	dimensions(dimensions)
 {
 }
 
@@ -150,20 +150,20 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLCubeTexture>(data, false);
+            return OpenGLCubeTexture::createFromData(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanCubeTexture>(device, data);
+            return VulkanCubeTexture::createFromData(device, data);
 #endif
         default:
-            return std::make_shared<NullCubeTexture>(data);
+            return std::make_shared<NullCubeTexture>(data->getFormat(), data->getDimension());
     }
 }
 
-CubeTexture::CubeTexture(CubeTextureData *data):
-    dimension(data->getDimension()),
-    format(data->getFormat())
+CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
+	dimension(dimension),    
+	format(format)
 {
     rebuild();
 }

@@ -93,7 +93,7 @@ namespace solo
         TextureFormat format;
         Vector2 dimensions;
 
-        explicit Texture2D(Texture2DData *data);
+        explicit Texture2D(TextureFormat format, Vector2 dimensions);
     };
 
     class CubeTexture: public Texture
@@ -118,6 +118,6 @@ namespace solo
         u32 dimension = 0;
         TextureFormat format = TextureFormat::RGB;
 
-        explicit CubeTexture(CubeTextureData *data);
+        CubeTexture(TextureFormat format, u32 dimension);
     };
 }

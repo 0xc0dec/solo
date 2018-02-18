@@ -69,8 +69,8 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 // TODO Refactor, avoid copy-paste
 auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
-    const auto width = data->getWidth();
-    const auto height = data->getHeight();
+    const auto width = static_cast<u32>(data->getDimensions().x());
+    const auto height = static_cast<u32>(data->getDimensions().y());
     const auto size = data->getSize();
     const auto format = toVulkanFormat(data->getFormat());
     const auto withMipmaps = generateMipmaps && size; // generating mips for non-empty textures
@@ -108,8 +108,8 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         bufferCopyRegion.imageSubresource.mipLevel = 0;
         bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
         bufferCopyRegion.imageSubresource.layerCount = 1;
-        bufferCopyRegion.imageExtent.width = data->getWidth();
-        bufferCopyRegion.imageExtent.height = data->getHeight();
+        bufferCopyRegion.imageExtent.width = width;
+        bufferCopyRegion.imageExtent.height = height;
         bufferCopyRegion.imageExtent.depth = 1;
         bufferCopyRegion.bufferOffset = 0;
 

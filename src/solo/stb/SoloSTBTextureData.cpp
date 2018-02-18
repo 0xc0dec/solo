@@ -50,8 +50,7 @@ auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STB
     const auto result = std::make_shared<STBTexture2DData>();
     result->channels = 4;
     result->format = toImageFormat(4);
-    result->width = width;
-    result->height = height;
+    result->dimensions = Vector2(width, height);
     result->data = data;
     return result;
 }
@@ -85,11 +84,10 @@ auto STBCubeTextureData::loadFromFaceFiles(
     
     SL_DEBUG_BLOCK(
     {
-        const auto width = tex->faces[0]->getWidth();
-        const auto height = tex->faces[0]->getHeight();
-        panicIf(width != height, "Cube texture width must be equal to height");
+		const auto dim = tex->faces[0]->getDimensions();
+        panicIf(dim.x() != dim.y(), "Cube texture width must be equal to height");
         for (const auto &face: tex->faces)
-            panicIf(face->getWidth() != width || face->getHeight() != height, "All cube texture sizes must match");
+            panicIf(face->getDimensions() != dim, "All cube texture sizes must match");
     });
 
     return tex;
@@ -112,7 +110,7 @@ auto STBCubeTextureData::getSize(u32 face) const -> u32
 
 auto STBCubeTextureData::getDimension() const -> u32
 {
-    return faces[0]->getWidth();
+    return faces[0]->getDimensions().x();
 }
 
 auto STBCubeTextureData::getData(u32 face) const -> const void*

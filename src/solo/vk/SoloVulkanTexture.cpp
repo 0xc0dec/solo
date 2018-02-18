@@ -87,13 +87,18 @@ VulkanTexture::VulkanTexture(Device *device):
 {
 }
 
-VulkanTexture2D::VulkanTexture2D(Device *device, Texture2DData *data, bool generateMipmaps):
-    Texture2D(data),
+auto VulkanTexture2D::createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<VulkanTexture2D>
+{
+	auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getFormat(), data->getDimensions()));
+	result->image = VulkanImage::create2D(result->renderer, data, generateMipmaps);
+	result->rebuildSampler();
+	return result;
+}
+
+VulkanTexture2D::VulkanTexture2D(Device *device, TextureFormat format, Vector2 dimensions):
+	Texture2D(format, dimensions),
     VulkanTexture(device)
 {
-    const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-    image = VulkanImage::create2D(renderer, data, generateMipmaps);
-    rebuildSampler();
 }
 
 void VulkanTexture2D::rebuild()
@@ -113,13 +118,18 @@ void VulkanTexture2D::rebuildSampler()
         anisotropyLevel > 1, anisotropyLevel);
 }
 
-VulkanCubeTexture::VulkanCubeTexture(Device *device, CubeTextureData *data):
-    CubeTexture(data),
+auto VulkanCubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<VulkanCubeTexture>
+{
+	auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getFormat(), data->getDimension()));
+	result->image = VulkanImage::createCube(result->renderer, data);
+	result->rebuildSampler();
+	return result;
+}
+
+VulkanCubeTexture::VulkanCubeTexture(Device *device, TextureFormat format, u32 dimension):
+    CubeTexture(format, dimension),
     VulkanTexture(device)
 {
-    const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-    image = VulkanImage::createCube(renderer, data);
-    rebuildSampler();
 }
 
 void VulkanCubeTexture::rebuild()

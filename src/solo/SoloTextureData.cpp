@@ -11,23 +11,20 @@ namespace solo
     class InMemoryTexture2DData final: public Texture2DData
     {
     public:
-        explicit InMemoryTexture2DData(u32 width, u32 height, TextureFormat format, const vec<u8> &data):
-            width(width),
-            height(height),
+        explicit InMemoryTexture2DData(Vector2 dimensions, TextureFormat format, const vec<u8> &data):
+            dimensions(dimensions),
             format(format),
             data(data)
         {
         }
 
         auto getSize() const -> u32 override final { return data.size(); }
-        auto getWidth() const -> u32 override final { return width; }
-        auto getHeight() const -> u32 override final { return height; }
+	    auto getDimensions() const -> Vector2 override final { return dimensions; }
         auto getData() const -> const void* override final { return data.data(); }
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
-        u32 width;
-        u32 height;
+        Vector2 dimensions;
         TextureFormat format;
         vec<u8> data;
     };
@@ -45,7 +42,7 @@ auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Textur
 auto Texture2DData::createFromMemory(u32 width, u32 height, TextureFormat format,
     const vec<u8> &data) -> sptr<Texture2DData>
 {
-    return std::make_shared<InMemoryTexture2DData>(width, height, format, data);
+    return std::make_shared<InMemoryTexture2DData>(Vector2(width, height), format, data);
 }
 
 auto CubeTextureData::loadFromFaceFiles(

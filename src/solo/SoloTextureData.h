@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloVector2.h"
 
 namespace solo
 {
@@ -21,8 +22,7 @@ namespace solo
 		virtual ~Texture2DData() = default;
 
         virtual auto getSize() const -> u32 = 0;
-        virtual auto getWidth() const -> u32 = 0;
-        virtual auto getHeight() const -> u32 = 0;
+		virtual auto getDimensions() const -> Vector2 = 0;
         virtual auto getData() const -> const void* = 0;
         virtual auto getFormat() const -> TextureFormat = 0;
 

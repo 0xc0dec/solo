@@ -112,10 +112,35 @@ OpenGLTexture::~OpenGLTexture()
     glDeleteTextures(1, &handle);
 }
 
-OpenGLTexture2D::OpenGLTexture2D(Texture2DData *data, bool generateMipmaps):
-    Texture2D(data)
+OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
+    Texture2D(format, dimensions)
 {
-    setData(data->getData(), generateMipmaps);
+}
+
+auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
+{
+	const auto dimensions = data->getDimensions();
+	const auto internalFormat = toInternalFormat(data->getFormat());
+    const auto format = toFormat(data->getFormat());
+    const auto mipLevels = generateMipmaps ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+
+	const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getFormat(), dimensions));
+
+    glBindTexture(GL_TEXTURE_2D, result->handle);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, GL_UNSIGNED_BYTE, data->getData());
+
+    if (generateMipmaps)
+    {
+        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+	return result;
 }
 
 void OpenGLTexture2D::bind()
@@ -130,31 +155,31 @@ void OpenGLTexture2D::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
-void OpenGLTexture2D::setData(const void *data, bool generateMipmaps)
+auto OpenGLCubeTexture::createFromData(CubeTextureData *data) -> sptr<OpenGLCubeTexture>
 {
-    const auto internalFormat = toInternalFormat(this->format);
-    const auto format = toFormat(this->format);
-    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimensions.x(), dimensions.y()))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+	const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getFormat(), data->getDimension()));
 
-    glBindTexture(GL_TEXTURE_2D, handle);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, 0);
 
-    if (generateMipmaps)
+    for (s32 i = 0; i < 6; ++i)
     {
-        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
+        const auto internalFormat = toInternalFormat(data->getFormat());
+        const auto fmt = toFormat(data->getFormat());
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
     }
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	return result;
 }
 
-OpenGLCubeTexture::OpenGLCubeTexture(CubeTextureData *data, bool generateMipmaps):
-    CubeTexture(data)
+OpenGLCubeTexture::OpenGLCubeTexture(TextureFormat format, u32 dimension):
+    CubeTexture(format, dimension)
 {
-    setData(data, generateMipmaps);
 }
 
 void OpenGLCubeTexture::bind()
@@ -168,32 +193,6 @@ void OpenGLCubeTexture::bind()
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, toWrap(depthWrap));
 
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
-}
-
-void OpenGLCubeTexture::setData(CubeTextureData *data, bool generateMipmaps)
-{
-    const auto mipLevels = generateMipmaps ? floor(log2((std::max)(dimension, dimension))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
-
-    glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
-
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, mipLevels);
-
-    for (s32 i = 0; i < 6; ++i)
-    {
-        const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
-        const auto internalFormat = toInternalFormat(data->getFormat());
-        const auto fmt = toFormat(data->getFormat());
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
-    }
-
-    if (generateMipmaps)
-    {
-        glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-    }
-
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 #endif
