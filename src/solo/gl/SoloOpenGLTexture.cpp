@@ -11,6 +11,17 @@
 
 using namespace solo;
 
+static auto toType(TextureFormat format) -> GLenum
+{
+	switch (format)
+	{
+		case TextureFormat::Depth:
+			return GL_FLOAT;
+		default:
+			return GL_UNSIGNED_BYTE;
+	}
+}
+
 static auto toFormat(TextureFormat format) -> GLenum
 {
     switch (format)
@@ -21,6 +32,8 @@ static auto toFormat(TextureFormat format) -> GLenum
             return GL_RGB;
         case TextureFormat::RGBA:
             return GL_RGBA;
+		case TextureFormat::Depth:
+			return GL_DEPTH_COMPONENT;
         default:
             return panic<GLenum>("Unknown image format");
     }
@@ -35,6 +48,8 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
             return GL_RGB;
         case TextureFormat::RGBA:
             return GL_RGBA;
+		case TextureFormat::Depth:
+			return GL_DEPTH_COMPONENT16;
         default:
             return panic<GLenum>("Unknown image format");
     }
@@ -122,7 +137,10 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
 	const auto dimensions = data->getDimensions();
 	const auto internalFormat = toInternalFormat(data->getFormat());
     const auto format = toFormat(data->getFormat());
-    const auto mipLevels = generateMipmaps ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1 : 0; // TODO remove this copy-paste (from VK as well)
+	const auto type = toType(data->getFormat());
+    const auto mipLevels = generateMipmaps
+		? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
+		: 0; // TODO remove this copy-paste (from VK as well)
 
 	const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getFormat(), dimensions));
 
@@ -130,9 +148,9 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, GL_UNSIGNED_BYTE, data->getData());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, type, data->getData());
 
-    if (generateMipmaps)
+    if (generateMipmaps && data->getFormat() != TextureFormat::Depth)
     {
         glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
         glGenerateMipmap(GL_TEXTURE_2D);

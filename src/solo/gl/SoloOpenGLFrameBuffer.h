@@ -28,8 +28,8 @@ namespace solo
 
     private:
         GLuint handle = 0;
-        GLuint depthBufferHandle = 0;
-        vec<sptr<OpenGLTexture2D>> attachments;
+        vec<sptr<OpenGLTexture2D>> colorAttachments;
+		sptr<OpenGLTexture2D> depthAttachment;
 
 		OpenGLFrameBuffer() = default;
     };
