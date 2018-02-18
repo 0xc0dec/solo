@@ -63,6 +63,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
 OpenGLFrameBuffer::~OpenGLFrameBuffer()
 {
+	glDeleteRenderbuffers(1, &depthBufferHandle);
     glDeleteFramebuffers(1, &handle);
 }
 
