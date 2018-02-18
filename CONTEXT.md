@@ -1,5 +1,7 @@
 # TODO
 
+* "Fix" shadows demo; depth textures for vulkan
+* Introduce "Standard" shader; add forward/deferred rendering paths;
 * findScriptComponent to operate on component names
 * Fix VK debug errors
 * Bad error message in Vulkan when variable not declared in effect and is referenced
