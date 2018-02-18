@@ -7,6 +7,8 @@ assert(sl.Texture2D.loadFromFile)
 
 local rectTex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
 
+assert(rectTex:getFormat() ~= nil)
+
 assert(rectTex:getHorizontalWrap())
 assert(rectTex:getVerticalWrap())
 

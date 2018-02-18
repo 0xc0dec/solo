@@ -10,6 +10,7 @@ assert(sl.TextureWrap.MirrorRepeat ~= nil)
 assert(sl.TextureFormat.RGB ~= nil)
 assert(sl.TextureFormat.RGBA ~= nil)
 assert(sl.TextureFormat.Red ~= nil)
+assert(sl.TextureFormat.Depth ~= nil)
 
 assert(sl.TextureFilter.Nearest ~= nil)
 assert(sl.TextureFilter.Linear ~= nil)

@@ -12,6 +12,7 @@ using namespace solo;
 static void registerTexture(CppBindModule<LuaBinding> &module)
 {
     auto tex = BEGIN_CLASS(module, Texture);
+    REG_METHOD(tex, Texture, getFormat);
     REG_METHOD(tex, Texture, getHorizontalWrap);
     REG_METHOD(tex, Texture, getVerticalWrap);
     REG_METHOD(tex, Texture, setWrap);

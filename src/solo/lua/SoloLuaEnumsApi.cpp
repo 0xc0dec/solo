@@ -36,6 +36,7 @@ void registerEnums(CppBindModule<LuaBinding> &module)
         REG_MODULE_CONSTANT(m, TextureFormat, RGB);
         REG_MODULE_CONSTANT(m, TextureFormat, RGBA);
         REG_MODULE_CONSTANT(m, TextureFormat, Red);
+        REG_MODULE_CONSTANT(m, TextureFormat, Depth);
         m.endModule();
     }
 

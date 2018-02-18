@@ -40,6 +40,7 @@ namespace solo
 
     enum class TextureFormat
     {
+		Depth,
         Red,
         RGB, // Not supported in Vulkan (my driver doesn't like it)
         RGBA
@@ -49,6 +50,8 @@ namespace solo
     {
     public:
 		virtual ~Texture() = default;
+
+		auto getFormat() const -> TextureFormat { return format; }
 
         auto getHorizontalWrap() const -> TextureWrap { return horizontalWrap; }
         auto getVerticalWrap() const -> TextureWrap { return verticalWrap; }
@@ -65,6 +68,8 @@ namespace solo
         void setAnisotropyLevel(float level);
 
     protected:
+		TextureFormat format = TextureFormat::RGBA;
+
         TextureWrap horizontalWrap = TextureWrap::ClampToEdge;
         TextureWrap verticalWrap = TextureWrap::ClampToEdge;
 
@@ -74,7 +79,7 @@ namespace solo
 
         float anisotropyLevel = 1.0f;
 
-        Texture();
+	    explicit Texture(TextureFormat format);
 
         virtual void rebuild() {}
     };
@@ -90,7 +95,6 @@ namespace solo
         auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
-        TextureFormat format;
         Vector2 dimensions;
 
         explicit Texture2D(TextureFormat format, Vector2 dimensions);
@@ -116,7 +120,6 @@ namespace solo
     protected:
         TextureWrap depthWrap = TextureWrap::Repeat;
         u32 dimension = 0;
-        TextureFormat format = TextureFormat::RGB;
 
         CubeTexture(TextureFormat format, u32 dimension);
     };

@@ -13,11 +13,6 @@
 
 using namespace solo;
 
-Texture::Texture()
-{
-    rebuild(); // yes, virtual call
-}
-
 void Texture::setWrap(TextureWrap wrap)
 {
     horizontalWrap = wrap;
@@ -49,6 +44,12 @@ void Texture::setAnisotropyLevel(float level)
 {
     anisotropyLevel = level;
     rebuild();
+}
+
+Texture::Texture(TextureFormat format):
+	format(format)
+{
+	rebuild(); // yes, virtual call
 }
 
 auto Texture2D::loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
@@ -97,7 +98,7 @@ auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generat
 }
 
 Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
-    format(format),
+	Texture(format),
 	dimensions(dimensions)
 {
 }
@@ -162,8 +163,8 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
 }
 
 CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
-	dimension(dimension),    
-	format(format)
+	Texture(format),
+	dimension(dimension)
 {
     rebuild();
 }
