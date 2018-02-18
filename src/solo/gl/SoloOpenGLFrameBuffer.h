@@ -20,17 +20,18 @@ namespace solo
     class OpenGLFrameBuffer final : public FrameBuffer
     {
     public:
-        OpenGLFrameBuffer();
+		static auto create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>;
+
         ~OpenGLFrameBuffer();
 
         auto getHandle() const -> GLuint { return handle; }
-
-        void setAttachments(const vec<sptr<solo::Texture2D>> &attachments) override final;
 
     private:
         GLuint handle = 0;
         GLuint depthBufferHandle = 0;
         vec<sptr<OpenGLTexture2D>> attachments;
+
+		OpenGLFrameBuffer() = default;
     };
 }
 

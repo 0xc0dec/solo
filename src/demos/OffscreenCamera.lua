@@ -19,8 +19,7 @@ return function(scene)
     cam:setZNear(0.05)
     cam:setViewport(vec4(0, 0, canvasSize.x / 8, canvasSize.y / 8))
 
-    local fb = sl.FrameBuffer.create(sl.device)
-    fb:setAttachments({ tex })
+    local fb = sl.FrameBuffer.create(sl.device, { tex })
     cam:setRenderTarget(fb)
 
     return cam, tex

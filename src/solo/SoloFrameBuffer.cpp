@@ -11,17 +11,17 @@
 
 using namespace solo;
 
-auto FrameBuffer::create(Device *device) -> sptr<FrameBuffer>
+auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>
 {
     switch (device->getMode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLFrameBuffer>();
+            return OpenGLFrameBuffer::create(attachments);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanFrameBuffer>(device);
+            return VulkanFrameBuffer::create(device, attachments);
 #endif
         default:
             return std::make_shared<NullFrameBuffer>();

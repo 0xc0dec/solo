@@ -9,29 +9,18 @@
 
 #include "SoloDevice.h"
 #include "SoloOpenGLTexture.h"
-#include <algorithm>
 
 using namespace solo;
-
-OpenGLFrameBuffer::OpenGLFrameBuffer()
-{
-    glGenFramebuffers(1, &handle);
-    panicIf(!handle, "Failed to create frame buffer handle");
-}
-
-OpenGLFrameBuffer::~OpenGLFrameBuffer()
-{
-    glDeleteFramebuffers(1, &handle);
-}
 
 static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
     panicIf(attachments.size() > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
+    panicIf(attachments.empty(), "Frame buffer must have at least one attachment"); // TODO is it a temp check?
 
     auto width = -1, height = -1;
-    for (auto i = 0; i < attachments.size(); i++)
+    for (const auto &attachment : attachments)
     {
-	    const auto size = attachments.at(i)->getDimensions();
+	    const auto size = attachment->getDimensions();
         if (width < 0)
         {
             width = size.x();
@@ -42,50 +31,39 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     }
 }
 
-void OpenGLFrameBuffer::setAttachments(const vec<sptr<Texture2D>> &attachments)
+auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
 {
-    SL_DEBUG_BLOCK(validateNewAttachments(attachments));
+	SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
-    vec<sptr<OpenGLTexture2D>> newAttachments;
+	auto result = sptr<OpenGLFrameBuffer>(new OpenGLFrameBuffer());
+
     for (const auto &tex : attachments)
-        newAttachments.push_back(std::static_pointer_cast<OpenGLTexture2D>(tex));
+        result->attachments.push_back(std::static_pointer_cast<OpenGLTexture2D>(tex));
 
-    glBindFramebuffer(GL_FRAMEBUFFER, handle);
+	glGenFramebuffers(1, &result->handle);
+    panicIf(!result->handle, "Failed to create frame buffer handle");
+    glBindFramebuffer(GL_FRAMEBUFFER, result->handle);
 
-    if (depthBufferHandle)
-    {
-        glDeleteRenderbuffers(1, &depthBufferHandle);
-        depthBufferHandle = 0;
-    }
+	for (auto i = 0; i < attachments.size(); i++)
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, result->attachments.at(i)->getHandle(), 0);
 
-    const auto newCount = newAttachments.size();
-    const auto maxCount = std::max(newCount, static_cast<size_t>(this->attachments.size()));
-    for (auto i = 0; i < maxCount; i++)
-    {
-        const auto handle = i < newCount ? newAttachments.at(i)->getHandle() : 0;
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, handle, 0);
-    }
+    glGenRenderbuffers(1, &result->depthBufferHandle);
+    panicIf(!result->depthBufferHandle, "Failed to create depth buffer handle");
 
-    dimensions = Vector2{0, 0};
-
-    if (newCount > 0)
-    {
-        dimensions = attachments[0]->getDimensions();
-
-        // Re-create the depth buffer
-        glGenRenderbuffers(1, &depthBufferHandle);
-        panicIf(!depthBufferHandle, "Failed to create depth buffer handle");
-
-        glBindRenderbuffer(GL_RENDERBUFFER, depthBufferHandle);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x(), dimensions.y());
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferHandle);
-
-        panicIf(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Render target has invalid state");
-    }
+	auto dimensions = attachments[0]->getDimensions();
+    glBindRenderbuffer(GL_RENDERBUFFER, result->depthBufferHandle);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, dimensions.x(), dimensions.y());
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, result->depthBufferHandle);
+    panicIf(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Frame buffer has invalid state");
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    this->attachments = newAttachments; // Store ownership
+	return result;
+}
+
+OpenGLFrameBuffer::~OpenGLFrameBuffer()
+{
+    glDeleteFramebuffers(1, &handle);
 }
 
 #endif

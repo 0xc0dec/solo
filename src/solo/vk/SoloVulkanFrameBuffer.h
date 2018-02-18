@@ -18,21 +18,21 @@ namespace solo
     class VulkanFrameBuffer final: public FrameBuffer
     {
     public:
-        VulkanFrameBuffer(Device *device);
+		static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
+        
 		~VulkanFrameBuffer() = default;
-
-        void setAttachments(const vec<sptr<Texture2D>> &attachments) override final;
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
         auto getColorAttachmentCount() const -> u32 { return colorAttachmentCount; }
 
     private:
-        VulkanRenderer *renderer = nullptr;
         VulkanRenderPass renderPass;
         VulkanImage depthStencil;
         VulkanResource<VkFramebuffer> frameBuffer;
         u32 colorAttachmentCount = 0;
+
+		VulkanFrameBuffer() = default;
     };
 }
 
