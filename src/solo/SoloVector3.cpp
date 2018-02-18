@@ -93,6 +93,11 @@ bool Vector3::operator==(const Vector3 &v) const
     return glm::all(glm::epsilonEqual(data, v.data, glm::epsilon<float>()));
 }
 
+bool Vector3::operator!=(const Vector3 &v) const
+{
+	return !operator==(v);
+}
+
 auto Vector3::operator+(float scalar) const -> Vector3
 {
 	return data + scalar;

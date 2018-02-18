@@ -37,6 +37,7 @@ namespace solo
 		auto operator=(const glm::vec2 &other) -> Vector2&;
 
         bool operator==(const Vector2 &v) const;
+        bool operator!=(const Vector2 &v) const;
 
         auto operator+(const Vector2 &v) const -> Vector2;
         auto operator+=(float scalar) -> Vector2&;

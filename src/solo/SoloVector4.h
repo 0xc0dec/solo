@@ -41,6 +41,7 @@ namespace solo
 		auto operator=(const glm::vec4 &other) -> Vector4&;
 
         bool operator==(const Vector4 &v) const;
+        bool operator!=(const Vector4 &v) const;
 
         auto operator+(float scalar) const -> Vector4;
         auto operator+(const Vector4 &v) const -> Vector4;
