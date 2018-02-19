@@ -21,6 +21,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGB:
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
+		case TextureFormat::Depth: return VK_FORMAT_D16_UNORM;
         default:
             return panic<VkFormat>("Unsupported image format");
     }
@@ -88,20 +89,25 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         mipLevels = std::floor(std::log2((std::max)(width, height))) + 1;
     }
 
+	const auto colorOrDepthUsage = data->getFormat() == TextureFormat::Depth
+		? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
+		: VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+	const auto aspect = data->getFormat() == TextureFormat::Depth
+		? VK_IMAGE_ASPECT_DEPTH_BIT
+		: VK_IMAGE_ASPECT_COLOR_BIT;
     auto image = VulkanImage(
         renderer,
         width, height,
         mipLevels, 1,
         format,
         0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-			VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+		VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage,
         VK_IMAGE_VIEW_TYPE_2D,
-        VK_IMAGE_ASPECT_COLOR_BIT);
+        aspect);
 
 	const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
-    if (size)
+    if (size) // depth images should not fall into here
     {
         VkBufferImageCopy bufferCopyRegion{};
         bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;

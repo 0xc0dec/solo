@@ -8,11 +8,13 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
+#include "SoloTextureData.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
 
 using namespace solo;
 
+// TODO Refactor, this logic repeats that from OpenGL
 static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
 	panicIf(attachments.empty(), "Frame buffer must have at least one attachment"); // TODO is it a temp check?
@@ -20,14 +22,13 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     auto width = -1, height = -1;
     for (const auto &attachment : attachments)
     {
-        auto size = attachment->getDimensions();
+	    const auto size = attachment->getDimensions();
         if (width < 0)
         {
             width = size.x();
             height = size.y();
         }
         else
-            // TODO Make sure this is a valid assumption. For now I'm just copying this from opengl
             panicIf(size.x() != width || size.y() != height, "Attachment sizes do not match");
     }
 }
@@ -35,37 +36,42 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
 {
 	SL_DEBUG_BLOCK(validateNewAttachments(attachments));
+	// TODO validate that not more that 1 depth attachment
+
+	const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
+	auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
 
     vec<VkImageView> views;
     VulkanRenderPassConfig config;
+
     for (const auto &tex: attachments)
     {
-        const auto vulkanTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
-        config.withColorAttachment(vulkanTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
-        views.push_back(vulkanTexture->getImage().getView());
+        const auto vkTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
+		if (tex->getFormat() == TextureFormat::Depth)
+		{
+			result->depthAttachment = vkTexture;
+			config.withDepthAttachment(vkTexture->getImage().getFormat());
+		}
+		else
+		{
+			result->colorAttachments.push_back(vkTexture);
+			config.withColorAttachment(vkTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
+		}
+        views.push_back(vkTexture->getImage().getView());
     }
 
-	auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
-
-	const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
-
     result->dimensions = attachments[0]->getDimensions();
-    result->depthStencil = VulkanImage(
-        renderer,
-        result->dimensions.x(), result->dimensions.y(),
-        1, 1,
-        renderer->getDepthFormat(),
-        0,
-        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
-        VK_IMAGE_VIEW_TYPE_2D,
-        VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
 
-    config.withDepthAttachment(renderer->getDepthFormat());
-    views.push_back(result->depthStencil.getView());
+	if (!result->depthAttachment)
+	{
+		auto data = Texture2DData::createFromMemory(result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth, vec<u8>{});
+		result->depthAttachment = VulkanTexture2D::createFromData(device, data.get(), false);
+		config.withDepthAttachment(renderer->getDepthFormat());
+		views.push_back(result->depthAttachment->getImage().getView());
+	}
 
     result->renderPass = VulkanRenderPass(renderer->getDevice(), config);
     result->frameBuffer = vk::createFrameBuffer(renderer->getDevice(), views, result->renderPass, result->dimensions.x(), result->dimensions.y());
-    result->colorAttachmentCount = attachments.size();
 
 	return result;
 }

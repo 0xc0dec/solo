@@ -242,7 +242,8 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
             clearAttachments[i].colorAttachment = i;
             clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         }
-        vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
+		if (!clearAttachments.empty())
+			vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
     }
 
     const auto viewport = currentCamera->getViewport();

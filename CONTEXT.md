@@ -1,7 +1,6 @@
 # TODO
 
-* "Fix" shadows demo; depth textures for vulkan; 
-* Return to manual camera render calls
+* Depth textures for vulkan: fix vkCmdClearAttachments
 * Introduce "Standard" shader; add forward/deferred rendering paths;
 OR
 At least allow overriding materials per camera

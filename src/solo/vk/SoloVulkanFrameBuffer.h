@@ -15,6 +15,8 @@
 
 namespace solo
 {
+	class VulkanTexture2D;
+
     class VulkanFrameBuffer final: public FrameBuffer
     {
     public:
@@ -24,13 +26,13 @@ namespace solo
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
-        auto getColorAttachmentCount() const -> u32 { return colorAttachmentCount; }
+        auto getColorAttachmentCount() const -> u32 { return colorAttachments.size(); }
 
     private:
         VulkanRenderPass renderPass;
-        VulkanImage depthStencil;
         VulkanResource<VkFramebuffer> frameBuffer;
-        u32 colorAttachmentCount = 0;
+		vec<sptr<VulkanTexture2D>> colorAttachments;
+		sptr<VulkanTexture2D> depthAttachment;
 
 		VulkanFrameBuffer() = default;
     };
