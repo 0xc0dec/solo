@@ -22,7 +22,42 @@ function demo()
 
     --
 
-    local effectDesc = {
+    local depthPassEffectDesc = {
+        vertex = {
+            uniformBuffers = {
+                matrices = {
+                    wvp = "mat4"
+                }
+            },
+    
+            inputs = {
+                slPosition = "vec3"
+            },
+    
+            outputs = {
+            },
+    
+            entry = [[
+                gl_Position = #matrices:wvp# * vec4(slPosition, 1);
+                FIX_Y#gl_Position#;
+            ]]
+        },
+    
+        fragment = {
+            samplers = {
+            },
+    
+            outputs = {
+                fragColor = "vec4"
+            },
+    
+            entry = [[
+                fragColor = vec4(1, 0, 0, 1);
+            ]]
+        }
+    }
+
+    local colorPassEffectDesc = {
         vertex = {
             uniformBuffers = {
                 matrices = {
@@ -72,7 +107,7 @@ function demo()
                 float shadow = 1.0;
                 vec4 x = shadowCoord / shadowCoord.w;
                 float dist = texture(shadowMap, x.st).r;
-                if (dist < x.z - 0.00006)
+                if (dist < x.z - 0.00001)
                     shadow = 0.1;
 
                 fragColor = texture(mainTex, uv) * shadow;
@@ -92,16 +127,16 @@ function demo()
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMesh(assetCache.meshes.cube)
         renderer:setMaterial(0, material)
+
+        return renderer
     end
 
     function createLightCamera()
         local node = scene:createNode()
 
         local cam = node:addComponent("Camera")
-        -- cam:setPerspective(false)
-        -- cam:setOrthoSize(vec2(30, 30))
         cam:setZNear(0.05)
-        cam:setZFar(10000)
+        cam:setZFar(1000)
         cam:setViewport(vec4(0, 0, 1024, 1024))
 
         local depthTex = sl.Texture2D.createEmpty(sl.device, 1024, 1024, sl.TextureFormat.Depth)
@@ -111,7 +146,7 @@ function demo()
         cam:setRenderTarget(fb)
     
         local transform = node:findComponent("Transform")
-        transform:setLocalPosition(vec3(-10, 10, -10))
+        transform:setLocalPosition(vec3(-20, 20, -20))
         transform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
         local rootNode = scene:createNode()
@@ -135,34 +170,34 @@ function demo()
             function(mesh)
                 renderer:setMesh(mesh)
             end)
+
+        return renderer
     end
 
     ---
 
     local lightCam, lightCamNode, lightCamTransform, depthTex = createLightCamera()
 
-    local effectSrc = sl.generateEffectSource(effectDesc)
-    local effect = sl.Effect.createFromSource(dev, effectSrc)
-    local material = sl.Material.create(dev, effect)
-    material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    material:bindParameter("matrices:model", sl.BindParameterSemantics.WorldMatrix)
-    material:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
-    material:setTextureParameter("shadowMap", depthTex)
+    local colorPassEffect = sl.Effect.createFromSource(dev, sl.generateEffectSource(colorPassEffectDesc))
+    local colorPassMaterial = sl.Material.create(dev, colorPassEffect)
+    colorPassMaterial:setFaceCull(sl.FaceCull.None)
+    colorPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    colorPassMaterial:bindParameter("matrices:model", sl.BindParameterSemantics.WorldMatrix)
+    colorPassMaterial:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
+    colorPassMaterial:setTextureParameter("shadowMap", depthTex)
 
-    lightCamNode:addScriptComponent(sl.createComponent("MaterialUpdater", {
-        update = function()
-            material:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
-        end
-    }))
+    local depthPassEffect = sl.Effect.createFromSource(dev, sl.generateEffectSource(depthPassEffectDesc))
+    local depthPassMaterial = sl.Material.create(dev, depthPassEffect)
+    depthPassMaterial:setFaceCull(sl.FaceCull.Back)
+    depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 
     local mainCam, camNode = createMainCamera(scene)
     camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
     camNode:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
     createSkybox(scene)
-    createFloor(material)
-    createModel(material)
+    local floorRenderer = createFloor(colorPassMaterial)
+    local modelRenderer = createModel(colorPassMaterial)
 
     ---
 
@@ -181,16 +216,21 @@ function demo()
     end
 
     function renderLightCamFrame()
+        floorRenderer:setMaterial(0, depthPassMaterial)
+        modelRenderer:setMaterial(0, depthPassMaterial)
         scene:visitByTags(~tags.skybox, renderCmp)
     end
 
     function renderMainCamFrame()
+        floorRenderer:setMaterial(0, colorPassMaterial)
+        modelRenderer:setMaterial(0, colorPassMaterial)
         scene:visitByTags(tags.skybox, renderCmp)
         scene:visitByTags(~tags.skybox, renderCmp)
     end
 
     function update()
         scene:visit(updateCmp)
+        colorPassMaterial:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
         lightCam:renderFrame(renderLightCamFrame)
         mainCam:renderFrame(renderMainCamFrame)
     end

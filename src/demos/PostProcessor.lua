@@ -7,12 +7,12 @@ require "Common"
 
 local tags = require "Tags"
 
-local function createStep(camera, material, target)
+local function createStep(camera, material, target, assetCache)
     local scene = camera:getNode():getScene()
     local node = scene:createNode()
     local quadRenderer = node:addComponent("MeshRenderer")
     quadRenderer:setTag(tags.postProcessorStep)
-    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)) -- TODO use asset cache
+    quadRenderer:setMesh(assetCache.meshes.quad)
     quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
 
     return {
@@ -79,10 +79,10 @@ local function init1(camera, assetCache)
     horizontalBlurMat:setFloatParameter("variables:rightSeparator", 0.75)
     horizontalBlurMat:setTextureParameter("mainTex", targetTex4)
 
-    local step1 = createStep(camera, grayscaleMat, target2)
-    local step2 = createStep(camera, saturateMat, target3)
-    local step3 = createStep(camera, verticalBlurMat, target4)
-    local step4 = createStep(camera, horizontalBlurMat, nil)
+    local step1 = createStep(camera, grayscaleMat, target2, assetCache)
+    local step2 = createStep(camera, saturateMat, target3, assetCache)
+    local step3 = createStep(camera, verticalBlurMat, target4, assetCache)
+    local step4 = createStep(camera, horizontalBlurMat, nil, assetCache)
 
     camera:setRenderTarget(target1)
 
@@ -136,7 +136,7 @@ local function init2(camera, assetCache)
     material:setVector2Parameter("variables:stitchCount", stitchCount)
     material:setVector2Parameter("variables:resolution", offscreenRes)
 
-    local step = createStep(camera, material, nil)
+    local step = createStep(camera, material, nil, assetCache)
 
     function prepareCamera()
         camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
