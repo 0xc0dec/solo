@@ -68,10 +68,11 @@ static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
     return {};
 }
 
-static void addScriptComponent(Node *node, LuaRef scriptComponent)
+static auto addScriptComponent(Node *node, LuaRef scriptComponent) -> sptr<Component>
 {
     const auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
+	return actualComponent;
 }
 
 static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)
