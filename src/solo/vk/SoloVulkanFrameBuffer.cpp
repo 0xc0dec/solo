@@ -53,8 +53,8 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 		{
 			result->colorAttachments.push_back(vkTexture);
 			config.withColorAttachment(vkTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
+			views.push_back(vkTexture->getImage().getView());
 		}
-        views.push_back(vkTexture->getImage().getView());
     }
 
     result->dimensions = attachments[0]->getDimensions();
@@ -63,10 +63,9 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 	{
 		auto data = Texture2DData::createFromMemory(result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth, vec<u8>{});
 		result->depthAttachment = VulkanTexture2D::createFromData(device, data.get(), false);
-		config.withDepthAttachment(renderer->getDepthFormat());
-		views.push_back(result->depthAttachment->getImage().getView());
 	}
 
+	views.push_back(result->depthAttachment->getImage().getView());
 	config.withDepthAttachment(result->depthAttachment->getImage().getFormat());
 
     result->renderPass = VulkanRenderPass(renderer->getDevice(), config);
