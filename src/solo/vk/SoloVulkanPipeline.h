@@ -37,7 +37,7 @@ namespace solo
         VkShaderModule fragmentShader;
         VkPipelineRasterizationStateCreateInfo rasterStateInfo;
         VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
-        VkPipelineColorBlendAttachmentState blendAttachmentState;
+        VkPipelineColorBlendAttachmentState colorBlendAttachmentState;
 
         vec<VkVertexInputAttributeDescription> vertexAttrs;
         vec<VkVertexInputBindingDescription> vertexBindings;
@@ -49,13 +49,13 @@ namespace solo
     class VulkanPipeline
     {
     public:
-        VulkanPipeline(){}
-        VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config);
+        VulkanPipeline() = default;
+	    VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config);
         VulkanPipeline(const VulkanPipeline &other) = delete;
         VulkanPipeline(VulkanPipeline &&other) = default;
-        ~VulkanPipeline(){}
+        ~VulkanPipeline() = default;
 
-        auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
+	    auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
         auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
 
         operator VkPipeline() { return pipeline; }

@@ -1,6 +1,6 @@
 # TODO
 
-* Depth textures for vulkan: fix vkCmdClearAttachments
+* Depth textures for vulkan: fix vkCmdClearAttachments, better frame buffer validation, refactor, etc.
 * Introduce "Standard" shader; add forward/deferred rendering paths;
 OR
 At least allow overriding materials per camera

@@ -48,10 +48,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     {
         const auto vkTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
 		if (tex->getFormat() == TextureFormat::Depth)
-		{
 			result->depthAttachment = vkTexture;
-			config.withDepthAttachment(vkTexture->getImage().getFormat());
-		}
 		else
 		{
 			result->colorAttachments.push_back(vkTexture);
@@ -69,6 +66,8 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 		config.withDepthAttachment(renderer->getDepthFormat());
 		views.push_back(result->depthAttachment->getImage().getView());
 	}
+
+	config.withDepthAttachment(result->depthAttachment->getImage().getFormat());
 
     result->renderPass = VulkanRenderPass(renderer->getDevice(), config);
     result->frameBuffer = vk::createFrameBuffer(renderer->getDevice(), views, result->renderPass, result->dimensions.x(), result->dimensions.y());
