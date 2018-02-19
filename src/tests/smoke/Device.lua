@@ -33,7 +33,7 @@ assert(device:getMousePosition())
 assert(device:isMouseButtonDown(sl.MouseButton.Left) ~= nil)
 assert(device:isMouseButtonReleased(sl.MouseButton.Left) ~= nil)
 
-device:update(sl.Scene.create(device))
+device:update(function() end)
 
 assert(device:getFileSystem())
 assert(device:getRenderer())

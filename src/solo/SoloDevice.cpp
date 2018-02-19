@@ -102,13 +102,12 @@ bool Device::isMouseButtonReleased(MouseButton button) const
     return releasedMouseButtons.find(button) != releasedMouseButtons.end();
 }
 
-void Device::update(Scene *currentScene)
+void Device::update(const std::function<void()> &update)
 {
     beginUpdate();
     jobPool->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics->update();
-    currentScene->update();
-    renderer->renderFrame([currentScene]() { currentScene->render(); });
+    renderer->renderFrame([&]() { update(); });
     endUpdate();
 }
 

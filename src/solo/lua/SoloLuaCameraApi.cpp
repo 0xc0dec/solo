@@ -12,6 +12,7 @@ using namespace solo;
 void registerCameraApi(CppBindModule<LuaBinding> &module)
 {
     auto camera = BEGIN_CLASS_EXTEND(module, Camera, Component);
+    REG_METHOD(camera, Camera, renderFrame);
     REG_METHOD(camera, Camera, getTransform);
     REG_METHOD(camera, Camera, getRenderTarget);
     REG_METHOD_NULLABLE_1ST_ARG(camera, Camera, setRenderTarget, sptr<FrameBuffer>);
@@ -33,10 +34,6 @@ void registerCameraApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(camera, Camera, setOrthoSize);
     REG_METHOD(camera, Camera, windowPointToWorldRay);
     REG_METHOD(camera, Camera, getAspectRatio);
-    REG_METHOD(camera, Camera, getTagMask);
-    REG_METHOD(camera, Camera, setTagMask);
-    REG_METHOD(camera, Camera, getOrder);
-    REG_METHOD(camera, Camera, setOrder);
     REG_METHOD(camera, Camera, getViewMatrix);
     REG_METHOD(camera, Camera, getInvViewMatrix);
     REG_METHOD(camera, Camera, getProjectionMatrix);

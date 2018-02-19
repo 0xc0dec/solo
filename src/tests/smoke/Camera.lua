@@ -39,11 +39,7 @@ cam:setOrthoSize(sl.Vector2(1, 2))
 
 assert(cam:getAspectRatio() ~= nil)
 
-assert(cam:getTagMask() ~= nil)
-cam:setTagMask(123)
-
-assert(cam:getOrder() ~= nil)
-cam:setOrder(3)
+cam:renderFrame(function() end)
 
 assert(cam:getViewMatrix())
 assert(cam:getInvViewMatrix())

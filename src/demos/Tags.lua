@@ -4,6 +4,7 @@ local tags = {
     postProcessorStep2 = 1 << 3,
     postProcessorStep3 = 1 << 4,
     postProcessorStep4 = 1 << 5,
+    skybox = 1 << 6
 }
 
 tags.allPostProcessorSteps = tags.postProcessorStep1 | tags.postProcessorStep2 | tags.postProcessorStep3 | tags.postProcessorStep4

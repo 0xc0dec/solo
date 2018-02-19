@@ -4,6 +4,7 @@
 -- 
 
 local layers = require "Layers"
+local tags = require "Tags"
 
 local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
@@ -20,6 +21,7 @@ return function(scene)
         local node = scene:createNode()
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
+        renderer:setTag(tags.skybox)
         renderer:setLayer(layers.skybox)
     end)
 end

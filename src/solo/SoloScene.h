@@ -32,8 +32,8 @@ namespace solo
         void addComponent(u32 nodeId, sptr<Component> cmp);
         void removeComponent(u32 nodeId, u32 typeId);
 
-        void update();
-        void render();
+		void visit(const std::function<void(Component*)> &accept);
+        void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
 
     private:
         using NodeComponents = umap<u32, sptr<Component>>;
@@ -54,7 +54,5 @@ namespace solo
         explicit Scene(Device *device);
 
         void cleanupDeleted();
-        void visit(std::function<void(Component*)> accept);
-        void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
     };
 }
