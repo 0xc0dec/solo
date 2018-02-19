@@ -14,7 +14,6 @@ function demo()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 
-    local createRotator = require "Rotator"
     local createMainCamera = require "MainCamera"
     local createSkybox = require "Skybox"
     local assetCache = (require "AssetCache")()

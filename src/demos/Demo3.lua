@@ -14,6 +14,7 @@ function demo()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 
+    local createRotator = require "Rotator"
     local createMainCamera = require "MainCamera"
     local createSkybox = require "Skybox"
     local assetCache = (require "AssetCache")()
@@ -68,8 +69,9 @@ function demo()
     
             entry = [[
                 float shadow = 1.0;
-                vec4 coord = shadowCoord / shadowCoord.w;
-                if (texture(shadowMap, coord.xy).z < coord.z)
+                vec4 x = shadowCoord / shadowCoord.w;
+                float dist = texture(shadowMap, x.st).r;
+                if (dist < x.z - 0.00002)
                     shadow = 0.1;
 
                 fragColor = texture(mainTex, uv) * shadow;
@@ -95,18 +97,25 @@ function demo()
         local node = scene:createNode()
 
         local cam = node:addComponent("Camera")
-        -- cam:setPerspective(false)
-        -- cam:setOrthoSize(vec2(50, 50))
+        cam:setPerspective(false)
+        cam:setOrthoSize(vec2(30, 30))
         cam:setZNear(0.05)
-        cam:setZFar(1000)
+        cam:setZFar(10000)
+        cam:setViewport(vec4(0, 0, 1024, 1024))
 
         local depthTex = sl.Texture2D.createEmpty(sl.device, 1024, 1024, sl.TextureFormat.Depth)
+        depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
+
         local fb = sl.FrameBuffer.create(dev, { depthTex })
         cam:setRenderTarget(fb)
     
         local transform = node:findComponent("Transform")
         transform:setLocalPosition(vec3(-10, 10, -10))
-        transform:lookAt(vec3(-5, 0, -5), vec3(0, 1, 0))
+        transform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+
+        local rootNode = scene:createNode()
+        rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
+        transform:setParent(rootNode:findComponent("Transform"))
 
         return cam, node, transform, depthTex
     end
@@ -119,7 +128,7 @@ function demo()
     
         local transform = node:findComponent("Transform")
         transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
-        transform:setLocalPosition(vec3(-3, -1, -5))
+        transform:setLocalPosition(vec3(0, -1, 0))
     
         sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj")):done(
             function(mesh)
@@ -137,9 +146,14 @@ function demo()
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:bindParameter("matrices:model", sl.BindParameterSemantics.WorldMatrix)
-    material:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
     material:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
     material:setTextureParameter("shadowMap", depthTex)
+
+    lightCamNode:addScriptComponent(sl.createComponent("MaterialUpdater", {
+        update = function()
+            material:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
+        end
+    }))
 
     local _, camNode = createMainCamera(scene)
     camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
