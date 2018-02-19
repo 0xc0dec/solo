@@ -5,7 +5,7 @@
 
 local layers = require "Layers"
 
-return function(assetCache, mainCameraNode)
+return function(assetCache, mainCameraNode, postProcessor)
     local effect = assetCache.getEffect("Color")
 
     function createMaterial(color)
@@ -19,7 +19,6 @@ return function(assetCache, mainCameraNode)
     return sl.createComponent("PostProcessorControlPanel", {
         init = function(self)
             self.scene = self.node:getScene()
-            self.postProcessor = mainCameraNode:findScriptComponent(sl.getCmpId("PostProcessor"))
             self.tracer = mainCameraNode:findScriptComponent(sl.getCmpId("Tracer"))
 
             local baseMat = createMaterial(vec4(0, 1, 1, 1))
@@ -96,8 +95,7 @@ return function(assetCache, mainCameraNode)
 
                 update = function(self)
                     if self.highlighted and sl.device:isMouseButtonDown(sl.MouseButton.Left, true) then
-                        local pp = mainCameraNode:findScriptComponent(sl.getCmpId("PostProcessor"))
-                        pp:setMode(ppMode)
+                        postProcessor:setMode(ppMode)
                     end
                 end
             }))

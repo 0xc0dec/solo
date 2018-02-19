@@ -3,7 +3,6 @@
 -- MIT license
 -- 
 
-local layers = require "Layers"
 local tags = require "Tags"
 
 local getImagePath = function(fileName)
@@ -22,6 +21,5 @@ return function(scene)
         local renderer = node:addComponent("SkyboxRenderer")
         renderer:setTexture(tex)
         renderer:setTag(tags.skybox)
-        renderer:setLayer(layers.skybox)
     end)
 end

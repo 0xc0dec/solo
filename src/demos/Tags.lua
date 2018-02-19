@@ -1,12 +1,9 @@
 local tags = {
     monitor = 1 << 1,
-    postProcessorStep1 = 1 << 2,
-    postProcessorStep2 = 1 << 3,
-    postProcessorStep3 = 1 << 4,
-    postProcessorStep4 = 1 << 5,
-    skybox = 1 << 6
+    skybox = 1 << 2,
+    transparent = 1 << 3,
+    postProcessor = 1 << 4,
+    postProcessorStep = 1 << 5
 }
-
-tags.allPostProcessorSteps = tags.postProcessorStep1 | tags.postProcessorStep2 | tags.postProcessorStep3 | tags.postProcessorStep4
 
 return tags

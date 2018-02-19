@@ -34,8 +34,6 @@ function demo()
     ---
 
     local offscreenCamera, offscreenCameraTex = createOffscreenCamera(scene)
-    offscreenCamera:setOrder(0)
-    offscreenCamera:setTagMask(~(tags.monitor | tags.allPostProcessorSteps))
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
     local mainCameraTransform = mainCameraNode:findComponent("Transform")
@@ -43,10 +41,9 @@ function demo()
     mainCameraTransform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createTracer(physics))
     mainCameraNode:addScriptComponent(createSpawner(assetCache))
-    mainCameraNode:addScriptComponent(createPostProcessor(assetCache))
-    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache, mainCameraNode))
-    mainCamera:setOrder(1)
-    mainCamera:setTagMask(~tags.allPostProcessorSteps)
+    
+    local postProcessor = createPostProcessor(assetCache, mainCamera)
+    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor))
 
     createSkybox(scene)
     createCheckerBox(scene, assetCache)
@@ -71,9 +68,36 @@ function demo()
                dev:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
+    function renderCmp(cmp)
+        cmp:render()
+    end
+
+    function updateCmp(cmp)
+        cmp:update()
+    end
+
+    function renderOffscreenCamera()
+        scene:visitByTags(tags.skybox, renderCmp)
+        scene:visitByTags(~(tags.monitor | tags.skybox | tags.transparent | tags.postProcessorStep), renderCmp)
+        scene:visitByTags(tags.transparent, renderCmp)
+    end
+
+    function renderMainCamera()
+        scene:visitByTags(tags.skybox, renderCmp)
+        scene:visitByTags(~(tags.skybox | tags.transparent | tags.postProcessorStep), renderCmp)
+        scene:visitByTags(tags.transparent, renderCmp)
+    end
+
+    function update()
+        scene:visit(updateCmp)
+        offscreenCamera:renderFrame(renderOffscreenCamera)
+        mainCamera:renderFrame(renderMainCamera)
+        postProcessor:apply()
+    end
+
     function run()
         while not shouldStop() do
-            dev:update(scene)
+            dev:update(update)
             collectgarbage("collect")
         end
     end

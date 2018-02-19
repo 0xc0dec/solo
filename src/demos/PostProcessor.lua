@@ -7,26 +7,27 @@ require "Common"
 
 local tags = require "Tags"
 
-local function createStep(parentCamera, material, target, cameraOrder, tag)
-    local scene = parentCamera:getNode():getScene()
-
-    local cameraNode = scene:createNode()
-    cameraNode:findComponent("Transform"):setParent(parentCamera:getNode():findComponent("Transform"))
-
-    local camera = cameraNode:addComponent("Camera")
-    camera:setZNear(0.05)
-    camera:setRenderTarget(target)
-    camera:setOrder(cameraOrder)
-    camera:setTagMask(tag)
-
-    local quadRenderer = cameraNode:addComponent("MeshRenderer")
-    quadRenderer:setTag(tag)
-    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad))
+local function createStep(camera, material, target)
+    local scene = camera:getNode():getScene()
+    local node = scene:createNode()
+    local quadRenderer = node:addComponent("MeshRenderer")
+    quadRenderer:setTag(tags.postProcessorStep)
+    quadRenderer:setMesh(sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)) -- TODO use asset cache
     quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
 
-    return function()
-        scene:removeNode(cameraNode)
-    end
+    return {
+        apply = function()
+            camera:setZNear(0.05)
+            camera:setRenderTarget(target)
+            camera:renderFrame(function()
+                quadRenderer:render()
+            end)
+        end,
+
+        cleanup = function()
+            scene:removeNode(node)
+        end
+    }
 end
 
 local function init1(camera, assetCache)
@@ -78,20 +79,30 @@ local function init1(camera, assetCache)
     horizontalBlurMat:setFloatParameter("variables:rightSeparator", 0.75)
     horizontalBlurMat:setTextureParameter("mainTex", targetTex4)
 
-    local cleanupStep1 = createStep(camera, grayscaleMat, target2, camera:getOrder() + 1, tags.postProcessorStep1)
-    local cleanupStep2 = createStep(camera, saturateMat, target3, camera:getOrder() + 2, tags.postProcessorStep2)
-    local cleanupStep3 = createStep(camera, verticalBlurMat, target4, camera:getOrder() + 3, tags.postProcessorStep3)
-    local cleanupStep4 = createStep(camera, horizontalBlurMat, nil, camera:getOrder() + 4, tags.postProcessorStep4)
+    local step1 = createStep(camera, grayscaleMat, target2)
+    local step2 = createStep(camera, saturateMat, target3)
+    local step3 = createStep(camera, verticalBlurMat, target4)
+    local step4 = createStep(camera, horizontalBlurMat, nil)
 
     camera:setRenderTarget(target1)
 
-    return function()
-        cleanupStep1()
-        cleanupStep2()
-        cleanupStep3()
-        cleanupStep4()
-        camera:setRenderTarget(nil)
-    end
+    return {
+        apply = function()
+            step1:apply()
+            step2:apply()
+            step3:apply()
+            step4:apply()
+            camera:setRenderTarget(target1)
+        end,
+
+        cleanup = function()
+            step1:cleanup()
+            step2:cleanup()
+            step3:cleanup()
+            step4:cleanup()
+            camera:setRenderTarget(nil)
+        end
+    }
 end
 
 local function init2(camera, assetCache)
@@ -125,41 +136,53 @@ local function init2(camera, assetCache)
     material:setVector2Parameter("variables:stitchCount", stitchCount)
     material:setVector2Parameter("variables:resolution", offscreenRes)
 
-    local cleanupStep = createStep(camera, material, nil, camera:getOrder() + 1, tags.postProcessorStep1)
+    local step = createStep(camera, material, nil)
 
-    camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
-    camera:setRenderTarget(target)
-
-    return function()
-        cleanupStep()
-        camera:setRenderTarget(nil)
-        camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
+    function prepareCamera()
+        camera:setViewport(vec4(0, 0, offscreenRes.x, offscreenRes.y))
+        camera:setRenderTarget(target)
     end
+
+    return {
+        apply = function()
+            camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
+            step:apply()
+            prepareCamera()
+        end,
+
+        cleanup = function()
+            step:cleanup()
+            camera:setRenderTarget(nil)
+            camera:setViewport(vec4(0, 0, canvasSize.x, canvasSize.y))
+        end
+    }
 end
 
-return function(assetCache)
-    local cleanup = nil
+return function(assetCache, mainCamera)
+    local pp = nil
     
     local function cleanupAndReset()
-        if cleanup then
-            cleanup()
-            cleanup = nil
+        if pp then
+            pp:cleanup()
+            pp = nil
         end
     end
 
-    return sl.createComponent("PostProcessor", {
-        init = function(self)
-            self.mainCamera = self.node:findComponent("Camera")
+    return {
+        apply = function(self)
+            if pp then
+                pp:apply()
+            end
         end,
 
         setMode = function(self, mode)
             cleanupAndReset()
 
             if mode == "1" then
-                cleanup = init1(self.mainCamera, assetCache)
+                pp = init1(mainCamera, assetCache)
             elseif mode == "2" then
-                cleanup = init2(self.mainCamera, assetCache)
+                pp = init2(mainCamera, assetCache)
             end
         end
-    })
+    }
 end
