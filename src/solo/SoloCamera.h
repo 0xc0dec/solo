@@ -72,11 +72,11 @@ namespace solo
 
         auto getAspectRatio() const -> float { return aspectRatio; }
 
-        auto getViewMatrix() const -> const Matrix;
-        auto getInvViewMatrix() const -> const Matrix;
-        auto getProjectionMatrix() const -> const Matrix;
-        auto getViewProjectionMatrix() const -> const Matrix;
-        auto getInvViewProjectionMatrix() const -> const Matrix;
+        auto getViewMatrix() const -> Matrix;
+        auto getInvViewMatrix() const -> Matrix;
+        auto getProjectionMatrix() const -> Matrix;
+        auto getViewProjectionMatrix() const -> Matrix;
+        auto getInvViewProjectionMatrix() const -> Matrix;
 
     protected:
         Device *device = nullptr;

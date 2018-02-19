@@ -83,7 +83,7 @@ void Camera::setZNear(float near)
     dirtyFlags |= allProjectionDirtyBits;
 }
 
-auto Camera::getViewMatrix() const -> const Matrix
+auto Camera::getViewMatrix() const -> Matrix
 {
     if (dirtyFlags & viewDirtyBit)
     {
@@ -94,7 +94,7 @@ auto Camera::getViewMatrix() const -> const Matrix
     return viewMatrix;
 }
 
-auto Camera::getInvViewMatrix() const -> const Matrix
+auto Camera::getInvViewMatrix() const -> Matrix
 {
     if (dirtyFlags & invViewDirtyBit)
     {
@@ -105,7 +105,7 @@ auto Camera::getInvViewMatrix() const -> const Matrix
     return invViewMatrix;
 }
 
-auto Camera::getProjectionMatrix() const -> const Matrix
+auto Camera::getProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags & projectionDirtyBit)
     {
@@ -118,7 +118,7 @@ auto Camera::getProjectionMatrix() const -> const Matrix
     return projectionMatrix;
 }
 
-auto Camera::getViewProjectionMatrix() const -> const Matrix
+auto Camera::getViewProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags & viewProjectionDirtyBit)
     {
@@ -128,7 +128,7 @@ auto Camera::getViewProjectionMatrix() const -> const Matrix
     return viewProjectionMatrix;
 }
 
-auto Camera::getInvViewProjectionMatrix() const -> const Matrix
+auto Camera::getInvViewProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags & invViewProjectionDirtyBit)
     {
