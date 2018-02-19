@@ -71,7 +71,7 @@ function demo()
                 float shadow = 1.0;
                 vec4 x = shadowCoord / shadowCoord.w;
                 float dist = texture(shadowMap, x.st).r;
-                if (dist < x.z - 0.00002)
+                if (dist < x.z - 0.00006)
                     shadow = 0.1;
 
                 fragColor = texture(mainTex, uv) * shadow;
@@ -97,8 +97,8 @@ function demo()
         local node = scene:createNode()
 
         local cam = node:addComponent("Camera")
-        cam:setPerspective(false)
-        cam:setOrthoSize(vec2(30, 30))
+        -- cam:setPerspective(false)
+        -- cam:setOrthoSize(vec2(30, 30))
         cam:setZNear(0.05)
         cam:setZFar(10000)
         cam:setViewport(vec4(0, 0, 1024, 1024))
