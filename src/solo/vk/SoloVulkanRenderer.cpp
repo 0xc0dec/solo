@@ -202,9 +202,8 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     currentCamera = camera;
     currentRenderPass = &swapchain.getRenderPass();
 
-    const auto canvasSize = engineDevice->getCanvasSize();
     auto currentFrameBuffer = swapchain.getCurrentFrameBuffer();
-    auto dimensions = canvasSize;
+    auto dimensions = engineDevice->getCanvasSize();
     vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
 
     if (renderTarget)
@@ -226,30 +225,24 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 	passContext.frameOfLastUse = frame;
     currentCmdBuffer = passContext.cmdBuffer;
 
-    if (!passContext.started)
+    vk::beginCommandBuffer(currentCmdBuffer, false);
+
+    currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x(), dimensions.y());
+
+    if (currentCamera->hasColorClearing())
     {
-        passContext.started = true;
-        passesToRender.push_back(currentRenderPass);
-
-        vk::beginCommandBuffer(currentCmdBuffer, false);
-
-        currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x(), dimensions.y());
-
-        if (currentCamera->hasColorClearing())
+        VkClearRect clearRect{};
+        clearRect.layerCount = 1;
+        clearRect.rect.offset = {0, 0};
+        clearRect.rect.extent = {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())};
+        auto clearColor = currentCamera->getClearColor();
+        for (u32 i = 0; i < clearAttachments.size(); ++i)
         {
-            VkClearRect clearRect{};
-            clearRect.layerCount = 1;
-            clearRect.rect.offset = {0, 0};
-            clearRect.rect.extent = {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())};
-            auto clearColor = currentCamera->getClearColor();
-            for (u32 i = 0; i < clearAttachments.size(); ++i)
-            {
-                clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                clearAttachments[i].colorAttachment = i;
-                clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
-            }
-            vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
+            clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            clearAttachments[i].colorAttachment = i;
+            clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         }
+        vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
     }
 
     const auto viewport = currentCamera->getViewport();
@@ -262,6 +255,15 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 {
+	auto &ctx = renderPassContexts.at(currentRenderPass);
+	ctx.renderPass->end(ctx.cmdBuffer);
+	SL_VK_CHECK_RESULT(vkEndCommandBuffer(ctx.cmdBuffer));
+
+	vk::queueSubmit(queue, 1, &prevSemaphore, 1, &ctx.completeSemaphore, 1, &ctx.cmdBuffer);
+	SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+
+	prevSemaphore = ctx.completeSemaphore;
+
     currentCamera = nullptr;
 }
 
@@ -483,30 +485,11 @@ void VulkanRenderer::beginFrame()
     currentCamera = nullptr;
     currentRenderPass = nullptr;
     currentCmdBuffer = nullptr;
-    passesToRender.clear();
+	prevSemaphore = swapchain.moveNext();
 }
 
 void VulkanRenderer::endFrame()
 {
-    for (auto &pair: renderPassContexts)
-    {
-        if (pair.second.started)
-	    {
-		    pair.second.started = false;
-		    const VkCommandBuffer cmdBuffer = pair.second.cmdBuffer;
-		    pair.first->end(cmdBuffer);
-		    SL_VK_CHECK_RESULT(vkEndCommandBuffer(cmdBuffer));
-	    }
-    }
-
-    VkSemaphore prevSemaphore = swapchain.moveNext();
-    for (auto &pass: passesToRender)
-    {
-        auto &ctx = renderPassContexts.at(pass);
-        vk::queueSubmit(queue, 1, &prevSemaphore, 1, &ctx.completeSemaphore, 1, &ctx.cmdBuffer);
-        prevSemaphore = ctx.completeSemaphore;
-    }
-
     swapchain.present(queue, 1, &prevSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 

@@ -1,7 +1,7 @@
 # TODO
 
 * "Fix" shadows demo; depth textures for vulkan; 
-* Vulkan: for each camera submit all commands and wait queue idle
+* Return to manual camera render calls
 * Introduce "Standard" shader; add forward/deferred rendering paths;
 OR
 At least allow overriding materials per camera

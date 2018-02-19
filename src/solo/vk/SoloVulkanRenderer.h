@@ -83,7 +83,6 @@ namespace solo
 
         struct RenderPassContext
         {
-            bool started = false;
             VulkanResource<VkSemaphore> completeSemaphore;
             VulkanResource<VkCommandBuffer> cmdBuffer;
             VulkanRenderPass *renderPass = nullptr;
@@ -98,7 +97,7 @@ namespace solo
         Camera *currentCamera = nullptr;
         VulkanRenderPass *currentRenderPass = nullptr;
         VkCommandBuffer currentCmdBuffer = nullptr;
-        vec<VulkanRenderPass*> passesToRender;
+		VkSemaphore prevSemaphore = nullptr;
 
         void prepareAndBindMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
             Transform *transform, Mesh *mesh, Camera *camera);
