@@ -19,18 +19,14 @@ namespace solo
         static bool canLoadFromFile(const str &path);
         static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>;
 
-        STBTexture2DData() = default;
+        STBTexture2DData(TextureDataFormat format, Vector2 dimensions);
         ~STBTexture2DData();
 
-        auto getSize() const -> u32 override final { return dimensions.x() * dimensions.y() * channels; }
-        auto getDimensions() const -> Vector2 override final { return dimensions; }
+        auto getSize() const -> u32 override final { return static_cast<u32>(dimensions.x()) * static_cast<u32>(dimensions.y()) * channels; }
         auto getData() const -> const void * override final { return data; }
-        auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
         u32 channels = 0;
-        Vector2 dimensions;
-        TextureFormat format = TextureFormat::RGB;
         stbi_uc *data = nullptr;
     };
 
@@ -47,11 +43,11 @@ namespace solo
             const str& positiveYPath, const str& negativeYPath,
             const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>;
 
+        STBCubeTextureData(TextureDataFormat format, u32 dimension);
+
         auto getSize() const -> u32 override final;
         auto getSize(u32 face) const -> u32 override final;
-        auto getDimension() const -> u32 override final;
         auto getData(u32 face) const -> const void* override final;
-        auto getFormat() const -> TextureFormat override final;
 
     private:
         vec<sptr<STBTexture2DData>> faces;

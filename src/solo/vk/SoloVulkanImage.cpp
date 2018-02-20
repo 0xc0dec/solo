@@ -135,9 +135,8 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
 {
     const auto width = static_cast<u32>(data->getDimensions().x());
     const auto height = static_cast<u32>(data->getDimensions().y());
-    const auto size = data->getSize();
-    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getFormat());
-    const auto isDepth = data->getFormat() == TextureFormat::Depth;
+    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getTextureFormat());
+    const auto isDepth = data->getTextureFormat() == TextureFormat::Depth;
     const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -309,7 +308,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     const auto layers = 6;
     const auto width = data->getDimension();
     const auto height = width;
-    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getFormat());
+    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getTextureFormat());
     const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     auto image = VulkanImage(

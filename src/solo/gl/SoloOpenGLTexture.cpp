@@ -22,7 +22,22 @@ static auto toType(TextureFormat format) -> GLenum
     }
 }
 
-static auto toFormat(TextureFormat format) -> GLenum
+static auto toDataFormat(TextureDataFormat format) -> GLenum
+{
+    switch (format)
+    {
+        case TextureDataFormat::Red:
+            return GL_RED;
+        case TextureDataFormat::RGB:
+            return GL_RGB;
+        case TextureDataFormat::RGBA:
+            return GL_RGBA;
+        default:
+            return panic<GLenum>("Unknown texture data format");
+    }
+}
+
+static auto toDataFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
@@ -35,7 +50,7 @@ static auto toFormat(TextureFormat format) -> GLenum
         case TextureFormat::Depth:
             return GL_DEPTH_COMPONENT;
         default:
-            return panic<GLenum>("Unknown image format");
+            return panic<GLenum>("Unknown texture format");
     }
 }
 
@@ -52,7 +67,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
         case TextureFormat::Depth:
             return GL_DEPTH_COMPONENT24;
         default:
-            return panic<GLenum>("Unknown image format");
+            return panic<GLenum>("Unknown texture format");
     }
 }
 
@@ -87,7 +102,6 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 default:
                     return panic<GLenum>("Unsupported mip filter");
             }
-            break;
         }
 
         case TextureFilter::Nearest:
@@ -136,22 +150,22 @@ OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
 auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
 {
     const auto dimensions = data->getDimensions();
-    const auto internalFormat = toInternalFormat(data->getFormat());
-    const auto format = toFormat(data->getFormat());
-    const auto type = toType(data->getFormat());
+    const auto internalFormat = toInternalFormat(data->getTextureFormat());
+    const auto dataFormat = toDataFormat(data->getFormat());
+    const auto type = toType(data->getTextureFormat());
     const auto mipLevels = generateMipmaps
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
 
-    const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getFormat(), dimensions));
+    const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getTextureFormat(), dimensions));
 
     glBindTexture(GL_TEXTURE_2D, result->handle);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format, type, data->getData());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, type, data->getData());
 
-    if (generateMipmaps && data->getFormat() != TextureFormat::Depth)
+    if (generateMipmaps && data->getTextureFormat() != TextureFormat::Depth)
     {
         glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -165,8 +179,8 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
 auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>
 {
     const auto internalFormat = toInternalFormat(format);
-    const auto format_ = toFormat(format);
     const auto type = toType(format);
+    const auto dataFormat = toDataFormat(format);
     const auto dimensions = Vector2(width, height);
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
 
@@ -174,7 +188,7 @@ auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format_, type, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, type, nullptr);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -195,7 +209,7 @@ void OpenGLTexture2D::bind()
 
 auto OpenGLCubeTexture::createFromData(CubeTextureData *data) -> sptr<OpenGLCubeTexture>
 {
-    const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getFormat(), data->getDimension()));
+    const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getTextureFormat(), data->getDimension()));
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle);
 
@@ -204,10 +218,10 @@ auto OpenGLCubeTexture::createFromData(CubeTextureData *data) -> sptr<OpenGLCube
     for (s32 i = 0; i < 6; ++i)
     {
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
-        const auto internalFormat = toInternalFormat(data->getFormat());
-        const auto fmt = toFormat(data->getFormat());
+        const auto internalFormat = toInternalFormat(data->getTextureFormat());
+        const auto dataFormat = toDataFormat(data->getFormat());
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, fmt, GL_UNSIGNED_BYTE, data->getData(i));
+        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData(i));
     }
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);

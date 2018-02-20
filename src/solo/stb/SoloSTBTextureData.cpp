@@ -13,15 +13,15 @@
 
 using namespace solo;
 
-static auto toImageFormat(int components) -> TextureFormat
+static auto toFormat(int components) -> TextureDataFormat
 {
     switch (components)
     {
-        case 1: return TextureFormat::Red; // TODO Not sure about this
-        case 3: return TextureFormat::RGB;
-        case 4: return TextureFormat::RGBA;
+        case 1: return TextureDataFormat::Red;
+        case 3: return TextureDataFormat::RGB;
+        case 4: return TextureDataFormat::RGBA;
         default:
-            return panic<TextureFormat>(SL_FMT("Unsupported components count ", components));
+            return panic<TextureDataFormat>(SL_FMT("Components count ", components, " not converible to texture data format"));
     }
 }
 
@@ -47,12 +47,15 @@ auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STB
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &channels, 4);
     panicIf(!data, SL_FMT("Failed to load image ", path));
 
-    const auto result = std::make_shared<STBTexture2DData>();
+    const auto result = std::make_shared<STBTexture2DData>(toFormat(4), Vector2(width, height));
     result->channels = 4;
-    result->format = toImageFormat(4);
-    result->dimensions = Vector2(width, height);
     result->data = data;
     return result;
+}
+
+STBTexture2DData::STBTexture2DData(TextureDataFormat format, Vector2 dimensions):
+    Texture2DData(format, dimensions)
+{
 }
 
 bool STBCubeTextureData::canLoadFromFaceFiles(
@@ -74,23 +77,30 @@ auto STBCubeTextureData::loadFromFaceFiles(
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
 {
-    auto tex = std::make_shared<STBCubeTextureData>();
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveXPath));
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeXPath));
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveYPath));
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeYPath));
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveZPath));
-    tex->faces.push_back(STBTexture2DData::loadFromFile(device, negativeZPath));
-    
+    vec<sptr<STBTexture2DData>> faces;
+    faces.push_back(STBTexture2DData::loadFromFile(device, positiveXPath));
+    faces.push_back(STBTexture2DData::loadFromFile(device, negativeXPath));
+    faces.push_back(STBTexture2DData::loadFromFile(device, positiveYPath));
+    faces.push_back(STBTexture2DData::loadFromFile(device, negativeYPath));
+    faces.push_back(STBTexture2DData::loadFromFile(device, positiveZPath));
+    faces.push_back(STBTexture2DData::loadFromFile(device, negativeZPath));
+
     SL_DEBUG_BLOCK(
     {
-        const auto dim = tex->faces[0]->getDimensions();
+        const auto dim = faces[0]->getDimensions();
         panicIf(dim.x() != dim.y(), "Cube texture width must be equal to height");
-        for (const auto &face: tex->faces)
+        for (const auto &face: faces)
             panicIf(face->getDimensions() != dim, "All cube texture sizes must match");
     });
 
+    auto tex = std::make_shared<STBCubeTextureData>(faces[0]->getFormat(), static_cast<u32>(faces[0]->getDimensions().x()));
+    tex->faces = std::move(faces);
     return tex;
+}
+
+STBCubeTextureData::STBCubeTextureData(TextureDataFormat format, u32 dimension):
+    CubeTextureData(format, dimension)
+{
 }
 
 auto STBCubeTextureData::getSize() const -> u32
@@ -108,17 +118,7 @@ auto STBCubeTextureData::getSize(u32 face) const -> u32
     return faces[face]->getSize();
 }
 
-auto STBCubeTextureData::getDimension() const -> u32
-{
-    return faces[0]->getDimensions().x();
-}
-
 auto STBCubeTextureData::getData(u32 face) const -> const void*
 {
     return faces[face]->getData();
-}
-
-auto STBCubeTextureData::getFormat() const -> TextureFormat
-{
-    return faces[0]->getFormat();
 }

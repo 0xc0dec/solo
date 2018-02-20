@@ -89,7 +89,7 @@ VulkanTexture::VulkanTexture(Device *device):
 
 auto VulkanTexture2D::createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<VulkanTexture2D>
 {
-    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getFormat(), data->getDimensions()));
+    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getTextureFormat(), data->getDimensions()));
     result->image = VulkanImage::create2D(result->renderer, data, generateMipmaps);
     result->rebuildSampler();
     return result;
@@ -129,7 +129,7 @@ void VulkanTexture2D::rebuildSampler()
 
 auto VulkanCubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<VulkanCubeTexture>
 {
-    auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getFormat(), data->getDimension()));
+    auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getTextureFormat(), data->getDimension()));
     result->image = VulkanImage::createCube(result->renderer, data);
     result->rebuildSampler();
     return result;

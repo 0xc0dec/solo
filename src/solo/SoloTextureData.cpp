@@ -11,26 +11,36 @@ namespace solo
     class InMemoryTexture2DData final: public Texture2DData
     {
     public:
-        explicit InMemoryTexture2DData(Vector2 dimensions, TextureFormat format, const vec<u8> &data):
-            dimensions(dimensions),
-            format(format),
+        explicit InMemoryTexture2DData(Vector2 dimensions, TextureDataFormat format, const vec<u8> &data):
+            Texture2DData(format, dimensions),
             data(data)
         {
         }
 
         auto getSize() const -> u32 override final { return data.size(); }
-        auto getDimensions() const -> Vector2 override final { return dimensions; }
         auto getData() const -> const void* override final { return data.data(); }
-        auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
-        Vector2 dimensions;
-        TextureFormat format;
         vec<u8> data;
     };
 }
 
 using namespace solo;
+
+static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
+{
+    switch (format)
+    {
+        case TextureDataFormat::Red:
+            return TextureFormat::Red;
+        case TextureDataFormat::RGB:
+            return TextureFormat::RGB;
+        case TextureDataFormat::RGBA:
+            return TextureFormat::RGBA;
+        default:
+            return panic<TextureFormat>("Texture data format not convertible to texture format");
+    }
+}
 
 auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
@@ -39,10 +49,20 @@ auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Textur
     return panic<nullptr_t>(SL_FMT("Unsupported cube texture file ", path));
 }
 
-auto Texture2DData::createFromMemory(u32 width, u32 height, TextureFormat format,
-    const vec<u8> &data) -> sptr<Texture2DData>
+auto Texture2DData::createFromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>
 {
     return std::make_shared<InMemoryTexture2DData>(Vector2(width, height), format, data);
+}
+
+auto Texture2DData::getTextureFormat() const -> TextureFormat
+{
+    return toTextureFormat(format);
+}
+
+Texture2DData::Texture2DData(TextureDataFormat format, Vector2 dimensions):
+    dimensions(dimensions),
+    format(format)
+{
 }
 
 auto CubeTextureData::loadFromFaceFiles(
@@ -54,4 +74,15 @@ auto CubeTextureData::loadFromFaceFiles(
     if (STBCubeTextureData::canLoadFromFaceFiles(positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath))
         return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
     return panic<nullptr_t>(SL_FMT("Unsupported cube texture face files ", positiveXPath, ", ..."));
+}
+
+auto CubeTextureData::getTextureFormat() const -> TextureFormat
+{
+    return toTextureFormat(format);
+}
+
+CubeTextureData::CubeTextureData(TextureDataFormat format, u32 dimension):
+    dimension(dimension),
+    format(format)
+{
 }

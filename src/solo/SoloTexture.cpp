@@ -104,7 +104,7 @@ auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generat
             return VulkanTexture2D::createFromData(device, data, generateMipmaps);
 #endif
         default:
-            return std::make_shared<NullTexture2D>(data->getFormat(), data->getDimensions());
+            return std::make_shared<NullTexture2D>(data->getTextureFormat(), data->getDimensions());
     }
 }
 
@@ -169,7 +169,7 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
             return VulkanCubeTexture::createFromData(device, data);
 #endif
         default:
-            return std::make_shared<NullCubeTexture>(data->getFormat(), data->getDimension());
+            return std::make_shared<NullCubeTexture>(data->getTextureFormat(), data->getDimension());
     }
 }
 

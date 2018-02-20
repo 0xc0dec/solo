@@ -31,7 +31,7 @@ STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atl
     stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
     stbtt_PackEnd(&context);
 
-    auto data = Texture2DData::createFromMemory(atlasWidth, atlasHeight, TextureFormat::Red, pixels);
+    auto data = Texture2DData::createFromMemory(atlasWidth, atlasHeight, TextureDataFormat::Red, pixels);
     atlas = Texture2D::createFromData(device, data.get(), true);
     atlas->setFilter(TextureFilter::Linear, TextureFilter::Linear, TextureMipFilter::Linear);
 }

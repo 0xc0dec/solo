@@ -13,21 +13,35 @@ namespace solo
     enum class TextureFormat;
     class Device;
 
+    enum class TextureDataFormat
+    {
+        Red,
+        RGB,
+        RGBA
+    };
+
     class Texture2DData: public NoCopyAndMove
     {
     public:
         static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>;
-        static auto createFromMemory(u32 width, u32 height, TextureFormat format, const vec<u8> &data) -> sptr<Texture2DData>;
+        static auto createFromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>;
 
         virtual ~Texture2DData() = default;
 
         virtual auto getSize() const -> u32 = 0;
-        virtual auto getDimensions() const -> Vector2 = 0;
         virtual auto getData() const -> const void* = 0;
-        virtual auto getFormat() const -> TextureFormat = 0;
+
+        auto getDimensions() const -> Vector2 { return dimensions; }
+        
+        /// Returns "best suited" texture format for this data
+        auto getTextureFormat() const -> TextureFormat;
+        auto getFormat() const -> TextureDataFormat { return format; }
 
     protected:
-        Texture2DData() = default;
+        Vector2 dimensions;
+        TextureDataFormat format = TextureDataFormat::RGBA;
+
+        explicit Texture2DData(TextureDataFormat format, Vector2 dimensions);
     };
 
     class CubeTextureData: public NoCopyAndMove
@@ -43,11 +57,18 @@ namespace solo
 
         virtual auto getSize() const -> u32 = 0;
         virtual auto getSize(u32 face) const -> u32 = 0; // TODO use TextureFace enum
-        virtual auto getDimension() const -> u32 = 0;
         virtual auto getData(u32 face) const -> const void* = 0;
-        virtual auto getFormat() const -> TextureFormat = 0;
+
+        auto getDimension() const -> u32 { return dimension; }
+        
+        /// Returns "best suited" texture format for this data
+        auto getTextureFormat() const -> TextureFormat;
+        auto getFormat() const -> TextureDataFormat { return format; }
 
     protected:
-        CubeTextureData() = default;
+        u32 dimension = 0;
+        TextureDataFormat format = TextureDataFormat::RGBA;
+
+        CubeTextureData(TextureDataFormat format, u32 dimension);
     };
 }
