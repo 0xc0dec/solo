@@ -30,6 +30,8 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
             return format;
     }
 
+    panic("Unable to pick depth format");
+
     return VK_FORMAT_UNDEFINED;
 }
 
@@ -38,7 +40,7 @@ static auto toVulkanFormat(VkPhysicalDevice device, TextureFormat format) -> VkF
     switch (format)
     {
         case TextureFormat::RGB:
-        case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
+        case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM;
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
         case TextureFormat::Depth: return getDepthFormat(device);
         default:
