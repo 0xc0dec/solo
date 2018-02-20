@@ -31,15 +31,15 @@ function demo()
             },
     
             inputs = {
-                slPosition = "vec3"
+                sl_Position = "vec3"
             },
     
             outputs = {
             },
     
             entry = [[
-                gl_Position = #matrices:wvp# * vec4(slPosition, 1);
-                FIX_Y#gl_Position#;
+                gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                SL_FIX_Y#gl_Position#;
             ]]
         },
     
@@ -68,7 +68,7 @@ function demo()
             },
     
             inputs = {
-                slPosition = "vec3",
+                sl_Position = "vec3",
                 slTexCoord = "vec2"
             },
     
@@ -78,18 +78,17 @@ function demo()
             },
     
             entry = [[
-                const mat4 biasMat = mat4( 
-                    0.5, 0.0, 0.0, 0.0,
-                    0.0, 0.5, 0.0, 0.0,
-                    0.0, 0.0, 0.5, 0.0,
-                    0.5, 0.5, 0.5, 1.0);
+                const mat4 biasMat = SL_SHADOW_BIAS_MAT;
 
                 uv = slTexCoord;
-                gl_Position = #matrices:wvp# * vec4(slPosition, 1);
-                shadowCoord = (biasMat * #matrices:lightVp# * #matrices:model#) * vec4(slPosition, 1.0);
-                
-                FIX_UV#uv#;
-                FIX_Y#gl_Position#;
+                SL_FIX_UV#uv#;
+
+                gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                SL_FIX_Y#gl_Position#;
+
+                vec4 lightProjectedPos = (#matrices:lightVp# * #matrices:model#) * vec4(sl_Position, 1.0);
+                SL_FIX_Y#lightProjectedPos#;
+                shadowCoord = biasMat * lightProjectedPos;
             ]]
         },
     

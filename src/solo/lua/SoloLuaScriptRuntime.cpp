@@ -122,11 +122,27 @@ static void registerLibrary(LuaState &state)
 						or string.format("%s_%s", buffer, uniform)
 				end)
 
-				raw = string.gsub(raw, "FIX_Y#([_0-9a-zA-Z]+)#", function(varName)
+				raw = string.gsub(raw, "SL_FIX_Y#([_0-9a-zA-Z]+)#", function(varName)
 					return ver450 and string.format("%s.y = -%s.y", varName, varName) or ""
 				end)
 
-				return string.gsub(raw, "FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
+				raw = string.gsub(raw, "SL_SHADOW_BIAS_MAT", function(varName)
+					return ver450 and [[
+						mat4(
+							0.5, 0.0, 0.0, 0.0,
+							0.0, 0.5, 0.0, 0.0,
+							0.0, 0.0, 1.0, 0.0,
+							0.5, 0.5, 0.0, 1.0)
+					]] or [[
+						mat4(
+							0.5, 0.0, 0.0, 0.0,
+							0.0, 0.5, 0.0, 0.0,
+							0.0, 0.0, 0.5, 0.0,
+							0.5, 0.5, 0.5, 1.0)
+					]]
+				end)
+
+				return string.gsub(raw, "SL_FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
 					return ver450 and string.format("%s.y = 1 - %s.y", varName, varName) or ""
 				end)
 			end

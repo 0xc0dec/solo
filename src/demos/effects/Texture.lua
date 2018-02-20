@@ -7,7 +7,7 @@
         },
 
         inputs = {
-            slPosition = "vec4",
+            sl_Position = "vec4",
             slTexCoord = "vec2",
             normal = "vec3" -- TODO remove?
         },
@@ -18,9 +18,9 @@
 
         entry = [[
             uv = slTexCoord;
-            gl_Position = #matrices:wvp# * vec4(slPosition.xyz, 1.0);
-            FIX_UV#uv#;
-            FIX_Y#gl_Position#;
+            gl_Position = #matrices:wvp# * vec4(sl_Position.xyz, 1.0);
+            SL_FIX_UV#uv#;
+            SL_FIX_Y#gl_Position#;
         ]]
     },
 

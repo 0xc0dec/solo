@@ -7,12 +7,12 @@
         },
 
         inputs = {
-            slPosition = "vec4"
+            sl_Position = "vec4"
         },
 
         entry = [[
-            gl_Position = #matrices:wvp# * slPosition;
-            FIX_Y#gl_Position#;
+            gl_Position = #matrices:wvp# * sl_Position;
+            SL_FIX_Y#gl_Position#;
         ]]
     },
 

@@ -20,7 +20,7 @@ void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics
 	switch (semantics)
 	{
 		case VertexAttributeSemantics::Position:
-			addNamedAttribute(3, "slPosition");
+			addNamedAttribute(3, "sl_Position");
 			break;
 		case VertexAttributeSemantics::Normal:
 			addNamedAttribute(3, "slNormal");

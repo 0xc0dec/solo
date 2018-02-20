@@ -66,7 +66,7 @@ return {
                     or string.format("%s_%s", buffer, uniform)
             end)
 
-            return string.gsub(raw, "FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
+            return string.gsub(raw, "SL_FIX_UV#([_0-9a-zA-Z]+)#", function(varName)
                 return vulkan and string.format("%s.y = 1 - %s.y", varName, varName) or ""
             end)
         end
