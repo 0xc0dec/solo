@@ -44,6 +44,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
     switch (format)
     {
         case TextureFormat::Red:
+            return GL_R8;
         case TextureFormat::RGB:
             return GL_RGB;
         case TextureFormat::RGBA:
@@ -140,7 +141,7 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
     const auto type = toType(data->getFormat());
     const auto mipLevels = generateMipmaps
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
-        : 0; // TODO remove this copy-paste (from VK as well)
+        : 0;
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getFormat(), dimensions));
 
