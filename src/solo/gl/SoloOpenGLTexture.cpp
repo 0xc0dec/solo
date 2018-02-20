@@ -46,6 +46,7 @@ static auto toDataFormat(TextureFormat format) -> GLenum
         case TextureFormat::RGB8:
             return GL_RGB;
         case TextureFormat::RGBA8:
+        case TextureFormat::RGBA16F:
             return GL_RGBA;
         case TextureFormat::Depth24:
             return GL_DEPTH_COMPONENT;
@@ -64,6 +65,8 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
             return GL_RGB8;
         case TextureFormat::RGBA8:
             return GL_RGBA8;
+        case TextureFormat::RGBA16F:
+            return GL_RGBA16F;
         case TextureFormat::Depth24:
             return GL_DEPTH_COMPONENT24;
         default:
