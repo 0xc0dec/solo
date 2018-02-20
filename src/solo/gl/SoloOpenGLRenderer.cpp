@@ -166,6 +166,7 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
+    panicIf(!GLEW_VERSION_4_1, SL_FMT("Min supported OpenGL version is 4.1, this device supports ", major, ".", minor));
     Logger::global().logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
