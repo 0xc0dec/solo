@@ -9,13 +9,14 @@
 
 using namespace solo;
 
-VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config):
-    device(device)
+VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config)
 {
     const auto colorAttachments = config.colorAttachmentRefs.empty() ? nullptr : config.colorAttachmentRefs.data();
     const auto depthAttachment = config.depthAttachmentRef.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef : nullptr;
     clearValues.resize(config.colorAttachmentRefs.size() + 1);
     clearValues.rbegin()->depthStencil = {1, 0};
+
+    colorAttachmentCount = config.colorAttachmentRefs.size();
 
     VkSubpassDescription subpass{};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;

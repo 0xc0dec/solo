@@ -19,6 +19,7 @@ namespace solo
         VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
         ~VulkanPipelineConfig() = default;
 
+        auto withColorBlendAttachmentCount(u32 count) -> VulkanPipelineConfig&;
         auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&;
         auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&;
         auto withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&;
@@ -38,6 +39,7 @@ namespace solo
         VkPipelineRasterizationStateCreateInfo rasterStateInfo;
         VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
         VkPipelineColorBlendAttachmentState colorBlendAttachmentState;
+        u32 colorBlendAttachmentCount = 0;
 
         vec<VkVertexInputAttributeDescription> vertexAttrs;
         vec<VkVertexInputBindingDescription> vertexBindings;

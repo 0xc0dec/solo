@@ -51,7 +51,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT fl
     return VK_FALSE;
 }
 
-static auto createDebugCallback(const VkInstance instance, const PFN_vkDebugReportCallbackEXT callbackFunc) -> VulkanResource<VkDebugReportCallbackEXT>
+static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VulkanResource<VkDebugReportCallbackEXT>
 {
     VkDebugReportCallbackCreateInfoEXT createInfo;
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
@@ -356,7 +356,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         const auto fs = vkEffect->getFragmentShaderModule();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
             .withDescriptorSetLayout(context.descSetLayout)
-            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE);
+            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
+            .withColorBlendAttachmentCount(currentRenderPass->getColorAttachmentCount());
         vkMaterial->configurePipeline(pipelineConfig);
 
         const auto &effectVertexAttrs = vkEffect->getVertexAttributes();

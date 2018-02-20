@@ -55,7 +55,7 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     colorBlendState.flags = 0;
     colorBlendState.logicOpEnable = VK_FALSE;
     colorBlendState.logicOp = VK_LOGIC_OP_COPY;
-    colorBlendState.attachmentCount = 1;
+    colorBlendState.attachmentCount = config.colorBlendAttachmentCount;
     colorBlendState.pAttachments = &config.colorBlendAttachmentState;
     colorBlendState.blendConstants[0] = 0;
     colorBlendState.blendConstants[1] = 0;
@@ -165,6 +165,12 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     colorBlendAttachmentState.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
     colorBlendAttachmentState.alphaBlendOp = VK_BLEND_OP_ADD;
     colorBlendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+}
+
+auto VulkanPipelineConfig::withColorBlendAttachmentCount(u32 count) -> VulkanPipelineConfig &
+{
+    colorBlendAttachmentCount = count;
+    return *this;
 }
 
 auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&
