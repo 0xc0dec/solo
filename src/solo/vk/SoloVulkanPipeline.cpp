@@ -55,8 +55,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     colorBlendState.flags = 0;
     colorBlendState.logicOpEnable = VK_FALSE;
     colorBlendState.logicOp = VK_LOGIC_OP_COPY;
-    colorBlendState.attachmentCount = config.colorBlendAttachmentCount;
-    colorBlendState.pAttachments = &config.colorBlendAttachmentState;
+    colorBlendState.attachmentCount = config.colorBlendAttachmentStates.size();
+    colorBlendState.pAttachments = config.colorBlendAttachmentStates.data();
     colorBlendState.blendConstants[0] = 0;
     colorBlendState.blendConstants[1] = 0;
     colorBlendState.blendConstants[2] = 0;
@@ -132,8 +132,7 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     vertexShader(vertexShader),
     fragmentShader(fragmentShader),
     rasterStateInfo{},
-    depthStencilStateInfo{},
-    colorBlendAttachmentState{}
+    depthStencilStateInfo{}
 {
     rasterStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterStateInfo.pNext = nullptr;
@@ -156,20 +155,24 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     depthStencilStateInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
     depthStencilStateInfo.back.compareOp = VK_COMPARE_OP_ALWAYS;
     depthStencilStateInfo.front = depthStencilStateInfo.back;
-
-    colorBlendAttachmentState.blendEnable = VK_FALSE;
-    colorBlendAttachmentState.srcColorBlendFactor = VK_BLEND_FACTOR_ZERO;
-    colorBlendAttachmentState.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
-    colorBlendAttachmentState.colorBlendOp = VK_BLEND_OP_ADD;
-    colorBlendAttachmentState.srcAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
-    colorBlendAttachmentState.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
-    colorBlendAttachmentState.alphaBlendOp = VK_BLEND_OP_ADD;
-    colorBlendAttachmentState.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 }
 
 auto VulkanPipelineConfig::withColorBlendAttachmentCount(u32 count) -> VulkanPipelineConfig &
 {
-    colorBlendAttachmentCount = count;
+    // TODO More sophisticated once we start using blend state
+
+    VkPipelineColorBlendAttachmentState tpl{};
+    tpl.blendEnable = VK_FALSE;
+    tpl.srcColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+    tpl.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+    tpl.colorBlendOp = VK_BLEND_OP_ADD;
+    tpl.srcAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    tpl.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+    tpl.alphaBlendOp = VK_BLEND_OP_ADD;
+    tpl.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+
+    colorBlendAttachmentStates.assign(count, tpl);
+
     return *this;
 }
 
@@ -205,11 +208,15 @@ auto VulkanPipelineConfig::withBlend(bool enabled,
     VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
     VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&
 {
-    colorBlendAttachmentState.blendEnable = enabled ? VK_TRUE : VK_FALSE;
-    colorBlendAttachmentState.srcColorBlendFactor = srcColorFactor;
-    colorBlendAttachmentState.dstColorBlendFactor = dstColorFactor;
-    colorBlendAttachmentState.srcAlphaBlendFactor = srcAlphaFactor;
-    colorBlendAttachmentState.dstAlphaBlendFactor = dstAlphaFactor;
+    // TODO Better
+    for (auto &state: colorBlendAttachmentStates)
+    {
+        state.blendEnable = enabled ? VK_TRUE : VK_FALSE;
+        state.srcColorBlendFactor = srcColorFactor;
+        state.dstColorBlendFactor = dstColorFactor;
+        state.srcAlphaBlendFactor = srcAlphaFactor;
+        state.dstAlphaBlendFactor = dstAlphaFactor;
+    }
     return *this;
 }
 

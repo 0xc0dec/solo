@@ -38,8 +38,7 @@ namespace solo
         VkShaderModule fragmentShader;
         VkPipelineRasterizationStateCreateInfo rasterStateInfo;
         VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
-        VkPipelineColorBlendAttachmentState colorBlendAttachmentState;
-        u32 colorBlendAttachmentCount = 0;
+        vec<VkPipelineColorBlendAttachmentState> colorBlendAttachmentStates;
 
         vec<VkVertexInputAttributeDescription> vertexAttrs;
         vec<VkVertexInputBindingDescription> vertexBindings;
