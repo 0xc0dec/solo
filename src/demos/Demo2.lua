@@ -198,7 +198,7 @@ function demo()
         cam:setFOV(sl.Radians.fromRawDegrees(50))
         cam:setViewport(vec4(0, 0, 2048, 2048))
 
-        local depthTex = sl.Texture2D.createEmpty(sl.device, 2048, 2048, sl.TextureFormat.Depth)
+        local depthTex = sl.Texture2D.createEmpty(sl.device, 2048, 2048, sl.TextureFormat.Depth24)
         depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
 
         local fb = sl.FrameBuffer.create(dev, { depthTex })

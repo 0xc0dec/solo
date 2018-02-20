@@ -39,10 +39,10 @@ static auto toVulkanFormat(VkPhysicalDevice device, TextureFormat format) -> VkF
 {
     switch (format)
     {
-        case TextureFormat::RGB:
-        case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM;
-        case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
-        case TextureFormat::Depth: return getDepthFormat(device);
+        case TextureFormat::RGB8:
+        case TextureFormat::RGBA8: return VK_FORMAT_R8G8B8A8_UNORM;
+        case TextureFormat::R8: return VK_FORMAT_R8_UNORM;
+        case TextureFormat::Depth24: return getDepthFormat(device);
         default:
             return panic<VkFormat>("Unsupported image format");
     }
@@ -91,7 +91,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 // TODO Refactor, reduce copy-paste
 auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
-    const auto isDepth = format == TextureFormat::Depth;
+    const auto isDepth = format == TextureFormat::Depth24;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
@@ -136,7 +136,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     const auto width = static_cast<u32>(data->getDimensions().x());
     const auto height = static_cast<u32>(data->getDimensions().y());
     const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getTextureFormat());
-    const auto isDepth = data->getTextureFormat() == TextureFormat::Depth;
+    const auto isDepth = data->getTextureFormat() == TextureFormat::Depth24;
     const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;

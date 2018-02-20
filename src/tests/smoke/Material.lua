@@ -4,7 +4,7 @@
 -- 
 
 local mat = sl.Material.createFromPrefab(sl.device, sl.MaterialPrefab.Skybox)
-local tex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
+local tex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB8)
 
 mat:setFloatParameter("p1", 1)
 mat:setVector2Parameter("p3", sl.Vector2(1, 2))

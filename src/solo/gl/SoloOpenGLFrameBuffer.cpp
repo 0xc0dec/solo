@@ -17,7 +17,7 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     auto colorAttachmentsCount = 0;
     for (const auto &attachment : attachments)
     {
-        const auto isDepthAttachment = attachment->getFormat() == TextureFormat::Depth;
+        const auto isDepthAttachment = attachment->getFormat() == TextureFormat::Depth24;
         colorAttachmentsCount += isDepthAttachment ? 0 : 1;
     }
     panicIf(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
@@ -33,7 +33,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     for (const auto &tex : attachments)
     {
         const auto glTex = std::static_pointer_cast<OpenGLTexture2D>(tex);
-        if (tex->getFormat() == TextureFormat::Depth)
+        if (tex->getFormat() == TextureFormat::Depth24)
             result->depthAttachment = glTex;
         else
             result->colorAttachments.push_back(glTex);
@@ -55,7 +55,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     if (!result->depthAttachment)
     {
         result->depthAttachment = OpenGLTexture2D::createEmpty(
-            result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth);
+            result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth24);
     }
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment->getHandle(), 0);

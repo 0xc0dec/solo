@@ -15,7 +15,7 @@ static auto toType(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Depth:
+        case TextureFormat::Depth24:
             return GL_FLOAT;
         default:
             return GL_UNSIGNED_BYTE;
@@ -41,13 +41,13 @@ static auto toDataFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
+        case TextureFormat::R8:
             return GL_RED;
-        case TextureFormat::RGB:
+        case TextureFormat::RGB8:
             return GL_RGB;
-        case TextureFormat::RGBA:
+        case TextureFormat::RGBA8:
             return GL_RGBA;
-        case TextureFormat::Depth:
+        case TextureFormat::Depth24:
             return GL_DEPTH_COMPONENT;
         default:
             return panic<GLenum>("Unknown texture format");
@@ -58,13 +58,13 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
 {
     switch (format)
     {
-        case TextureFormat::Red:
+        case TextureFormat::R8:
             return GL_R8;
-        case TextureFormat::RGB:
-            return GL_RGB;
-        case TextureFormat::RGBA:
-            return GL_RGBA;
-        case TextureFormat::Depth:
+        case TextureFormat::RGB8:
+            return GL_RGB8;
+        case TextureFormat::RGBA8:
+            return GL_RGBA8;
+        case TextureFormat::Depth24:
             return GL_DEPTH_COMPONENT24;
         default:
             return panic<GLenum>("Unknown texture format");
@@ -164,7 +164,7 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData());
 
-    if (generateMipmaps && data->getTextureFormat() != TextureFormat::Depth)
+    if (generateMipmaps && data->getTextureFormat() != TextureFormat::Depth24)
     {
         glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
         glGenerateMipmap(GL_TEXTURE_2D);

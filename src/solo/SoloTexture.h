@@ -40,10 +40,11 @@ namespace solo
 
     enum class TextureFormat
     {
-        Depth,
-        Red,
-        RGB,
-        RGBA
+        Depth24, // TODO Switch to 16/32 or fix vulkan image
+        R8,
+        RGB8,
+        RGBA8,
+        RGBA16F
     };
 
     class Texture: public NoCopyAndMove
@@ -68,7 +69,7 @@ namespace solo
         void setAnisotropyLevel(float level);
 
     protected:
-        TextureFormat format = TextureFormat::RGBA;
+        TextureFormat format = TextureFormat::RGBA8;
 
         TextureWrap horizontalWrap = TextureWrap::ClampToEdge;
         TextureWrap verticalWrap = TextureWrap::ClampToEdge;

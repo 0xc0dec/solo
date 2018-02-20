@@ -5,7 +5,7 @@
 
 assert(sl.Texture2D.loadFromFile)
 
-local rectTex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB)
+local rectTex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB8)
 
 assert(rectTex:getFormat() ~= nil)
 

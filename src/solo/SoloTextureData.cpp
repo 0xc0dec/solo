@@ -32,11 +32,11 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
     switch (format)
     {
         case TextureDataFormat::Red:
-            return TextureFormat::Red;
+            return TextureFormat::R8;
         case TextureDataFormat::RGB:
-            return TextureFormat::RGB;
+            return TextureFormat::RGB8;
         case TextureDataFormat::RGBA:
-            return TextureFormat::RGBA;
+            return TextureFormat::RGBA8;
         default:
             return panic<TextureFormat>("Texture data format not convertible to texture format");
     }
