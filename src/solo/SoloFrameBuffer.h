@@ -26,5 +26,7 @@ namespace solo
         Vector2 dimensions;
 
         FrameBuffer() = default;
+
+        static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments);
     };
 }

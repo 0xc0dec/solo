@@ -15,31 +15,19 @@ using namespace solo;
 
 static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
-    panicIf(attachments.empty(), "Frame buffer must have at least one attachment"); // TODO is it a temp check?
-
-    auto width = -1, height = -1;
     auto colorAttachmentsCount = 0;
     for (const auto &attachment : attachments)
     {
         const auto isDepthAttachment = attachment->getFormat() == TextureFormat::Depth;
         colorAttachmentsCount += isDepthAttachment ? 0 : 1;
-
-        const auto size = attachment->getDimensions();
-        if (width < 0)
-        {
-            width = size.x();
-            height = size.y();
-        }
-        else
-            panicIf(size.x() != width || size.y() != height, "Attachment sizes do not match");
     }
-
-    panicIf(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many attachments");
+    panicIf(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
 }
 
 auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
+    SL_DEBUG_BLOCK(::validateNewAttachments(attachments));
 
     auto result = sptr<OpenGLFrameBuffer>(new OpenGLFrameBuffer());
 
@@ -57,16 +45,19 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle);
 
-    for (auto i = 0; i < result->colorAttachments.size(); i++)
+    for (u32 i = 0; i < result->colorAttachments.size(); i++)
     {
         const auto tex = result->colorAttachments.at(i);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, tex->getHandle(), 0);
     }
 
+    result->dimensions = attachments[0]->getDimensions();
+
     if (!result->depthAttachment)
     {
-        auto dimensions = attachments[0]->getDimensions();
-        auto data = Texture2DData::createFromMemory(dimensions.x(), dimensions.y(), TextureFormat::Depth, vec<u8>{});
+        auto data = Texture2DData::createFromMemory(
+            static_cast<u32>(result->dimensions.x()), static_cast<u32>(result->dimensions.y()),
+            TextureFormat::Depth, vec<u8>{});
         result->depthAttachment = OpenGLTexture2D::createFromData(data.get(), false);
     }
 

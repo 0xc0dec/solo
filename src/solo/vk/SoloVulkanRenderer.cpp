@@ -235,8 +235,8 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
     auto &passContext = renderPassContexts.at(currentRenderPass);
     passContext.frameOfLastUse = frame;
+    
     currentCmdBuffer = passContext.cmdBuffer;
-
     vk::beginCommandBuffer(currentCmdBuffer, false);
 
     currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()));

@@ -64,7 +64,7 @@ namespace solo
         void log(const str &msg, const str &level)
         {
             volatile auto lt = lock.acquire();
-            const auto fullMsg = SL_FMT("[", level, "]    ", msg);
+            const auto fullMsg = SL_FMT("[", level, "] ", msg);
             std::cout << fullMsg << std::endl;
             if (file.is_open())
                 file << fullMsg << std::endl;
