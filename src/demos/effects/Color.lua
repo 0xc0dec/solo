@@ -27,13 +27,13 @@
         },
 
         outputs = {
-            fragColor = "vec3"
+            fragColor = { type = "vec4", target = 0 }
         },
 
         code = [[
             void main()
             {
-                fragColor = #variables:color#.xyz;
+                fragColor = #variables:color#;
             }
         ]]
     }

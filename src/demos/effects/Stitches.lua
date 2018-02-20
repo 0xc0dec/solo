@@ -34,7 +34,7 @@
         },
 
         outputs = {
-            fragColor = "vec4"
+            fragColor = { type = "vec4", target = 0 }
         },
 
         code = [[

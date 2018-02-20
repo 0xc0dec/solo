@@ -63,14 +63,26 @@ static void registerLibrary(LuaState &state)
         sl.generateEffectSource = function(desc)
             local vulkan = sl.device:getMode() == sl.DeviceMode.Vulkan -- otherwise 330
 
-            function generateAttributes(desc, location, typeStr)
+            function generateAttributes(desc, typeStr)
                 local all = {}
+                local location = 0
                 for name, type in pairs(desc or {}) do
                     local s = vulkan
                         and string.format("layout (location = %d) %s %s %s;", location, typeStr, type, name)
                         or string.format("%s %s %s;", typeStr, type, name)
                     all[#all + 1] = s
                     location = location + 1
+                end
+                return table.concat(all, "\n")
+            end
+
+            function generateFsOutputs(desc)
+                local all = {}
+                for name, info in pairs(desc or {}) do
+                    local t = info.type
+                    local loc = info.target
+                    local s = string.format("layout (location = %d) out %s %s;", loc, t, name)
+                    all[#all + 1] = s
                 end
                 return table.concat(all, "\n")
             end
@@ -150,17 +162,17 @@ static void registerLibrary(LuaState &state)
             local versionAttr = vulkan and "#version 450" or "#version 330"
         
             local vsUniformBuffers, vsUniformBufferCount = generateBuffers(desc.vertex.uniformBuffers, 0)
-            local vsInputs = generateAttributes(desc.vertex.inputs, 0, "in")
-            local vsOutputs = generateAttributes(desc.vertex.outputs, 0, "out")
+            local vsInputs = generateAttributes(desc.vertex.inputs, "in")
+            local vsOutputs = generateAttributes(desc.vertex.outputs, "out")
             local vsCode = generateCode(desc.vertex.code)
 
             local fsUniformBuffers, fsUniformBufferCount = generateBuffers(desc.fragment.uniformBuffers, vsUniformBufferCount)
             local fsSamplers = generateSamplers(desc.fragment.samplers, vsUniformBufferCount + fsUniformBufferCount)
-            local fsInputs = generateAttributes(desc.vertex.outputs, 0, "in")
-            local fsOutputs = generateAttributes(desc.fragment.outputs, 0, "out")
+            local fsInputs = generateAttributes(desc.vertex.outputs, "in")
+            local fsOutputs = generateFsOutputs(desc.fragment.outputs)
             local fsCode = generateCode(desc.fragment.code)
 
-            return string.format([[
+            local result = string.format([[
                 // VERTEX
                 %s
                 %s
@@ -179,6 +191,8 @@ static void registerLibrary(LuaState &state)
                 versionAttr, vsUniformBuffers, vsInputs, vsOutputs, vsCode,
                 versionAttr, fsUniformBuffers, fsSamplers, fsInputs, fsOutputs, fsCode
             )
+
+            return result
         end
     )");
 }

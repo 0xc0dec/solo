@@ -52,7 +52,7 @@ static const char * const skyboxPrefabEffect = R"(
         },
 
         outputs = {
-            fragColor = "vec4"
+            fragColor = { type = "vec4", target = 0 }
         },
 
         code = [[
@@ -98,7 +98,7 @@ static const char * const fontPrefabEffect = R"(
         },
 
         outputs = {
-            fragColor = "vec4"
+            fragColor = { type = "vec4", target = 0 }
         },
 
         code = [[
