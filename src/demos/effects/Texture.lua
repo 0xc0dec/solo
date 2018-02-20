@@ -16,11 +16,14 @@
             uv = "vec2"
         },
 
-        entry = [[
-            uv = slTexCoord;
-            gl_Position = #matrices:wvp# * vec4(sl_Position.xyz, 1.0);
-            SL_FIX_UV#uv#;
-            SL_FIX_Y#gl_Position#;
+        code = [[
+            void main()
+            {
+                uv = slTexCoord;
+                gl_Position = #matrices:wvp# * vec4(sl_Position.xyz, 1.0);
+                SL_FIX_UV#uv#;
+                SL_FIX_Y#gl_Position#;
+            }
         ]]
     },
 
@@ -33,8 +36,11 @@
             fragColor = "vec4"
         },
 
-        entry = [[
-            fragColor = texture(mainTex, uv);
+        code = [[
+            void main()
+            {
+                fragColor = texture(mainTex, uv);
+            }
         ]]
     }
 }

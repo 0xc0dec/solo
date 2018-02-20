@@ -9,10 +9,13 @@
             uv = "vec2"
         },
 
-        entry = [[
-            gl_Position = sl_Position;
-            uv = slTexCoord;
-            SL_FIX_Y#gl_Position#;
+        code = [[
+            void main()
+            {
+                gl_Position = sl_Position;
+                uv = slTexCoord;
+                SL_FIX_Y#gl_Position#;
+            }
         ]]
     },
 
@@ -32,14 +35,17 @@
             fragColor = "vec4"
         },
 
-        entry = [[
-            vec4 color = texture(mainTex, uv);
-            if (uv.x >= #variables:leftSeparator# && uv.x <= #variables:rightSeparator#)
+        code = [[
+            void main()
             {
-                float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-                color = vec4(gray, gray, gray, 1);
+                vec4 color = texture(mainTex, uv);
+                if (uv.x >= #variables:leftSeparator# && uv.x <= #variables:rightSeparator#)
+                {
+                    float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+                    color = vec4(gray, gray, gray, 1);
+                }
+                fragColor = color;
             }
-            fragColor = color;
         ]]
     }
 }

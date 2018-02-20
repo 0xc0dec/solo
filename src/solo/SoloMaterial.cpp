@@ -30,16 +30,19 @@ static const char * const skyboxPrefabEffect = R"(
             eyeDir = "vec3"
         },
 
-        entry = [[
-			vec4 pos = sl_Position;
-			SL_FIX_Y#pos#;
+        code = [[
+            void main()
+            {
+                vec4 pos = sl_Position;
+                SL_FIX_Y#pos#;
 
-            mat4 invProjMatrix = inverse(#matrices:proj#);
-			mat3 invModelViewMatrix = inverse(mat3(#matrices:worldView#));
-			vec3 unprojected = (invProjMatrix * pos).xyz;
-			eyeDir = invModelViewMatrix * unprojected;
-			gl_Position = sl_Position;
-			SL_FIX_Y#eyeDir#;
+                mat4 invProjMatrix = inverse(#matrices:proj#);
+                mat3 invModelViewMatrix = inverse(mat3(#matrices:worldView#));
+                vec3 unprojected = (invProjMatrix * pos).xyz;
+                eyeDir = invModelViewMatrix * unprojected;
+                gl_Position = sl_Position;
+                SL_FIX_Y#eyeDir#;
+            }
         ]]
     },
 
@@ -52,8 +55,11 @@ static const char * const skyboxPrefabEffect = R"(
             fragColor = "vec4"
         },
 
-        entry = [[
-            fragColor = texture(mainTex, eyeDir);
+        code = [[
+            void main()
+            {
+                fragColor = texture(mainTex, eyeDir);
+            }
         ]]
     }
 })";
@@ -76,10 +82,13 @@ static const char * const fontPrefabEffect = R"(
             uv = "vec2"
         },
 
-        entry = [[
-            gl_Position = #matrices:wvp# * sl_Position;
-			uv = slTexCoord;
-			SL_FIX_Y#gl_Position#;
+        code = [[
+            void main()
+            {
+                gl_Position = #matrices:wvp# * sl_Position;
+                uv = slTexCoord;
+                SL_FIX_Y#gl_Position#;
+            }
         ]]
     },
 
@@ -92,9 +101,12 @@ static const char * const fontPrefabEffect = R"(
             fragColor = "vec4"
         },
 
-        entry = [[
-            vec4 c = texture(mainTex, uv);
-			fragColor = vec4(c.r, c.r, c.r, c.r);
+        code = [[
+            void main()
+            {
+                vec4 c = texture(mainTex, uv);
+                fragColor = vec4(c.r, c.r, c.r, c.r);
+            }
         ]]
     }
 })";

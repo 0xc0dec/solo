@@ -10,9 +10,12 @@
             sl_Position = "vec4"
         },
 
-        entry = [[
-            gl_Position = #matrices:wvp# * sl_Position;
-            SL_FIX_Y#gl_Position#;
+        code = [[
+            void main()
+            {
+                gl_Position = #matrices:wvp# * sl_Position;
+                SL_FIX_Y#gl_Position#;
+            }
         ]]
     },
 
@@ -27,8 +30,11 @@
             fragColor = "vec3"
         },
 
-        entry = [[
-            fragColor = #variables:color#.xyz;
+        code = [[
+            void main()
+            {
+                fragColor = #variables:color#.xyz;
+            }
         ]]
     }
 }

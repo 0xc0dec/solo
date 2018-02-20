@@ -37,9 +37,12 @@ function demo()
             outputs = {
             },
     
-            entry = [[
-                gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
-                SL_FIX_Y#gl_Position#;
+            code = [[
+                void main()
+                {
+                    gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                    SL_FIX_Y#gl_Position#;
+                }
             ]]
         },
     
@@ -51,8 +54,11 @@ function demo()
                 fragColor = "vec4"
             },
     
-            entry = [[
-                fragColor = vec4(1, 0, 0, 1);
+            code = [[
+                void main()
+                {
+                    fragColor = vec4(1, 0, 0, 1);
+                }
             ]]
         }
     }
@@ -77,18 +83,21 @@ function demo()
                 shadowCoord = "vec4"
             },
     
-            entry = [[
-                const mat4 biasMat = SL_SHADOW_BIAS_MAT;
+            code = [[
+                void main()
+                {
+                    const mat4 biasMat = SL_SHADOW_BIAS_MAT;
 
-                uv = slTexCoord;
-                SL_FIX_UV#uv#;
+                    uv = slTexCoord;
+                    SL_FIX_UV#uv#;
 
-                gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
-                SL_FIX_Y#gl_Position#;
+                    gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                    SL_FIX_Y#gl_Position#;
 
-                vec4 lightProjectedPos = (#matrices:lightVp# * #matrices:model#) * vec4(sl_Position, 1.0);
-                SL_FIX_Y#lightProjectedPos#;
-                shadowCoord = biasMat * lightProjectedPos;
+                    vec4 lightProjectedPos = (#matrices:lightVp# * #matrices:model#) * vec4(sl_Position, 1.0);
+                    SL_FIX_Y#lightProjectedPos#;
+                    shadowCoord = biasMat * lightProjectedPos;
+                }
             ]]
         },
     
@@ -102,14 +111,45 @@ function demo()
                 fragColor = "vec4"
             },
     
-            entry = [[
-                float shadow = 1.0;
-                vec4 x = shadowCoord / shadowCoord.w;
-                float dist = texture(shadowMap, x.st).r;
-                if (dist < x.z - 0.00001)
-                    shadow = 0.1;
+            code = [[
+                float sampleShadow(vec4 coords, vec2 offset)
+                {
+                    float shadow = 1.0;
+                    float dist = texture(shadowMap, coords.st + offset).r;
+                    if (dist < coords.z - 0.00002)
+                        shadow = 0.1;
+                    return shadow;
+                }
 
-                fragColor = texture(mainTex, uv) * shadow;
+                float samplePCF(vec4 coords)
+                {
+                    ivec2 texDim = textureSize(shadowMap, 0);
+                    float scale = 1.5;
+                    float dx = scale * 1.0 / float(texDim.x);
+                    float dy = scale * 1.0 / float(texDim.y);
+
+                    float shadowFactor = 0.0;
+                    int count = 0;
+                    int range = 1;
+                    
+                    for (int x = -range; x <= range; x++)
+                    {
+                        for (int y = -range; y <= range; y++)
+                        {
+                            shadowFactor += sampleShadow(coords, vec2(dx * x, dy * y));
+                            count++;
+                        }
+                    
+                    }
+                    return shadowFactor / count;
+                }
+
+                void main()
+                {
+                    vec4 coords = shadowCoord / shadowCoord.w;
+                    float shadow = samplePCF(coords);
+                    fragColor = texture(mainTex, uv) * shadow;
+                }
             ]]
         }
     }
@@ -136,6 +176,7 @@ function demo()
         local cam = node:addComponent("Camera")
         cam:setZNear(0.05)
         cam:setZFar(1000)
+        cam:setFOV(sl.Radians.fromRawDegrees(50))
         cam:setViewport(vec4(0, 0, 1024, 1024))
 
         local depthTex = sl.Texture2D.createEmpty(sl.device, 1024, 1024, sl.TextureFormat.Depth)
@@ -187,7 +228,7 @@ function demo()
 
     local depthPassEffect = sl.Effect.createFromSource(dev, sl.generateEffectSource(depthPassEffectDesc))
     local depthPassMaterial = sl.Material.create(dev, depthPassEffect)
-    depthPassMaterial:setFaceCull(sl.FaceCull.Back)
+    depthPassMaterial:setFaceCull(sl.FaceCull.None)
     depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 
     local mainCam, camNode = createMainCamera(scene)

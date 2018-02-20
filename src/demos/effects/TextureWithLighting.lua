@@ -18,12 +18,15 @@
             n = "vec3"
         },
 
-        entry = [[
-            uv = slTexCoord;
-            n = normalize((#matrices:invTranspWorld# * vec4(slNormal, 1)).xyz);
-            gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
-            SL_FIX_UV#uv#;
-            SL_FIX_Y#gl_Position#;
+        code = [[
+            void main()
+            {
+                uv = slTexCoord;
+                n = normalize((#matrices:invTranspWorld# * vec4(slNormal, 1)).xyz);
+                gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                SL_FIX_UV#uv#;
+                SL_FIX_Y#gl_Position#;
+            }
         ]]
     },
 
@@ -36,9 +39,12 @@
             fragColor = "vec4"
         },
 
-        entry = [[
-            vec4 color = texture(mainTex, uv);
-            fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
+        code = [[
+            void main()
+            {
+                vec4 color = texture(mainTex, uv);
+                fragColor = color * dot(vec3(1, 1, 1), n) / (length(vec3(1, 1, 1)) * length(n));
+            }
         ]]
     }
 }
