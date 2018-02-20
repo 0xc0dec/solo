@@ -77,8 +77,8 @@ void Mesh::initAsQuadMesh()
     };
 
     VertexBufferLayout layout;
-	layout.addSemanticAttribute(VertexAttributeSemantics::Position);
-	layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
+    layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+    layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
     addVertexBuffer(layout, vertices, 6);
     setPrimitiveType(PrimitiveType::Triangles);
@@ -88,12 +88,12 @@ void Mesh::initAsCubeMesh()
 {
     float vertices[] =
     {
-        -1, -1, 1,  0, 0,    -1, 1, 1,  0, 1,     1, 1, 1,   1, 1,     1, -1, 1,   1, 0,
-        -1, -1, -1, 0, 0,    -1, 1, -1, 0, 1,     -1, 1, 1,  1, 1,     -1, -1, 1,  1, 0,
-        1, -1, -1,  0, 0,    1, 1, -1,  0, 1,     -1, 1, -1, 1, 1,     -1, -1, -1, 1, 0,
-        1, -1, 1,   0, 0,    1, 1, 1,   0, 1,     1, 1, -1,  1, 1,     1, -1, -1,  1, 0,
-        -1, 1, 1,   0, 0,    -1, 1, -1, 0, 1,     1, 1, -1,  1, 1,     1, 1, 1,    1, 0,
-        -1, -1, -1, 0, 0,    -1, -1, 1, 0, 1,     1, -1, 1,  1, 1,     1, -1, -1,  1, 0
+        -1, -1,  1,  0,  0,  1, 0, 0,    -1,  1,  1,  0,  0,  1, 0, 1,      1,  1,  1,  0,  0,  1, 1, 1,     1, -1,  1,  0,  0,  1, 1, 0,
+        -1, -1, -1, -1,  0,  0, 0, 0,    -1,  1, -1, -1,  0,  0, 0, 1,     -1,  1,  1, -1,  0,  0, 1, 1,    -1, -1,  1, -1,  0,  0, 1, 0,
+         1, -1, -1,  0,  0, -1, 0, 0,     1,  1, -1,  0,  0, -1, 0, 1,     -1,  1, -1,  0,  0, -1, 1, 1,    -1, -1, -1,  0,  0, -1, 1, 0,
+         1, -1,  1,  1,  0,  0, 0, 0,     1,  1,  1,  1,  0,  0, 0, 1,      1,  1, -1,  1,  0,  0, 1, 1,     1, -1, -1,  1,  0,  0, 1, 0,
+        -1,  1,  1,  0,  1,  0, 0, 0,    -1,  1, -1,  0,  1,  0, 0, 1,      1,  1, -1,  0,  1,  0, 1, 1,     1,  1,  1,  0,  1,  0, 1, 0,
+        -1, -1, -1,  0, -1,  0, 0, 0,    -1, -1,  1,  0, -1,  0, 0, 1,      1, -1,  1,  0, -1,  0, 1, 1,     1, -1, -1,  0, -1,  0, 1, 0
     };
 
     uint16_t indices[] =
@@ -113,8 +113,9 @@ void Mesh::initAsCubeMesh()
     };
 
     VertexBufferLayout layout;
-	layout.addSemanticAttribute(VertexAttributeSemantics::Position);
-	layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
+    layout.addSemanticAttribute(VertexAttributeSemantics::Position);
+    layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
+    layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
 
     addVertexBuffer(layout, vertices, 24);
     addPart(indices, 36);

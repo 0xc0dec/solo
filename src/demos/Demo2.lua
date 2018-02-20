@@ -66,21 +66,26 @@ function demo()
     local colorPassEffectDesc = {
         vertex = {
             uniformBuffers = {
-                matrices = {
+                matrices = { -- TODO rename
                     wvp = "mat4",
                     model = "mat4",
-                    lightVp = "mat4"
+                    lightVp = "mat4",
+                    lightPos = "vec3"
                 }
             },
     
             inputs = {
                 sl_Position = "vec3",
-                slTexCoord = "vec2"
+                sl_TexCoord = "vec2",
+                sl_Normal = "vec3"
             },
     
             outputs = {
                 uv = "vec2",
-                shadowCoord = "vec4"
+                shadowCoord = "vec4",
+                normal = "vec3",
+                lightVec = "vec3",
+                viewVec = "vec3"
             },
     
             code = [[
@@ -88,7 +93,7 @@ function demo()
                 {
                     const mat4 biasMat = SL_SHADOW_BIAS_MAT;
 
-                    uv = slTexCoord;
+                    uv = sl_TexCoord;
                     SL_FIX_UV#uv#;
 
                     gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
@@ -97,6 +102,11 @@ function demo()
                     vec4 lightProjectedPos = (#matrices:lightVp# * #matrices:model#) * vec4(sl_Position, 1.0);
                     SL_FIX_Y#lightProjectedPos#;
                     shadowCoord = biasMat * lightProjectedPos;
+
+                    vec4 worldPos = #matrices:model# * vec4(sl_Position, 1.0);
+                    normal = mat3(#matrices:model#) * sl_Normal;
+                    lightVec = normalize(#matrices:lightPos# - sl_Position);
+                    viewVec = -worldPos.xyz;			
                 }
             ]]
         },
@@ -112,12 +122,14 @@ function demo()
             },
     
             code = [[
+                const float ambient = 0.1;
+
                 float sampleShadow(vec4 coords, vec2 offset)
                 {
                     float shadow = 1.0;
                     float dist = texture(shadowMap, coords.st + offset).r;
                     if (dist < coords.z - 0.00002)
-                        shadow = 0.1;
+                        shadow = ambient;
                     return shadow;
                 }
 
@@ -146,9 +158,16 @@ function demo()
 
                 void main()
                 {
+                    vec3 n = normalize(normal);
+                    vec3 l = normalize(lightVec);
+                    vec3 v = normalize(viewVec);
+                    vec3 r = normalize(-reflect(l, n));
+                    float diffuse = max(dot(n, l), ambient);
+
                     vec4 coords = shadowCoord / shadowCoord.w;
                     float shadow = samplePCF(coords);
-                    fragColor = texture(mainTex, uv) * shadow;
+
+                    fragColor = texture(mainTex, uv) * min(diffuse, shadow);
                 }
             ]]
         }
@@ -177,9 +196,9 @@ function demo()
         cam:setZNear(0.05)
         cam:setZFar(1000)
         cam:setFOV(sl.Radians.fromRawDegrees(50))
-        cam:setViewport(vec4(0, 0, 1024, 1024))
+        cam:setViewport(vec4(0, 0, 2048, 2048))
 
-        local depthTex = sl.Texture2D.createEmpty(sl.device, 1024, 1024, sl.TextureFormat.Depth)
+        local depthTex = sl.Texture2D.createEmpty(sl.device, 2048, 2048, sl.TextureFormat.Depth)
         depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
 
         local fb = sl.FrameBuffer.create(dev, { depthTex })
@@ -271,6 +290,7 @@ function demo()
     function update()
         scene:visit(updateCmp)
         colorPassMaterial:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
+        colorPassMaterial:setVector3Parameter("matrices:lightPos", lightCamTransform:getWorldPosition())
         lightCam:renderFrame(renderLightCamFrame)
         mainCam:renderFrame(renderMainCamFrame)
     end

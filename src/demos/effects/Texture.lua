@@ -8,7 +8,7 @@
 
         inputs = {
             sl_Position = "vec4",
-            slTexCoord = "vec2",
+            sl_TexCoord = "vec2",
             normal = "vec3" -- TODO remove?
         },
 
@@ -19,7 +19,7 @@
         code = [[
             void main()
             {
-                uv = slTexCoord;
+                uv = sl_TexCoord;
                 gl_Position = #matrices:wvp# * vec4(sl_Position.xyz, 1.0);
                 SL_FIX_UV#uv#;
                 SL_FIX_Y#gl_Position#;

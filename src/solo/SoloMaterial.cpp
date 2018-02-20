@@ -75,7 +75,7 @@ static const char * const fontPrefabEffect = R"(
 
         inputs = {
 			sl_Position = "vec4",
-			slTexCoord = "vec2",
+			sl_TexCoord = "vec2"
         },
 
         outputs = {
@@ -86,7 +86,7 @@ static const char * const fontPrefabEffect = R"(
             void main()
             {
                 gl_Position = #matrices:wvp# * sl_Position;
-                uv = slTexCoord;
+                uv = sl_TexCoord;
                 SL_FIX_Y#gl_Position#;
             }
         ]]

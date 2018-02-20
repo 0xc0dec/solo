@@ -2,7 +2,7 @@
     vertex = {
         inputs = {
             sl_Position = "vec4",
-            slTexCoord = "vec2"
+            sl_TexCoord = "vec2"
         },
 
         outputs = {
@@ -13,7 +13,7 @@
             void main()
             {
                 gl_Position = sl_Position;
-                uv = slTexCoord;
+                uv = sl_TexCoord;
                 SL_FIX_Y#gl_Position#;
             }
         ]]

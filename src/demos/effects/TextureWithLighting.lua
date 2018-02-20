@@ -9,8 +9,8 @@
 
         inputs = {
             sl_Position = "vec3",
-            slNormal = "vec3",
-            slTexCoord = "vec2"
+            sl_Normal = "vec3",
+            sl_TexCoord = "vec2"
         },
 
         outputs = {
@@ -21,8 +21,8 @@
         code = [[
             void main()
             {
-                uv = slTexCoord;
-                n = normalize((#matrices:invTranspWorld# * vec4(slNormal, 1)).xyz);
+                uv = sl_TexCoord;
+                n = normalize((#matrices:invTranspWorld# * vec4(sl_Normal, 1)).xyz);
                 gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
                 SL_FIX_UV#uv#;
                 SL_FIX_Y#gl_Position#;

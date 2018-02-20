@@ -23,10 +23,10 @@ void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics
 			addNamedAttribute(3, "sl_Position");
 			break;
 		case VertexAttributeSemantics::Normal:
-			addNamedAttribute(3, "slNormal");
+			addNamedAttribute(3, "sl_Normal");
 			break;
 		case VertexAttributeSemantics::TexCoord:
-			addNamedAttribute(2, "slTexCoord");
+			addNamedAttribute(2, "sl_TexCoord");
 			break;
 		default:
 			return panic("Unknown vertex attribute semantics");

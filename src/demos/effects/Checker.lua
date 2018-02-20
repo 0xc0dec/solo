@@ -8,7 +8,7 @@
 
         inputs = {
             sl_Position = "vec4",
-            slTexCoord = "vec2"
+            sl_TexCoord = "vec2"
         },
 
         outputs = {
@@ -18,7 +18,7 @@
         code = [[
             void main()
             {
-                uv = slTexCoord;
+                uv = sl_TexCoord;
                 gl_Position = #matrices:wvp# * sl_Position;
                 SL_FIX_Y#gl_Position#;
             }
