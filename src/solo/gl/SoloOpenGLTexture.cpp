@@ -152,7 +152,6 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
     const auto dimensions = data->getDimensions();
     const auto internalFormat = toInternalFormat(data->getTextureFormat());
     const auto dataFormat = toDataFormat(data->getFormat());
-    const auto type = toType(data->getTextureFormat());
     const auto mipLevels = generateMipmaps
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
@@ -163,7 +162,7 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, type, data->getData());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData());
 
     if (generateMipmaps && data->getTextureFormat() != TextureFormat::Depth)
     {
