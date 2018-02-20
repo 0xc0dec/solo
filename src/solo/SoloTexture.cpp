@@ -76,8 +76,19 @@ auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generate
 
 auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>
 {
-    const auto data = Texture2DData::createFromMemory(width, height, format, vec<u8>{});
-    return createFromData(device, data.get(), false);
+    switch (device->getMode())
+    {
+#ifdef SL_OPENGL_RENDERER
+        case DeviceMode::OpenGL:
+            return OpenGLTexture2D::createEmpty(width, height, format);
+#endif
+#ifdef SL_VULKAN_RENDERER
+        case DeviceMode::Vulkan:
+            return VulkanTexture2D::createEmpty(device, width, height, format);
+#endif
+        default:
+            return std::make_shared<NullTexture2D>(format, Vector2(width, height));
+    }
 }
 
 auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<Texture2D>

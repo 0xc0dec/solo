@@ -9,7 +9,6 @@
 
 #include "SoloDevice.h"
 #include "SoloOpenGLTexture.h"
-#include "SoloTextureData.h"
 
 using namespace solo;
 
@@ -55,10 +54,8 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     if (!result->depthAttachment)
     {
-        auto data = Texture2DData::createFromMemory(
-            static_cast<u32>(result->dimensions.x()), static_cast<u32>(result->dimensions.y()),
-            TextureFormat::Depth, vec<u8>{});
-        result->depthAttachment = OpenGLTexture2D::createFromData(data.get(), false);
+        result->depthAttachment = OpenGLTexture2D::createEmpty(
+            result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth);
     }
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment->getHandle(), 0);

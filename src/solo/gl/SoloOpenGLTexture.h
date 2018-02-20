@@ -32,6 +32,7 @@ namespace solo
     {
     public:
         static auto createFromData(Texture2DData *data, bool generateMipmaps) -> sptr<OpenGLTexture2D>;
+        static auto createEmpty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>;
 
         void bind() override final;
 

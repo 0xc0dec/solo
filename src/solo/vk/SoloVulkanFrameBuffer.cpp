@@ -8,7 +8,6 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDevice.h"
-#include "SoloTextureData.h"
 #include "SoloVulkanRenderer.h"
 #include "SoloVulkanTexture.h"
 
@@ -41,10 +40,8 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 
     if (!result->depthAttachment)
     {
-        auto data = Texture2DData::createFromMemory(
-            static_cast<u32>(result->dimensions.x()), static_cast<u32>(result->dimensions.y()),
-            TextureFormat::Depth, vec<u8>{});
-        result->depthAttachment = VulkanTexture2D::createFromData(device, data.get(), false);
+        result->depthAttachment = VulkanTexture2D::createEmpty(device,
+            result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth);
     }
 
     views.push_back(result->depthAttachment->getImage().getView());

@@ -34,6 +34,7 @@ namespace solo
     {
     public:
         static auto createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<VulkanTexture2D>;
+        static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D>;
 
     protected:
         VulkanTexture2D(Device *device, TextureFormat format, Vector2 dimensions);

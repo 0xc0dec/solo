@@ -42,7 +42,7 @@ namespace solo
     {
         Depth,
         Red,
-        RGB, // Not supported in Vulkan (my driver doesn't like it)
+        RGB,
         RGBA
     };
 

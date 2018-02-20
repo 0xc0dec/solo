@@ -95,6 +95,15 @@ auto VulkanTexture2D::createFromData(Device *device, Texture2DData *data, bool g
     return result;
 }
 
+auto VulkanTexture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D>
+{
+    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, format,
+        Vector2(static_cast<float>(width), static_cast<float>(height))));
+    result->image = VulkanImage::createEmpty2D(result->renderer, width, height, format);
+    result->rebuildSampler();
+    return result;
+}
+
 VulkanTexture2D::VulkanTexture2D(Device *device, TextureFormat format, Vector2 dimensions):
     Texture2D(format, dimensions),
     VulkanTexture(device)

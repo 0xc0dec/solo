@@ -21,6 +21,7 @@ namespace solo
     class VulkanImage
     {
     public:
+        static auto createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage;
         static auto create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
         static auto createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage;
 

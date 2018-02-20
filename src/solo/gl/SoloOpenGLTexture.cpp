@@ -162,6 +162,25 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
     return result;
 }
 
+auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>
+{
+    const auto internalFormat = toInternalFormat(format);
+    const auto format_ = toFormat(format);
+    const auto type = toType(format);
+    const auto dimensions = Vector2(width, height);
+    const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
+
+    glBindTexture(GL_TEXTURE_2D, result->handle);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, format_, type, nullptr);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return result;
+}
+
 void OpenGLTexture2D::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle);
