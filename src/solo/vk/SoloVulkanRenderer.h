@@ -99,14 +99,8 @@ namespace solo
         VkCommandBuffer currentCmdBuffer = nullptr;
         VkSemaphore prevSemaphore = nullptr;
 
-        void prepareAndBindMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-            Transform *transform, Mesh *mesh, Camera *camera);
-        void drawMeshPart(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material, Transform *transform,
-            Mesh *mesh, Camera *camera, u32 part);
-        void drawMesh(VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-            Transform *transform, Mesh *mesh, Camera *camera);
-        auto ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
-            VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&;
+        void prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh);
+        auto ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&;
         void cleanupUnusedRenderPassContexts();
         void cleanupUnusedPipelineContexts();
     };

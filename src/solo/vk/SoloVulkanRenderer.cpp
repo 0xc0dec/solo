@@ -21,6 +21,18 @@
 
 using namespace solo;
 
+static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
+{
+    switch (attr.elementCount)
+    {
+        case 1: return VK_FORMAT_R32_SFLOAT;
+        case 2: return VK_FORMAT_R32G32_SFLOAT;
+        case 3: return VK_FORMAT_R32G32B32_SFLOAT;
+        case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+        default: return panic<VkFormat>("Unsupported vertex attribute element count");
+    }
+}
+
 static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
 {
     size_t seed = 0;
@@ -270,36 +282,38 @@ void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
-    if (currentCamera)
-        drawMesh(currentCmdBuffer, *currentRenderPass, material, transform, mesh, currentCamera);
+    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    prepareAndBindMesh(material, transform, mesh);
+
+    if (vkMesh->getPartCount())
+    {
+        for (u32 part = 0; part < vkMesh->getPartCount(); part++)
+        {
+            const auto indexBuffer = vkMesh->getPartBuffer(part);
+            vkCmdBindIndexBuffer(currentCmdBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+            vkCmdDrawIndexed(currentCmdBuffer, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
+        }
+    }
+    else
+        vkCmdDraw(currentCmdBuffer, vkMesh->getMinVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
-    if (currentCamera)
-        drawMeshPart(currentCmdBuffer, *currentRenderPass, material, transform, mesh, currentCamera, part);
+    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    prepareAndBindMesh(material, transform, mesh);
+    const auto indexBuffer = vkMesh->getPartBuffer(part);
+    vkCmdBindIndexBuffer(currentCmdBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+    vkCmdDrawIndexed(currentCmdBuffer, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
 }
 
-static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
-{
-    switch (attr.elementCount)
-    {
-        case 1: return VK_FORMAT_R32_SFLOAT;
-        case 2: return VK_FORMAT_R32G32_SFLOAT;
-        case 3: return VK_FORMAT_R32G32B32_SFLOAT;
-        case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
-        default: return panic<VkFormat>("Unsupported vertex attribute element count");
-    }
-}
-
-auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera, VulkanMaterial *material,
-    VulkanMesh *mesh, VkRenderPass renderPass) -> PipelineContext&
+auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-    const auto key = getPipelineContextKey(transform, camera, material, renderPass);
+    const auto key = getPipelineContextKey(transform, currentCamera, material, *currentRenderPass);
     auto &context = pipelineContexts[key];
 
     if (!context.descSet)
@@ -374,7 +388,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             }
         }
 
-        context.pipeline = VulkanPipeline{device, renderPass, pipelineConfig};
+        context.pipeline = VulkanPipeline{device, *currentRenderPass, pipelineConfig};
         context.lastMaterialFlagsHash = materialFlagsHash;
         context.lastMeshLayoutHash = meshLayoutHash;
     }
@@ -382,41 +396,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
     return context;
 }
 
-void VulkanRenderer::drawMeshPart(
-    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-    Transform *transform, Mesh *mesh, Camera *camera, u32 part
-)
-{
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
-    const auto indexBuffer = vkMesh->getPartBuffer(part);
-    vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-    vkCmdDrawIndexed(cmdBuf, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
-}
-
-void VulkanRenderer::drawMesh(
-    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-    Transform *transform, Mesh *mesh, Camera *camera)
-{
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
-
-    if (vkMesh->getPartCount())
-    {
-        for (u32 part = 0; part < vkMesh->getPartCount(); part++)
-        {
-            const auto indexBuffer = vkMesh->getPartBuffer(part);
-            vkCmdBindIndexBuffer(cmdBuf, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-            vkCmdDrawIndexed(cmdBuf, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
-        }
-    }
-    else
-        vkCmdDraw(cmdBuf, vkMesh->getMinVertexCount(), 1, 0, 0);
-}
-
-void VulkanRenderer::prepareAndBindMesh(
-    VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-    Transform *transform, Mesh *mesh, Camera *camera)
+void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
@@ -424,7 +404,7 @@ void VulkanRenderer::prepareAndBindMesh(
     const auto &uniformBufs = vkEffect->getUniformBuffers();
     const auto &materialSamplers = vkMaterial->getSamplers();
     
-    auto &context = ensurePipelineContext(transform, camera, vkMaterial, vkMesh, renderPass);
+    auto &context = ensurePipelineContext(transform, vkMaterial, vkMesh);
     context.frameOfLastUse = frame;
 
     // Run the desc set updater
@@ -461,19 +441,19 @@ void VulkanRenderer::prepareAndBindMesh(
     {
         auto &buffer = context.uniformBuffers[p.first];
         for (auto &pp: p.second)
-            pp.second.write(buffer, camera, transform);
+            pp.second.write(buffer, currentCamera, transform);
     }
 
     // Issue commands
 
-    vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline);
-    vkCmdBindDescriptorSets(cmdBuf, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.getLayout(), 0, 1, &context.descSet, 0, nullptr);
+    vkCmdBindPipeline(currentCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline);
+    vkCmdBindDescriptorSets(currentCmdBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.getLayout(), 0, 1, &context.descSet, 0, nullptr);
 
     VkDeviceSize vertexBufferOffset = 0;
     for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
     {
         auto vertexBuffer = vkMesh->getVertexBuffer(i);
-        vkCmdBindVertexBuffers(cmdBuf, i, 1, &vertexBuffer, &vertexBufferOffset);
+        vkCmdBindVertexBuffers(currentCmdBuffer, i, 1, &vertexBuffer, &vertexBufferOffset);
     }
 }
 

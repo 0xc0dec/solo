@@ -56,14 +56,14 @@ auto VulkanEffect::createFromSources(Device *device,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
 {
-    auto vsCompilationResult = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
-    auto fsCompilationResult = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
-    auto vsSize = (vsCompilationResult.end() - vsCompilationResult.begin()) * sizeof(u32);
-    auto fsSize = (fsCompilationResult.end() - fsCompilationResult.begin()) * sizeof(u32);
+    const auto vsCompilationResult = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
+    const auto fsCompilationResult = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
+    const auto vsSize = (vsCompilationResult.end() - vsCompilationResult.begin()) * sizeof(u32);
+    const auto fsSize = (fsCompilationResult.end() - fsCompilationResult.begin()) * sizeof(u32);
     return std::make_shared<VulkanEffect>(
         device,
-        vsCompilationResult.begin(), vsSize,
-        fsCompilationResult.begin(), fsSize
+        vsCompilationResult.begin(), static_cast<u32>(vsSize),
+        fsCompilationResult.begin(), static_cast<u32>(fsSize)
     );
 }
 
