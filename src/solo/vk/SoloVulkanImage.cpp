@@ -14,14 +14,33 @@
 
 using namespace solo;
 
-static auto toVulkanFormat(TextureFormat format) -> VkFormat
+static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
+{
+    vec<VkFormat> depthFormats =
+    {
+        VK_FORMAT_D32_SFLOAT,
+        VK_FORMAT_D16_UNORM
+    };
+
+    for (auto &format : depthFormats)
+    {
+        VkFormatProperties formatProps;
+        vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
+        if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
+            return format;
+    }
+
+    return VK_FORMAT_UNDEFINED;
+}
+
+static auto toVulkanFormat(VkPhysicalDevice device, TextureFormat format) -> VkFormat
 {
     switch (format)
     {
         case TextureFormat::RGB:
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
-        case TextureFormat::Depth: return VK_FORMAT_D16_UNORM;
+        case TextureFormat::Depth: return getDepthFormat(device);
         default:
             return panic<VkFormat>("Unsupported image format");
     }
@@ -73,18 +92,12 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     const auto width = static_cast<u32>(data->getDimensions().x());
     const auto height = static_cast<u32>(data->getDimensions().y());
     const auto size = data->getSize();
-    const auto format = toVulkanFormat(data->getFormat());
+    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getFormat());
     const auto withMipmaps = generateMipmaps && size; // generating mips for non-empty textures
     const auto isDepth = data->getFormat() == TextureFormat::Depth;
-    const auto colorOrDepthUsage = isDepth
-        ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
-        : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    const auto aspect = isDepth
-        ? VK_IMAGE_ASPECT_DEPTH_BIT
-        : VK_IMAGE_ASPECT_COLOR_BIT;
-    const auto targetLayout = isDepth
-        ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
-        : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
+    const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     u32 mipLevels = 1;
     if (withMipmaps)
@@ -275,7 +288,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     const auto layers = 6;
     const auto width = data->getDimension();
     const auto height = width;
-    const auto format = toVulkanFormat(data->getFormat());
+    const auto format = toVulkanFormat(renderer->getPhysicalDevice(), data->getFormat());
     const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     auto image = VulkanImage(

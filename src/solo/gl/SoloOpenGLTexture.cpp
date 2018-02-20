@@ -49,7 +49,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
         case TextureFormat::RGBA:
             return GL_RGBA;
         case TextureFormat::Depth:
-            return GL_DEPTH_COMPONENT16;
+            return GL_DEPTH_COMPONENT24;
         default:
             return panic<GLenum>("Unknown image format");
     }
