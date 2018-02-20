@@ -9,6 +9,7 @@ assert(sl.TextureWrap.MirrorRepeat ~= nil)
 
 assert(sl.TextureFormat.RGB8 ~= nil)
 assert(sl.TextureFormat.RGBA8 ~= nil)
+assert(sl.TextureFormat.RGBA16F ~= nil)
 assert(sl.TextureFormat.R8 ~= nil)
 assert(sl.TextureFormat.Depth24 ~= nil)
 

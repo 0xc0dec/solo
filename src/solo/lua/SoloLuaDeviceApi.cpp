@@ -35,7 +35,6 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(device, Device, update);
     REG_METHOD(device, Device, hasActiveBackgroundJobs);
     REG_METHOD(device, Device, getFileSystem);
-    REG_METHOD(device, Device, getRenderer);
     REG_METHOD(device, Device, getPhysics);
     device.endClass();
 }

@@ -36,5 +36,4 @@ assert(device:isMouseButtonReleased(sl.MouseButton.Left) ~= nil)
 device:update(function() end)
 
 assert(device:getFileSystem())
-assert(device:getRenderer())
 assert(device:getPhysics())

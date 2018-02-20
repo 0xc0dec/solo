@@ -10,7 +10,6 @@
 #include "SoloSkyboxRenderer.h"
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
-#include "SoloRenderer.h"
 #include "SoloMesh.h"
 #include "SoloSpectator.h"
 #include "SoloAsyncHandle.h"
@@ -91,12 +90,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     fs.endClass();
 }
 
-static void registerRenderer(CppBindModule<LuaBinding> &module)
-{
-    auto renderer = BEGIN_CLASS(module, Renderer);
-    renderer.endClass();
-}
-
 static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
 {
     auto h1 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2D>, "Texture2DAsyncHandle");
@@ -118,7 +111,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerEffect(module);
     registerMeshRenderer(module);
     registerScene(module);
-    registerRenderer(module);
     registerFrameBuffer(module);
     registerSpectator(module);
     registerSkyboxRenderer(module);

@@ -40,7 +40,7 @@ namespace solo
 
     enum class TextureFormat
     {
-        Depth24, // TODO Switch to 16/32 or fix vulkan image
+        Depth24,
         R8,
         RGB8,
         RGBA8,
