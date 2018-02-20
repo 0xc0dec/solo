@@ -112,7 +112,8 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         .withDepthAttachment(depthFormat));
     
     depthStencil = VulkanImage(renderer, width, height, 1, 1, depthFormat,
-        0,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+		0,
         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);

@@ -30,12 +30,12 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
         void removePart(u32 index) override final;
-        auto getPartCount() const -> u32 override final { return indexBuffers.size(); }
+        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers.size()); }
 
         auto getPrimitiveType() const -> PrimitiveType override final;
         void setPrimitiveType(PrimitiveType type) override final;
 
-        auto getVertexBufferCount() const -> u32 { return vertexBuffers.size(); }
+        auto getVertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers.size()); }
         auto getVertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts.at(index); }
         auto getVertexBuffer(u32 index) const -> VkBuffer { return vertexBuffers.at(index).getHandle(); }
         auto getPartBuffer(u32 index) const -> VkBuffer { return indexBuffers.at(index).getHandle(); }

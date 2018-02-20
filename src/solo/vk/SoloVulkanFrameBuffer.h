@@ -26,7 +26,7 @@ namespace solo
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
-        auto getColorAttachmentCount() const -> u32 { return colorAttachments.size(); }
+        auto getColorAttachmentCount() const -> u32 { return static_cast<u32>(colorAttachments.size()); }
 
     private:
         VulkanRenderPass renderPass;

@@ -25,7 +25,7 @@ namespace solo
         static auto createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage;
 
         VulkanImage() = default;
-        VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format,
+        VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
             VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
         VulkanImage(const VulkanImage &other) = delete;
         VulkanImage(VulkanImage &&other) = default;

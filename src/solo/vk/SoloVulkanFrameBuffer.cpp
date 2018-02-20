@@ -19,17 +19,17 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
 	panicIf(attachments.empty(), "Frame buffer must have at least one attachment"); // TODO is it a temp check?
 
-    auto width = -1, height = -1;
+    auto width = (std::numeric_limits<u32>::max)(), height = (std::numeric_limits<u32>::max)();
     for (const auto &attachment : attachments)
     {
 	    const auto size = attachment->getDimensions();
-        if (width < 0)
+        if (width == (std::numeric_limits<u32>::max)())
         {
-            width = size.x();
-            height = size.y();
+            width = static_cast<u32>(size.x());
+            height = static_cast<u32>(size.y());
         }
         else
-            panicIf(size.x() != width || size.y() != height, "Attachment sizes do not match");
+            panicIf(static_cast<u32>(size.x()) != width || static_cast<u32>(size.y()) != height, "Attachment sizes do not match");
     }
 }
 

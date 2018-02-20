@@ -35,7 +35,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	SL_DEBUG_LOG(SL_FMT("Vulkan debug message: ", msg));
+	SL_DEBUG_LOG(SL_FMT("Vulkan: ", msg));
     return VK_FALSE;
 }
 
@@ -194,7 +194,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     vkGetDeviceQueue(device, queueIndex, 0, &queue);
 
     commandPool = createCommandPool(device, queueIndex);
-    swapchain = VulkanSwapchain(this, vulkanDevice, canvasSize.x(), canvasSize.y(), engineDevice->isVsync());
+    swapchain = VulkanSwapchain(this, vulkanDevice, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()), engineDevice->isVsync());
 }
 
 void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
@@ -227,7 +227,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
     vk::beginCommandBuffer(currentCmdBuffer, false);
 
-    currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, dimensions.x(), dimensions.y());
+    currentRenderPass->begin(currentCmdBuffer, currentFrameBuffer, static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()));
 
     if (currentCamera->hasColorClearing())
     {
@@ -243,14 +243,14 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
             clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         }
 		if (!clearAttachments.empty())
-			vkCmdClearAttachments(currentCmdBuffer, clearAttachments.size(), clearAttachments.data(), 1, &clearRect);
+			vkCmdClearAttachments(currentCmdBuffer, static_cast<u32>(clearAttachments.size()), clearAttachments.data(), 1, &clearRect);
     }
 
     const auto viewport = currentCamera->getViewport();
     VkViewport vp{viewport.x(), viewport.y(), viewport.z(), viewport.w(), 0, 1};
     vkCmdSetViewport(currentCmdBuffer, 0, 1, &vp);
 
-    VkRect2D scissor{{0, 0}, {vp.width, vp.height}}; // TODO proper values
+    VkRect2D scissor{{0, 0}, {static_cast<u32>(vp.width), static_cast<u32>(vp.height)}}; // TODO proper values
     vkCmdSetScissor(currentCmdBuffer, 0, 1, &scissor);
 }
 
@@ -323,9 +323,9 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
 
         auto poolConfig = VulkanDescriptorPoolConfig();
 		if (!uniformBufs.empty())
-			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uniformBufs.size());
+			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<u32>(uniformBufs.size()));
 		if (!effectSamplers.empty())
-			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, effectSamplers.size());
+			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<u32>(effectSamplers.size()));
 
         context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
         context.descSet = context.descPool.allocateSet(context.descSetLayout);
@@ -346,14 +346,14 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         vkMaterial->configurePipeline(pipelineConfig);
 
         const auto &effectVertexAttrs = vkEffect->getVertexAttributes();
-        for (s32 binding = 0; binding < vkMesh->getVertexBufferCount(); binding++)
+        for (u32 binding = 0; binding < vkMesh->getVertexBufferCount(); binding++)
         {
             const auto &layout = vkMesh->getVertexBufferLayout(binding);
             
             pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
 			u32 offset = 0;
-            for (auto attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
+            for (u32 attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
             {
                 const auto attr = layout.getAttribute(attrIndex);
 	            auto format = getVertexAttributeFormat(attr);
@@ -369,8 +369,6 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
                 }
 				if (found)
 					pipelineConfig.withVertexAttribute(location, binding, format, offset);
-				else
-					SL_DEBUG_LOG(SL_FMT("Failed to find attribute (name:", attr.name, ", loc:", location, ") in shader"));
 
 				offset += attr.size;
             }
@@ -398,8 +396,7 @@ void VulkanRenderer::drawMeshPart(
 
 void VulkanRenderer::drawMesh(
     VkCommandBuffer cmdBuf, VkRenderPass renderPass, Material *material,
-    Transform *transform, Mesh *mesh, Camera *camera
-)
+    Transform *transform, Mesh *mesh, Camera *camera)
 {
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     prepareAndBindMesh(cmdBuf, renderPass, material, transform, mesh, camera);
@@ -451,7 +448,7 @@ void VulkanRenderer::prepareAndBindMesh(
             context.descSet,
             info.texture->getImage().getView(),
             info.texture->getSampler(),
-            VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+            info.texture->getImage().getLayout()
         );
     }
 

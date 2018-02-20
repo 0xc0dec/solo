@@ -51,7 +51,7 @@ static auto toAddressMode(TextureWrap wrap) -> VkSamplerAddressMode
 
 static auto createSampler(
     VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
-    TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter, float mipLevels,
+    TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter, u32 mipLevels,
     TextureWrap horizontalWrap, TextureWrap verticalWrap, TextureWrap depthWrap,
     bool anisotropic, float anisotropyLevel) -> VulkanResource<VkSampler>
 {
@@ -73,7 +73,7 @@ static auto createSampler(
     samplerInfo.compareEnable = VK_FALSE;
     samplerInfo.compareOp = VK_COMPARE_OP_NEVER;
     samplerInfo.minLod = 0;
-    samplerInfo.maxLod = mipFilter != TextureMipFilter::None ? mipLevels : 0;
+    samplerInfo.maxLod = static_cast<float>(mipFilter != TextureMipFilter::None ? mipLevels : 0);
     samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 
     VulkanResource<VkSampler> sampler{device, vkDestroySampler};
