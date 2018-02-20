@@ -72,24 +72,24 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
             const auto attr = layout.getAttribute(j);
             const auto stride = layout.getSize();
             
-        	auto location = attr.location;
-			auto found = true;
+            auto location = attr.location;
+            auto found = true;
             if (!attr.name.empty())
             {
-				if (effect->hasAttribute(attr.name))
-				{
-					const auto attrInfo = effect->getAttributeInfo(attr.name);
-					location = attrInfo.location;
-				}
-				else
-					found = false;
+                if (effect->hasAttribute(attr.name))
+                {
+                    const auto attrInfo = effect->getAttributeInfo(attr.name);
+                    location = attrInfo.location;
+                }
+                else
+                    found = false;
             }
 
-			if (found)
-			{
-				glVertexAttribPointer(location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
-				glEnableVertexAttribArray(location);
-			}
+            if (found)
+            {
+                glVertexAttribPointer(location, attr.elementCount, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(offset));
+                glEnableVertexAttribArray(location);
+            }
 
             offset += attr.size;
         }

@@ -23,7 +23,7 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent)
         ? scriptComponent.get<std::function<void(LuaRef)>>("update")
         : [](LuaRef) {};
 
-	renderFunc = scriptComponent.has("render")
+    renderFunc = scriptComponent.has("render")
         ? scriptComponent.get<std::function<void(LuaRef)>>("render")
         : [](LuaRef) {};
     

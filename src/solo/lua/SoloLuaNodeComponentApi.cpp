@@ -16,19 +16,19 @@
 using namespace solo;
 
 static umap<str, u32> builtInComponents = {
-	{"Transform", Transform::getId()},
-	{"MeshRenderer", MeshRenderer::getId()},
-	{"Camera", Camera::getId()},
-	{"Spectator", Spectator::getId()},
-	{"SkyboxRenderer", SkyboxRenderer::getId()},
-	{"FontRenderer", FontRenderer::getId()},
-	{"RigidBody", RigidBody::getId()}
+    {"Transform", Transform::getId()},
+    {"MeshRenderer", MeshRenderer::getId()},
+    {"Camera", Camera::getId()},
+    {"Spectator", Spectator::getId()},
+    {"SkyboxRenderer", SkyboxRenderer::getId()},
+    {"FontRenderer", FontRenderer::getId()},
+    {"RigidBody", RigidBody::getId()}
 };
 
 static auto findComponent(Node *node, const str &name) -> Component*
 {
-	panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
-	return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
+    panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+    return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
 }
 
 static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Component*
@@ -48,13 +48,13 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
     if (name == "RigidBody")
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
 
-	return panic<Component*>(SL_FMT("Unknown built-in component ", name));
+    return panic<Component*>(SL_FMT("Unknown built-in component ", name));
 }
 
 static void removeComponent(Node *node, const str &name)
 {
-	panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
-	node->getScene()->removeComponent(node->getId(), builtInComponents.at(name));
+    panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+    node->getScene()->removeComponent(node->getId(), builtInComponents.at(name));
 }
 
 static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
@@ -72,7 +72,7 @@ static auto addScriptComponent(Node *node, LuaRef scriptComponent) -> sptr<Compo
 {
     const auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
     node->getScene()->addComponent(node->getId(), actualComponent);
-	return actualComponent;
+    return actualComponent;
 }
 
 static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)

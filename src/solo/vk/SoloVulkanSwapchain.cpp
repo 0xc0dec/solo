@@ -113,20 +113,20 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
     
     depthStencil = VulkanImage(renderer, width, height, 1, 1, depthFormat,
         VK_IMAGE_LAYOUT_UNDEFINED,
-		0,
+        0,
         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
 
     auto images = getSwapchainImages(this->device, swapchain);
 
-	const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
-	VkImageSubresourceRange subresourceRange{};
-	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-	subresourceRange.baseMipLevel = 0;
-	subresourceRange.levelCount = 1;
-	subresourceRange.layerCount = 1;
+    VkImageSubresourceRange subresourceRange{};
+    subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    subresourceRange.baseMipLevel = 0;
+    subresourceRange.levelCount = 1;
+    subresourceRange.layerCount = 1;
     
     steps.resize(images.size());
     for (u32 i = 0; i < images.size(); i++)
@@ -137,15 +137,15 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         steps[i].image = images[i];
         steps[i].imageView = std::move(view);
 
-		vk::setImageLayout(
-			cmdBuf,
-			images[i],
-			VK_IMAGE_LAYOUT_UNDEFINED,
-			VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-			subresourceRange);
+        vk::setImageLayout(
+            cmdBuf,
+            images[i],
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+            subresourceRange);
     }
 
-	vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+    vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
 
     presentCompleteSem = vk::createSemaphore(this->device);
 }

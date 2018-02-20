@@ -24,12 +24,12 @@ namespace solo
         static auto createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
 
         VulkanBuffer() = default;
-	    VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
+        VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
         VulkanBuffer(VulkanBuffer &&other) = default;
         VulkanBuffer(const VulkanBuffer &other) = delete;
         ~VulkanBuffer() = default;
 
-	    auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
+        auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
         auto operator=(VulkanBuffer &&other) -> VulkanBuffer& = default;
 
         operator VkBuffer() { return buffer; }

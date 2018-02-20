@@ -19,7 +19,7 @@ namespace solo
         }
 
         auto getSize() const -> u32 override final { return data.size(); }
-	    auto getDimensions() const -> Vector2 override final { return dimensions; }
+        auto getDimensions() const -> Vector2 override final { return dimensions; }
         auto getData() const -> const void* override final { return data.data(); }
         auto getFormat() const -> TextureFormat override final { return format; }
 
@@ -48,8 +48,8 @@ auto Texture2DData::createFromMemory(u32 width, u32 height, TextureFormat format
 auto CubeTextureData::loadFromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
-	const str& positiveYPath, const str& negativeYPath,
-	const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
+    const str& positiveYPath, const str& negativeYPath,
+    const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
 {
     if (STBCubeTextureData::canLoadFromFaceFiles(positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath))
         return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);

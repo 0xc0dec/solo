@@ -34,8 +34,8 @@ auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool, bool be
     VulkanResource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
     SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
 
-	if (begin)
-		vk::beginCommandBuffer(buffer, true);
+    if (begin)
+        vk::beginCommandBuffer(buffer, true);
 
     return buffer;
 }
@@ -50,7 +50,7 @@ void vk::beginCommandBuffer(VkCommandBuffer buffer, bool oneTime)
 
 void vk::flushCommandBuffer(VkCommandBuffer buffer, VkQueue queue)
 {
-	SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
+    SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
     queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &buffer);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 }
@@ -130,13 +130,13 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
 }
 
 void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldImageLayout,
-	VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange, VkPipelineStageFlags srcStageMask,
-	VkPipelineStageFlags dstStageMask)
+    VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange, VkPipelineStageFlags srcStageMask,
+    VkPipelineStageFlags dstStageMask)
 {
-	VkImageMemoryBarrier imageMemoryBarrier{};
-	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-	imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-	imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    VkImageMemoryBarrier imageMemoryBarrier{};
+    imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
     imageMemoryBarrier.oldLayout = oldImageLayout;
     imageMemoryBarrier.newLayout = newImageLayout;
     imageMemoryBarrier.image = image;

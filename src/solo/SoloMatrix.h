@@ -18,11 +18,11 @@ namespace solo
     public:
         Matrix();
         Matrix(const Matrix &copy);
-		Matrix(const glm::mat4x4 &data);
+        Matrix(const glm::mat4x4 &data);
         Matrix(float m11, float m12, float m13, float m14,
-			   float m21, float m22, float m23, float m24,
-			   float m31, float m32, float m33, float m34,
-			   float m41, float m42, float m43, float m44);
+               float m21, float m22, float m23, float m24,
+               float m31, float m32, float m33, float m34,
+               float m41, float m42, float m43, float m44);
 
         static auto identity() -> Matrix;
         static auto createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix;
@@ -33,7 +33,7 @@ namespace solo
         static auto createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix;
         static auto createTranslation(const Vector3 &translation) -> Matrix;
 
-		auto columns() const -> const float*;
+        auto columns() const -> const float*;
 
         bool isIdentity() const;
         auto getDeterminant() const -> float;
@@ -82,6 +82,6 @@ namespace solo
         auto operator*=(const Matrix &m) -> Matrix&;
 
     private:
-		glm::mat4x4 data;
+        glm::mat4x4 data;
     };
 }

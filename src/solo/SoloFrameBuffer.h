@@ -18,13 +18,13 @@ namespace solo
     public:
         static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>;
 
-		virtual ~FrameBuffer() = default;
+        virtual ~FrameBuffer() = default;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
 
     protected:
         Vector2 dimensions;
 
-		FrameBuffer() = default;
+        FrameBuffer() = default;
     };
 }

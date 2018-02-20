@@ -23,7 +23,7 @@ public:
 
     void getWorldTransform(btTransform &worldTransform) const override final
     {
-	    const auto worldPos = transform->getWorldPosition();
+        const auto worldPos = transform->getWorldPosition();
         const auto rotation = transform->getWorldRotation();
         worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
@@ -31,7 +31,7 @@ public:
 
     void setWorldTransform(const btTransform &worldTransform) override final
     {
-		panicIf(transform->getParent());
+        panicIf(transform->getParent());
         transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
         transform->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }
@@ -100,6 +100,6 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 
 void BulletRigidBody::syncScale()
 {
-	const auto scale = transformCmp->getWorldScale();
+    const auto scale = transformCmp->getWorldScale();
     shape->setLocalScaling(SL_TOBTVEC3(scale));
 }

@@ -35,7 +35,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	SL_DEBUG_LOG(SL_FMT("Vulkan: ", msg));
+    SL_DEBUG_LOG(SL_FMT("Vulkan: ", msg));
     return VK_FALSE;
 }
 
@@ -46,10 +46,10 @@ static auto createDebugCallback(const VkInstance instance, const PFN_vkDebugRepo
     createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
     createInfo.pfnCallback = callbackFunc;
 
-	const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
+    const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
     panicIf(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
 
-	const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
+    const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
     panicIf(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
@@ -69,8 +69,8 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
 
     vec<const s8*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
-	VkPhysicalDeviceFeatures enabledFeatures{};
-	enabledFeatures.samplerAnisotropy = true;
+    VkPhysicalDeviceFeatures enabledFeatures{};
+    enabledFeatures.samplerAnisotropy = true;
 
     VkDeviceCreateInfo deviceCreateInfo{};
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
@@ -222,7 +222,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     }
 
     auto &passContext = renderPassContexts.at(currentRenderPass);
-	passContext.frameOfLastUse = frame;
+    passContext.frameOfLastUse = frame;
     currentCmdBuffer = passContext.cmdBuffer;
 
     vk::beginCommandBuffer(currentCmdBuffer, false);
@@ -242,8 +242,8 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
             clearAttachments[i].colorAttachment = i;
             clearAttachments[i].clearValue = {{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         }
-		if (!clearAttachments.empty())
-			vkCmdClearAttachments(currentCmdBuffer, static_cast<u32>(clearAttachments.size()), clearAttachments.data(), 1, &clearRect);
+        if (!clearAttachments.empty())
+            vkCmdClearAttachments(currentCmdBuffer, static_cast<u32>(clearAttachments.size()), clearAttachments.data(), 1, &clearRect);
     }
 
     const auto viewport = currentCamera->getViewport();
@@ -256,14 +256,14 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 {
-	auto &ctx = renderPassContexts.at(currentRenderPass);
-	ctx.renderPass->end(ctx.cmdBuffer);
-	SL_VK_CHECK_RESULT(vkEndCommandBuffer(ctx.cmdBuffer));
+    auto &ctx = renderPassContexts.at(currentRenderPass);
+    ctx.renderPass->end(ctx.cmdBuffer);
+    SL_VK_CHECK_RESULT(vkEndCommandBuffer(ctx.cmdBuffer));
 
-	vk::queueSubmit(queue, 1, &prevSemaphore, 1, &ctx.completeSemaphore, 1, &ctx.cmdBuffer);
-	SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
+    vk::queueSubmit(queue, 1, &prevSemaphore, 1, &ctx.completeSemaphore, 1, &ctx.cmdBuffer);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 
-	prevSemaphore = ctx.completeSemaphore;
+    prevSemaphore = ctx.completeSemaphore;
 
     currentCamera = nullptr;
 }
@@ -299,7 +299,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-	const auto key = getPipelineContextKey(transform, camera, material, renderPass);
+    const auto key = getPipelineContextKey(transform, camera, material, renderPass);
     auto &context = pipelineContexts[key];
 
     if (!context.descSet)
@@ -322,10 +322,10 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
         context.descSetLayout = builder.build();
 
         auto poolConfig = VulkanDescriptorPoolConfig();
-		if (!uniformBufs.empty())
-			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<u32>(uniformBufs.size()));
-		if (!effectSamplers.empty())
-			poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<u32>(effectSamplers.size()));
+        if (!uniformBufs.empty())
+            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<u32>(uniformBufs.size()));
+        if (!effectSamplers.empty())
+            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<u32>(effectSamplers.size()));
 
         context.descPool = VulkanDescriptorPool(device, 1, poolConfig);
         context.descSet = context.descPool.allocateSet(context.descSetLayout);
@@ -352,25 +352,25 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, Camera *camera,
             
             pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
-			u32 offset = 0;
+            u32 offset = 0;
             for (u32 attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
             {
                 const auto attr = layout.getAttribute(attrIndex);
-	            auto format = getVertexAttributeFormat(attr);
+                auto format = getVertexAttributeFormat(attr);
                 
-            	auto location = attr.location;
-				auto found = true;
+                auto location = attr.location;
+                auto found = true;
                 if (!attr.name.empty())
                 {
-					if (effectVertexAttrs.count(attr.name))
-						location = effectVertexAttrs.at(attr.name).location;
-					else
-						found = false;
+                    if (effectVertexAttrs.count(attr.name))
+                        location = effectVertexAttrs.at(attr.name).location;
+                    else
+                        found = false;
                 }
-				if (found)
-					pipelineConfig.withVertexAttribute(location, binding, format, offset);
+                if (found)
+                    pipelineConfig.withVertexAttribute(location, binding, format, offset);
 
-				offset += attr.size;
+                offset += attr.size;
             }
         }
 
@@ -425,7 +425,7 @@ void VulkanRenderer::prepareAndBindMesh(
     const auto &materialSamplers = vkMaterial->getSamplers();
     
     auto &context = ensurePipelineContext(transform, camera, vkMaterial, vkMesh, renderPass);
-	context.frameOfLastUse = frame;
+    context.frameOfLastUse = frame;
 
     // Run the desc set updater
     // TODO Not so often - only when something really changes
@@ -479,11 +479,11 @@ void VulkanRenderer::prepareAndBindMesh(
 
 void VulkanRenderer::beginFrame()
 {
-	frame++;
+    frame++;
     currentCamera = nullptr;
     currentRenderPass = nullptr;
     currentCmdBuffer = nullptr;
-	prevSemaphore = swapchain.moveNext();
+    prevSemaphore = swapchain.moveNext();
 }
 
 void VulkanRenderer::endFrame()
@@ -491,58 +491,58 @@ void VulkanRenderer::endFrame()
     swapchain.present(queue, 1, &prevSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
 
-	// Naive cleanup TODO better
-	if (frame % 100 == 0)
-	{
-		cleanupUnusedPipelineContexts();
-		cleanupUnusedRenderPassContexts();
-	}
+    // Naive cleanup TODO better
+    if (frame % 100 == 0)
+    {
+        cleanupUnusedPipelineContexts();
+        cleanupUnusedRenderPassContexts();
+    }
 }
 
 void VulkanRenderer::cleanupUnusedRenderPassContexts()
 {
-	bool removed;
-	do
-	{
-		removed = false;
-		VulkanRenderPass* key = nullptr;
-		for (const auto &p: renderPassContexts)
-		{
-			const auto frameOfLastUse = p.second.frameOfLastUse;
-			if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
-				(frame < frameOfLastUse && frameOfLastUse - frame >= 100))
-			{
-				key = p.first;
-				removed = true;
-			}
-		}
-		if (removed)
-			renderPassContexts.erase(key);
-	}
-	while (removed);
+    bool removed;
+    do
+    {
+        removed = false;
+        VulkanRenderPass* key = nullptr;
+        for (const auto &p: renderPassContexts)
+        {
+            const auto frameOfLastUse = p.second.frameOfLastUse;
+            if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
+                (frame < frameOfLastUse && frameOfLastUse - frame >= 100))
+            {
+                key = p.first;
+                removed = true;
+            }
+        }
+        if (removed)
+            renderPassContexts.erase(key);
+    }
+    while (removed);
 }
 
 void VulkanRenderer::cleanupUnusedPipelineContexts()
 {
-	bool removed;
-	do
-	{
-		removed = false;
-		size_t key = 0;
-		for (const auto &p: pipelineContexts)
-		{
-			const auto frameOfLastUse = p.second.frameOfLastUse;
-			if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
-				(frame < frameOfLastUse && frameOfLastUse - frame >= 100))
-			{
-				key = p.first;
-				removed = true;
-			}
-		}
-		if (removed)
-			pipelineContexts.erase(key);
-	}
-	while (removed);
+    bool removed;
+    do
+    {
+        removed = false;
+        size_t key = 0;
+        for (const auto &p: pipelineContexts)
+        {
+            const auto frameOfLastUse = p.second.frameOfLastUse;
+            if ((frame > frameOfLastUse && frame - frameOfLastUse >= 100) ||
+                (frame < frameOfLastUse && frameOfLastUse - frame >= 100))
+            {
+                key = p.first;
+                removed = true;
+            }
+        }
+        if (removed)
+            pipelineContexts.erase(key);
+    }
+    while (removed);
 }
 
 #endif

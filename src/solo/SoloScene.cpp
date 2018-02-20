@@ -118,39 +118,8 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &acce
         }
     }
 
-	cleanupDeleted();
+    cleanupDeleted();
 }
-
-// TODO More optimal, avoid several component traversals
-//void Scene::render()
-//{
-//    std::sort(cameras.begin(), cameras.end(), [](auto c1, auto c2) { return c1->getOrder() < c2->getOrder(); });
-//
-//    s32 usedLayers[32]{};
-//    visit([&](Component *cmp)
-//    {
-//        if (cmp->getLayer() < 32)
-//            usedLayers[cmp->getLayer()] = 1;
-//    });
-//
-//    for (auto &camera: cameras)
-//    {
-//        camera->renderFrame([&]()
-//        {
-//            for (s32 layer = 0; layer < 32; layer++)
-//            {
-//                if (!usedLayers[layer])
-//                    continue;
-//            
-//                visitByTags(camera->getTagMask(), [&](Component *cmp)
-//                {
-//                    if (cmp->getLayer() == layer)
-//                        cmp->render();
-//                });
-//            }
-//        });
-//    }
-//}
 
 auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component*
 {

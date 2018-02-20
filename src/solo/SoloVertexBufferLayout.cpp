@@ -17,18 +17,18 @@ void VertexBufferLayout::addNamedAttribute(u32 elementCount, const str &name)
 
 void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics)
 {
-	switch (semantics)
-	{
-		case VertexAttributeSemantics::Position:
-			addNamedAttribute(3, "sl_Position");
-			break;
-		case VertexAttributeSemantics::Normal:
-			addNamedAttribute(3, "sl_Normal");
-			break;
-		case VertexAttributeSemantics::TexCoord:
-			addNamedAttribute(2, "sl_TexCoord");
-			break;
-		default:
-			return panic("Unknown vertex attribute semantics");
-	}
+    switch (semantics)
+    {
+        case VertexAttributeSemantics::Position:
+            addNamedAttribute(3, "sl_Position");
+            break;
+        case VertexAttributeSemantics::Normal:
+            addNamedAttribute(3, "sl_Normal");
+            break;
+        case VertexAttributeSemantics::TexCoord:
+            addNamedAttribute(2, "sl_TexCoord");
+            break;
+        default:
+            return panic("Unknown vertex attribute semantics");
+    }
 }

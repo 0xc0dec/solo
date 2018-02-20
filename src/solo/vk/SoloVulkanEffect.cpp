@@ -44,8 +44,8 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
         options
     );
 
-	const auto compilationStatus = result.GetCompilationStatus();
-	const auto errorMessage = result.GetErrorMessage();
+    const auto compilationStatus = result.GetCompilationStatus();
+    const auto errorMessage = result.GetErrorMessage();
     panicIf(compilationStatus != shaderc_compilation_status_success, errorMessage);
 
     return result;

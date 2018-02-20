@@ -29,7 +29,7 @@ namespace solo
         {
             umap<str, UniformBufferMember> members;
             u32 binding = 0;
-			u32 size = 0;
+            u32 size = 0;
         };
 
         struct Sampler
@@ -47,7 +47,7 @@ namespace solo
             const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
 
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
-		~VulkanEffect() = default;
+        ~VulkanEffect() = default;
 
         auto getVertexShaderModule() const -> VkShaderModule { return vertexShader; }
         auto getFragmentShaderModule() const -> VkShaderModule { return fragmentShader; }

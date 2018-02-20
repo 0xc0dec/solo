@@ -36,7 +36,7 @@ namespace solo
         static auto loadFromFile(Device *device, const str &path) -> sptr<Mesh>;
         static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>;
 
-		virtual ~Mesh() = default;
+        virtual ~Mesh() = default;
 
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
         virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
@@ -51,7 +51,7 @@ namespace solo
         virtual void setPrimitiveType(PrimitiveType type) = 0;
 
     protected:
-		Mesh() = default;
+        Mesh() = default;
 
         void initAsQuadMesh();
         void initAsCubeMesh();

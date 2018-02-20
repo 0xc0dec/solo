@@ -40,7 +40,7 @@ namespace solo
 
     enum class TextureFormat
     {
-		Depth,
+        Depth,
         Red,
         RGB, // Not supported in Vulkan (my driver doesn't like it)
         RGBA
@@ -49,9 +49,9 @@ namespace solo
     class Texture: public NoCopyAndMove
     {
     public:
-		virtual ~Texture() = default;
+        virtual ~Texture() = default;
 
-		auto getFormat() const -> TextureFormat { return format; }
+        auto getFormat() const -> TextureFormat { return format; }
 
         auto getHorizontalWrap() const -> TextureWrap { return horizontalWrap; }
         auto getVerticalWrap() const -> TextureWrap { return verticalWrap; }
@@ -68,7 +68,7 @@ namespace solo
         void setAnisotropyLevel(float level);
 
     protected:
-		TextureFormat format = TextureFormat::RGBA;
+        TextureFormat format = TextureFormat::RGBA;
 
         TextureWrap horizontalWrap = TextureWrap::ClampToEdge;
         TextureWrap verticalWrap = TextureWrap::ClampToEdge;
@@ -79,7 +79,7 @@ namespace solo
 
         float anisotropyLevel = 1.0f;
 
-	    explicit Texture(TextureFormat format);
+        explicit Texture(TextureFormat format);
 
         virtual void rebuild() {}
     };
@@ -105,12 +105,12 @@ namespace solo
     public:
         static auto loadFromFaceFiles(Device *device,
             const str& positiveXPath, const str& negativeXPath,
-			const str& positiveYPath, const str& negativeYPath,
-			const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>;
+            const str& positiveYPath, const str& negativeYPath,
+            const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>;
         static auto loadFromFaceFilesAsync(Device *device,
             const str& positiveXPath, const str& negativeXPath,
-			const str& positiveYPath, const str& negativeYPath,
-			const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
+            const str& positiveYPath, const str& negativeYPath,
+            const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
 
         auto getDepthWrap() const -> TextureWrap { return depthWrap; }

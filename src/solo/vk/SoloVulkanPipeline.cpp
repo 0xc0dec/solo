@@ -133,7 +133,7 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     fragmentShader(fragmentShader),
     rasterStateInfo{},
     depthStencilStateInfo{},
-	colorBlendAttachmentState{}
+    colorBlendAttachmentState{}
 {
     rasterStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
     rasterStateInfo.pNext = nullptr;
@@ -149,12 +149,12 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
     rasterStateInfo.depthBiasSlopeFactor = 0;
     rasterStateInfo.lineWidth = 1;
 
-	depthStencilStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    depthStencilStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
     depthStencilStateInfo.flags = 0;
-	depthStencilStateInfo.depthTestEnable = true;
-	depthStencilStateInfo.depthWriteEnable = true;
-	depthStencilStateInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
-	depthStencilStateInfo.back.compareOp = VK_COMPARE_OP_ALWAYS;
+    depthStencilStateInfo.depthTestEnable = true;
+    depthStencilStateInfo.depthWriteEnable = true;
+    depthStencilStateInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+    depthStencilStateInfo.back.compareOp = VK_COMPARE_OP_ALWAYS;
     depthStencilStateInfo.front = depthStencilStateInfo.back;
 
     colorBlendAttachmentState.blendEnable = VK_FALSE;
@@ -169,22 +169,22 @@ VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShader
 
 auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&
 {
-	VkVertexInputAttributeDescription desc{};
-	desc.location = location;
-	desc.binding = binding;
-	desc.format = format;
-	desc.offset = offset;
-	vertexAttrs.push_back(desc);
+    VkVertexInputAttributeDescription desc{};
+    desc.location = location;
+    desc.binding = binding;
+    desc.format = format;
+    desc.offset = offset;
+    vertexAttrs.push_back(desc);
     return *this;
 }
 
 auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&
 {
-	VkVertexInputBindingDescription desc{};
+    VkVertexInputBindingDescription desc{};
     desc.binding = binding;
     desc.stride = stride;
     desc.inputRate = inputRate;
-	vertexBindings.push_back(desc);
+    vertexBindings.push_back(desc);
     return *this;
 }
 

@@ -104,7 +104,7 @@ void FontRenderer::rebuildMesh()
     mesh = Mesh::create(node.getScene()->getDevice());
 
     VertexBufferLayout positionsLayout;
-	positionsLayout.addSemanticAttribute(VertexAttributeSemantics::Position);
+    positionsLayout.addSemanticAttribute(VertexAttributeSemantics::Position);
     mesh->addDynamicVertexBuffer(positionsLayout, reinterpret_cast<const float *>(vertices.data()), static_cast<u32>(vertices.size()));
 
     VertexBufferLayout uvsLayout;

@@ -17,7 +17,7 @@ namespace solo
     {
     public:
         VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader);
-		~VulkanPipelineConfig() = default;
+        ~VulkanPipelineConfig() = default;
 
         auto withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&;
         auto withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&;
@@ -50,12 +50,12 @@ namespace solo
     {
     public:
         VulkanPipeline() = default;
-	    VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config);
+        VulkanPipeline(VkDevice device, VkRenderPass renderPass, const VulkanPipelineConfig &config);
         VulkanPipeline(const VulkanPipeline &other) = delete;
         VulkanPipeline(VulkanPipeline &&other) = default;
         ~VulkanPipeline() = default;
 
-	    auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
+        auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
         auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
 
         operator VkPipeline() { return pipeline; }

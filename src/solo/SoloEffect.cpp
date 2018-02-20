@@ -16,24 +16,24 @@ using namespace solo;
 auto Effect::loadFromSourceFile(Device *device, const str &path) -> sptr<Effect>
 {
     const auto source = device->getFileSystem()->readText(path);
-	return createFromSource(device, source);
+    return createFromSource(device, source);
 }
 
 auto Effect::loadFromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
 {
-	const auto desc = device->getFileSystem()->readText(path);
-	return createFromDescription(device, desc);
+    const auto desc = device->getFileSystem()->readText(path);
+    return createFromDescription(device, desc);
 }
 
 auto Effect::createFromDescription(Device* device, const str& description) -> sptr<Effect>
 {
-	const auto source = device->getScriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
-	return createFromSource(device, source);
+    const auto source = device->getScriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
+    return createFromSource(device, source);
 }
 
 auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
 {
-	const auto vertTagStartIdx = source.find("// VERTEX");
+    const auto vertTagStartIdx = source.find("// VERTEX");
     panicIf(vertTagStartIdx == std::string::npos, SL_FMT("Vertex shader not found in ", source));
 
     const auto fragTagStartIdx = source.find("// FRAGMENT");

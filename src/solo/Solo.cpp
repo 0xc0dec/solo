@@ -31,7 +31,7 @@ int main(int argc, s8 *argv[])
     }
     catch (const std::exception &e)
     {
-		Logger::global().logCritical(e.what());
+        Logger::global().logCritical(e.what());
         return 2;
     }
     

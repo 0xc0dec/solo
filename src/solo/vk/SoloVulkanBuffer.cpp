@@ -78,22 +78,22 @@ VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBuffer
 void VulkanBuffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
-	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
-	memcpy(ptr, newData, size);
-	vkUnmapMemory(device, memory);
+    SL_VK_CHECK_RESULT(vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, &ptr));
+    memcpy(ptr, newData, size);
+    vkUnmapMemory(device, memory);
 }
 
 void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 {
     void *ptr = nullptr;
-	SL_VK_CHECK_RESULT(vkMapMemory(device, memory, offset, VK_WHOLE_SIZE, 0, &ptr));
-	memcpy(ptr, newData, size);
-	vkUnmapMemory(device, memory);
+    SL_VK_CHECK_RESULT(vkMapMemory(device, memory, offset, VK_WHOLE_SIZE, 0, &ptr));
+    memcpy(ptr, newData, size);
+    vkUnmapMemory(device, memory);
 }
 
 void VulkanBuffer::transferTo(const VulkanBuffer &dst, VkQueue queue, VkCommandPool cmdPool) const
 {
-	const auto cmdBuf = vk::createCommandBuffer(device, cmdPool, true);
+    const auto cmdBuf = vk::createCommandBuffer(device, cmdPool, true);
 
     VkBufferCopy copyRegion{};
     copyRegion.size = dst.size;

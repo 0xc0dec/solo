@@ -13,11 +13,11 @@ namespace solo
     class BulletCollider: public NoCopyAndMove
     {
     public:
-		virtual ~BulletCollider() = default;
+        virtual ~BulletCollider() = default;
 
         virtual auto getShape() -> btCollisionShape* = 0;
 
     protected:
-		BulletCollider() = default;
+        BulletCollider() = default;
     };
 }

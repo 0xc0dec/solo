@@ -42,10 +42,10 @@
 
 #ifdef SL_DEBUG
 #   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
-#	define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(__VA_ARGS__))
+#   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(__VA_ARGS__))
 #else
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
-#	define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
+#   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 namespace solo
@@ -67,77 +67,77 @@ namespace solo
     using u32 = uint32_t;
     using u64 = uint64_t;
 
-	class NoCopyAndMove
-	{
-	public:
-		NoCopyAndMove() = default;
-		virtual ~NoCopyAndMove() = default;
+    class NoCopyAndMove
+    {
+    public:
+        NoCopyAndMove() = default;
+        virtual ~NoCopyAndMove() = default;
 
-		NoCopyAndMove(const NoCopyAndMove &other) = delete;
-		NoCopyAndMove(NoCopyAndMove &&other) = delete;
-		auto operator=(const NoCopyAndMove &other) -> NoCopyAndMove& = delete;
-		auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
-	};
+        NoCopyAndMove(const NoCopyAndMove &other) = delete;
+        NoCopyAndMove(NoCopyAndMove &&other) = delete;
+        auto operator=(const NoCopyAndMove &other) -> NoCopyAndMove& = delete;
+        auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
+    };
 
     template <class T>
     class FriendToken
     {
         friend T;
-		FriendToken() = default;
+        FriendToken() = default;
     };
 
-	class Device;
+    class Device;
 
-	class Logger: public NoCopyAndMove
+    class Logger: public NoCopyAndMove
     {
     public:
-		static auto global() -> Logger&;
+        static auto global() -> Logger&;
 
-		static auto create(const FriendToken<Device> &) -> sptr<Logger>;
+        static auto create(const FriendToken<Device> &) -> sptr<Logger>;
         
-		virtual ~Logger() = default;
+        virtual ~Logger() = default;
 
-		virtual void setTargetFile(const str &path) = 0;
+        virtual void setTargetFile(const str &path) = 0;
 
         virtual void logDebug(const str &msg) = 0;
         virtual void logInfo(const str &msg) = 0;
         virtual void logWarning(const str &msg) = 0;
         virtual void logError(const str &msg) = 0;
-		virtual void logCritical(const str &msg) = 0;
+        virtual void logCritical(const str &msg) = 0;
 
     protected:
-		Logger() = default;
+        Logger() = default;
     };
 
-	template <class T = void> T panic(const str &msg)
-	{
+    template <class T = void> T panic(const str &msg)
+    {
 #ifdef SL_DEBUG
-		Logger::global().logCritical(SL_FMT(msg, " (", __FILE__, " line ", __LINE__, ")"));
-		exit(1);
+        Logger::global().logCritical(SL_FMT(msg, " (", __FILE__, " line ", __LINE__, ")"));
+        exit(1);
 #endif
-		return T();
-	}
+        return T();
+    }
 
-	template <class T = void> T panic()
-	{
-		return panic("<empty message>");
-	}
+    template <class T = void> T panic()
+    {
+        return panic("<empty message>");
+    }
 
-	template <class T = void> T panicIf(bool condition, const str &msg)
-	{
+    template <class T = void> T panicIf(bool condition, const str &msg)
+    {
 #ifdef SL_DEBUG
-		if (condition)
-			return panic(msg);
+        if (condition)
+            return panic(msg);
 #endif
-		return T();
-	}
+        return T();
+    }
 
-	template <class T = void> T panicIf(bool condition)
-	{
+    template <class T = void> T panicIf(bool condition)
+    {
 #ifdef SL_DEBUG
-		if (condition)
-			return panic();
+        if (condition)
+            return panic();
 #endif
-		return T();
-	}
+        return T();
+    }
 }

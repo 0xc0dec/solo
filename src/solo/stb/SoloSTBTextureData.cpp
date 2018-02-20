@@ -21,7 +21,7 @@ static auto toImageFormat(int components) -> TextureFormat
         case 3: return TextureFormat::RGB;
         case 4: return TextureFormat::RGBA;
         default:
-			return panic<TextureFormat>(SL_FMT("Unsupported components count ", components));
+            return panic<TextureFormat>(SL_FMT("Unsupported components count ", components));
     }
 }
 
@@ -56,23 +56,23 @@ auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STB
 }
 
 bool STBCubeTextureData::canLoadFromFaceFiles(
-	const str& positiveXPath, const str& negativeXPath,
-	const str& positiveYPath, const str& negativeYPath,
-	const str& positiveZPath, const str& negativeZPath)
+    const str& positiveXPath, const str& negativeXPath,
+    const str& positiveYPath, const str& negativeYPath,
+    const str& positiveZPath, const str& negativeZPath)
 {
-	return STBTexture2DData::canLoadFromFile(positiveXPath) &&
-		STBTexture2DData::canLoadFromFile(negativeXPath) &&
-		STBTexture2DData::canLoadFromFile(positiveYPath) &&
-		STBTexture2DData::canLoadFromFile(negativeYPath) &&
-		STBTexture2DData::canLoadFromFile(positiveZPath) &&
-		STBTexture2DData::canLoadFromFile(negativeZPath);
+    return STBTexture2DData::canLoadFromFile(positiveXPath) &&
+        STBTexture2DData::canLoadFromFile(negativeXPath) &&
+        STBTexture2DData::canLoadFromFile(positiveYPath) &&
+        STBTexture2DData::canLoadFromFile(negativeYPath) &&
+        STBTexture2DData::canLoadFromFile(positiveZPath) &&
+        STBTexture2DData::canLoadFromFile(negativeZPath);
 }
 
 auto STBCubeTextureData::loadFromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
-	const str& positiveYPath, const str& negativeYPath,
-	const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
+    const str& positiveYPath, const str& negativeYPath,
+    const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
 {
     auto tex = std::make_shared<STBCubeTextureData>();
     tex->faces.push_back(STBTexture2DData::loadFromFile(device, positiveXPath));
@@ -84,7 +84,7 @@ auto STBCubeTextureData::loadFromFaceFiles(
     
     SL_DEBUG_BLOCK(
     {
-		const auto dim = tex->faces[0]->getDimensions();
+        const auto dim = tex->faces[0]->getDimensions();
         panicIf(dim.x() != dim.y(), "Cube texture width must be equal to height");
         for (const auto &face: tex->faces)
             panicIf(face->getDimensions() != dim, "All cube texture sizes must match");

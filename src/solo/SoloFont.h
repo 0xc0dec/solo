@@ -31,12 +31,12 @@ namespace solo
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY) -> sptr<Font>;
 
-		virtual ~Font() = default;
+        virtual ~Font() = default;
 
         virtual auto getAtlas() const -> sptr<Texture2D> = 0;
         virtual auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
-		Font() = default;
+        Font() = default;
     };
 }

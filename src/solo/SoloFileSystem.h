@@ -17,7 +17,7 @@ namespace solo
     public:
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>;
 
-		virtual ~FileSystem() = default;
+        virtual ~FileSystem() = default;
 
         virtual auto getStream(const str &path) -> sptr<std::istream>;
 
@@ -30,6 +30,6 @@ namespace solo
         virtual void writeLines(const str &path, const vec<str> &lines);
 
     protected:
-		FileSystem() = default;
+        FileSystem() = default;
     };
 }

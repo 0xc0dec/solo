@@ -47,9 +47,9 @@ void Texture::setAnisotropyLevel(float level)
 }
 
 Texture::Texture(TextureFormat format):
-	format(format)
+    format(format)
 {
-	rebuild(); // yes, virtual call
+    rebuild(); // yes, virtual call
 }
 
 auto Texture2D::loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
@@ -98,30 +98,30 @@ auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generat
 }
 
 Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
-	Texture(format),
-	dimensions(dimensions)
+    Texture(format),
+    dimensions(dimensions)
 {
 }
 
 auto CubeTexture::loadFromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
-	const str& positiveYPath, const str& negativeYPath,
-	const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
+    const str& positiveYPath, const str& negativeYPath,
+    const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
 {
     auto data = CubeTextureData::loadFromFaceFiles(
-		device,
-		positiveXPath, negativeXPath,
-		positiveYPath, negativeYPath,
-		positiveZPath, negativeZPath);
+        device,
+        positiveXPath, negativeXPath,
+        positiveYPath, negativeYPath,
+        positiveZPath, negativeZPath);
     return createFromData(device, data.get());
 }
 
 auto CubeTexture::loadFromFaceFilesAsync(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
-	const str& positiveYPath, const str& negativeYPath,
-	const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
+    const str& positiveYPath, const str& negativeYPath,
+    const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
 
@@ -129,10 +129,10 @@ auto CubeTexture::loadFromFaceFilesAsync(
     {
         // TODO run each face loading in separate jobs
         return CubeTextureData::loadFromFaceFiles(
-			device,
-			positiveXPath, negativeXPath,
-			positiveYPath, negativeYPath,
-			positiveZPath, negativeZPath);
+            device,
+            positiveXPath, negativeXPath,
+            positiveYPath, negativeYPath,
+            positiveZPath, negativeZPath);
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
@@ -163,8 +163,8 @@ auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<
 }
 
 CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
-	Texture(format),
-	dimension(dimension)
+    Texture(format),
+    dimension(dimension)
 {
     rebuild();
 }

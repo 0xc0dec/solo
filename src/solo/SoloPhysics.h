@@ -31,7 +31,7 @@ namespace solo
     public:
         static auto create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>;
 
-		virtual ~Physics() = default;
+        virtual ~Physics() = default;
 
         virtual void update() = 0;
 

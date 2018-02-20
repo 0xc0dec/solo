@@ -36,10 +36,10 @@ void Ray::setDirection(const Vector3 &direction)
 
 void Ray::normalize()
 {
-	if (direction.isZero())
-		return;
+    if (direction.isZero())
+        return;
 
-	const auto normalizeFactor = 1.0f / direction.length();
+    const auto normalizeFactor = 1.0f / direction.length();
     if (!math::areEqual(normalizeFactor, 1.0f))
     {
         direction.x() *= normalizeFactor;

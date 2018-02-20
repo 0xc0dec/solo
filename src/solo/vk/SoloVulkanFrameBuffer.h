@@ -15,14 +15,14 @@
 
 namespace solo
 {
-	class VulkanTexture2D;
+    class VulkanTexture2D;
 
     class VulkanFrameBuffer final: public FrameBuffer
     {
     public:
-		static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
+        static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
         
-		~VulkanFrameBuffer() = default;
+        ~VulkanFrameBuffer() = default;
 
         auto getHandle() const -> VkFramebuffer { return frameBuffer; }
         auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
@@ -31,10 +31,10 @@ namespace solo
     private:
         VulkanRenderPass renderPass;
         VulkanResource<VkFramebuffer> frameBuffer;
-		vec<sptr<VulkanTexture2D>> colorAttachments;
-		sptr<VulkanTexture2D> depthAttachment;
+        vec<sptr<VulkanTexture2D>> colorAttachments;
+        sptr<VulkanTexture2D> depthAttachment;
 
-		VulkanFrameBuffer() = default;
+        VulkanFrameBuffer() = default;
     };
 }
 

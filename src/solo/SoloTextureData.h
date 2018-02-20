@@ -19,15 +19,15 @@ namespace solo
         static auto loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>;
         static auto createFromMemory(u32 width, u32 height, TextureFormat format, const vec<u8> &data) -> sptr<Texture2DData>;
 
-		virtual ~Texture2DData() = default;
+        virtual ~Texture2DData() = default;
 
         virtual auto getSize() const -> u32 = 0;
-		virtual auto getDimensions() const -> Vector2 = 0;
+        virtual auto getDimensions() const -> Vector2 = 0;
         virtual auto getData() const -> const void* = 0;
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:
-		Texture2DData() = default;
+        Texture2DData() = default;
     };
 
     class CubeTextureData: public NoCopyAndMove
@@ -36,9 +36,9 @@ namespace solo
         static auto loadFromFaceFiles(
             Device *device,
             const str& positiveXPath, const str& negativeXPath,
-			const str& positiveYPath, const str& negativeYPath,
-			const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>;
-	
+            const str& positiveYPath, const str& negativeYPath,
+            const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>;
+    
         virtual ~CubeTextureData() = default;
 
         virtual auto getSize() const -> u32 = 0;
@@ -48,6 +48,6 @@ namespace solo
         virtual auto getFormat() const -> TextureFormat = 0;
 
     protected:
-		CubeTextureData() = default;
+        CubeTextureData() = default;
     };
 }

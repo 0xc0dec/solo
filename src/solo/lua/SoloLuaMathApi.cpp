@@ -20,11 +20,11 @@ static void registerVector2(CppBindModule<LuaBinding> &module)
     auto binding = BEGIN_CLASS(module, Vector2);
     REG_CTOR(binding, float, float);
     binding.addProperty("x",
-		static_cast<float(Vector2::*)()const>(&Vector2::x),
-		[](Vector2 *v, float val) { v->x() = val; });
+        static_cast<float(Vector2::*)()const>(&Vector2::x),
+        [](Vector2 *v, float val) { v->x() = val; });
     binding.addProperty("y",
-		static_cast<float(Vector2::*)()const>(&Vector2::y),
-		[](Vector2 *v, float val) { v->y() = val; });
+        static_cast<float(Vector2::*)()const>(&Vector2::y),
+        [](Vector2 *v, float val) { v->y() = val; });
     REG_METHOD(binding, Vector2, isUnit);
     REG_METHOD(binding, Vector2, isZero);
     REG_METHOD(binding, Vector2, distance);
@@ -46,15 +46,15 @@ static void registerVector3(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Vector3);
     REG_CTOR(binding, float, float, float);
-	binding.addProperty("x",
-		static_cast<float(Vector3::*)()const>(&Vector3::x),
-		[](Vector3 *v, float val) { v->x() = val; });
+    binding.addProperty("x",
+        static_cast<float(Vector3::*)()const>(&Vector3::x),
+        [](Vector3 *v, float val) { v->x() = val; });
     binding.addProperty("y",
-		static_cast<float(Vector3::*)()const>(&Vector3::y),
-		[](Vector3 *v, float val) { v->y() = val; });
-	binding.addProperty("z",
-		static_cast<float(Vector3::*)()const>(&Vector3::z),
-		[](Vector3 *v, float val) { v->z() = val; });
+        static_cast<float(Vector3::*)()const>(&Vector3::y),
+        [](Vector3 *v, float val) { v->y() = val; });
+    binding.addProperty("z",
+        static_cast<float(Vector3::*)()const>(&Vector3::z),
+        [](Vector3 *v, float val) { v->z() = val; });
     REG_METHOD(binding, Vector3, isUnit);
     REG_METHOD(binding, Vector3, isZero);
     REG_METHOD(binding, Vector3, distance);
@@ -78,17 +78,17 @@ static void registerVector4(CppBindModule<LuaBinding> &module)
     auto binding = BEGIN_CLASS(module, Vector4);
     REG_CTOR(binding, float, float, float, float);
     binding.addProperty("x",
-		static_cast<float(Vector4::*)()const>(&Vector4::x),
-		[](Vector4 *v, float val) { v->x() = val; });
+        static_cast<float(Vector4::*)()const>(&Vector4::x),
+        [](Vector4 *v, float val) { v->x() = val; });
     binding.addProperty("y",
-		static_cast<float(Vector4::*)()const>(&Vector4::y),
-		[](Vector4 *v, float val) { v->y() = val; });
-	binding.addProperty("z",
-		static_cast<float(Vector4::*)()const>(&Vector4::z),
-		[](Vector4 *v, float val) { v->z() = val; });
-	binding.addProperty("w",
-		static_cast<float(Vector4::*)()const>(&Vector4::w),
-		[](Vector4 *v, float val) { v->w() = val; });
+        static_cast<float(Vector4::*)()const>(&Vector4::y),
+        [](Vector4 *v, float val) { v->y() = val; });
+    binding.addProperty("z",
+        static_cast<float(Vector4::*)()const>(&Vector4::z),
+        [](Vector4 *v, float val) { v->z() = val; });
+    binding.addProperty("w",
+        static_cast<float(Vector4::*)()const>(&Vector4::w),
+        [](Vector4 *v, float val) { v->w() = val; });
     REG_METHOD(binding, Vector4, isUnit);
     REG_METHOD(binding, Vector4, isZero);
     REG_METHOD(binding, Vector4, distance);
@@ -110,18 +110,18 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Quaternion);
     REG_CTOR(binding);
-	binding.addProperty("x",
-		static_cast<float(Quaternion::*)()const>(&Quaternion::x),
-		[](Quaternion *v, float val) { v->x() = val; });
-	binding.addProperty("y",
-		static_cast<float(Quaternion::*)()const>(&Quaternion::y),
-		[](Quaternion *v, float val) { v->y() = val; });
-	binding.addProperty("z",
-		static_cast<float(Quaternion::*)()const>(&Quaternion::z),
-		[](Quaternion *v, float val) { v->z() = val; });
-	binding.addProperty("w",
-		static_cast<float(Quaternion::*)()const>(&Quaternion::w),
-		[](Quaternion *v, float val) { v->w() = val; });
+    binding.addProperty("x",
+        static_cast<float(Quaternion::*)()const>(&Quaternion::x),
+        [](Quaternion *v, float val) { v->x() = val; });
+    binding.addProperty("y",
+        static_cast<float(Quaternion::*)()const>(&Quaternion::y),
+        [](Quaternion *v, float val) { v->y() = val; });
+    binding.addProperty("z",
+        static_cast<float(Quaternion::*)()const>(&Quaternion::z),
+        [](Quaternion *v, float val) { v->z() = val; });
+    binding.addProperty("w",
+        static_cast<float(Quaternion::*)()const>(&Quaternion::w),
+        [](Quaternion *v, float val) { v->w() = val; });
     REG_STATIC_METHOD(binding, Quaternion, createFromAxisAngle);
     REG_STATIC_METHOD(binding, Quaternion, lerp);
     REG_STATIC_METHOD(binding, Quaternion, slerp);
@@ -142,8 +142,8 @@ static void registerRadians(CppBindModule<LuaBinding> &module)
     REG_CTOR(binding, float);
     REG_METHOD(binding, Radians, toRawDegrees);
     REG_METHOD(binding, Radians, toRawRadians);
-	REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](const Degrees &d) { return Radians(d); }, "fromDegrees");
-	REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](float rawDegree) { return Radians(Degrees(rawDegree)); }, "fromRawDegrees");
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](const Degrees &d) { return Radians(d); }, "fromDegrees");
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](float rawDegree) { return Radians(Degrees(rawDegree)); }, "fromRawDegrees");
     REG_META_METHOD(binding, "__unm", [](const Radians &r) { return -r; });
     REG_META_METHOD(binding, "__add", [](const Radians &r1, const Radians &r2) { return r1 + r2; });
     REG_META_METHOD(binding, "__sub", [](const Radians &r1, const Radians &r2) { return r1 - r2; });

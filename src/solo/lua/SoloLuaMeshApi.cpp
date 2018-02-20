@@ -64,7 +64,7 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     REG_METHOD(mesh, Mesh, getPartCount);
     REG_METHOD(mesh, Mesh, getPrimitiveType);
     REG_METHOD(mesh, Mesh, setPrimitiveType);
-	mesh.endClass();
+    mesh.endClass();
 }
 
 void registerMeshApi(CppBindModule<LuaBinding> &module)

@@ -20,7 +20,7 @@ namespace solo
     public:
         static auto create(Device *device) -> sptr<Scene>;
 
-		~Scene() = default;
+        ~Scene() = default;
 
         auto getDevice() const -> Device* { return device; }
 
@@ -32,7 +32,7 @@ namespace solo
         void addComponent(u32 nodeId, sptr<Component> cmp);
         void removeComponent(u32 nodeId, u32 typeId);
 
-		void visit(const std::function<void(Component*)> &accept);
+        void visit(const std::function<void(Component*)> &accept);
         void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
 
     private:

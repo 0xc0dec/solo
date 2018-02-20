@@ -56,8 +56,8 @@ void Device::initSubsystems(const DeviceSetup &setup)
 {
     const FriendToken<Device> token;
 
-	if (!setup.logFilePath.empty())
-		Logger::global().setTargetFile(setup.logFilePath);
+    if (!setup.logFilePath.empty())
+        Logger::global().setTargetFile(setup.logFilePath);
 
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);

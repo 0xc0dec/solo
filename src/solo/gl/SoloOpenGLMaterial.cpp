@@ -244,7 +244,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         }
 
         default:
-			return panic("Unsupported bind parameter semantics");
+            return panic("Unsupported bind parameter semantics");
     }
 }
 
@@ -252,8 +252,8 @@ void OpenGLMaterial::setParameter(const str &paramName, const std::function<Para
 {
     auto name = paramName;
     const auto idx = paramName.find_last_of(':');
-	if (idx != std::string::npos)
-		name.replace(idx, 1, "_");
+    if (idx != std::string::npos)
+        name.replace(idx, 1, "_");
     const auto info = effect->getUniformInfo(name);
     appliers[paramName] = getApplier(info.location, info.samplerIndex);
 }

@@ -23,13 +23,13 @@ namespace solo
         ~STBTexture2DData();
 
         auto getSize() const -> u32 override final { return dimensions.x() * dimensions.y() * channels; }
-	    auto getDimensions() const -> Vector2 override final { return dimensions; }
+        auto getDimensions() const -> Vector2 override final { return dimensions; }
         auto getData() const -> const void * override final { return data; }
         auto getFormat() const -> TextureFormat override final { return format; }
 
     private:
         u32 channels = 0;
-		Vector2 dimensions;
+        Vector2 dimensions;
         TextureFormat format = TextureFormat::RGB;
         stbi_uc *data = nullptr;
     };
@@ -39,13 +39,13 @@ namespace solo
     public:
         static bool canLoadFromFaceFiles(
             const str& positiveXPath, const str& negativeXPath,
-			const str& positiveYPath, const str& negativeYPath,
-			const str& positiveZPath, const str& negativeZPath);
+            const str& positiveYPath, const str& negativeYPath,
+            const str& positiveZPath, const str& negativeZPath);
         static auto loadFromFaceFiles(
             Device *device,
             const str& positiveXPath, const str& negativeXPath,
-			const str& positiveYPath, const str& negativeYPath,
-			const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>;
+            const str& positiveYPath, const str& negativeYPath,
+            const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>;
 
         auto getSize() const -> u32 override final;
         auto getSize(u32 face) const -> u32 override final;

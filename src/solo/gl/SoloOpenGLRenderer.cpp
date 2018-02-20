@@ -166,7 +166,7 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
-	Logger::global().logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
+    Logger::global().logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
 }
 
 void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)

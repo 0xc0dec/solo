@@ -33,12 +33,12 @@ namespace solo
     {
     public:
         VulkanRenderPass() = default;
-	    VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config);
+        VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config);
         VulkanRenderPass(const VulkanRenderPass &other) = delete;
         VulkanRenderPass(VulkanRenderPass &&other) = default;
         ~VulkanRenderPass() = default;
 
-	    auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
+        auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
         void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);

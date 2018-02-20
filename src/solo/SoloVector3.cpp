@@ -8,7 +8,7 @@
 using namespace solo;
 
 Vector3::Vector3(const glm::vec3 &data):
-	data(data)
+    data(data)
 {
 }
 
@@ -24,7 +24,7 @@ Vector3::Vector3(float x, float y, float z):
 
 auto Vector3::operator+(const Vector3 &v) const -> Vector3
 {
-	return data + v.data;
+    return data + v.data;
 }
 
 bool Vector3::isZero() const
@@ -48,17 +48,17 @@ auto Vector3::angle(const Vector3 &v) const -> Radians
 
 void Vector3::clamp(const Vector3 &min, const Vector3 &max)
 {
-	data = glm::clamp(data, min.data, max.data);
+    data = glm::clamp(data, min.data, max.data);
 }
 
 auto Vector3::cross(const Vector3 &v) const -> Vector3
 {
-	return glm::cross(data, v.data);
+    return glm::cross(data, v.data);
 }
 
 auto Vector3::distance(const Vector3 &v) const -> float
 {
-	return glm::distance(data, v.data);
+    return glm::distance(data, v.data);
 }
 
 auto Vector3::dot(const Vector3 &v) const -> float
@@ -73,19 +73,19 @@ auto Vector3::length() const -> float
 
 auto Vector3::normalized() const -> Vector3
 {
-	return glm::normalize(data);
+    return glm::normalize(data);
 }
 
 void Vector3::normalize()
 {
-	if (!isZero())
-		data = glm::normalize(data);
+    if (!isZero())
+        data = glm::normalize(data);
 }
 
 auto Vector3::operator=(const glm::vec3 &other) -> Vector3 &
 {
-	data = other;
-	return *this;
+    data = other;
+    return *this;
 }
 
 bool Vector3::operator==(const Vector3 &v) const
@@ -95,61 +95,61 @@ bool Vector3::operator==(const Vector3 &v) const
 
 bool Vector3::operator!=(const Vector3 &v) const
 {
-	return !operator==(v);
+    return !operator==(v);
 }
 
 auto Vector3::operator+(float scalar) const -> Vector3
 {
-	return data + scalar;
+    return data + scalar;
 }
 
 auto Vector3::operator+=(const Vector3 &v) -> Vector3 &
 {
-	data += v.data;
+    data += v.data;
     return *this;
 }
 
 auto Vector3::operator+=(float scalar) -> Vector3 &
 {
-	data += scalar;
+    data += scalar;
     return *this;
 }
 
 auto Vector3::operator-() const -> Vector3
 {
-	return -data;
+    return -data;
 }
 
 auto Vector3::operator-(float scalar) const -> Vector3
 {
-	return data - scalar;
+    return data - scalar;
 }
 
 auto Vector3::operator-(const Vector3 &v) const -> Vector3
 {
-	return data - v.data;
+    return data - v.data;
 }
 
 auto Vector3::operator-=(const Vector3 &v) -> Vector3 &
 {
-	data -= v.data;
+    data -= v.data;
     return *this;
 }
 
 auto Vector3::operator-=(float scalar) -> Vector3 &
 {
-	data -= scalar;
+    data -= scalar;
     return *this;
 }
 
 auto Vector3::operator*(float scalar) const -> Vector3
 {
-	return data * scalar;
+    return data * scalar;
 }
 
 auto Vector3::operator*=(float scalar) -> Vector3 &
 {
-	data *= scalar;
+    data *= scalar;
     return *this;
 }
 
@@ -160,6 +160,6 @@ auto Vector3::operator/(const float scalar) const -> Vector3
 
 auto Vector3::operator/=(float scalar) -> Vector3 &
 {
-	data /= scalar;
+    data /= scalar;
     return *this;
 }

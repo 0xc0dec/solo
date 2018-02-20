@@ -22,7 +22,7 @@ namespace solo
     public:
         static auto create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>;
 
-		virtual ~Renderer() = default;
+        virtual ~Renderer() = default;
 
         virtual void beginCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
         virtual void endCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
@@ -32,7 +32,7 @@ namespace solo
         void renderFrame(std::function<void()> render);
 
     protected:
-		Renderer() = default;
+        Renderer() = default;
 
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;

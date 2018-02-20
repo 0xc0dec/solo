@@ -17,13 +17,13 @@ VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice devi
 auto VulkanDescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType descriptorType, u32 descriptorCount,
     VkShaderStageFlagBits stageFlags) -> VulkanDescriptorSetLayoutBuilder&
 {
-	VkDescriptorSetLayoutBinding b{};
+    VkDescriptorSetLayoutBinding b{};
     b.binding = binding;
     b.descriptorType = descriptorType;
     b.descriptorCount = descriptorCount;
     b.stageFlags = stageFlags;
     b.pImmutableSamplers = nullptr;
-	bindings.push_back(b);
+    bindings.push_back(b);
 
     return *this;
 }

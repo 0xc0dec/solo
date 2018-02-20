@@ -70,7 +70,7 @@ namespace solo
     public:
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
-		virtual ~Device() = default;
+        virtual ~Device() = default;
 
         virtual auto getWindowTitle() const -> str = 0;
         virtual void setWindowTitle(const str &title) = 0;

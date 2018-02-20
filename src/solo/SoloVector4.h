@@ -14,18 +14,18 @@ namespace solo
     {
     public:
         Vector4() = default;
-		Vector4(const glm::vec4 &data);
-		Vector4(float all);
+        Vector4(const glm::vec4 &data);
+        Vector4(float all);
         Vector4(float x, float y, float z, float w);
 
-		auto x() -> float& { return data.x; }
-		auto x() const -> float { return data.x; }
-		auto y() -> float& { return data.y; }
-		auto y() const -> float { return data.y; }
-		auto z() -> float& { return data.z; }
-		auto z() const -> float { return data.z; }
-		auto w() -> float& { return data.w; }
-		auto w() const -> float { return data.w; }
+        auto x() -> float& { return data.x; }
+        auto x() const -> float { return data.x; }
+        auto y() -> float& { return data.y; }
+        auto y() const -> float { return data.y; }
+        auto z() -> float& { return data.z; }
+        auto z() const -> float { return data.z; }
+        auto w() -> float& { return data.w; }
+        auto w() const -> float { return data.w; }
 
         bool isZero() const;
         bool isUnit() const;
@@ -38,7 +38,7 @@ namespace solo
         void clamp(const Vector4 &min, const Vector4 &max);
         auto dot(const Vector4 &v) const -> float;
 
-		auto operator=(const glm::vec4 &other) -> Vector4&;
+        auto operator=(const glm::vec4 &other) -> Vector4&;
 
         bool operator==(const Vector4 &v) const;
         bool operator!=(const Vector4 &v) const;
@@ -61,6 +61,6 @@ namespace solo
         auto operator/=(float x) -> Vector4&;
 
     private:
-		glm::vec4 data;
+        glm::vec4 data;
     };
 }

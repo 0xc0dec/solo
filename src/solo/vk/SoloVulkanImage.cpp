@@ -21,7 +21,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGB:
         case TextureFormat::RGBA: return VK_FORMAT_R8G8B8A8_UNORM; // since my driver seems not liking 24-bit
         case TextureFormat::Red: return VK_FORMAT_R8_UNORM;
-		case TextureFormat::Depth: return VK_FORMAT_D16_UNORM;
+        case TextureFormat::Depth: return VK_FORMAT_D16_UNORM;
         default:
             return panic<VkFormat>("Unsupported image format");
     }
@@ -75,16 +75,16 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     const auto size = data->getSize();
     const auto format = toVulkanFormat(data->getFormat());
     const auto withMipmaps = generateMipmaps && size; // generating mips for non-empty textures
-	const auto isDepth = data->getFormat() == TextureFormat::Depth;
-	const auto colorOrDepthUsage = isDepth
-		? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
-		: VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-	const auto aspect = isDepth
-		? VK_IMAGE_ASPECT_DEPTH_BIT
-		: VK_IMAGE_ASPECT_COLOR_BIT;
-	const auto targetLayout = isDepth
-		? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
-		: VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto isDepth = data->getFormat() == TextureFormat::Depth;
+    const auto colorOrDepthUsage = isDepth
+        ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
+        : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    const auto aspect = isDepth
+        ? VK_IMAGE_ASPECT_DEPTH_BIT
+        : VK_IMAGE_ASPECT_COLOR_BIT;
+    const auto targetLayout = isDepth
+        ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
+        : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     u32 mipLevels = 1;
     if (withMipmaps)
@@ -104,13 +104,13 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         width, height,
         mipLevels, 1,
         format,
-		targetLayout,
+        targetLayout,
         0,
-		VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage,
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage,
         VK_IMAGE_VIEW_TYPE_2D,
         aspect);
 
-	const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+    const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
     if (size) // depth images should not fall into here
     {
@@ -127,11 +127,11 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
 
         VkImageSubresourceRange subresourceRange{};
-	    subresourceRange.aspectMask = image.aspectMask;
-	    subresourceRange.baseArrayLayer = 0;
-	    subresourceRange.baseMipLevel = 0;
-	    subresourceRange.levelCount = 1;
-	    subresourceRange.layerCount = 1;
+        subresourceRange.aspectMask = image.aspectMask;
+        subresourceRange.baseArrayLayer = 0;
+        subresourceRange.baseMipLevel = 0;
+        subresourceRange.levelCount = 1;
+        subresourceRange.layerCount = 1;
 
         vk::setImageLayout(
             initCmdBuf,
@@ -139,8 +139,8 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
             VK_IMAGE_LAYOUT_UNDEFINED,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
             subresourceRange,
-			VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-			VK_PIPELINE_STAGE_TRANSFER_BIT);
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TRANSFER_BIT);
 
         vkCmdCopyBufferToImage(
             initCmdBuf,
@@ -158,38 +158,38 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                 subresourceRange,
-				VK_PIPELINE_STAGE_TRANSFER_BIT,
-				VK_PIPELINE_STAGE_TRANSFER_BIT);
+                VK_PIPELINE_STAGE_TRANSFER_BIT,
+                VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-			vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+            vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
 
             const auto blitCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
             for (u32 i = 1; i < mipLevels; i++)
             {
-                VkImageBlit imageBlit{};				
+                VkImageBlit imageBlit{};                
 
-			    // Source
-			    imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			    imageBlit.srcSubresource.layerCount = 1;
-			    imageBlit.srcSubresource.mipLevel = i - 1;
-			    imageBlit.srcOffsets[1].x = s32(width >> (i - 1));
-			    imageBlit.srcOffsets[1].y = s32(height >> (i - 1));
-			    imageBlit.srcOffsets[1].z = 1;
+                // Source
+                imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                imageBlit.srcSubresource.layerCount = 1;
+                imageBlit.srcSubresource.mipLevel = i - 1;
+                imageBlit.srcOffsets[1].x = s32(width >> (i - 1));
+                imageBlit.srcOffsets[1].y = s32(height >> (i - 1));
+                imageBlit.srcOffsets[1].z = 1;
 
-			    // Destination
-			    imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			    imageBlit.dstSubresource.layerCount = 1;
-			    imageBlit.dstSubresource.mipLevel = i;
-			    imageBlit.dstOffsets[1].x = s32(width >> i);
-			    imageBlit.dstOffsets[1].y = s32(height >> i);
-			    imageBlit.dstOffsets[1].z = 1;
+                // Destination
+                imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                imageBlit.dstSubresource.layerCount = 1;
+                imageBlit.dstSubresource.mipLevel = i;
+                imageBlit.dstOffsets[1].x = s32(width >> i);
+                imageBlit.dstOffsets[1].y = s32(height >> i);
+                imageBlit.dstOffsets[1].z = 1;
 
-			    VkImageSubresourceRange mipSubRange{};
-			    mipSubRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-			    mipSubRange.baseMipLevel = i;
-			    mipSubRange.levelCount = 1;
-			    mipSubRange.layerCount = 1;
+                VkImageSubresourceRange mipSubRange{};
+                mipSubRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                mipSubRange.baseMipLevel = i;
+                mipSubRange.levelCount = 1;
+                mipSubRange.layerCount = 1;
 
                 vk::setImageLayout(
                     blitCmdBuf,
@@ -201,14 +201,14 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
                     VK_PIPELINE_STAGE_TRANSFER_BIT);
 
                 vkCmdBlitImage(
-				    blitCmdBuf,
-				    image.image,
-				    VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-				    image.image,
-				    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-				    1,
-				    &imageBlit,
-				    VK_FILTER_LINEAR);
+                    blitCmdBuf,
+                    image.image,
+                    VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                    image.image,
+                    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                    1,
+                    &imageBlit,
+                    VK_FILTER_LINEAR);
 
                 vk::setImageLayout(
                     blitCmdBuf,
@@ -227,8 +227,8 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                 targetLayout,
                 subresourceRange,
-				VK_PIPELINE_STAGE_TRANSFER_BIT,
-				VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+                VK_PIPELINE_STAGE_TRANSFER_BIT,
+                VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
             vk::flushCommandBuffer(blitCmdBuf, renderer->getQueue());
         }
@@ -243,16 +243,16 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
                 VK_PIPELINE_STAGE_TRANSFER_BIT,
                 VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-			vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+            vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
         }
     }
     else // blank texture
     {
         VkImageSubresourceRange subresourceRange{};
-	    subresourceRange.aspectMask = image.aspectMask;
-	    subresourceRange.baseMipLevel = 0;
-	    subresourceRange.levelCount = 1;
-	    subresourceRange.layerCount = 1;
+        subresourceRange.aspectMask = image.aspectMask;
+        subresourceRange.baseMipLevel = 0;
+        subresourceRange.levelCount = 1;
+        subresourceRange.layerCount = 1;
 
         vk::setImageLayout(
             initCmdBuf,
@@ -263,7 +263,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, // TODO veeery unsure about this, but validator doesn't complain
             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-		vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
     }
 
     return image;
@@ -276,13 +276,13 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     const auto width = data->getDimension();
     const auto height = width;
     const auto format = toVulkanFormat(data->getFormat());
-	const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
     auto image = VulkanImage(
         renderer,
         width, height, mipLevels, layers,
         format,
-		targetLayout,
+        targetLayout,
         VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         VK_IMAGE_VIEW_TYPE_CUBE,
@@ -290,17 +290,17 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     );
 
     VkImageSubresourceRange subresourceRange{};
-	subresourceRange.aspectMask = image.aspectMask;
-	subresourceRange.baseArrayLayer = 0;
-	subresourceRange.baseMipLevel = 0;
-	subresourceRange.levelCount = mipLevels;
-	subresourceRange.layerCount = layers;
+    subresourceRange.aspectMask = image.aspectMask;
+    subresourceRange.baseArrayLayer = 0;
+    subresourceRange.baseMipLevel = 0;
+    subresourceRange.levelCount = mipLevels;
+    subresourceRange.layerCount = layers;
 
     const auto size = data->getSize();
     if (size)
     {
-	    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-		vk::beginCommandBuffer(cmdBuf, true);
+        const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+        vk::beginCommandBuffer(cmdBuf, true);
 
         vk::setImageLayout(
             cmdBuf,
@@ -314,7 +314,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
 
         // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
-		// Vulkan's Y axis is inverted, so we invert
+        // Vulkan's Y axis is inverted, so we invert
         static vec<u32> layerFaceMapping = {0, 1, 3, 2, 4, 5};
         
         u32 offset = 0;
@@ -358,12 +358,12 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_PIPELINE_STAGE_TRANSFER_BIT,
             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-		vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
     }
     else // empty
     {
-	    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-		vk::beginCommandBuffer(cmdBuf, true);
+        const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+        vk::beginCommandBuffer(cmdBuf, true);
 
         vk::setImageLayout(
             cmdBuf,
@@ -374,7 +374,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
 
-		vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
     }
 
     return image;
@@ -382,7 +382,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
 VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
-	layout(layout),
+    layout(layout),
     format(format),
     mipLevels(mipLevels),
     width(width),

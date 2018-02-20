@@ -58,9 +58,9 @@ static auto createSampler(
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.flags = 0;
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-	samplerInfo.maxAnisotropy = physicalFeatures.samplerAnisotropy
-		? (std::min)(anisotropyLevel, physicalProps.limits.maxSamplerAnisotropy)
-		: 1;
+    samplerInfo.maxAnisotropy = physicalFeatures.samplerAnisotropy
+        ? (std::min)(anisotropyLevel, physicalProps.limits.maxSamplerAnisotropy)
+        : 1;
     samplerInfo.anisotropyEnable = physicalFeatures.samplerAnisotropy && anisotropic;
     samplerInfo.magFilter = toFilter(magFilter);
     samplerInfo.minFilter = toFilter(minFilter);
@@ -89,14 +89,14 @@ VulkanTexture::VulkanTexture(Device *device):
 
 auto VulkanTexture2D::createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<VulkanTexture2D>
 {
-	auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getFormat(), data->getDimensions()));
-	result->image = VulkanImage::create2D(result->renderer, data, generateMipmaps);
-	result->rebuildSampler();
-	return result;
+    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getFormat(), data->getDimensions()));
+    result->image = VulkanImage::create2D(result->renderer, data, generateMipmaps);
+    result->rebuildSampler();
+    return result;
 }
 
 VulkanTexture2D::VulkanTexture2D(Device *device, TextureFormat format, Vector2 dimensions):
-	Texture2D(format, dimensions),
+    Texture2D(format, dimensions),
     VulkanTexture(device)
 {
 }
@@ -120,10 +120,10 @@ void VulkanTexture2D::rebuildSampler()
 
 auto VulkanCubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<VulkanCubeTexture>
 {
-	auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getFormat(), data->getDimension()));
-	result->image = VulkanImage::createCube(result->renderer, data);
-	result->rebuildSampler();
-	return result;
+    auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getFormat(), data->getDimension()));
+    result->image = VulkanImage::createCube(result->renderer, data);
+    result->rebuildSampler();
+    return result;
 }
 
 VulkanCubeTexture::VulkanCubeTexture(Device *device, TextureFormat format, u32 dimension):

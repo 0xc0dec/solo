@@ -11,12 +11,12 @@
 using namespace solo;
 
 Quaternion::Quaternion(float x, float y, float z, float w):
-	data{x, y, z, w}
+    data{x, y, z, w}
 {
 }
 
 Quaternion::Quaternion(const glm::quat &data):
-	data(data)
+    data(data)
 {
 }
 
@@ -43,7 +43,7 @@ bool Quaternion::isZero() const
 
 auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion
 {
-	return glm::angleAxis(angle.toRawRadians(), static_cast<glm::vec3>(axis));
+    return glm::angleAxis(angle.toRawRadians(), static_cast<glm::vec3>(axis));
 }
 
 void Quaternion::conjugate()
@@ -55,22 +55,22 @@ void Quaternion::conjugate()
 
 void Quaternion::invert()
 {
-	data = glm::inverse(data);
+    data = glm::inverse(data);
 }
 
 void Quaternion::normalize()
 {
-	data = glm::normalize(data);
+    data = glm::normalize(data);
 }
 
 auto Quaternion::normalized() const -> Quaternion
 {
-	return glm::normalize(data);
+    return glm::normalize(data);
 }
 
 auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radians
 {
-	const auto q = normalized();
+    const auto q = normalized();
     axis.x() = q.x();
     axis.y() = q.y();
     axis.z() = q.z();
@@ -80,21 +80,21 @@ auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radians
 
 auto Quaternion::lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
-	return glm::lerp(static_cast<glm::quat>(q1), static_cast<glm::quat>(q2), t);
+    return glm::lerp(static_cast<glm::quat>(q1), static_cast<glm::quat>(q2), t);
 }
 
 auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion
 {
-	return glm::slerp(static_cast<glm::quat>(q1), static_cast<glm::quat>(q2), t);
+    return glm::slerp(static_cast<glm::quat>(q1), static_cast<glm::quat>(q2), t);
 }
 
 auto Quaternion::operator*=(const Quaternion &q) -> Quaternion &
 {
-	data *= q.data;
+    data *= q.data;
     return *this;
 }
 
 auto Quaternion::operator*(const Quaternion &q) const -> Quaternion
 {
-	return data * q.data;
+    return data * q.data;
 }

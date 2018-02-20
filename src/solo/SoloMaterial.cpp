@@ -17,8 +17,8 @@ static const char * const skyboxPrefabEffect = R"(
     vertex = {
         uniformBuffers = {
             matrices = {
-				worldView = "mat4",
-				proj = "mat4"
+                worldView = "mat4",
+                proj = "mat4"
             }
         },
 
@@ -69,13 +69,13 @@ static const char * const fontPrefabEffect = R"(
     vertex = {
         uniformBuffers = {
             matrices = {
-				wvp = "mat4"
+                wvp = "mat4"
             }
         },
 
         inputs = {
-			sl_Position = "vec4",
-			sl_TexCoord = "vec2"
+            sl_Position = "vec4",
+            sl_TexCoord = "vec2"
         },
 
         outputs = {
@@ -130,28 +130,28 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 
 auto Material::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<Material>
 {
-	switch (prefab)
-	{
-		case MaterialPrefab::Font:
-		{
-			const auto effect = Effect::createFromDescription(device, fontPrefabEffect);
-			auto material = create(device, effect);
-			material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
-			return material;
-		}
+    switch (prefab)
+    {
+        case MaterialPrefab::Font:
+        {
+            const auto effect = Effect::createFromDescription(device, fontPrefabEffect);
+            auto material = create(device, effect);
+            material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
+            return material;
+        }
 
-		case MaterialPrefab::Skybox:
-		{
-			const auto effect = Effect::createFromDescription(device, skyboxPrefabEffect);
-			auto material = create(device, effect);
-			material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
+        case MaterialPrefab::Skybox:
+        {
+            const auto effect = Effect::createFromDescription(device, skyboxPrefabEffect);
+            auto material = create(device, effect);
+            material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
             material->bindParameter("matrices:worldView", BindParameterSemantics::WorldViewMatrix);
-			return material;	
-		}
+            return material;    
+        }
 
-		default:
-			return panic<nullptr_t>("Unknown material prefab");
-	}
+        default:
+            return panic<nullptr_t>("Unknown material prefab");
+    }
 }
 
 void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)

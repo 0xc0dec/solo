@@ -9,12 +9,12 @@
 
 namespace solo
 {
-	enum class VertexAttributeSemantics
-	{
-		Position,
-		Normal,
-		TexCoord
-	};
+    enum class VertexAttributeSemantics
+    {
+        Position,
+        Normal,
+        TexCoord
+    };
 
     class VertexAttribute final
     {
@@ -30,7 +30,7 @@ namespace solo
     {
     public:
         void addNamedAttribute(u32 elementCount, const str &name);
-		void addSemanticAttribute(VertexAttributeSemantics semantics);
+        void addSemanticAttribute(VertexAttributeSemantics semantics);
 
         auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs.size()); }
         auto getAttribute(u32 index) const -> VertexAttribute { return attrs.at(index); }

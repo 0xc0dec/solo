@@ -12,9 +12,9 @@ namespace solo
     class Collider: public NoCopyAndMove
     {
     public:
-		virtual ~Collider() = default;
+        virtual ~Collider() = default;
 
     protected:
-		Collider() = default;
+        Collider() = default;
     };
 }
