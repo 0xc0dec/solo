@@ -4,29 +4,47 @@
 -- 
 
 return function()
-    local cubeMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Cube)
-    local quadMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
-    
     local cobbleStone = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Cobblestone.png"), true)
     cobbleStone:setAnisotropyLevel(16)
 
-    local effectCache = {}
+    local cache = {}
+
+    function getOrAdd(key, factory)
+        if not cache[key] then
+            cache[key] = factory()
+        end
+
+        return cache[key]
+    end
 
     return {
         getEffect = function(name)
             local path = "../../src/demos/effects/" .. name .. ".lua"
-            local key = path
-
-            if not effectCache[key] then
-                effectCache[key] = sl.Effect.loadFromDescriptionFile(sl.device, path)
-            end
-
-            return effectCache[key]
+            return getOrAdd(path, function()
+                return sl.Effect.loadFromDescriptionFile(sl.device, path)
+            end)
         end,
 
         meshes = {
-            cube = cubeMesh,
-            quad = quadMesh
+            getBox = function()
+                return getOrAdd("mesh_box", function()
+                    local layout = sl.VertexBufferLayout()
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Box.dae"), layout)
+                end)
+            end,
+
+            getQuad = function()
+                return getOrAdd("mesh_quad", function()
+                    local layout = sl.VertexBufferLayout()
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
+                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Quad.dae"), layout)
+                end)
+            end
         },
 
         textures = {

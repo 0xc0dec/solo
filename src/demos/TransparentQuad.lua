@@ -31,7 +31,7 @@ return function(scene, assetCache)
     node:findComponent("Transform"):setLocalPosition(vec3(2, 0, 0))
 
     local renderer = node:addComponent("MeshRenderer")
-    renderer:setMesh(assetCache.meshes.quad)
+    renderer:setMesh(assetCache.meshes.getQuad())
     renderer:setMaterial(0, material)
     renderer:setTag(tags.transparent)
 

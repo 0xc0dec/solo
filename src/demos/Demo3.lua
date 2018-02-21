@@ -214,7 +214,7 @@ function demo()
     local deferQuadNode = scene:createNode()
     local deferQuadRenderer = deferQuadNode:addComponent("MeshRenderer")
     deferQuadRenderer:setTag(tags.postProcessorStep) -- TODO use other tag
-    deferQuadRenderer:setMesh(assetCache.meshes.quad)
+    deferQuadRenderer:setMesh(assetCache.meshes.getQuad())
     deferQuadRenderer:setMaterial(0, deferMaterial);
 
     local mainCam, camNode = createMainCamera(scene)

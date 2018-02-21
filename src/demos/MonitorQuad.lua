@@ -28,7 +28,7 @@ return function(scene, assetCache, offscreenCameraTex)
     transform:setLocalScale(vec3(5, 5 * canvasSize.y / canvasSize.x, 1))
     
     local renderer = node:addComponent("MeshRenderer")
-    renderer:setMesh(assetCache.meshes.quad)
+    renderer:setMesh(assetCache.meshes.getQuad())
     renderer:setMaterial(0, material)
     renderer:setTag(tags.monitor)
 

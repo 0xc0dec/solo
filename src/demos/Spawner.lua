@@ -54,7 +54,7 @@ return function(assetCache)
             node:addScriptComponent(sl.createComponent("SpawnedObject", {}))
             
             local renderer = node:addComponent("MeshRenderer")
-            renderer:setMesh(assetCache.meshes.cube)
+            renderer:setMesh(assetCache.meshes.getBox())
             renderer:setMaterial(0, material)
 
             local size = 0.1 + math.random()

@@ -12,7 +12,7 @@ local function createStep(camera, material, target, assetCache)
     local node = scene:createNode()
     local quadRenderer = node:addComponent("MeshRenderer")
     quadRenderer:setTag(tags.postProcessorStep)
-    quadRenderer:setMesh(assetCache.meshes.quad)
+    quadRenderer:setMesh(assetCache.meshes.getQuad())
     quadRenderer:setMaterial(0, material); -- TODO setting nil as material here causes VK renderer to crash
 
     return {

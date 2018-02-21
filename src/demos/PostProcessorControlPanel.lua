@@ -74,7 +74,7 @@ return function(assetCache, mainCameraNode, postProcessor)
             local node = self.scene:createNode()
             
             local renderer = node:addComponent("MeshRenderer")
-            renderer:setMesh(assetCache.meshes.cube)
+            renderer:setMesh(assetCache.meshes.getBox())
             renderer:setMaterial(0, material)
     
             local transform = node:findComponent("Transform")

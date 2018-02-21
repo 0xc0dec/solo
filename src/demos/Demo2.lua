@@ -182,7 +182,7 @@ function demo()
         transform:setLocalPosition(vec3(0, -2, 0))
     
         local renderer = node:addComponent("MeshRenderer")
-        renderer:setMesh(assetCache.meshes.cube)
+        renderer:setMesh(assetCache.meshes.getBox())
         renderer:setMaterial(0, material)
 
         return renderer
