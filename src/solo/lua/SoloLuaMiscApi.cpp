@@ -7,7 +7,6 @@
 #include "SoloLuaCommon.h"
 #include "SoloScene.h"
 #include "SoloMeshRenderer.h"
-#include "SoloSkyboxRenderer.h"
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
 #include "SoloMesh.h"
@@ -61,14 +60,6 @@ static void registerSpectator(CppBindModule<LuaBinding> &module)
     REG_METHOD(spec, Spectator, setRotationAcceleration);
 }
 
-static void registerSkyboxRenderer(CppBindModule<LuaBinding> &module)
-{
-    auto r = BEGIN_CLASS_EXTEND(module, SkyboxRenderer, Component);
-    REG_METHOD_NULLABLE_1ST_ARG(r, SkyboxRenderer, setTexture, sptr<CubeTexture>);
-    REG_METHOD(r, SkyboxRenderer, getTexture);
-    r.endClass();
-}
-
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
     auto eff = BEGIN_CLASS(module, Effect);
@@ -113,6 +104,5 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerScene(module);
     registerFrameBuffer(module);
     registerSpectator(module);
-    registerSkyboxRenderer(module);
     registerAsyncHandles(module);
 }

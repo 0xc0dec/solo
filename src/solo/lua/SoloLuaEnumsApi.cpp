@@ -58,7 +58,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
 
     {
         auto m = module.beginModule("MaterialPrefab");
-        REG_MODULE_CONSTANT(m, MaterialPrefab, Skybox);
         REG_MODULE_CONSTANT(m, MaterialPrefab, Font);
         m.endModule();
     }

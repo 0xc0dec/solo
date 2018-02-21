@@ -3,7 +3,12 @@
 -- MIT license
 -- 
 
-local mat = sl.Material.createFromPrefab(sl.device, sl.MaterialPrefab.Skybox)
+local eff = sl.Effect.createFromSource(sl.device, [[
+    // VERTEX
+    ...
+    // FRAGMENT
+]])
+local mat = sl.Material.create(sl.device, eff)
 local tex = sl.Texture2D.createEmpty(sl.device, 1, 1, sl.TextureFormat.RGB8)
 
 mat:setFloatParameter("p1", 1)

@@ -6,7 +6,6 @@
 #include "SoloLuaScriptComponent.h"
 #include "SoloTransform.h"
 #include "SoloMeshRenderer.h"
-#include "SoloSkyboxRenderer.h"
 #include "SoloFontRenderer.h"
 #include "SoloCamera.h"
 #include "SoloSpectator.h"
@@ -20,7 +19,6 @@ static umap<str, u32> builtInComponents = {
     {"MeshRenderer", MeshRenderer::getId()},
     {"Camera", Camera::getId()},
     {"Spectator", Spectator::getId()},
-    {"SkyboxRenderer", SkyboxRenderer::getId()},
     {"FontRenderer", FontRenderer::getId()},
     {"RigidBody", RigidBody::getId()}
 };
@@ -41,8 +39,6 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
         return node->addComponent<Camera>();
     if (name == "Spectator")
         return node->addComponent<Spectator>();
-    if (name == "SkyboxRenderer")
-        return node->addComponent<SkyboxRenderer>();
     if (name == "FontRenderer")
         return node->addComponent<FontRenderer>();
     if (name == "RigidBody")

@@ -139,7 +139,6 @@
     <ClInclude Include="..\src\solo\SoloRigidBody.h" />
     <ClInclude Include="..\src\solo\SoloScene.h" />
     <ClInclude Include="..\src\solo\SoloScriptRuntime.h" />
-    <ClInclude Include="..\src\solo\SoloSkyboxRenderer.h" />
     <ClInclude Include="..\src\solo\SoloSpectator.h" />
     <ClInclude Include="..\src\solo\SoloTexture.h" />
     <ClInclude Include="..\src\solo\SoloTransform.h" />
@@ -309,7 +308,6 @@
     <ClCompile Include="..\src\solo\SoloRigidBody.cpp" />
     <ClCompile Include="..\src\solo\SoloScene.cpp" />
     <ClCompile Include="..\src\solo\SoloScriptRuntime.cpp" />
-    <ClCompile Include="..\src\solo\SoloSkyboxRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloSpectator.cpp" />
     <ClCompile Include="..\src\solo\SoloTexture.cpp" />
     <ClCompile Include="..\src\solo\SoloTransform.cpp" />

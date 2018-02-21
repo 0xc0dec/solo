@@ -12,58 +12,6 @@
 
 using namespace solo;
 
-static const char * const skyboxPrefabEffect = R"(
-{
-    vertex = {
-        uniformBuffers = {
-            matrices = {
-                worldView = "mat4",
-                proj = "mat4"
-            }
-        },
-
-        inputs = {
-            sl_Position = "vec4"
-        },
-
-        outputs = {
-            eyeDir = "vec3"
-        },
-
-        code = [[
-            void main()
-            {
-                vec4 pos = sl_Position;
-                SL_FIX_Y#pos#;
-
-                mat4 invProjMatrix = inverse(#matrices:proj#);
-                mat3 invModelViewMatrix = inverse(mat3(#matrices:worldView#));
-                vec3 unprojected = (invProjMatrix * pos).xyz;
-                eyeDir = invModelViewMatrix * unprojected;
-                gl_Position = sl_Position;
-                SL_FIX_Y#eyeDir#;
-            }
-        ]]
-    },
-
-    fragment = {
-        samplers = {
-            mainTex = "samplerCube"
-        },
-
-        outputs = {
-            fragColor = { type = "vec4", target = 0 }
-        },
-
-        code = [[
-            void main()
-            {
-                fragColor = texture(mainTex, eyeDir);
-            }
-        ]]
-    }
-})";
-
 static const char * const fontPrefabEffect = R"(
 {
     vertex = {
@@ -138,15 +86,6 @@ auto Material::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<M
             auto material = create(device, effect);
             material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
             return material;
-        }
-
-        case MaterialPrefab::Skybox:
-        {
-            const auto effect = Effect::createFromDescription(device, skyboxPrefabEffect);
-            auto material = create(device, effect);
-            material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
-            material->bindParameter("matrices:worldView", BindParameterSemantics::WorldViewMatrix);
-            return material;    
         }
 
         default:

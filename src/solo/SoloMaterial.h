@@ -79,7 +79,6 @@ namespace solo
 
     enum class MaterialPrefab
     {
-        Skybox,
         Font
     };
 

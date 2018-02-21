@@ -20,7 +20,6 @@ assert(sl.TextureMipFilter.Nearest ~= nil)
 assert(sl.TextureMipFilter.Linear ~= nil)
 assert(sl.TextureMipFilter.None ~= nil)
 
-assert(sl.MaterialPrefab.Skybox ~= nil)
 assert(sl.MaterialPrefab.Font ~= nil)
 
 assert(sl.FaceCull.None ~= nil)
