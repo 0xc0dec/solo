@@ -14,14 +14,41 @@
 
 using namespace solo;
 
+static void detectFormatSupport(VkPhysicalDevice device, VkFormat format, umap<VkFormat, VkFormatFeatureFlags> &supportedFormats)
+{
+    // TODO Check for linear tiling as well
+    VkFormatProperties formatProps;
+    vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
+    if (formatProps.optimalTilingFeatures)
+        supportedFormats[format] = formatProps.optimalTilingFeatures;
+}
+
+static bool isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features)
+{
+    static umap<VkFormat, VkFormatFeatureFlags> supportedFormats;
+    static auto initialized = false;
+    
+    if (!initialized)
+    {
+        detectFormatSupport(device, VK_FORMAT_R8_UNORM, supportedFormats);
+        detectFormatSupport(device, VK_FORMAT_R8G8B8A8_UNORM, supportedFormats);
+        detectFormatSupport(device, VK_FORMAT_R16G16B16A16_SFLOAT, supportedFormats);
+        detectFormatSupport(device, VK_FORMAT_D32_SFLOAT, supportedFormats);
+
+        initialized = true;
+    }
+
+    return supportedFormats.count(format) && (supportedFormats.at(format) & features) == features;
+}
+
 static auto toVulkanFormat(TextureFormat format) -> VkFormat
 {
     switch (format)
     {
+        case TextureFormat::R8: return VK_FORMAT_R8_UNORM;
         case TextureFormat::RGB8: // TODO real 24-bit? They crash my driver...
         case TextureFormat::RGBA8: return VK_FORMAT_R8G8B8A8_UNORM;
         case TextureFormat::RGBA16F: return VK_FORMAT_R16G16B16A16_SFLOAT;
-        case TextureFormat::R8: return VK_FORMAT_R8_UNORM;
         case TextureFormat::Depth24: return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
         default:
             return panic<VkFormat>("Unsupported image format");
@@ -74,8 +101,14 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
     const auto isDepth = format == TextureFormat::Depth24;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    const auto usage = VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage;
     const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
     const auto format_ = toVulkanFormat(format);
+
+    // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
+    panicIf(!isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT));
+    panicIf(!isDepth && !isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT));
+    panicIf(isDepth && !isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT));
 
     auto image = VulkanImage(
         renderer,
@@ -84,7 +117,7 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
         format_,
         targetLayout,
         0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage,
+        usage,
         VK_IMAGE_VIEW_TYPE_2D,
         aspect);
 
@@ -116,22 +149,23 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     const auto width = static_cast<u32>(data->getDimensions().x());
     const auto height = static_cast<u32>(data->getDimensions().y());
     const auto format = toVulkanFormat(data->getTextureFormat());
-    const auto isDepth = data->getTextureFormat() == TextureFormat::Depth24;
-    const auto colorOrDepthUsage = isDepth ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-    const auto aspect = isDepth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
-    const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    auto usage =
+        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+        VK_IMAGE_USAGE_SAMPLED_BIT |
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+
+    panicIf(!isFormatSupported(renderer->getPhysicalDevice(), format,
+        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR));
 
     u32 mipLevels = 1;
     if (generateMipmaps)
     {
-        SL_DEBUG_BLOCK({
-            VkFormatProperties formatProperties;
-            vkGetPhysicalDeviceFormatProperties(renderer->getPhysicalDevice(), format, &formatProperties);
-            panicIf(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_SRC_BIT));
-            panicIf(!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_BLIT_DST_BIT));
-        });
-
+        panicIf(!isFormatSupported(renderer->getPhysicalDevice(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT));
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
+        usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     }
 
     auto image = VulkanImage(
@@ -141,9 +175,9 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         format,
         targetLayout,
         0,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | colorOrDepthUsage,
+        usage,
         VK_IMAGE_VIEW_TYPE_2D,
-        aspect);
+        VK_IMAGE_ASPECT_COLOR_BIT);
 
     const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
 
@@ -290,6 +324,15 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     const auto height = width;
     const auto format = toVulkanFormat(data->getTextureFormat());
     const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto usage =
+        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+        VK_IMAGE_USAGE_SAMPLED_BIT |
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+
+    panicIf(!isFormatSupported(renderer->getPhysicalDevice(), format,
+        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR));
 
     auto image = VulkanImage(
         renderer,
@@ -297,7 +340,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         format,
         targetLayout,
         VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+        usage,
         VK_IMAGE_VIEW_TYPE_CUBE,
         VK_IMAGE_ASPECT_COLOR_BIT
     );
@@ -309,86 +352,66 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     subresourceRange.levelCount = mipLevels;
     subresourceRange.layerCount = layers;
 
-    const auto size = data->getSize();
-    if (size)
-    {
-        const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-        vk::beginCommandBuffer(cmdBuf, true);
+    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    vk::beginCommandBuffer(cmdBuf, true);
 
-        vk::setImageLayout(
-            cmdBuf,
-            image.image,
-            VK_IMAGE_LAYOUT_UNDEFINED,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            subresourceRange,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TRANSFER_BIT);
+    vk::setImageLayout(
+        cmdBuf,
+        image.image,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        subresourceRange,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+        VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-        auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
+    auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
 
-        // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
-        // Vulkan's Y axis is inverted, so we invert
-        static vec<u32> layerFaceMapping = {0, 1, 3, 2, 4, 5};
+    // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
+    // Vulkan's Y axis is inverted, so we invert
+    static vec<u32> layerFaceMapping = {0, 1, 3, 2, 4, 5};
         
-        u32 offset = 0;
-        vec<VkBufferImageCopy> copyRegions;
-        for (u32 layer = 0; layer < layers; layer++)
-        {
-            srcBuffer.updatePart(data->getData(layerFaceMapping[layer]), offset, data->getSize(layerFaceMapping[layer]));
-
-            for (u32 level = 0; level < mipLevels; level++)
-            {
-                VkBufferImageCopy bufferCopyRegion{};
-                bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                bufferCopyRegion.imageSubresource.mipLevel = level;
-                bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
-                bufferCopyRegion.imageSubresource.layerCount = 1;
-                bufferCopyRegion.imageExtent.width = data->getDimension();
-                bufferCopyRegion.imageExtent.height = data->getDimension();
-                bufferCopyRegion.imageExtent.depth = 1;
-                bufferCopyRegion.bufferOffset = offset;
-
-                copyRegions.push_back(bufferCopyRegion);
-
-                offset += data->getSize(layer); // TODO use per-level size once TextureData supports mip levels
-            }
-        }
-
-        vkCmdCopyBufferToImage(
-            cmdBuf,
-            srcBuffer,
-            image.image,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            static_cast<u32>(copyRegions.size()),
-            copyRegions.data());
-
-        vk::setImageLayout(
-            cmdBuf,
-            image.image,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            targetLayout,
-            subresourceRange,
-            VK_PIPELINE_STAGE_TRANSFER_BIT,
-            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
-
-        vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
-    }
-    else // empty
+    u32 offset = 0;
+    vec<VkBufferImageCopy> copyRegions;
+    for (u32 layer = 0; layer < layers; layer++)
     {
-        const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
-        vk::beginCommandBuffer(cmdBuf, true);
+        srcBuffer.updatePart(data->getData(layerFaceMapping[layer]), offset, data->getSize(layerFaceMapping[layer]));
 
-        vk::setImageLayout(
-            cmdBuf,
-            image.image,
-            VK_IMAGE_LAYOUT_UNDEFINED,
-            targetLayout,
-            subresourceRange,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+        for (u32 level = 0; level < mipLevels; level++)
+        {
+            VkBufferImageCopy bufferCopyRegion{};
+            bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            bufferCopyRegion.imageSubresource.mipLevel = level;
+            bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
+            bufferCopyRegion.imageSubresource.layerCount = 1;
+            bufferCopyRegion.imageExtent.width = data->getDimension();
+            bufferCopyRegion.imageExtent.height = data->getDimension();
+            bufferCopyRegion.imageExtent.depth = 1;
+            bufferCopyRegion.bufferOffset = offset;
 
-        vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+            copyRegions.push_back(bufferCopyRegion);
+
+            offset += data->getSize(layer); // TODO use per-level size once TextureData supports mip levels
+        }
     }
+
+    vkCmdCopyBufferToImage(
+        cmdBuf,
+        srcBuffer,
+        image.image,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        static_cast<u32>(copyRegions.size()),
+        copyRegions.data());
+
+    vk::setImageLayout(
+        cmdBuf,
+        image.image,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        targetLayout,
+        subresourceRange,
+        VK_PIPELINE_STAGE_TRANSFER_BIT,
+        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+
+    vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
 
     return image;
 }

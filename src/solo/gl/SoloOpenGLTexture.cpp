@@ -22,7 +22,7 @@ static auto getFormatKey(GLenum internalFormat, GLenum format, GLenum type) -> s
     return seed;
 }
 
-static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum type, uset<GLenum> &supportedFormats)
+static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum type, uset<size_t> &supportedFormats)
 {
     glTexImage2D(GL_PROXY_TEXTURE_2D, 0, internalFormat, 32, 32, 0, format, type, nullptr);
     s32 width;
@@ -33,22 +33,27 @@ static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum typ
 
 static bool isFormatSupported(GLenum internalFormat, GLenum format, GLenum type)
 {
-    static uset<GLenum> supportedFormats;
+    static uset<size_t> supportedFormats;
     static auto initialized = false;
     
     if (!initialized)
     {
         detectFormatSupport(GL_R8, GL_RED, GL_UNSIGNED_BYTE, supportedFormats);
+
         detectFormatSupport(GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
         detectFormatSupport(GL_RGB8, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
+
         detectFormatSupport(GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
         detectFormatSupport(GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
+
         detectFormatSupport(GL_RGBA16F, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
         detectFormatSupport(GL_RGBA16F, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
         detectFormatSupport(GL_RGBA16F, GL_RGB, GL_FLOAT, supportedFormats);
         detectFormatSupport(GL_RGBA16F, GL_RGBA, GL_FLOAT, supportedFormats);
+
         detectFormatSupport(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, supportedFormats);
         detectFormatSupport(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT, supportedFormats);
+
         initialized = true;
     }
 
