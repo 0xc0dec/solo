@@ -45,6 +45,7 @@ namespace solo
             VkImageSubresourceRange subresourceRange,
             VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+        bool isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features);
     }
 }
 

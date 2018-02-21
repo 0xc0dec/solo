@@ -171,13 +171,11 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
 
     for (auto &format : depthFormats)
     {
-        VkFormatProperties formatProps;
-        vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
-        if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
+        if (vk::isFormatSupported(device, format, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT))
             return format;
     }
 
-    return VK_FORMAT_UNDEFINED;
+    return panic<VkFormat>("Unable to pick depth format");
 }
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):
