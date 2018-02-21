@@ -44,11 +44,16 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle);
 
+    vec<GLenum> drawBuffers;
     for (u32 i = 0; i < result->colorAttachments.size(); i++)
     {
         const auto tex = result->colorAttachments.at(i);
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, tex->getHandle(), 0);
+        const auto attachment = GL_COLOR_ATTACHMENT0 + i;
+        glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex->getHandle(), 0);
+        drawBuffers.push_back(attachment);
     }
+
+    glDrawBuffers(drawBuffers.size(), drawBuffers.data());
 
     result->dimensions = attachments[0]->getDimensions();
 
