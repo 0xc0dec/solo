@@ -224,7 +224,11 @@ function demo()
         transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
         transform:setLocalPosition(vec3(0, -1, 0))
     
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj")):done(
+        local layout = sl.VertexBufferLayout()
+        layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+        layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
+        layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj"), layout):done(
             function(mesh)
                 renderer:setMesh(mesh)
             end)

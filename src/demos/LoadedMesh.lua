@@ -23,7 +23,11 @@ return function(scene, assetCache)
     transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
     transform:setLocalPosition(vec3(-3, -1, -5))
 
-    sl.Mesh.loadFromFileAsync(sl.device, getAssetPath("meshes/Teapot.obj")):done(
+    local layout = sl.VertexBufferLayout()
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+    sl.Mesh.loadFromFileAsync(sl.device, getAssetPath("meshes/Teapot.obj"), layout):done(
         function(mesh)
             renderer:setMesh(mesh)
         end)

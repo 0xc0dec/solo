@@ -45,6 +45,7 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
     REG_METHOD(layout, VertexBufferLayout, getAttribute);
     REG_METHOD(layout, VertexBufferLayout, getAttributeCount);
     REG_METHOD(layout, VertexBufferLayout, getSize);
+    REG_METHOD(layout, VertexBufferLayout, getElementCount);
     layout.endClass();
 }
 

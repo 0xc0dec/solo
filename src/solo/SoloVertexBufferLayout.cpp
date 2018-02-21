@@ -12,6 +12,7 @@ void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexA
     const auto size = static_cast<u32>(sizeof(float) * elementCount);
     const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;
     attrs.push_back(VertexAttribute{name, elementCount, size, 0, offset, semantics});
+    this->elementCount += elementCount;
     this->size += size;
 }
 

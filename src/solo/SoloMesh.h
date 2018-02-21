@@ -33,8 +33,8 @@ namespace solo
     public:
         static auto create(Device *device) -> sptr<Mesh>;
         static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
-        static auto loadFromFile(Device *device, const str &path) -> sptr<Mesh>;
-        static auto loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>;
+        static auto loadFromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
+        static auto loadFromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
 
         virtual ~Mesh() = default;
 

@@ -19,11 +19,12 @@ using namespace solo;
 
 struct MeshData
 {
-    vec<float> vertices;
-    vec<vec<u16>> parts;
+    vec<float> vertexData;
+    u32 vertexCount = 0;
+    vec<vec<u16>> indexData;
 };
 
-static auto loadMeshData(Device *device, const str &path, const VertexBufferLayout &layout) -> sptr<MeshData>
+static auto loadMeshData(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<MeshData>
 {
     // TODO Implement proper io system for assimp to avoid loading file into memory
     const auto bytes = device->getFileSystem()->readBytes(path);
@@ -50,34 +51,36 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
 			const auto tangent = mesh->HasTangentsAndBitangents() ? &mesh->mTangents[j] : &zeroVec;
 			const auto biTangent = mesh->HasTangentsAndBitangents() ? &mesh->mBitangents[j] : &zeroVec;
 
-            for (u32 k = 0; k < layout.getAttributeCount(); k++)
+            data.vertexCount++;
+
+            for (u32 k = 0; k < bufferLayout.getAttributeCount(); k++)
             {
-                const auto attr = layout.getAttribute(k);
+                const auto attr = bufferLayout.getAttribute(k);
                 switch (attr.semantics)
                 {
                     case VertexAttributeSemantics::Position:
-                        data.vertices.push_back(pos->x);
-			            data.vertices.push_back(pos->y);
-			            data.vertices.push_back(pos->z);
+                        data.vertexData.push_back(pos->x);
+			            data.vertexData.push_back(pos->y);
+			            data.vertexData.push_back(pos->z);
                         break;
                     case VertexAttributeSemantics::Normal:
-                        data.vertices.push_back(normal->x);
-			            data.vertices.push_back(normal->y);
-			            data.vertices.push_back(normal->z);
+                        data.vertexData.push_back(normal->x);
+			            data.vertexData.push_back(normal->y);
+			            data.vertexData.push_back(normal->z);
                         break;
                     case VertexAttributeSemantics::TexCoord:
-                        data.vertices.push_back(texCoord->x);
-                        data.vertices.push_back(texCoord->y);
+                        data.vertexData.push_back(texCoord->x);
+                        data.vertexData.push_back(texCoord->y);
                         break;
                     case VertexAttributeSemantics::Tangent:
-                        data.vertices.push_back(tangent->x);
-			            data.vertices.push_back(tangent->y);
-			            data.vertices.push_back(tangent->z);
+                        data.vertexData.push_back(tangent->x);
+			            data.vertexData.push_back(tangent->y);
+			            data.vertexData.push_back(tangent->z);
                         break;
                     case VertexAttributeSemantics::Binormal:
-                        data.vertices.push_back(biTangent->x);
-			            data.vertices.push_back(biTangent->y);
-			            data.vertices.push_back(biTangent->z);
+                        data.vertexData.push_back(biTangent->x);
+			            data.vertexData.push_back(biTangent->y);
+			            data.vertexData.push_back(biTangent->z);
                         break;
                     default: break;
                 }
@@ -98,7 +101,7 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
             }
 		}
 
-        data.parts.emplace_back(std::move(part));
+        data.indexData.emplace_back(std::move(part));
 	}
 
     return std::make_shared<MeshData>(std::move(data));
@@ -141,42 +144,32 @@ auto Mesh::createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>
     return mesh;
 }
 
-auto Mesh::loadFromFile(Device *device, const str &path) -> sptr<Mesh>
+auto Mesh::loadFromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>
 {
-    VertexBufferLayout layout;
-    layout.addSemanticAttribute(VertexAttributeSemantics::Position);
-    layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
-    layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
-
-    auto data = loadMeshData(device, path, layout);
+    auto data = loadMeshData(device, path, bufferLayout);
     auto mesh = create(device);
     
-    mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
+    mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.getElementCount());
     
-    for (auto &part : data->parts)
+    for (auto &part : data->indexData)
         mesh->addPart(part.data(), part.size());
 
     return mesh;
 }
 
-auto Mesh::loadFromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<Mesh>>
+auto Mesh::loadFromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>
 {
-    VertexBufferLayout layout;
-    layout.addSemanticAttribute(VertexAttributeSemantics::Position);
-    layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
-    layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
-
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
 
-    auto producers = JobBase<MeshData>::Producers{[=]() { return loadMeshData(device, path, layout); }};
-    auto consumer = [handle, device, layout](const vec<sptr<MeshData>> &results)
+    auto producers = JobBase<MeshData>::Producers{[=]() { return loadMeshData(device, path, bufferLayout); }};
+    auto consumer = [handle, device, bufferLayout](const vec<sptr<MeshData>> &results)
     {
         auto data = results[0];
         auto mesh = create(device);
     
-        mesh->addVertexBuffer(layout, data->vertices.data(), data->vertices.size() / 8);
+        mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.getElementCount());
     
-        for (auto &part : data->parts)
+        for (auto &part : data->indexData)
             mesh->addPart(part.data(), part.size());
 
         handle->resolve(mesh);

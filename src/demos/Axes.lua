@@ -4,7 +4,10 @@
 -- 
 
 return function(assetCache)
-    local mesh = sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Axes.obj"))
+    local layout = sl.VertexBufferLayout()
+    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
+
+    local mesh = sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Axes.obj"), layout)
     local effect = assetCache.getEffect("Color")
 
     local createColorMaterial = function(color)

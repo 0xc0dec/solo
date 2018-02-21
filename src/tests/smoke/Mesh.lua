@@ -10,6 +10,7 @@ local layout = sl.VertexBufferLayout()
 layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
 assert(layout:getAttributeCount())
 assert(layout:getSize())
+assert(layout:getElementCount())
 
 local attr = layout:getAttribute(0)
 assert(attr)

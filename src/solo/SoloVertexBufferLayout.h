@@ -39,13 +39,13 @@ namespace solo
         auto getAttribute(u32 index) const -> VertexAttribute { return attrs.at(index); }
 
         auto getSize() const -> u32 { return size; }
+        auto getElementCount() const -> u32 { return elementCount; }
 
     private:
         vec<VertexAttribute> attrs;
-        u32 size = 0;
+        u32 size = 0; // in bytes
+        u32 elementCount = 0; // number of floats
 
         void addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics);
     };
-
-    
 }

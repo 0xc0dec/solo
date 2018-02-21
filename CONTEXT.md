@@ -1,5 +1,6 @@
 # TODO
 
+* FIX panic functions to avoid evaluating their condition in release!
 * Deferred demo
 * Remove skybox/font renderers since their shaders are not flexible for different situations.
 Let the user render them.
