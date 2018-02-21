@@ -221,14 +221,14 @@ function demo()
         renderer:setMaterial(0, material)
     
         local transform = node:findComponent("Transform")
-        transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
-        transform:setLocalPosition(vec3(0, -1, 0))
+        -- transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(1, 0, 0), sl.Radians.fromRawDegrees(90)))
+        transform:setLocalScale(vec3(2, 2, 2))
     
         local layout = sl.VertexBufferLayout()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj"), layout):done(
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Monkey.obj"), layout):done(
             function(mesh)
                 renderer:setMesh(mesh)
             end)
