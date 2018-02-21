@@ -49,6 +49,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<MeshData>
 			const auto tangent = mesh->HasTangentsAndBitangents() ? &mesh->mTangents[j] : &zeroVec;
 			const auto biTangent = mesh->HasTangentsAndBitangents() ? &mesh->mBitangents[j] : &zeroVec;
 
+            // TODO resize vertices beforehand
             data.vertices.push_back(pos->x);
 			data.vertices.push_back(pos->y);
 			data.vertices.push_back(pos->z);
@@ -59,62 +60,19 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<MeshData>
             data.vertices.push_back(texCoord->y);
 
             // TODO Pass layout into loadFromFile method
-
-			//for (auto& component : layout.components)
-			//{
-			//	switch (component) {
-			//	case VERTEX_COMPONENT_POSITION:
-			//		vertexBuffer.push_back(pPos->x * scale.x + center.x);
-			//		vertexBuffer.push_back(-pPos->y * scale.y + center.y);
-			//		vertexBuffer.push_back(pPos->z * scale.z + center.z);
-			//		break;
-			//	case VERTEX_COMPONENT_NORMAL:
-			//		vertexBuffer.push_back(pNormal->x);
-			//		vertexBuffer.push_back(-pNormal->y);
-			//		vertexBuffer.push_back(pNormal->z);
-			//		break;
-			//	case VERTEX_COMPONENT_UV:
-			//		vertexBuffer.push_back(pTexCoord->x * uvscale.s);
-			//		vertexBuffer.push_back(pTexCoord->y * uvscale.t);
-			//		break;
-			//	case VERTEX_COMPONENT_COLOR:
-			//		vertexBuffer.push_back(pColor.r);
-			//		vertexBuffer.push_back(pColor.g);
-			//		vertexBuffer.push_back(pColor.b);
-			//		break;
-			//	case VERTEX_COMPONENT_TANGENT:
-			//		vertexBuffer.push_back(pTangent->x);
-			//		vertexBuffer.push_back(pTangent->y);
-			//		vertexBuffer.push_back(pTangent->z);
-			//		break;
-			//	case VERTEX_COMPONENT_BITANGENT:
-			//		vertexBuffer.push_back(pBiTangent->x);
-			//		vertexBuffer.push_back(pBiTangent->y);
-			//		vertexBuffer.push_back(pBiTangent->z);
-			//		break;
-			//	// Dummy components for padding
-			//	case VERTEX_COMPONENT_DUMMY_FLOAT:
-			//		vertexBuffer.push_back(0.0f);
-			//		break;
-			//	case VERTEX_COMPONENT_DUMMY_VEC4:
-			//		vertexBuffer.push_back(0.0f);
-			//		vertexBuffer.push_back(0.0f);
-			//		vertexBuffer.push_back(0.0f);
-			//		vertexBuffer.push_back(0.0f);
-			//		break;
-			//	};
-			//}
 		}
 
         vec<u16> part;
+        part.resize(mesh->mNumFaces * 3);
 		for (u32 j = 0; j < mesh->mNumFaces; j++)
 		{
 			const auto &face = mesh->mFaces[j];
 			if (face.mNumIndices == 3)
             {
-                part.push_back(face.mIndices[0]);
-                part.push_back(face.mIndices[1]);
-                part.push_back(face.mIndices[2]);
+                const auto startIdx = j * 3;
+                part[startIdx] = face.mIndices[0];
+                part[startIdx + 1] = face.mIndices[1];
+                part[startIdx + 2] = face.mIndices[2];
             }
 		}
 
