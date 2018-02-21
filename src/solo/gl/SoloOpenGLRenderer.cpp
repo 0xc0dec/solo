@@ -140,11 +140,11 @@ static void setFaceCull(FaceCull cull)
             break;
         case FaceCull::Back:
             glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CW);
+            glFrontFace(GL_CCW);
             break;
         case FaceCull::Front:
             glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CCW);
+            glFrontFace(GL_CW);
             break;
         default:
             break;

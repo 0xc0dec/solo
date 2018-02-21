@@ -21,7 +21,7 @@ namespace solo
     class Camera;
     class Transform;
 
-    enum class FaceCull // TODO Test this is consistent between gl and vk
+    enum class FaceCull
     {
         None = 0,
         Front,
