@@ -30,12 +30,13 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
     const auto bytes = device->getFileSystem()->readBytes(path);
     
     Assimp::Importer importer;
-    const auto flags = aiProcess_Triangulate | aiProcess_PreTransformVertices | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
+    const auto flags = aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
 	const auto scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), flags);
     panicIf(!scene, SL_FMT("Unsupported mesh file ", path));
 
     MeshData data;
     vec<vec<u16>> parts;
+    u16 indexBase = 0;
 
     // TODO resize vertices beforehand
     for (u32 i = 0; i < scene->mNumMeshes; i++)
@@ -95,12 +96,13 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
 			if (face.mNumIndices == 3)
             {
                 const auto startIdx = j * 3;
-                part[startIdx] = face.mIndices[0];
-                part[startIdx + 1] = face.mIndices[1];
-                part[startIdx + 2] = face.mIndices[2];
+                part[startIdx] = indexBase + face.mIndices[0];
+                part[startIdx + 1] = indexBase + face.mIndices[1];
+                part[startIdx + 2] = indexBase + face.mIndices[2];
             }
 		}
 
+        indexBase += mesh->mNumFaces * 3;
         data.indexData.emplace_back(std::move(part));
 	}
 
