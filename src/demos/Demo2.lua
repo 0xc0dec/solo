@@ -257,7 +257,7 @@ function demo()
     camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
     camNode:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    createSkybox(scene)
+    local skybox = createSkybox(scene, assetCache)
     local floorRenderer = createFloor(colorPassMaterial)
     local modelRenderer = createModel(colorPassMaterial)
 
@@ -280,14 +280,14 @@ function demo()
     function renderLightCamFrame()
         floorRenderer:setMaterial(0, depthPassMaterial)
         modelRenderer:setMaterial(0, depthPassMaterial)
-        scene:visitByTags(~tags.skybox, renderCmp)
+        scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function renderMainCamFrame()
         floorRenderer:setMaterial(0, colorPassMaterial)
         modelRenderer:setMaterial(0, colorPassMaterial)
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~tags.skybox, renderCmp)
+        scene:visitByTags(skybox.tag, renderCmp)
+        scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function update()

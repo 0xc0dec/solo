@@ -9,17 +9,37 @@ local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
-return function(scene)
+return function(scene, assetCache)
+    local mesh = assetCache.meshes.getQuad()
+    local tag = tags.skybox
+    
+    local node = scene:createNode()
+
+    local effect = assetCache.getEffect("Skybox")
+    local material = sl.Material.create(sl.device, effect)
+    material:setDepthTest(true)
+    material:setDepthWrite(false)
+    material:setFaceCull(sl.FaceCull.None)
+    material:bindParameter("matrices:proj", sl.BindParameterSemantics.ProjectionMatrix)
+    material:bindParameter("matrices:worldView", sl.BindParameterSemantics.WorldViewMatrix)
+    
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMesh(mesh)
+    renderer:setTag(tag)
+    renderer:setMaterial(0, material)
+
     sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
         getImagePath("+X.png"), getImagePath("-X.png"),
         getImagePath("+Y.png"), getImagePath("-Y.png"),
         getImagePath("+Z.png"), getImagePath("-Z.png")
     ):done(function(tex)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
-
-        local node = scene:createNode()
-        local renderer = node:addComponent("SkyboxRenderer")
-        renderer:setTexture(tex)
-        renderer:setTag(tags.skybox)
+        material:setTextureParameter("colorMap", tex)
     end)
+
+    return {
+        node = node,
+        renderer = renderer,
+        tag = tag
+    }
 end

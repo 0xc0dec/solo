@@ -44,7 +44,7 @@ function demo()
     local postProcessor = createPostProcessor(assetCache, mainCamera)
     mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor))
 
-    createSkybox(scene)
+    local skybox = createSkybox(scene, assetCache)
     createCheckerBox(scene, assetCache)
     createFloor(scene, assetCache)
     createDynamicQuad(scene, assetCache)
@@ -76,14 +76,14 @@ function demo()
     end
 
     function renderOffscreenCamera()
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~(tags.monitor | tags.skybox | tags.transparent | tags.postProcessorStep), renderCmp)
+        scene:visitByTags(skybox.tag, renderCmp)
+        scene:visitByTags(~(tags.monitor | skybox.tag | tags.transparent | tags.postProcessorStep), renderCmp)
         scene:visitByTags(tags.transparent, renderCmp)
     end
 
     function renderMainCamera()
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~(tags.skybox | tags.transparent | tags.postProcessorStep), renderCmp)
+        scene:visitByTags(skybox.tag, renderCmp)
+        scene:visitByTags(~(skybox.tag | tags.transparent | tags.postProcessorStep), renderCmp)
         scene:visitByTags(tags.transparent, renderCmp)
     end
 

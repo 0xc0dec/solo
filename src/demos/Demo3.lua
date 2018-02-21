@@ -16,7 +16,6 @@ function demo()
     local tags = require "Tags"
     local createRotator = require "Rotator"
     local createMainCamera = require "MainCamera"
-    local createSkybox = require "Skybox"
     local assetCache = (require "AssetCache")()
 
     ---
