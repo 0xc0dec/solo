@@ -30,10 +30,10 @@ void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics
             addAttribute(2, "sl_TexCoord", VertexAttributeSemantics::TexCoord);
             break;
         case VertexAttributeSemantics::Tangent:
-            addAttribute(2, "sl_Tangent", VertexAttributeSemantics::Tangent);
+            addAttribute(3, "sl_Tangent", VertexAttributeSemantics::Tangent);
             break;
         case VertexAttributeSemantics::Binormal:
-            addAttribute(2, "sl_Binormal", VertexAttributeSemantics::Binormal);
+            addAttribute(3, "sl_Binormal", VertexAttributeSemantics::Binormal);
             break;
         default:
             return panic("Unknown vertex attribute semantics");
