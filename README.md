@@ -3,10 +3,9 @@ A playground for my graphics/gamedev experiments.
 
 ## Features
 * Unity-inspired component system
-* Loading of OBJ meshes and several popular texture formats
-* Render to texture
+* Loading of several popular mesh and texture formats
 * TTF fonts
-* Physics
+* Bullet physics
 * Vulkan/OpenGL rendering
 * Fully scriptable (Lua)
 
