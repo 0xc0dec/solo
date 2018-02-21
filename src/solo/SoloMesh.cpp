@@ -7,6 +7,7 @@
 #include "SoloEffect.h"
 #include "SoloDevice.h"
 #include "SoloJobPool.h"
+#include "SoloFileSystem.h"
 #include "gl/SoloOpenGLMesh.h"
 #include "vk/SoloVulkanMesh.h"
 #include "null/SoloNullMesh.h"
@@ -24,23 +25,24 @@ struct MeshData
 
 static auto loadMeshData(Device *device, const str &path) -> sptr<MeshData>
 {
+    // TODO Implement proper io system for assimp to avoid loading file into memory
+    const auto bytes = device->getFileSystem()->readBytes(path);
+    
     Assimp::Importer importer;
     const auto flags = aiProcess_Triangulate | aiProcess_PreTransformVertices | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
-	const auto scene = importer.ReadFile(path.c_str(), flags); // TODO Use file system (at least load from memory (check speed))
+	const auto scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), flags);
     panicIf(!scene, SL_FMT("Unsupported mesh file ", path));
 
     MeshData data;
     vec<vec<u16>> parts;
 
-    for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+    for (u32 i = 0; i < scene->mNumMeshes; i++)
 	{
 		const aiMesh* mesh = scene->mMeshes[i];
-
 		const aiVector3D zeroVec(0.0f, 0.0f, 0.0f);
 
-		for (unsigned int j = 0; j < mesh->mNumVertices; j++)
+		for (u32 j = 0; j < mesh->mNumVertices; j++)
 		{
-            // TODO Avoid pointers
 			const auto pos = &mesh->mVertices[j];
 			const auto normal = &mesh->mNormals[j];
 			const auto texCoord = mesh->HasTextureCoords(0) ? &mesh->mTextureCoords[0][j] : &zeroVec;
@@ -107,7 +109,7 @@ static auto loadMeshData(Device *device, const str &path) -> sptr<MeshData>
         vec<u16> part;
 		for (u32 j = 0; j < mesh->mNumFaces; j++)
 		{
-			const aiFace& face = mesh->mFaces[j];
+			const auto &face = mesh->mFaces[j];
 			if (face.mNumIndices == 3)
             {
                 part.push_back(face.mIndices[0]);
