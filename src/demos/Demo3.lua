@@ -33,13 +33,15 @@ function demo()
             inputs = {
                 sl_Position = "vec3",
                 sl_TexCoord = "vec2",
-                sl_Normal = "vec3"
+                sl_Normal = "vec3",
+                sl_Tangent = "vec3"
             },
     
             outputs = {
                 position = "vec4",
                 uv = "vec2",
-                normal = "vec3"
+                normal = "vec3",
+                tangent = "vec3"
             },
     
             code = [[
@@ -54,9 +56,9 @@ function demo()
                     uv = sl_TexCoord;
                     SL_FIX_UV#uv#;
 
-                    mat3 mNormal = transpose(inverse(mat3(#matrices:world#)));
-                    normal = mNormal * normalize(sl_Normal);
-                    SL_FIX_Y#normal#;
+                    mat3 transpInvWorld = transpose(inverse(mat3(#matrices:world#)));
+                    normal = transpInvWorld * normalize(sl_Normal);
+                    tangent = transpInvWorld * normalize(sl_Tangent);
                 }
             ]]
         },
@@ -70,19 +72,22 @@ function demo()
             outputs = {
                 fragColor = { type = "vec4", target = 0 },
                 fragPos = { type = "vec4", target = 1 },
-                fragNormal = { type = "vec3", target = 2 }
+                fragNormal = { type = "vec3", target = 2 },
+                fragTangent = { type = "vec3", target = 3 }
             },
     
             code = [[
                 void main()
                 {
                     fragColor = texture(mainTex, uv);
-                    fragPos = position;
-                    fragNormal = normal;
-                    // fragNormal = texture(normalTex, uv).xyz;
 
-                    SL_FIX_Y#fragPos#;
-                    SL_FIX_Y#fragNormal#;
+                    fragPos = position;
+
+                    vec3 n = normalize(normal);
+                    vec3 t = normalize(tangent);
+                    vec3 b = cross(n, t);
+                    mat3 tbn = mat3(t, b, n);
+                    fragNormal = tbn * normalize(texture(normalTex, uv).xyz * 2.0 - vec3(1.0));
                 }
             ]]
         }
@@ -165,6 +170,7 @@ function demo()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+        layout:addSemanticAttribute(sl.VertexAttributeSemantics.Tangent)
         sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj"), layout):done(
             function(mesh)
                 renderer:setMesh(mesh)
@@ -183,8 +189,9 @@ function demo()
     
     local positionTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
     local normalTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local tangentTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
     local albedoTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA8)
-    local mrtFrameBuffer = sl.FrameBuffer.create(dev, { albedoTex, positionTex, normalTex })
+    local mrtFrameBuffer = sl.FrameBuffer.create(dev, { albedoTex, positionTex, normalTex, tangentTex })
     local mrtEffectDesc = sl.generateEffectSource(mrtEffectDesc)
     local mrtEffect = sl.Effect.createFromSource(dev, mrtEffectDesc)
     local mrtMaterial = sl.Material.create(dev, mrtEffect)
@@ -192,7 +199,7 @@ function demo()
     mrtMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     mrtMaterial:bindParameter("matrices:world", sl.BindParameterSemantics.WorldMatrix)
     mrtMaterial:setTextureParameter("mainTex", bricksTex)
-    -- mrtMaterial:setTextureParameter("normalTex", bricksNormalTex)
+    mrtMaterial:setTextureParameter("normalTex", bricksNormalTex)
 
     local deferEffectSrc = sl.generateEffectSource(deferEffectDesc)
     local deferEffect = sl.Effect.createFromSource(dev, deferEffectSrc)
