@@ -11,9 +11,12 @@ namespace solo
 {
     enum class VertexAttributeSemantics
     {
+        Unknown,
         Position,
         Normal,
-        TexCoord
+        TexCoord,
+        Tangent,
+        Binormal
     };
 
     class VertexAttribute final
@@ -24,12 +27,12 @@ namespace solo
         u32 size;
         u32 location;
         u32 offset;
+        VertexAttributeSemantics semantics;
     };
 
     class VertexBufferLayout final
     {
     public:
-        void addNamedAttribute(u32 elementCount, const str &name);
         void addSemanticAttribute(VertexAttributeSemantics semantics);
 
         auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs.size()); }
@@ -40,6 +43,8 @@ namespace solo
     private:
         vec<VertexAttribute> attrs;
         u32 size = 0;
+
+        void addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics);
     };
 
     

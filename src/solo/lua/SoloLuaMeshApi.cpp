@@ -36,11 +36,11 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
     REG_FIELD(el, VertexAttribute, elementCount);
     REG_FIELD(el, VertexAttribute, size);
     REG_FIELD(el, VertexAttribute, offset);
+    REG_FIELD(el, VertexAttribute, semantics);
     el.endClass();
 
     auto layout = BEGIN_CLASS(module, VertexBufferLayout);
     REG_CTOR(layout);
-    REG_METHOD(layout, VertexBufferLayout, addNamedAttribute);
     REG_METHOD(layout, VertexBufferLayout, addSemanticAttribute);
     REG_METHOD(layout, VertexBufferLayout, getAttribute);
     REG_METHOD(layout, VertexBufferLayout, getAttributeCount);
