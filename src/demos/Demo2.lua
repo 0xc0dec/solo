@@ -50,7 +50,7 @@ function demo()
             },
     
             outputs = {
-                fragColor = "vec4"
+                fragColor = { type = "vec4", target = 0 }
             },
     
             code = [[
@@ -117,7 +117,7 @@ function demo()
             },
     
             outputs = {
-                fragColor = "vec4"
+                fragColor = { type = "vec4", target = 0 }
             },
     
             code = [[
