@@ -63,7 +63,8 @@ function demo()
     
         fragment = {
             samplers = {
-                mainTex = "sampler2D"
+                mainTex = "sampler2D",
+                normalTex = "sampler2D"
             },
     
             outputs = {
@@ -78,6 +79,7 @@ function demo()
                     fragColor = texture(mainTex, uv);
                     fragPos = position;
                     fragNormal = normal;
+                    // fragNormal = texture(normalTex, uv).xyz;
                 }
             ]]
         }
@@ -113,6 +115,13 @@ function demo()
                 positionMap = "sampler2D",
                 normalMap = "sampler2D"
             },
+
+            uniformBuffers = {
+                uniforms = {
+                    lightPos = "vec3",
+                    eyePos = "vec3"
+                }
+            },
     
             outputs = {
                 fragColor = { type = "vec4", target = 0 }
@@ -121,7 +130,19 @@ function demo()
             code = [[
                 void main()
                 {
-                    fragColor = texture(albedoMap, uv) * texture(positionMap, uv) * texture(normalMap, uv);
+                    vec4 albedo = texture(albedoMap, uv);
+                    vec3 position = texture(positionMap, uv).rgb;
+                    vec3 normal = normalize(texture(normalMap, uv).rgb);
+
+                    vec3 toLight = normalize(#uniforms:lightPos# - position);
+                    vec3 toEye = normalize(#uniforms:eyePos# - position);
+                    float ndotl = max(0.0, dot(normal, toLight));
+
+                    vec3 r = reflect(-toLight, normal);
+                    float ndotr = max(0.0, dot(r, toEye));
+                    vec3 spec = vec3(1, 1, 1) * pow(ndotr, 16.0);
+
+                    fragColor = albedo * ndotl + vec4(spec, 1);
                 }
             ]]
         }
@@ -146,6 +167,12 @@ function demo()
     end
 
     local canvasSize = dev:getCanvasSize()
+
+    local bricksTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Bricks_albedo.png"), true)
+    bricksTex:setAnisotropyLevel(16)
+
+    local bricksNormalTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Bricks_normal.png"), true)
+    bricksNormalTex:setAnisotropyLevel(16)
     
     local positionTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
     local normalTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
@@ -157,7 +184,8 @@ function demo()
     mrtMaterial:setFaceCull(sl.FaceCull.Back)
     mrtMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     mrtMaterial:bindParameter("matrices:world", sl.BindParameterSemantics.WorldMatrix)
-    mrtMaterial:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
+    mrtMaterial:setTextureParameter("mainTex", bricksTex)
+    -- mrtMaterial:setTextureParameter("normalTex", bricksNormalTex)
 
     local deferEffectSrc = sl.generateEffectSource(deferEffectDesc)
     local deferEffect = sl.Effect.createFromSource(dev, deferEffectSrc)
@@ -166,6 +194,8 @@ function demo()
     deferMaterial:setTextureParameter("albedoMap", albedoTex)
     deferMaterial:setTextureParameter("positionMap", positionTex)
     deferMaterial:setTextureParameter("normalMap", normalTex)
+    deferMaterial:setVector3Parameter("uniforms:lightPos", vec3(10, 10, 10))
+    deferMaterial:bindParameter("uniforms:eyePos", sl.BindParameterSemantics.CameraWorldPosition)
 
     local deferQuadNode = scene:createNode()
     local deferQuadRenderer = deferQuadNode:addComponent("MeshRenderer")

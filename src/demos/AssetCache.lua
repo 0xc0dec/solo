@@ -3,8 +3,6 @@
 -- MIT license
 -- 
 
-local effectTools = require "effect-tools"
-
 return function()
     local cubeMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Cube)
     local quadMesh = sl.Mesh.createFromPrefab(sl.device, sl.MeshPrefab.Quad)
