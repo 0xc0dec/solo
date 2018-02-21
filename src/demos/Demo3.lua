@@ -21,20 +21,25 @@ function demo()
 
     ---
 
-    local desc = {
+    local mrtEffectDesc = {
         vertex = {
             uniformBuffers = {
                 matrices = {
+                    world = "mat4",
                     wvp = "mat4"
                 }
             },
     
             inputs = {
-                sl_Position = "vec3"
+                sl_Position = "vec3",
+                sl_TexCoord = "vec2",
+                sl_Normal = "vec3"
             },
     
             outputs = {
-                position = "vec4"
+                position = "vec4",
+                uv = "vec2",
+                normal = "vec3"
             },
     
             code = [[
@@ -43,25 +48,80 @@ function demo()
                     gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
                     SL_FIX_Y#gl_Position#;
 
-                    position = gl_Position;
+                    position = #matrices:world# * vec4(sl_Position, 1);
+                    SL_FIX_Y#position#;
+
+                    uv = sl_TexCoord;
+                    SL_FIX_UV#uv#;
+
+                    mat3 mNormal = transpose(inverse(mat3(#matrices:world#)));
+                    normal = mNormal * normalize(sl_Normal);
+                    SL_FIX_Y#normal#;
                 }
             ]]
         },
     
         fragment = {
             samplers = {
+                mainTex = "sampler2D"
             },
     
             outputs = {
                 fragColor = { type = "vec4", target = 0 },
-                fragPos = { type = "vec4", target = 1 }
+                fragPos = { type = "vec4", target = 1 },
+                fragNormal = { type = "vec3", target = 2 }
             },
     
             code = [[
                 void main()
                 {
-                    fragColor = vec4(1, 0, 0, 1);
+                    fragColor = texture(mainTex, uv);
                     fragPos = position;
+                    fragNormal = normal;
+                }
+            ]]
+        }
+    }
+
+    local deferEffectDesc = {
+        vertex = {
+            inputs = {
+                sl_Position = "vec3",
+                sl_TexCoord = "vec2"
+            },
+    
+            outputs = {
+                position = "vec4",
+                uv = "vec2"
+            },
+    
+            code = [[
+                void main()
+                {
+                    gl_Position = vec4(sl_Position, 1);
+                    SL_FIX_Y#gl_Position#;
+
+                    uv = sl_TexCoord;
+                    SL_FIX_UV#uv#;
+                }
+            ]]
+        },
+    
+        fragment = {
+            samplers = {
+                albedoMap = "sampler2D",
+                positionMap = "sampler2D",
+                normalMap = "sampler2D"
+            },
+    
+            outputs = {
+                fragColor = { type = "vec4", target = 0 }
+            },
+    
+            code = [[
+                void main()
+                {
+                    fragColor = texture(albedoMap, uv) * texture(positionMap, uv) * texture(normalMap, uv);
                 }
             ]]
         }
@@ -86,21 +146,38 @@ function demo()
     end
 
     local canvasSize = dev:getCanvasSize()
-    local posMap = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
-    local albedoMap = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA8)
-    local fb = sl.FrameBuffer.create(dev, { albedoMap, posMap })
-    local effectSrc = sl.generateEffectSource(desc)
-    print(effectSrc)
-    local effect = sl.Effect.createFromSource(dev, effectSrc)
-    local material = sl.Material.create(dev, effect)
-    material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    
+    local positionTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local normalTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local albedoTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA8)
+    local mrtFrameBuffer = sl.FrameBuffer.create(dev, { albedoTex, positionTex, normalTex })
+    local mrtEffectDesc = sl.generateEffectSource(mrtEffectDesc)
+    local mrtEffect = sl.Effect.createFromSource(dev, mrtEffectDesc)
+    local mrtMaterial = sl.Material.create(dev, mrtEffect)
+    mrtMaterial:setFaceCull(sl.FaceCull.Back)
+    mrtMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    mrtMaterial:bindParameter("matrices:world", sl.BindParameterSemantics.WorldMatrix)
+    mrtMaterial:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
+
+    local deferEffectSrc = sl.generateEffectSource(deferEffectDesc)
+    local deferEffect = sl.Effect.createFromSource(dev, deferEffectSrc)
+    local deferMaterial = sl.Material.create(dev, deferEffect)
+    deferMaterial:setFaceCull(sl.FaceCull.None)
+    deferMaterial:setTextureParameter("albedoMap", albedoTex)
+    deferMaterial:setTextureParameter("positionMap", positionTex)
+    deferMaterial:setTextureParameter("normalMap", normalTex)
+
+    local deferQuadNode = scene:createNode()
+    local deferQuadRenderer = deferQuadNode:addComponent("MeshRenderer")
+    deferQuadRenderer:setTag(tags.postProcessorStep) -- TODO use other tag
+    deferQuadRenderer:setMesh(assetCache.meshes.quad)
+    deferQuadRenderer:setMaterial(0, deferMaterial);
 
     local mainCam, camNode = createMainCamera(scene)
     camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
     camNode:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    createModel(material)
+    createModel(mrtMaterial)
 
     ---
 
@@ -118,19 +195,23 @@ function demo()
         cmp:update()
     end
 
-    function renderMainCamFrame()
+    function renderScene()
         scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~tags.skybox, renderCmp)
+        scene:visitByTags(~(tags.skybox | tags.postProcessorStep), renderCmp)
+    end
+
+    function renderQuad()
+        scene:visitByTags(tags.postProcessorStep, renderCmp)
     end
 
     function update()
         scene:visit(updateCmp)
 
-        mainCam:setRenderTarget(fb)
-        mainCam:renderFrame(renderMainCamFrame)
+        mainCam:setRenderTarget(mrtFrameBuffer)
+        mainCam:renderFrame(renderScene)
 
         mainCam:setRenderTarget(nil)
-        mainCam:renderFrame(renderMainCamFrame)
+        mainCam:renderFrame(renderQuad)
     end
 
     function run()
