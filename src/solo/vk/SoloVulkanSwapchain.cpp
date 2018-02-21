@@ -111,6 +111,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         .withColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
         .withDepthAttachment(depthFormat));
     
+    // TODO Replace with factory method?
     depthStencil = VulkanImage(renderer, width, height, 1, 1, depthFormat,
         VK_IMAGE_LAYOUT_UNDEFINED,
         0,

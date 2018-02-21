@@ -188,6 +188,8 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
     panicIf(bufferName.empty() || fieldName.empty(), SL_FMT("Invalid parameter name ", name));
 
     auto bufferInfo = effect->getUniformBuffer(bufferName);
+    panicIf(!bufferInfo.size || bufferInfo.members.empty(), SL_FMT("Parameter ", name, " not found"));
+
     auto itemInfo = bufferInfo.members.at(fieldName);
     auto &item = bufferItems[bufferName][fieldName];
 
