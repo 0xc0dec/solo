@@ -75,7 +75,7 @@ void FontRenderer::rebuildMesh()
     uvs.clear();
     indexes.clear();
 
-    uint16_t lastIndex = 0;
+    u16 lastIndex = 0;
     float offsetX = 0, offsetY = 0;
     for (auto c : text)
     {

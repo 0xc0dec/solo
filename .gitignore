@@ -8,6 +8,7 @@
 *.ilk
 *.idb
 *.vs
+build/
 build/**
 !build/*.cmd
 *DS_Store*

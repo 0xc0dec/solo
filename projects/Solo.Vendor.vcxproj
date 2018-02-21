@@ -314,16 +314,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo.Vendor\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo.Vendor\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\debug\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\debug\;$(ProjectDir)..\vendor\assimp\4.1.0\build\code\debug\;$(ProjectDir)..\vendor\assimp\4.1.0\build\contrib\irrxml\debug\;$(ProjectDir)..\vendor\assimp\4.1.0\build\contrib\zlib\debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\include;$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb\truetype\1.11\;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\vulkan\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo.Vendor\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo.Vendor\tmp\</IntDir>
-    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\minsizerel\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)..\vendor\vulkan\lib\;$(ProjectDir)..\vendor\shaderc\build\libshaderc\minsizerel\;$(ProjectDir)..\vendor\assimp\4.1.0\build\code\minsizerel\;$(ProjectDir)..\vendor\assimp\4.1.0\build\contrib\irrxml\minsizerel\;$(ProjectDir)..\vendor\assimp\4.1.0\build\contrib\zlib\minsizerel\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -344,7 +344,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib;assimp.lib;irrxml.lib;zlibstaticd.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>
@@ -374,7 +374,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;winmm.lib;oleaut32.lib;version.lib;shell32.lib;ole32.lib;imm32.lib;gdi32.lib;user32.lib;opengl32.lib;vulkan-1.lib;shaderc_combined.lib;assimp.lib;irrxml.lib;zlibstatic.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4006 /ignore:4221 /ignore:4204 /ignore:4217</AdditionalOptions>
     </Lib>

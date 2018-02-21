@@ -35,7 +35,7 @@ namespace solo
         sptr<Material> material;
         vec<Vector3> vertices;
         vec<Vector2> uvs;
-        vec<uint16_t> indexes;
+        vec<u16> indexes;
         str text;
 
         void rebuildMesh();

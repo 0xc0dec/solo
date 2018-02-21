@@ -35,7 +35,6 @@
     <ClInclude Include="..\src\solo\null\SoloNullMesh.h" />
     <ClInclude Include="..\src\solo\null\SoloNullTexture.h" />
     <ClInclude Include="..\src\solo\null\SoloNullRenderer.h" />
-    <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLDevice.h" />
     <ClInclude Include="..\src\solo\sdl\SoloSDLInputMaps.h" />
     <ClInclude Include="..\src\solo\SoloAsyncHandle.h" />
@@ -125,7 +124,6 @@
     <ClCompile Include="..\src\solo\lua\SoloLuaScriptRuntime.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaTextureApi.cpp" />
     <ClCompile Include="..\src\solo\lua\SoloLuaTransformApi.cpp" />
-    <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp" />
     <ClCompile Include="..\src\solo\sdl\SoloSDLDevice.cpp" />
     <ClCompile Include="..\src\solo\Solo.cpp" />
     <ClCompile Include="..\src\solo\SoloBoxCollider.cpp" />
@@ -211,13 +209,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(ProjectDir)..\vendor\tinyobjloader\1.0.6\;$(ProjectDir)..\vendor\shaderc\libshaderc\include\;$(ProjectDir)..\vendor\glm\0.9.8.4\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(ProjectDir)..\vendor\shaderc\libshaderc\include\;$(ProjectDir)..\vendor\glm\0.9.8.4\;$(ProjectDir)..\vendor\assimp\4.1.0\include\;$(ProjectDir)..\vendor\assimp\4.1.0\build\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(ProjectDir)..\vendor\tinyobjloader\1.0.6\;$(ProjectDir)..\vendor\shaderc\libshaderc\include\;$(ProjectDir)..\vendor\glm\0.9.8.4\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\vendor\glew\1.13\include;$(ProjectDir)..\vendor\SDL\2.0.4\include;$(ProjectDir)..\vendor\;$(ProjectDir)..\vendor\bullet\2.83.7;$(ProjectDir)..\vendor\stb_truetype\1.11\;$(ProjectDir)..\src\solo\;$(ProjectDir)..\vendor\vulkan\include\;$(ProjectDir)..\vendor\LuaIntf\;$(ProjectDir)..\vendor\lua\5.3.1\;$(ProjectDir)..\vendor\stb_image\2.15\;$(ProjectDir)..\vendor\spirv_cross\;$(ProjectDir)..\vendor\shaderc\libshaderc\include\;$(ProjectDir)..\vendor\glm\0.9.8.4\;$(ProjectDir)..\vendor\assimp\4.1.0\include\;$(ProjectDir)..\vendor\assimp\4.1.0\build\include\;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)..\build\Solo\</OutDir>
     <IntDir>$(ProjectDir)..\build\Solo\tmp\</IntDir>
     <LibraryPath>$(ProjectDir)..\build\Solo.Vendor\;$(ProjectDir)..\build\Solo.Vendor.Lua\;$(LibraryPath)</LibraryPath>

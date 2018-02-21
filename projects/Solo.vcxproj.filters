@@ -157,9 +157,6 @@
     <ClInclude Include="..\src\solo\null\SoloNullTexture.h">
       <Filter>null</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\solo\obj\SoloObjMeshLoading.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\solo\SoloHash.h" />
     <ClInclude Include="..\src\solo\SoloJobPool.h" />
     <ClInclude Include="..\src\solo\SoloAsyncHandle.h" />
@@ -326,9 +323,6 @@
     <ClCompile Include="..\src\solo\vk\SoloVulkanTexture.cpp">
       <Filter>vk</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\solo\obj\SoloObjMeshLoading.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
     <ClCompile Include="..\src\solo\stb\SoloSTBTextureData.cpp">
       <Filter>stb</Filter>
@@ -371,9 +365,6 @@
     </Filter>
     <Filter Include="vk">
       <UniqueIdentifier>{a549a9cc-182c-4c81-ba00-370056813008}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="obj">
-      <UniqueIdentifier>{95b4ec15-ca5a-49ad-bb4c-95b20a8137cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
