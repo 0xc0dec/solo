@@ -8,8 +8,52 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloTextureData.h"
+#include "SoloHash.h"
 
 using namespace solo;
+
+static auto getFormatKey(GLenum internalFormat, GLenum format, GLenum type) -> size_t
+{
+    size_t seed = 0;
+    const std::hash<GLenum> hasher;
+    combineHash(seed, hasher(internalFormat));
+    combineHash(seed, hasher(format));
+    combineHash(seed, hasher(type));
+    return seed;
+}
+
+static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum type, uset<GLenum> &supportedFormats)
+{
+    glTexImage2D(GL_PROXY_TEXTURE_2D, 0, internalFormat, 32, 32, 0, format, type, nullptr);
+    s32 width;
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+    if (width == 32)
+        supportedFormats.insert(getFormatKey(internalFormat, format, type));
+}
+
+static bool isFormatSupported(GLenum internalFormat, GLenum format, GLenum type)
+{
+    static uset<GLenum> supportedFormats;
+    static auto initialized = false;
+    
+    if (!initialized)
+    {
+        detectFormatSupport(GL_R8, GL_RED, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGB8, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGBA16F, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGBA16F, GL_RGBA, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_RGBA16F, GL_RGB, GL_FLOAT, supportedFormats);
+        detectFormatSupport(GL_RGBA16F, GL_RGBA, GL_FLOAT, supportedFormats);
+        detectFormatSupport(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, supportedFormats);
+        detectFormatSupport(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT, supportedFormats);
+        initialized = true;
+    }
+
+    return supportedFormats.count(getFormatKey(internalFormat, format, type));
+}
 
 static auto toType(TextureFormat format) -> GLenum
 {
@@ -159,6 +203,8 @@ auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) 
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
 
+    panicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE));
+
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getTextureFormat(), dimensions));
 
     glBindTexture(GL_TEXTURE_2D, result->handle);
@@ -184,6 +230,9 @@ auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -
     const auto type = toType(format);
     const auto dataFormat = toDataFormat(format);
     const auto dimensions = Vector2(width, height);
+
+    panicIf(!isFormatSupported(internalFormat, dataFormat, type));
+
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
 
     glBindTexture(GL_TEXTURE_2D, result->handle);
@@ -222,6 +271,7 @@ auto OpenGLCubeTexture::createFromData(CubeTextureData *data) -> sptr<OpenGLCube
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
         const auto internalFormat = toInternalFormat(data->getTextureFormat());
         const auto dataFormat = toDataFormat(data->getFormat());
+        panicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE));
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData(i));
     }
