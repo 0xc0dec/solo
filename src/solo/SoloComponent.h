@@ -40,13 +40,9 @@ namespace solo
         auto getTag() const -> u32 { return tag; }
         void setTag(u32 tag) { this->tag = tag; }
 
-        auto getLayer() const -> u32 { return layer; }
-        void setLayer(u32 layer) { this->layer = layer; }
-
     protected:
         Node node;
         u32 tag = 1;
-        u32 layer = 16;
 
         explicit Component(const Node &node): node(node)
         {

@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local layers = require "Layers"
+local tags = require "Tags"
 
 return function(assetCache, mainCameraNode, postProcessor)
     local effect = assetCache.getEffect("Color")
@@ -48,7 +48,7 @@ return function(assetCache, mainCameraNode, postProcessor)
             textTransform:setLocalPosition(vec3(-1.1, 0.4, -0.4))
             self.fontRenderer = textNode:addComponent("FontRenderer")
             self.fontRenderer:setFont(font)
-            self.fontRenderer:setLayer(layers.transparent)
+            self.fontRenderer:setTag(tags.transparent)
         end,
 
         update = function(self)
