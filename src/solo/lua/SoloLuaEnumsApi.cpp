@@ -195,13 +195,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("MeshPrefab");
-        REG_MODULE_CONSTANT(m, MeshPrefab, Cube);
-        REG_MODULE_CONSTANT(m, MeshPrefab, Quad);
-        m.endModule();
-    }
-
-    {
         auto m = module.beginModule("PrimitiveType");
         REG_MODULE_CONSTANT(m, PrimitiveType, Triangles);
         REG_MODULE_CONSTANT(m, PrimitiveType, TriangleStrip);

@@ -24,7 +24,7 @@ namespace solo
 
     private:
         sptr<Texture2D> atlas;
-        u32 firstChar;
+        u32 firstChar = 0;
         uptr<stbtt_packedchar[]> charInfo;
 
         STBTrueTypeFont() = default;

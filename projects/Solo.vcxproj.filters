@@ -123,7 +123,6 @@
     <ClInclude Include="..\src\solo\SoloEffect.h" />
     <ClInclude Include="..\src\solo\SoloFileSystem.h" />
     <ClInclude Include="..\src\solo\SoloFont.h" />
-    <ClInclude Include="..\src\solo\SoloFontRenderer.h" />
     <ClInclude Include="..\src\solo\SoloFormatter.h" />
     <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
     <ClInclude Include="..\src\solo\SoloMaterial.h" />
@@ -177,6 +176,7 @@
     <ClInclude Include="..\src\solo\SoloDegrees.h" />
     <ClInclude Include="..\src\solo\SoloRadians.h" />
     <ClInclude Include="..\src\solo\SoloVertexBufferLayout.h" />
+    <ClInclude Include="..\src\solo\SoloFontMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp">
@@ -294,7 +294,6 @@
     <ClCompile Include="..\src\solo\SoloEffect.cpp" />
     <ClCompile Include="..\src\solo\SoloFileSystem.cpp" />
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
-    <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\SoloMaterial.cpp" />
     <ClCompile Include="..\src\solo\SoloMatrix.cpp" />
@@ -341,6 +340,7 @@
     <ClCompile Include="..\src\solo\SoloDegrees.cpp" />
     <ClCompile Include="..\src\solo\SoloRadians.cpp" />
     <ClCompile Include="..\src\solo\SoloVertexBufferLayout.cpp" />
+    <ClCompile Include="..\src\solo\SoloFontMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bullet">

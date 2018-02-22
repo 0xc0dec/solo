@@ -5,7 +5,7 @@
 
 #include "SoloLuaCommon.h"
 #include "SoloFont.h"
-#include "SoloFontRenderer.h"
+#include "SoloFontMesh.h"
 
 using namespace solo;
 
@@ -26,16 +26,17 @@ static void registerFont(CppBindModule<LuaBinding> &module)
     font.endClass();
 }
 
-static void registerFontRenderer(CppBindModule<LuaBinding> &module)
+static void registerFontMesh(CppBindModule<LuaBinding> &module)
 {
-    auto r = BEGIN_CLASS_EXTEND(module, FontRenderer, Component);
-    REG_METHOD_NULLABLE_1ST_ARG(r, FontRenderer, setFont, sptr<Font>);
-    REG_METHOD(r, FontRenderer, setText);
-    r.endClass();
+    auto fm = BEGIN_CLASS(module, FontMesh);
+    REG_STATIC_METHOD(fm, FontMesh, create);
+    REG_METHOD(fm, FontMesh, setText);
+    REG_METHOD(fm, FontMesh, getMesh);
+    fm.endClass();
 }
 
 void registerFontApi(CppBindModule<LuaBinding> &module)
 {
     registerFont(module);
-    registerFontRenderer(module);
+    registerFontMesh(module);
 }

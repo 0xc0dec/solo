@@ -3,53 +3,18 @@
     MIT license
 */
 
-#include "SoloFontRenderer.h"
-#include "SoloMesh.h"
+#include "SoloFontMesh.h"
 #include "SoloFont.h"
-#include "SoloMaterial.h"
-#include "SoloTransform.h"
-#include "SoloDevice.h"
-#include "SoloTexture.h"
+#include "SoloMesh.h"
 
 using namespace solo;
 
-FontRenderer::FontRenderer(const Node &node) :
-    ComponentBase(node),
-    renderer(node.getScene()->getDevice()->getRenderer())
+auto FontMesh::create(Device *device, sptr<Font> font) -> sptr<FontMesh>
 {
-    transform = node.findComponent<Transform>();
-
-    material = Material::createFromPrefab(node.getScene()->getDevice(), MaterialPrefab::Font);
-    material->setFaceCull(FaceCull::None);
-    material->setBlend(true);
-    material->setDepthTest(true);
-    material->setDepthWrite(false);
+    return sptr<FontMesh>(new FontMesh(device, font));
 }
 
-void FontRenderer::render()
-{
-    if (mesh)
-        renderer->drawMesh(mesh.get(), transform, material.get());
-}
-
-void FontRenderer::setFont(sptr<Font> newFont)
-{
-    if (newFont == font)
-        return;
-
-    font = newFont;
-
-    if (font)
-    {
-        if (!text.empty())
-            rebuildMesh();
-        material->setTextureParameter("mainTex", font->getAtlas());
-    }
-    else
-        mesh = nullptr;
-}
-
-void FontRenderer::setText(const str &newText)
+void FontMesh::setText(const str &newText)
 {
     if (newText == text)
         return;
@@ -69,7 +34,13 @@ void FontRenderer::setText(const str &newText)
         mesh = nullptr;
 }
 
-void FontRenderer::rebuildMesh()
+FontMesh::FontMesh(Device *device, sptr<Font> font):
+    device(device),
+    font(font)
+{
+}
+
+void FontMesh::rebuildMesh()
 {
     vertices.clear();
     uvs.clear();
@@ -101,7 +72,7 @@ void FontRenderer::rebuildMesh()
         lastIndex += 4;
     }
 
-    mesh = Mesh::create(node.getScene()->getDevice());
+    mesh = Mesh::create(device);
 
     VertexBufferLayout positionsLayout;
     positionsLayout.addSemanticAttribute(VertexAttributeSemantics::Position);
@@ -112,11 +83,10 @@ void FontRenderer::rebuildMesh()
     mesh->addDynamicVertexBuffer(uvsLayout, uvs.data(), static_cast<u32>(uvs.size()));
 
     mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<u32>(indexes.size()));
-
     mesh->setPrimitiveType(PrimitiveType::Triangles);
 }
 
-void FontRenderer::updateMesh()
+void FontMesh::updateMesh()
 {
     vertices.clear();
     uvs.clear();

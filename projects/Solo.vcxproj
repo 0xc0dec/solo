@@ -16,6 +16,7 @@
     <ClInclude Include="..\src\solo\bullet\SoloBulletCommon.h" />
     <ClInclude Include="..\src\solo\bullet\SoloBulletPhysics.h" />
     <ClInclude Include="..\src\solo\bullet\SoloBulletRigidBody.h" />
+    <ClInclude Include="..\src\solo\SoloFontMesh.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGL.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLEffect.h" />
     <ClInclude Include="..\src\solo\gl\SoloOpenGLFrameBuffer.h" />
@@ -49,7 +50,6 @@
     <ClInclude Include="..\src\solo\SoloEffect.h" />
     <ClInclude Include="..\src\solo\SoloFileSystem.h" />
     <ClInclude Include="..\src\solo\SoloFont.h" />
-    <ClInclude Include="..\src\solo\SoloFontRenderer.h" />
     <ClInclude Include="..\src\solo\SoloFormatter.h" />
     <ClInclude Include="..\src\solo\SoloFrameBuffer.h" />
     <ClInclude Include="..\src\solo\SoloHash.h" />
@@ -102,6 +102,7 @@
     <ClCompile Include="..\src\solo\bullet\SoloBulletBoxCollider.cpp" />
     <ClCompile Include="..\src\solo\bullet\SoloBulletPhysics.cpp" />
     <ClCompile Include="..\src\solo\bullet\SoloBulletRigidBody.cpp" />
+    <ClCompile Include="..\src\solo\SoloFontMesh.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLEffect.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLFrameBuffer.cpp" />
     <ClCompile Include="..\src\solo\gl\SoloOpenGLMaterial.cpp" />
@@ -129,7 +130,6 @@
     <ClCompile Include="..\src\solo\SoloCommon.cpp" />
     <ClCompile Include="..\src\solo\SoloDegrees.cpp" />
     <ClCompile Include="..\src\solo\SoloFont.cpp" />
-    <ClCompile Include="..\src\solo\SoloFontRenderer.cpp" />
     <ClCompile Include="..\src\solo\SoloJobPool.cpp" />
     <ClCompile Include="..\src\solo\SoloTextureData.cpp" />
     <ClCompile Include="..\src\solo\SoloPhysics.cpp" />

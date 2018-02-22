@@ -16,6 +16,33 @@ return function(assetCache, mainCameraNode, postProcessor)
         return m
     end
 
+    function createFont()
+        local textureWidth = 1024
+        local textureHeight = 1024
+        local lineHeight = 60
+        local firstChar = string.byte(" ")
+        local charCount = string.byte("~") - string.byte(" ")
+        local path = getAssetPath("fonts/Aller.ttf")
+        local font = sl.Font.loadFromFile(sl.device, path, lineHeight, textureWidth, textureHeight, firstChar, charCount, 2, 2)
+
+        local mesh = sl.FontMesh.create(sl.device, font)
+
+        local effect = assetCache.getEffect("Font")
+        local material = sl.Material.create(sl.device, effect)
+        material:setFaceCull(sl.FaceCull.None)
+        material:setBlend(true)
+        material:setDepthTest(true)
+        material:setDepthWrite(false)
+        material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:setTextureParameter("mainTex", font:getAtlas())
+
+        return {
+            font = font,
+            mesh = mesh,
+            material = material
+        }
+    end
+
     return sl.createComponent("PostProcessorControlPanel", {
         init = function(self)
             self.scene = self.node:getScene()
@@ -33,21 +60,16 @@ return function(assetCache, mainCameraNode, postProcessor)
             self.btn2Node = self:_createBtn(root, vec3(0, 0, 0), btnScale, btnMat, "2", "Enable PP mode 2")
             self.btn3Node = self:_createBtn(root, vec3(0.8, 0, 0), btnScale, btnMat, "none", "Disable PP")
 
-            local textureWidth = 1024
-            local textureHeight = 1024
-            local lineHeight = 60
-            local firstChar = string.byte(" ")
-            local charCount = string.byte("~") - string.byte(" ")
-            local path = getAssetPath("fonts/Aller.ttf")
-            local font = sl.Font.loadFromFile(sl.device, path, lineHeight, textureWidth, textureHeight, firstChar, charCount, 2, 2)
+            self.font = createFont()
 
             local textNode = self.scene:createNode()
             local textTransform = textNode:findComponent("Transform")
             textTransform:setParent(rootTransform)
             textTransform:setLocalScale(vec3(0.01, 0.01, 1))
             textTransform:setLocalPosition(vec3(-1.1, 0.4, -0.4))
-            self.fontRenderer = textNode:addComponent("FontRenderer")
-            self.fontRenderer:setFont(font)
+
+            self.fontRenderer = textNode:addComponent("MeshRenderer")
+            self.fontRenderer:setMaterial(0, self.font.material)
             self.fontRenderer:setTag(tags.transparent)
         end,
 
@@ -60,13 +82,14 @@ return function(assetCache, mainCameraNode, postProcessor)
             if btn ~= self.lastHighlightedBtn and self.lastHighlightedBtn then
                 self.lastHighlightedBtn.highlighted = false
                 self.lastHighlightedBtn = nil
-                self.fontRenderer:setText("")
+                self.fontRenderer:setMesh(nil)
             end
 
             if btn then
                 btn.highlighted = true
                 self.lastHighlightedBtn = btn
-                self.fontRenderer:setText(btn.tipText)
+                self.font.mesh:setText(btn.tipText)
+                self.fontRenderer:setMesh(self.font.mesh:getMesh())
             end
         end,
 

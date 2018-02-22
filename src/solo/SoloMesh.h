@@ -20,19 +20,12 @@ namespace solo
         Points
     };
 
-    enum class MeshPrefab
-    {
-        Quad,
-        Cube
-    };
-
     class Device;
 
     class Mesh: public NoCopyAndMove
     {
     public:
         static auto create(Device *device) -> sptr<Mesh>;
-        static auto createFromPrefab(Device *device, MeshPrefab prefab) -> sptr<Mesh>;
         static auto loadFromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
         static auto loadFromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
 
@@ -52,8 +45,5 @@ namespace solo
 
     protected:
         Mesh() = default;
-
-        void initAsQuadMesh();
-        void initAsCubeMesh();
     };
 }
