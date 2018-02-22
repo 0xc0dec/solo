@@ -19,11 +19,6 @@ namespace solo
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
 
-        STBTrueTypeFont(Device *device, u8 *fontData,
-            u32 size, u32 atlasWidth, u32 atlasHeight,
-            u32 firstChar, u32 charCount,
-            u32 oversampleX, u32 oversampleY);
-
         auto getAtlas() const -> sptr<Texture2D> override final { return atlas; }
         auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
 
@@ -31,5 +26,7 @@ namespace solo
         sptr<Texture2D> atlas;
         u32 firstChar;
         uptr<stbtt_packedchar[]> charInfo;
+
+        STBTrueTypeFont() = default;
     };
 }

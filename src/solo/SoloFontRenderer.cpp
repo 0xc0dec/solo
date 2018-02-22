@@ -105,11 +105,11 @@ void FontRenderer::rebuildMesh()
 
     VertexBufferLayout positionsLayout;
     positionsLayout.addSemanticAttribute(VertexAttributeSemantics::Position);
-    mesh->addDynamicVertexBuffer(positionsLayout, reinterpret_cast<const float *>(vertices.data()), static_cast<u32>(vertices.size()));
+    mesh->addDynamicVertexBuffer(positionsLayout, vertices.data(), static_cast<u32>(vertices.size()));
 
     VertexBufferLayout uvsLayout;
     uvsLayout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
-    mesh->addDynamicVertexBuffer(uvsLayout, reinterpret_cast<const float *>(uvs.data()), static_cast<u32>(uvs.size()));
+    mesh->addDynamicVertexBuffer(uvsLayout, uvs.data(), static_cast<u32>(uvs.size()));
 
     mesh->addPart(reinterpret_cast<const void *>(indexes.data()), static_cast<u32>(indexes.size()));
 

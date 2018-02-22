@@ -199,7 +199,7 @@ OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
 {
 }
 
-auto OpenGLTexture2D::createFromData(Texture2DData *data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
+auto OpenGLTexture2D::createFromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
 {
     const auto dimensions = data->getDimensions();
     const auto internalFormat = toInternalFormat(data->getTextureFormat());
@@ -263,7 +263,7 @@ void OpenGLTexture2D::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
 }
 
-auto OpenGLCubeTexture::createFromData(CubeTextureData *data) -> sptr<OpenGLCubeTexture>
+auto OpenGLCubeTexture::createFromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>
 {
     const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getTextureFormat(), data->getDimension()));
 

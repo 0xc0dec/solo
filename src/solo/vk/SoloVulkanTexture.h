@@ -33,7 +33,7 @@ namespace solo
     class VulkanTexture2D final: public Texture2D, public VulkanTexture
     {
     public:
-        static auto createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<VulkanTexture2D>;
+        static auto createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<VulkanTexture2D>;
         static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D>;
 
     protected:
@@ -45,7 +45,7 @@ namespace solo
     class VulkanCubeTexture final: public CubeTexture, public VulkanTexture
     {
     public:
-        static auto createFromData(Device *device, CubeTextureData *data) -> sptr<VulkanCubeTexture>;
+        static auto createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture>;
 
     protected:
         VulkanCubeTexture(Device *device, TextureFormat format, u32 dimension);

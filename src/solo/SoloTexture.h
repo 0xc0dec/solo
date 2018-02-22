@@ -90,7 +90,7 @@ namespace solo
     public:
         static auto loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>;
         static auto loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>;
-        static auto createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<Texture2D>;
+        static auto createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>;
         static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>;
 
         auto getDimensions() const -> Vector2 { return dimensions; }
@@ -112,7 +112,7 @@ namespace solo
             const str& positiveXPath, const str& negativeXPath,
             const str& positiveYPath, const str& negativeYPath,
             const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
-        static auto createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>;
+        static auto createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>;
 
         auto getDepthWrap() const -> TextureWrap { return depthWrap; }
         void setDepthWrap(TextureWrap wrap);

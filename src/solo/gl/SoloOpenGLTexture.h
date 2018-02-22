@@ -31,7 +31,7 @@ namespace solo
     class OpenGLTexture2D final: public Texture2D, public OpenGLTexture
     {
     public:
-        static auto createFromData(Texture2DData *data, bool generateMipmaps) -> sptr<OpenGLTexture2D>;
+        static auto createFromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>;
         static auto createEmpty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>;
 
         void bind() override final;
@@ -43,7 +43,7 @@ namespace solo
     class OpenGLCubeTexture final : public CubeTexture, public OpenGLTexture
     {
     public:
-        static auto createFromData(CubeTextureData *data) -> sptr<OpenGLCubeTexture>;
+        static auto createFromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>;
 
         void bind() override final;
 

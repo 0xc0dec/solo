@@ -14,41 +14,20 @@
 
 using namespace solo;
 
-STBTrueTypeFont::STBTrueTypeFont(Device *device, u8 *fontData, u32 size, u32 atlasWidth, u32 atlasHeight,
-    u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY):
-    firstChar(firstChar)
-{
-    charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
-
-    vec<u8> pixels;
-    pixels.resize(atlasWidth * atlasHeight);
-
-    stbtt_pack_context context;
-    const auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
-    panicIf(!ret);
-
-    stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
-    stbtt_PackFontRange(&context, fontData, 0, static_cast<float>(size), firstChar, charCount, charInfo.get());
-    stbtt_PackEnd(&context);
-
-    auto data = Texture2DData::createFromMemory(atlasWidth, atlasHeight, TextureDataFormat::Red, pixels);
-    atlas = Texture2D::createFromData(device, data.get(), true);
-    atlas->setFilter(TextureFilter::Linear, TextureFilter::Linear, TextureMipFilter::Linear);
-}
-
 auto STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
 {
-    stbtt_aligned_quad quad;
-    const auto atlasSize = atlas->getDimensions();
+    const auto dimensions = atlas->getDimensions();
 
-    stbtt_GetPackedQuad(charInfo.get(), static_cast<u32>(atlasSize.x()), static_cast<u32>(atlasSize.y()),
-    character - firstChar, &offsetX, &offsetY, &quad, 1);
+    stbtt_aligned_quad quad;
+    stbtt_GetPackedQuad(charInfo.get(), static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()),
+        character - firstChar, &offsetX, &offsetY, &quad, 1);
+
     auto xmin = quad.x0;
     auto xmax = quad.x1;
     auto ymin = -quad.y1;
     auto ymax = -quad.y0;
 
-    auto result = GlyphInfo();
+    GlyphInfo result{};
     result.offsetX = offsetX;
     result.offsetY = offsetY;
     result.positions =
@@ -74,11 +53,29 @@ bool STBTrueTypeFont::canLoadFromFile(const str &path)
     return stringutils::endsWith(path, ".ttf");
 }
 
-auto STBTrueTypeFont::loadFromFile(Device *device, const str &path,
-    u32 size, u32 atlasWidth,
-    u32 atlasHeight, u32 firstChar, u32 charCount, u32 oversampleX,
-    u32 oversampleY) -> sptr<STBTrueTypeFont>
+auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u32 atlasWidth, u32 atlasHeight,
+    u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>
 {
     auto data = device->getFileSystem()->readBytes(path);
-    return std::make_shared<STBTrueTypeFont>(device, data.data(), size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
+
+    auto result = sptr<STBTrueTypeFont>(new STBTrueTypeFont());
+    result->firstChar = firstChar;
+    result->charInfo = std::make_unique<stbtt_packedchar[]>(charCount);
+
+    vec<u8> pixels;
+    pixels.resize(atlasWidth * atlasHeight);
+
+    stbtt_pack_context context;
+    const auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
+    panicIf(!ret);
+
+    stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
+    stbtt_PackFontRange(&context, data.data(), 0, static_cast<float>(size), firstChar, charCount, result->charInfo.get());
+    stbtt_PackEnd(&context);
+
+    const auto atlasData = Texture2DData::createFromMemory(atlasWidth, atlasHeight, TextureDataFormat::Red, pixels);
+    result->atlas = Texture2D::createFromData(device, atlasData, true);
+    result->atlas->setFilter(TextureFilter::Linear, TextureFilter::Linear, TextureMipFilter::Linear);
+
+    return result;
 }

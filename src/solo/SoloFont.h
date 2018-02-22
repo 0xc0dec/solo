@@ -14,7 +14,7 @@ namespace solo
     class Texture2D;
     class Device;
 
-    // class because script binding doesn't like structs
+    // As class because script binding doesn't like structs
     class GlyphInfo
     {
     public:

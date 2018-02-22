@@ -55,7 +55,7 @@ Texture::Texture(TextureFormat format):
 auto Texture2D::loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
 {
     const auto data = Texture2DData::loadFromFile(device, path);
-    return createFromData(device, data.get(), generateMipmaps);
+    return createFromData(device, data, generateMipmaps);
 }
 
 auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>
@@ -65,7 +65,7 @@ auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generate
     auto producers = JobBase<Texture2DData>::Producers{[=]() { return Texture2DData::loadFromFile(device, path); }};
     auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results)
     {
-        auto texture = createFromData(device, results[0].get(), generateMipmaps);
+        auto texture = createFromData(device, results[0], generateMipmaps);
         handle->resolve(texture);
     };
 
@@ -91,7 +91,7 @@ auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat
     }
 }
 
-auto Texture2D::createFromData(Device *device, Texture2DData *data, bool generateMipmaps) -> sptr<Texture2D>
+auto Texture2D::createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
 {
     switch (device->getMode())
     {
@@ -120,12 +120,12 @@ auto CubeTexture::loadFromFaceFiles(
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
 {
-    auto data = CubeTextureData::loadFromFaceFiles(
+    const auto data = CubeTextureData::loadFromFaceFiles(
         device,
         positiveXPath, negativeXPath,
         positiveYPath, negativeYPath,
         positiveZPath, negativeZPath);
-    return createFromData(device, data.get());
+    return createFromData(device, data);
 }
 
 auto CubeTexture::loadFromFaceFilesAsync(
@@ -147,7 +147,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
-        auto texture = createFromData(device, results[0].get());
+        auto texture = createFromData(device, results[0]);
         handle->resolve(texture);
     };
 
@@ -156,7 +156,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     return handle;
 }
 
-auto CubeTexture::createFromData(Device *device, CubeTextureData *data) -> sptr<CubeTexture>
+auto CubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>
 {
     switch (device->getMode())
     {
