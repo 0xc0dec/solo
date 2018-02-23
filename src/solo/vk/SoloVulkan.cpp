@@ -17,7 +17,7 @@ auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
     semaphoreCreateInfo.flags = 0;
 
     VulkanResource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_DEBUG_PANIC(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanRef()) != VK_SUCCESS, "Unable to complete VK call");
+    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanRef()));
 
     return semaphore;
 }

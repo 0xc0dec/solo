@@ -47,7 +47,7 @@
 #else
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
-#   define SL_DEBUG_PANIC(condition, msg) SL_EMPTY_MACRO_BLOCK()
+#   define SL_DEBUG_PANIC(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 namespace solo
