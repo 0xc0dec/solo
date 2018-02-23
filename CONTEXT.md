@@ -1,3 +1,7 @@
+# Building
+* Use CMake
+* Once all deps are built, delete them from solution and use it for development
+
 # TODO
 
 * Deferred demo - add shadows
