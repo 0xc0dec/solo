@@ -77,16 +77,10 @@ namespace solo
         CameraWorldPosition
     };
 
-    enum class MaterialPrefab
-    {
-        Font
-    };
-
     class Material: public NoCopyAndMove
     {
     public:
         static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
-        static auto createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<Material>;
 
         virtual ~Material() {}
 

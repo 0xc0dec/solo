@@ -57,12 +57,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("MaterialPrefab");
-        REG_MODULE_CONSTANT(m, MaterialPrefab, Font);
-        m.endModule();
-    }
-
-    {
         auto m = module.beginModule("FaceCull");
         REG_MODULE_CONSTANT(m, FaceCull, None);
         REG_MODULE_CONSTANT(m, FaceCull, Back);
