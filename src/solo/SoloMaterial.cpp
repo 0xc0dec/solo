@@ -87,10 +87,10 @@ auto Material::createFromPrefab(Device *device, MaterialPrefab prefab) -> sptr<M
             material->bindParameter("matrices:wvp", BindParameterSemantics::WorldViewProjectionMatrix);
             return material;
         }
-
-        default:
-            return panic<nullptr_t>("Unknown material prefab");
     }
+
+    SL_DEBUG_PANIC(true, "Unsupported material prefab");
+    return nullptr;
 }
 
 void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)

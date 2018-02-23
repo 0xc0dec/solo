@@ -67,7 +67,7 @@ auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u3
 
     stbtt_pack_context context;
     const auto ret = stbtt_PackBegin(&context, pixels.data(), atlasWidth, atlasHeight, 0, 1, nullptr);
-    panicIf(!ret);
+    SL_DEBUG_PANIC(!ret, "Unable to process font ", path);
 
     stbtt_PackSetOversampling(&context, oversampleX, oversampleY);
     stbtt_PackFontRange(&context, data.data(), 0, static_cast<float>(size), firstChar, charCount, result->charInfo.get());

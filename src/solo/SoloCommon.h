@@ -33,19 +33,21 @@
 #define SL_MACRO_BLOCK(code) do { code; } while (false);
 #define SL_EMPTY_MACRO_BLOCK() do {} while (false);
 
-/*
-    TODO
-    Currently all error checks have the same priority. For instance, the same macro is used for places where only assert() is necessary.
-    All checks are disabled in release build. Later they should probably get their respective "severity" level,
-    making it possible to disable checks granularly.
-*/
-
 #ifdef SL_DEBUG
 #   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
-#   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(__VA_ARGS__))
+#   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(SL_FMT(__VA_ARGS__, " (", __FILE__, ", line ", __LINE__, ")")))
+#   define SL_DEBUG_PANIC(condition, ...) \
+        SL_MACRO_BLOCK( \
+            if (condition) \
+            { \
+                SL_DEBUG_LOG(__VA_ARGS__); \
+                exit(1); \
+            } \
+        )
 #else
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
+#   define SL_DEBUG_PANIC(condition, msg) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 namespace solo
@@ -98,7 +100,7 @@ namespace solo
         
         virtual ~Logger() = default;
 
-        virtual void setTargetFile(const str &path) = 0;
+        virtual void setOutputFile(const str &path) = 0;
 
         virtual void logDebug(const str &msg) = 0;
         virtual void logInfo(const str &msg) = 0;
@@ -109,36 +111,4 @@ namespace solo
     protected:
         Logger() = default;
     };
-
-    template <class T = void> T panic(const str &msg)
-    {
-#ifdef SL_DEBUG
-        Logger::global().logCritical(SL_FMT(msg, " (", __FILE__, " line ", __LINE__, ")"));
-        exit(1);
-#endif
-        return T();
-    }
-
-    template <class T = void> T panic()
-    {
-        return panic("<empty message>");
-    }
-
-    template <class T = void> T panicIf(bool condition, const str &msg)
-    {
-#ifdef SL_DEBUG
-        if (condition)
-            return panic(msg);
-#endif
-        return T();
-    }
-
-    template <class T = void> T panicIf(bool condition)
-    {
-#ifdef SL_DEBUG
-        if (condition)
-            return panic();
-#endif
-        return T();
-    }
 }

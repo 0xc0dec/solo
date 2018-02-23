@@ -68,8 +68,7 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
         if (node != nodes.end())
         {
             const auto &nodeComponents = node->second;
-            panicIf(nodeComponents.find(typeId) != nodeComponents.end(),
-                    "Node already contains component with same id");
+            SL_DEBUG_PANIC(nodeComponents.find(typeId) != nodeComponents.end(), "Node already contains component with same id");
         }
     });
 

@@ -36,6 +36,6 @@ void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics
             addAttribute(3, "sl_Binormal", VertexAttributeSemantics::Binormal);
             break;
         default:
-            return panic("Unknown vertex attribute semantics");
+            SL_DEBUG_PANIC(true, "Unsupported vertex attribute semantics");
     }
 }

@@ -29,8 +29,10 @@ static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
         case 2: return VK_FORMAT_R32G32_SFLOAT;
         case 3: return VK_FORMAT_R32G32B32_SFLOAT;
         case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
-        default: return panic<VkFormat>("Unsupported vertex attribute element count");
     }
+
+    SL_DEBUG_PANIC(true, "Unsupported vertex attribute element count");
+    return VK_FORMAT_UNDEFINED;
 }
 
 static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
@@ -47,7 +49,7 @@ static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMa
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-    SL_DEBUG_LOG(SL_FMT("Vulkan: ", msg));
+    SL_DEBUG_LOG("Vulkan: ", msg);
     return VK_FALSE;
 }
 
@@ -59,10 +61,10 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     createInfo.pfnCallback = callbackFunc;
 
     const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    panicIf(!create, "Failed to load pointer to vkCreateDebugReportCallbackEXT");
+    SL_DEBUG_PANIC(!create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
 
     const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
-    panicIf(!destroy, "Failed to load pointer to vkDestroyDebugReportCallbackEXT");
+    SL_DEBUG_PANIC(!destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
     SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
@@ -142,7 +144,8 @@ static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
             return i;
     }
 
-    return panic<u32>("Could not find queue index");
+    SL_DEBUG_PANIC(true, "Unable to find queue index");
+    return 0;
 }
 
 static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource<VkCommandPool>
@@ -175,7 +178,8 @@ static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
             return format;
     }
 
-    return panic<VkFormat>("Unable to pick depth format");
+    SL_DEBUG_PANIC(true, "Unable to pick depth format");
+    return VK_FORMAT_UNDEFINED;
 }
 
 VulkanRenderer::VulkanRenderer(Device *engineDevice):

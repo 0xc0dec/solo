@@ -20,7 +20,8 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
         const auto isDepthAttachment = attachment->getFormat() == TextureFormat::Depth24;
         colorAttachmentsCount += isDepthAttachment ? 0 : 1;
     }
-    panicIf(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
+
+    SL_DEBUG_PANIC(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
 }
 
 auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
@@ -40,7 +41,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     }
 
     glGenFramebuffers(1, &result->handle);
-    panicIf(!result->handle, "Failed to create frame buffer handle");
+    SL_DEBUG_PANIC(!result->handle, "Unable to create frame buffer handle");
     
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle);
 
@@ -65,7 +66,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment->getHandle(), 0);
 
-    panicIf(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Frame buffer has invalid state");
+    SL_DEBUG_PANIC(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Frame buffer has invalid state");
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

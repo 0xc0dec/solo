@@ -24,8 +24,11 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGBA16F: return VK_FORMAT_R16G16B16A16_SFLOAT;
         case TextureFormat::Depth24: return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
         default:
-            return panic<VkFormat>("Unsupported image format");
+            break;
     }
+
+    SL_DEBUG_PANIC(true, "Unsupported texture format");
+    return VK_FORMAT_UNDEFINED;
 }
 
 static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height, u32 mipLevels,
@@ -79,9 +82,14 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
     const auto format_ = toVulkanFormat(format);
 
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
-    panicIf(!vk::isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT));
-    panicIf(!isDepth && !vk::isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT));
-    panicIf(isDepth && !vk::isFormatSupported(renderer->getPhysicalDevice(), format_, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT));
+    SL_DEBUG_PANIC(
+        !vk::isFormatSupported(
+            renderer->getPhysicalDevice(),
+            format_,
+            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT | (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)
+        ),
+        "Image format/features not supported"
+    );
 
     auto image = VulkanImage(
         renderer,
@@ -128,15 +136,21 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    panicIf(!vk::isFormatSupported(renderer->getPhysicalDevice(), format,
-        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
-        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
-        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR));
+    SL_DEBUG_PANIC(
+        !vk::isFormatSupported(renderer->getPhysicalDevice(), format,
+            VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+            VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
+            "Image format/features not supported"
+        );
 
     u32 mipLevels = 1;
     if (generateMipmaps)
     {
-        panicIf(!vk::isFormatSupported(renderer->getPhysicalDevice(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT));
+        SL_DEBUG_PANIC(
+            !vk::isFormatSupported(renderer->getPhysicalDevice(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
+            "Image format/features not supported"
+        );
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
         usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     }
@@ -302,10 +316,13 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    panicIf(!vk::isFormatSupported(renderer->getPhysicalDevice(), format,
-        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
-        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
-        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR));
+    SL_DEBUG_PANIC(
+        !vk::isFormatSupported(renderer->getPhysicalDevice(), format,
+            VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+            VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
+            "Image format/features not supported"
+        );
 
     auto image = VulkanImage(
         renderer,

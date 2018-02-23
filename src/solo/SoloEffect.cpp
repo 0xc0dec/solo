@@ -34,10 +34,10 @@ auto Effect::createFromDescription(Device* device, const str& description) -> sp
 auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
 {
     const auto vertTagStartIdx = source.find("// VERTEX");
-    panicIf(vertTagStartIdx == std::string::npos, SL_FMT("Vertex shader not found in ", source));
+    SL_DEBUG_PANIC(vertTagStartIdx == std::string::npos, "Vertex shader not found in ", source);
 
     const auto fragTagStartIdx = source.find("// FRAGMENT");
-    panicIf(vertTagStartIdx == std::string::npos, SL_FMT("Fragment shader not found in ", source));
+    SL_DEBUG_PANIC(vertTagStartIdx == std::string::npos, "Fragment shader not found in ", source);
 
     const auto vertShaderStartIdx = vertTagStartIdx + std::strlen("// VERTEX");
     const auto vertShaderEndIdx = fragTagStartIdx > vertTagStartIdx ? fragTagStartIdx - 1 : source.size() - 1;

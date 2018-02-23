@@ -9,7 +9,6 @@
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
-#include "SoloScene.h"
 #include "null/SoloNullDevice.h"
 #include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
@@ -36,7 +35,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             device = std::make_unique<NullDevice>(setup);
             break;
         default:
-            panic("Unknown device mode");
+            SL_DEBUG_PANIC(true, "Unknown device mode");
             break;
     }
 
@@ -57,7 +56,7 @@ void Device::initSubsystems(const DeviceSetup &setup)
     const FriendToken<Device> token;
 
     if (!setup.logFilePath.empty())
-        Logger::global().setTargetFile(setup.logFilePath);
+        Logger::global().setOutputFile(setup.logFilePath);
 
     renderer = Renderer::create(this, token);
     physics = Physics::create(this, token);

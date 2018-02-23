@@ -32,7 +32,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
     return module;
 }
 
-static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> shaderc::SpvCompilationResult
+static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> shaderc::SpvCompilationResult
 {
     shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
@@ -46,7 +46,7 @@ static auto compileToSpiv(const void *src, u32 srcLen, const str &fileName, bool
 
     const auto compilationStatus = result.GetCompilationStatus();
     const auto errorMessage = result.GetErrorMessage();
-    panicIf(compilationStatus != shaderc_compilation_status_success, errorMessage);
+    SL_DEBUG_PANIC(compilationStatus != shaderc_compilation_status_success, "Unable to compile effect to SPV: ", errorMessage);
 
     return result;
 }
@@ -56,8 +56,8 @@ auto VulkanEffect::createFromSources(Device *device,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
 {
-    const auto vsCompilationResult = compileToSpiv(vsSrc, vsSrcLen, vsFileName, true);
-    const auto fsCompilationResult = compileToSpiv(fsSrc, fsSrcLen, fsFileName, false);
+    const auto vsCompilationResult = compileToSpv(vsSrc, vsSrcLen, vsFileName, true);
+    const auto fsCompilationResult = compileToSpv(fsSrc, fsSrcLen, fsFileName, false);
     const auto vsSize = (vsCompilationResult.end() - vsCompilationResult.begin()) * sizeof(u32);
     const auto fsSize = (fsCompilationResult.end() - fsCompilationResult.begin()) * sizeof(u32);
     return std::make_shared<VulkanEffect>(
@@ -78,16 +78,14 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
 
 auto VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
 {
-    if (uniformBuffers.count(name))
-        return uniformBuffers.at(name);
-    return panic<UniformBuffer>(SL_FMT("Uniform buffer ", name, " not found"));
+    SL_DEBUG_PANIC(!uniformBuffers.count(name), "Uniform buffer ", name, " not found");
+    return uniformBuffers.at(name);
 }
 
 auto VulkanEffect::getSampler(const str &name) -> Sampler
 {
-    if (samplers.count(name))
-        return samplers.at(name);
-    return panic<Sampler>(SL_FMT("Sampler ", name, " not found"));
+    SL_DEBUG_PANIC(!samplers.count(name), "Sampler ", name, " not found");
+    return samplers.at(name);
 }
 
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)

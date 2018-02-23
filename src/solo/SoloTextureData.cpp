@@ -38,15 +38,17 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
         case TextureDataFormat::RGBA:
             return TextureFormat::RGBA8;
         default:
-            return panic<TextureFormat>("Texture data format not convertible to texture format");
+            break;
     }
+
+    SL_DEBUG_PANIC(true, "Texture data format not convertible to texture format");
+    return TextureFormat::RGBA8;
 }
 
 auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
-    if (STBTexture2DData::canLoadFromFile(path))
-        return STBTexture2DData::loadFromFile(device, path);
-    return panic<nullptr_t>(SL_FMT("Unsupported cube texture file ", path));
+    SL_DEBUG_PANIC(!STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
+    return STBTexture2DData::loadFromFile(device, path);
 }
 
 auto Texture2DData::createFromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>
@@ -71,9 +73,10 @@ auto CubeTextureData::loadFromFaceFiles(
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
 {
-    if (STBCubeTextureData::canLoadFromFaceFiles(positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath))
-        return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
-    return panic<nullptr_t>(SL_FMT("Unsupported cube texture face files ", positiveXPath, ", ..."));
+    SL_DEBUG_PANIC(!STBCubeTextureData::canLoadFromFaceFiles(
+        positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath),
+        "Unsupported cube texture face files ", positiveXPath, ", ...");
+    return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
 }
 
 auto CubeTextureData::getTextureFormat() const -> TextureFormat

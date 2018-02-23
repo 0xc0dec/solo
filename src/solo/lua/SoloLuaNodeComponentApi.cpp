@@ -23,7 +23,7 @@ static umap<str, u32> builtInComponents = {
 
 static auto findComponent(Node *node, const str &name) -> Component*
 {
-    panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+    SL_DEBUG_PANIC(!builtInComponents.count(name), "Not found built-in component ", name);
     return node->getScene()->findComponent(node->getId(), builtInComponents.at(name));
 }
 
@@ -40,12 +40,13 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
     if (name == "RigidBody")
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
 
-    return panic<Component*>(SL_FMT("Unknown built-in component ", name));
+    SL_DEBUG_PANIC(true, "Unknown built-in component ", name);
+    return nullptr;
 }
 
 static void removeComponent(Node *node, const str &name)
 {
-    panicIf(!builtInComponents.count(name), SL_FMT("Not found built-in component ", name));
+    SL_DEBUG_PANIC(!builtInComponents.count(name), "Not found built-in component ", name);
     node->getScene()->removeComponent(node->getId(), builtInComponents.at(name));
 }
 

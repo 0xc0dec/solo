@@ -60,10 +60,8 @@ namespace solo
                 }
                 else
                 {
-                    if (results[i])
-                        readyCount++;
-                    else
-                        panic("Failed to obtain job result"); // TODO less generic message
+                    SL_DEBUG_PANIC(!results[i], "Unable to obtain job result");
+                    readyCount++;
                 }
                 i++;
             }

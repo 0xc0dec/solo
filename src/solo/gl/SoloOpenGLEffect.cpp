@@ -32,7 +32,7 @@ static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
         vec<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        panic(SL_FMT("Failed to compile ", typeNames[type], " shader:\n", log.data()));
+        SL_DEBUG_PANIC(true, "Unable to compile ", typeNames[type], " shader:\n", log.data());
     }
 
     return shader;
@@ -54,7 +54,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
         vec<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        return panic<GLuint>(SL_FMT("Failed to link program:\n", log.data()));
+        SL_DEBUG_PANIC(true, "Unable to link program:\n", log.data());
     }
 
     return program;
@@ -84,7 +84,8 @@ auto OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
 {
     if (uniforms.count(name))
         return uniforms.at(name);
-    return panic<UniformInfo>(SL_FMT("Uniform ", name, " not found"));
+    SL_DEBUG_PANIC(true, "Uniform ", name, " not found");
+    return {};
 }
 
 auto OpenGLEffect::hasAttribute(const str& name) -> bool
@@ -96,7 +97,8 @@ auto OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes.count(name))
         return attributes.at(name);
-    return panic<AttributeInfo>(SL_FMT("Attribute ", name, " not found"));
+    SL_DEBUG_PANIC(true, "Attribute ", name, " not found");
+    return {};
 }
 
 void OpenGLEffect::introspectUniforms()

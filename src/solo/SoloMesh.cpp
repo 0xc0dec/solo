@@ -32,7 +32,7 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
     Assimp::Importer importer;
     const auto flags = aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
 	const auto scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), flags);
-    panicIf(!scene, SL_FMT("Unsupported mesh file ", path));
+    SL_DEBUG_PANIC(!scene, "Unable to parse file ", path);
 
     MeshData data;
     vec<vec<u16>> parts;

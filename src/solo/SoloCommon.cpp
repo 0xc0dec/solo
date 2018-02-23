@@ -21,14 +21,14 @@ namespace solo
                 file.close();
         }
 
-        void setTargetFile(const str& path) override final
+        void setOutputFile(const str& path) override final
         {
             if (file.is_open())
                 file.close();
             if (!path.empty())
             {
                 file.open(path, std::ios_base::trunc);
-                panicIf(!file.is_open(), SL_FMT("Unable to open target log file ", path));
+                SL_DEBUG_PANIC(!file.is_open(), "Unable to open log file ", path);
             }
         }
 

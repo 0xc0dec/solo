@@ -6,4 +6,5 @@
 * findScriptComponent to operate on component names
 * Better demos, separate scenes for separate effects, refactoring (esp. resource loading), etc.
 * More error checks
+* Different severity levels for error checks
 * Fix todos in code
