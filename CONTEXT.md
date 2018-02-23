@@ -1,6 +1,5 @@
 # TODO
 
-* FIX panic functions to avoid evaluating their condition in release!
 * Deferred demo - add shadows
 * Use GENERAL image layout in Vulkan for now, for simplicity
 * findScriptComponent to operate on component names
