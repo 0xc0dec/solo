@@ -21,7 +21,7 @@ namespace solo
     {
     public:
         explicit VulkanMesh(Device *device);
-        ~VulkanMesh();
+        ~VulkanMesh() = default;
 
         auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
         auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;

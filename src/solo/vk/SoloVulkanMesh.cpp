@@ -19,10 +19,6 @@ VulkanMesh::VulkanMesh(Device *device)
     renderer = dynamic_cast<VulkanRenderer*>(device->getRenderer());
 }
 
-VulkanMesh::~VulkanMesh()
-{
-}
-
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
     auto buf = VulkanBuffer::createDeviceLocal(renderer, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
@@ -92,12 +88,12 @@ auto VulkanMesh::getLayoutHash() const -> size_t
     const std::hash<u32> unsignedHasher;
     const std::hash<str> strHasher;
 
-    for (s32 i = 0; i < getVertexBufferCount(); i++)
+    for (u32 i = 0; i < getVertexBufferCount(); i++)
     {
         auto layout = getVertexBufferLayout(i);
         combineHash(seed, unsignedHasher(i));
 
-        for (s32 j = 0; j < layout.getAttributeCount(); j++)
+        for (u32 j = 0; j < layout.getAttributeCount(); j++)
         {
             const auto attr = layout.getAttribute(j);
             combineHash(seed, unsignedHasher(j));
