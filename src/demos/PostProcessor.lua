@@ -109,7 +109,7 @@ local function init2(camera, assetCache)
     local stitchWidth = 30
     local canvasSize = sl.device:getCanvasSize()
 
-    local stitchTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Stitches.png"))
+    local stitchTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/stitches.png"))
     stitchTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
 
     local stitchTexSize = stitchTex:getDimensions()

@@ -9,7 +9,7 @@ local createRotator = require "Rotator"
 local tags = require "Tags"
 
 return function(scene, assetCache)
-    local tex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Flammable.png"), true)
+    local tex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/flammable_color.png"), true)
     tex:setAnisotropyLevel(16)
     tex:setWrap(sl.TextureWrap.ClampToEdge)
 

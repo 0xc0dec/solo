@@ -40,7 +40,7 @@ return function(scene, assetCache)
     mesh:addPart(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
-    local texHandle = sl.Texture2D.loadFromFileAsync(sl.device, getAssetPath("textures/Bricks.jpg"), true)
+    local texHandle = sl.Texture2D.loadFromFileAsync(sl.device, getAssetPath("textures/rock_color.jpg"), true)
     texHandle:done(function(tex)
         tex:setAnisotropyLevel(16)
 

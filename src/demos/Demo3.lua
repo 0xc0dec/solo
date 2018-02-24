@@ -162,7 +162,6 @@ function demo()
         renderer:setMaterial(0, material)
     
         local transform = node:findComponent("Transform")
-        transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
         transform:setLocalPosition(vec3(0, -1, 0))
     
         local layout = sl.VertexBufferLayout()
@@ -180,10 +179,10 @@ function demo()
 
     local canvasSize = dev:getCanvasSize()
 
-    local bricksTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Bricks_albedo.png"), true)
+    local bricksTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/rock_color.jpg"), true)
     bricksTex:setAnisotropyLevel(16)
 
-    local bricksNormalTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/Bricks_normal.png"), true)
+    local bricksNormalTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/rock_normal.jpg"), true)
     bricksNormalTex:setAnisotropyLevel(16)
     
     local positionTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)

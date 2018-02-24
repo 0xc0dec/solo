@@ -20,7 +20,6 @@ return function(scene, assetCache)
     renderer:setMaterial(0, mat)
 
     local transform = node:findComponent("Transform")
-    transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(0, 0, 1), sl.Radians.fromRawDegrees(180)))
     transform:setLocalPosition(vec3(-3, -1, -5))
 
     local layout = sl.VertexBufferLayout()

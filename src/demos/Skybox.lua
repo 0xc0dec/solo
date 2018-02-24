@@ -29,9 +29,9 @@ return function(scene, assetCache)
     renderer:setMaterial(0, material)
 
     sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
-        getImagePath("+X.png"), getImagePath("-X.png"),
-        getImagePath("+Y.png"), getImagePath("-Y.png"),
-        getImagePath("+Z.png"), getImagePath("-Z.png")
+        getImagePath("+x.png"), getImagePath("-x.png"),
+        getImagePath("+y.png"), getImagePath("-y.png"),
+        getImagePath("+z.png"), getImagePath("-z.png")
     ):done(function(tex)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
         material:setTextureParameter("colorMap", tex)
