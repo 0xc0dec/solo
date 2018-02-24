@@ -84,6 +84,10 @@ target_include_directories(Solo PRIVATE
 
 target_link_libraries(Solo Vendor Vendor.Lua)
 
+if (MSVC)
+    target_compile_options(Solo PRIVATE /wd4267 /wd4244 /wd4312)
+endif()
+
 target_compile_definitions(Solo PRIVATE
     BUILD_WINDOWS
     HAVE_LIBC
@@ -91,6 +95,8 @@ target_compile_definitions(Solo PRIVATE
     SDL_HAPTIC_DISABLED
     SDL_JOYSTICK_DISABLED
 )
+
+target_compile_definitions(Solo PRIVATE "$<$<CONFIG:DEBUG>:SL_DEBUG>")
 
 # Vendor.Lua
 
