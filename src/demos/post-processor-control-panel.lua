@@ -22,7 +22,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         local lineHeight = 60
         local firstChar = string.byte(" ")
         local charCount = string.byte("~") - string.byte(" ")
-        local path = getAssetPath("fonts/Aller.ttf")
+        local path = getAssetPath("fonts/aller.ttf")
         local font = sl.Font.loadFromFile(sl.device, path, lineHeight, textureWidth, textureHeight, firstChar, charCount, 2, 2)
 
         local mesh = sl.FontMesh.create(sl.device, font)
