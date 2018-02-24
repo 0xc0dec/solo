@@ -33,7 +33,7 @@ Camera::Camera(const Node &node):
     fov(Degrees(60))
 {
     auto canvasSize = device->getCanvasSize();
-    viewport = {0, 0, canvasSize.x(), canvasSize.y()};
+    viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
 }
 
 void Camera::init()

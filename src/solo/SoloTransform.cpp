@@ -21,7 +21,7 @@ Transform::Transform(const Node &node):
 
 void Transform::init()
 {
-    localScale = {1, 1, 1};
+    localScale = Vector3(1, 1, 1);
 }
 
 void Transform::terminate()

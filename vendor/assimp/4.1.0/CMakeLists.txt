@@ -38,8 +38,10 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
 PROJECT( Assimp )
 
 # Hack by 0xc0dec
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} /MTd")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /MT")
+if (MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} /MTd")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /MT")
+endif()
 
 # All supported options ###############################################
 OPTION( BUILD_SHARED_LIBS
