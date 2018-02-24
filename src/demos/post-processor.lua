@@ -3,9 +3,9 @@
 -- MIT license
 -- 
 
-require "Common"
+require "common"
 
-local tags = require "Tags"
+local tags = require "tags"
 
 local function createStep(camera, material, target, assetCache)
     local scene = camera:getNode():getScene()
@@ -48,14 +48,14 @@ local function init1(camera, assetCache)
     local targetTex3, target3 = createTarget()
     local targetTex4, target4 = createTarget()
 
-    local grayscaleMat = sl.Material.create(sl.device, assetCache.getEffect("Grayscale"))
+    local grayscaleMat = sl.Material.create(sl.device, assetCache.getEffect("grayscale"))
     grayscaleMat:setDepthTest(false)
     grayscaleMat:setDepthWrite(false)
     grayscaleMat:setFaceCull(sl.FaceCull.None)
     grayscaleMat:setFloatParameter("variables:rightSeparator", 0.25)
     grayscaleMat:setTextureParameter("mainTex", targetTex1)
 
-    local saturateMat = sl.Material.create(sl.device, assetCache.getEffect("Saturate"))
+    local saturateMat = sl.Material.create(sl.device, assetCache.getEffect("saturate"))
     saturateMat:setDepthTest(false)
     saturateMat:setDepthWrite(false)
     saturateMat:setFaceCull(sl.FaceCull.None)
@@ -63,7 +63,7 @@ local function init1(camera, assetCache)
     saturateMat:setFloatParameter("variables:rightSeparator", 1.0)
     saturateMat:setTextureParameter("mainTex", targetTex2)
 
-    local verticalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("VerticalBlur"))
+    local verticalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("blur_vertical"))
     verticalBlurMat:setDepthTest(false)
     verticalBlurMat:setDepthWrite(false)
     verticalBlurMat:setFaceCull(sl.FaceCull.None)
@@ -71,7 +71,7 @@ local function init1(camera, assetCache)
     verticalBlurMat:setFloatParameter("variables:rightSeparator", 0.75)
     verticalBlurMat:setTextureParameter("mainTex", targetTex3)
 
-    local horizontalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("HorizontalBlur"))
+    local horizontalBlurMat = sl.Material.create(sl.device, assetCache.getEffect("blur_horizontal"))
     horizontalBlurMat:setDepthTest(false)
     horizontalBlurMat:setDepthWrite(false)
     horizontalBlurMat:setFaceCull(sl.FaceCull.None)
@@ -129,7 +129,7 @@ local function init2(camera, assetCache)
     fbTex:setWrap(sl.TextureWrap.ClampToEdge)
     local target = sl.FrameBuffer.create(sl.device, { fbTex })
 
-    local material = sl.Material.create(sl.device, assetCache.getEffect("Stitches"))
+    local material = sl.Material.create(sl.device, assetCache.getEffect("stitches"))
     material:setFaceCull(sl.FaceCull.None)
     material:setTextureParameter("mainTex", fbTex)
     material:setTextureParameter("stitchTex", stitchTex)

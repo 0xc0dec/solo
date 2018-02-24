@@ -8,7 +8,7 @@ return function(assetCache)
     layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
     local mesh = sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Axes.obj"), layout)
     
-    local effect = assetCache.getEffect("Color")
+    local effect = assetCache.getEffect("color")
 
     local createColorMaterial = function(color)
         local mat = sl.Material.create(sl.device, effect)

@@ -5,7 +5,7 @@
 
 package.path = "../../src/demos/?.lua;" .. package.path
 
-require "Common"
+require "common"
 
 function demo()
     local dev = sl.device
@@ -13,22 +13,22 @@ function demo()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 
-    local createMainCamera = require "MainCamera"
-    local createSkybox = require "Skybox"
-    local assetCache = (require "AssetCache")()
-    local attachAxes = (require "Axes")(assetCache)
-    local createFloor = require "Floor"
-    local createCheckerBox = require "CheckerBox"
-    local createDynamicQuad = require "DynamicQuad"
-    local createTransparentQuad = require "TransparentQuad"
-    local createLoadedMesh = require "LoadedMesh"
-    local createSpawner = require "Spawner"
-    local createMonitorQuad = require "MonitorQuad"
-    local createOffscreenCamera = require "OffscreenCamera"
-    local createPostProcessor = require "PostProcessor"
-    local createTracer = require "Tracer"
-    local createPostProcessorControlPanel = require "PostProcessorControlPanel"
-    local tags = require "Tags"
+    local createMainCamera = require "main-camera"
+    local createSkybox = require "skybox"
+    local assetCache = (require "asset-cache")()
+    local attachAxes = (require "axes")(assetCache)
+    local createFloor = require "floor"
+    local createCheckerBox = require "checker-box"
+    local createDynamicQuad = require "dynamic-quad"
+    local createTransparentQuad = require "transparent-quad"
+    local createLoadedMesh = require "loaded-mesh"
+    local createSpawner = require "spawner"
+    local createMonitorQuad = require "monitor-quad"
+    local createOffscreenCamera = require "offscreen-camera"
+    local createPostProcessor = require "post-processor"
+    local createTracer = require "tracer"
+    local createPostProcessorControlPanel = require "post-processor-control-panel"
+    local tags = require "tags"
 
     ---
 

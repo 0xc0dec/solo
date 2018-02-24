@@ -3,10 +3,10 @@
 -- MIT license
 -- 
 
-local tags = require "Tags"
+local tags = require "tags"
 
 return function(assetCache, mainCameraNode, postProcessor)
-    local effect = assetCache.getEffect("Color")
+    local effect = assetCache.getEffect("color")
 
     function createMaterial(color)
         local m = sl.Material.create(sl.device, effect)
@@ -27,7 +27,7 @@ return function(assetCache, mainCameraNode, postProcessor)
 
         local mesh = sl.FontMesh.create(sl.device, font)
 
-        local effect = assetCache.getEffect("Font")
+        local effect = assetCache.getEffect("font")
         local material = sl.Material.create(sl.device, effect)
         material:setFaceCull(sl.FaceCull.None)
         material:setBlend(true)

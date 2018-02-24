@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local tags = require "Tags"
+local tags = require "tags"
 
 local getImagePath = function(fileName)
     return getAssetPath("textures/skyboxes/deep-space/") .. fileName
@@ -15,7 +15,7 @@ return function(scene, assetCache)
     
     local node = scene:createNode()
 
-    local effect = assetCache.getEffect("Skybox")
+    local effect = assetCache.getEffect("skybox")
     local material = sl.Material.create(sl.device, effect)
     material:setDepthTest(true)
     material:setDepthWrite(false)

@@ -3,14 +3,14 @@
 -- MIT license
 -- 
 
-local createRotator = require "Rotator"
-local createLookAt = require "LookAt"
-local tags = require "Tags"
+local createRotator = require "rotator"
+local createLookAt = require "look-at"
+local tags = require "tags"
 
 return function(scene, assetCache, offscreenCameraTex)
 	local canvasSize = sl.device:getCanvasSize()
 
-    local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
+    local material = sl.Material.create(sl.device, assetCache.getEffect("texture"))
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
     material:setTextureParameter("mainTex", offscreenCameraTex)

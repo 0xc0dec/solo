@@ -4,7 +4,7 @@
 -- 
 
 return function(assetCache)
-    local effect = assetCache.getEffect("Color")
+    local effect = assetCache.getEffect("color")
 
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)

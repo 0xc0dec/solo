@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-local createScreenshoter = require "Screenshoter"
+local createScreenshoter = require "screenshoter"
 
 return function(scene)
     local node = scene:createNode()

@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-require "Common"
+require "common"
 
 return function(targetPos)
     return sl.createComponent("LookAt", {

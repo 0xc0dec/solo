@@ -10,6 +10,6 @@ deviceSetup.canvasHeight = 700
 deviceSetup.fullScreen = false
 deviceSetup.vsync = true
 deviceSetup.windowTitle = "Demo 1 (Vulkan)"
-deviceSetup.logFilePath = "Demo1_vk.log"
+deviceSetup.logFilePath = "demo1_vk.log"
 
-runScript = "../../src/demos/Demo1.lua"
+runScript = "../../src/demos/demo1.lua"

@@ -4,7 +4,7 @@
 -- 
 
 return function(scene, assetCache)
-    local effect = assetCache.getEffect("Texture")
+    local effect = assetCache.getEffect("texture")
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)

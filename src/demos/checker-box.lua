@@ -3,10 +3,10 @@
 -- MIT license
 -- 
 
-local createRotator = require "Rotator"
+local createRotator = require "rotator"
 
 return function(scene, assetCache)
-    local effect = assetCache.getEffect("Checker")
+    local effect = assetCache.getEffect("checker")
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)

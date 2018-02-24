@@ -32,7 +32,7 @@ return function()
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Box.dae"), layout)
+                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/box.dae"), layout)
                 end)
             end,
 
@@ -42,7 +42,7 @@ return function()
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
                     layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/Quad.dae"), layout)
+                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/quad.dae"), layout)
                 end)
             end
         },

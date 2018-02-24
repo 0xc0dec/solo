@@ -3,17 +3,17 @@
 -- MIT license
 -- 
 
-require "Common"
+require "common"
 
-local createRotator = require "Rotator"
-local tags = require "Tags"
+local createRotator = require "rotator"
+local tags = require "tags"
 
 return function(scene, assetCache)
     local tex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/flammable_color.png"), true)
     tex:setAnisotropyLevel(16)
     tex:setWrap(sl.TextureWrap.ClampToEdge)
 
-    local material = sl.Material.create(sl.device, assetCache.getEffect("Texture"))
+    local material = sl.Material.create(sl.device, assetCache.getEffect("texture"))
     material:setFaceCull(sl.FaceCull.None)
     material:setBlend(true)
     material:setDepthTest(true)

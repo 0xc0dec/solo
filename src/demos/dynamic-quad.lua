@@ -45,7 +45,7 @@ return function(scene, assetCache)
         tex:setAnisotropyLevel(16)
 
         -- TODO Move to a shared place - this material is used in many places
-        local effect = assetCache.getEffect("Texture")
+        local effect = assetCache.getEffect("texture")
         local material = sl.Material.create(sl.device, effect)
         material:setFaceCull(sl.FaceCull.None)
         material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)

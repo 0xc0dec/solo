@@ -5,7 +5,7 @@
 
 package.path = "../../src/demos/?.lua;" .. package.path
 
-require "Common"
+require "common"
 
 function demo()
     local dev = sl.device
@@ -13,11 +13,11 @@ function demo()
     local fs = dev:getFileSystem()
     local scene = sl.Scene.create(dev)
 
-    local tags = require "Tags"
-    local createRotator = require "Rotator"
-    local createMainCamera = require "MainCamera"
-    local createSkybox = require "Skybox"
-    local assetCache = (require "AssetCache")()
+    local tags = require "tags"
+    local createRotator = require "rotator"
+    local createMainCamera = require "main-camera"
+    local createSkybox = require "skybox"
+    local assetCache = (require "asset-cache")()
 
     --
 
