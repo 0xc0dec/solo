@@ -101,7 +101,7 @@ target_compile_definitions(Solo PRIVATE
 )
 
 if (WIN32)
-    target_compile_definitions(Vendor PRIVATE
+    target_compile_definitions(Solo PRIVATE
         BUILD_WINDOWS
     )
 endif()
