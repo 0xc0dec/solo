@@ -1,3 +1,5 @@
+This is a list of notes and TODOs to keep me in context.
+
 # Building
 * Use CMake
 * Once all deps are built, delete them from solution and use it for development
