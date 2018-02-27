@@ -14,7 +14,7 @@ build/**
 *DS_Store*
 *DotSettings.user
 .idea*
-blend1
+*.blend1
 .gitignore~
 ..gitignore.un~
 *VC.db

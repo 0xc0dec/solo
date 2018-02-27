@@ -6,6 +6,7 @@
 return function()
     local cobbleStone = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/cobblestone_color.png"), true)
     cobbleStone:setAnisotropyLevel(16)
+    cobbleStone:setWrap(sl.TextureWrap.Repeat)
 
     local cache = {}
 

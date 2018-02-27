@@ -174,20 +174,6 @@ function demo()
 
     ---
 
-    function createFloor(material)
-        local node = scene:createNode()
-    
-        local transform = node:findComponent("Transform")
-        transform:setLocalScale(vec3(10, 0.1, 10))
-        transform:setLocalPosition(vec3(0, -2, 0))
-    
-        local renderer = node:addComponent("MeshRenderer")
-        renderer:setMesh(assetCache.meshes.getBox())
-        renderer:setMaterial(0, material)
-
-        return renderer
-    end
-
     function createLightCamera()
         local node = scene:createNode()
 
@@ -221,14 +207,13 @@ function demo()
         renderer:setMaterial(0, material)
     
         local transform = node:findComponent("Transform")
-        -- transform:setLocalRotation(sl.Quaternion.createFromAxisAngle(vec3(1, 0, 0), sl.Radians.fromRawDegrees(90)))
-        transform:setLocalScale(vec3(2, 2, 2))
+        -- transform:setLocalScale(vec3(2, 2, 2))
     
         local layout = sl.VertexBufferLayout()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Monkey.obj"), layout):done(
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/backdrop.obj"), layout):done(
             function(mesh)
                 renderer:setMesh(mesh)
             end)
@@ -254,11 +239,10 @@ function demo()
     depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 
     local mainCam, camNode = createMainCamera(scene)
-    camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
-    camNode:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+    camNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
+    camNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
 
     local skybox = createSkybox(scene, assetCache)
-    local floorRenderer = createFloor(colorPassMaterial)
     local modelRenderer = createModel(colorPassMaterial)
 
     ---
@@ -278,13 +262,11 @@ function demo()
     end
 
     function renderLightCamFrame()
-        floorRenderer:setMaterial(0, depthPassMaterial)
         modelRenderer:setMaterial(0, depthPassMaterial)
         scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function renderMainCamFrame()
-        floorRenderer:setMaterial(0, colorPassMaterial)
         modelRenderer:setMaterial(0, colorPassMaterial)
         scene:visitByTags(skybox.tag, renderCmp)
         scene:visitByTags(~skybox.tag, renderCmp)

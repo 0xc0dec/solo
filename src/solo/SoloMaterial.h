@@ -82,7 +82,7 @@ namespace solo
     public:
         static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
-        virtual ~Material() {}
+        virtual ~Material() = default;
 
         virtual void setFloatParameter(const str &name, float value) = 0;
         virtual void setVector2Parameter(const str &name, const Vector2 &value) = 0;
@@ -127,6 +127,6 @@ namespace solo
         BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
         DepthFunction depthFunc = DepthFunction::Less;
 
-        Material() {}
+        Material() = default;
     };
 }
