@@ -19,159 +19,6 @@ function demo()
     local createSkybox = require "skybox"
     local assetCache = (require "asset-cache")()
 
-    --
-
-    local depthPassEffectDesc = {
-        vertex = {
-            uniformBuffers = {
-                matrices = {
-                    wvp = "mat4"
-                }
-            },
-    
-            inputs = {
-                sl_Position = "vec3"
-            },
-    
-            outputs = {
-            },
-    
-            code = [[
-                void main()
-                {
-                    gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
-                    SL_FIX_Y#gl_Position#;
-                }
-            ]]
-        },
-    
-        fragment = {
-            samplers = {
-            },
-    
-            outputs = {
-                fragColor = { type = "vec4", target = 0 }
-            },
-    
-            code = [[
-                void main()
-                {
-                    fragColor = vec4(1, 0, 0, 1);
-                }
-            ]]
-        }
-    }
-
-    local colorPassEffectDesc = {
-        vertex = {
-            uniformBuffers = {
-                matrices = { -- TODO rename
-                    wvp = "mat4",
-                    model = "mat4",
-                    lightVp = "mat4",
-                    lightPos = "vec3"
-                }
-            },
-    
-            inputs = {
-                sl_Position = "vec3",
-                sl_TexCoord = "vec2",
-                sl_Normal = "vec3"
-            },
-    
-            outputs = {
-                uv = "vec2",
-                shadowCoord = "vec4",
-                normal = "vec3",
-                lightVec = "vec3",
-                viewVec = "vec3"
-            },
-    
-            code = [[
-                void main()
-                {
-                    const mat4 biasMat = SL_SHADOW_BIAS_MAT;
-
-                    uv = sl_TexCoord;
-                    SL_FIX_UV#uv#;
-
-                    gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
-                    SL_FIX_Y#gl_Position#;
-
-                    vec4 lightProjectedPos = (#matrices:lightVp# * #matrices:model#) * vec4(sl_Position, 1.0);
-                    SL_FIX_Y#lightProjectedPos#;
-                    shadowCoord = biasMat * lightProjectedPos;
-
-                    vec4 worldPos = #matrices:model# * vec4(sl_Position, 1.0);
-                    normal = mat3(#matrices:model#) * sl_Normal;
-                    lightVec = normalize(#matrices:lightPos# - sl_Position);
-                    viewVec = -worldPos.xyz;			
-                }
-            ]]
-        },
-    
-        fragment = {
-            samplers = {
-                mainTex = "sampler2D",
-                shadowMap = "sampler2D"
-            },
-    
-            outputs = {
-                fragColor = { type = "vec4", target = 0 }
-            },
-    
-            code = [[
-                const float ambient = 0.1;
-
-                float sampleShadow(vec4 coords, vec2 offset)
-                {
-                    float shadow = 1.0;
-                    float dist = texture(shadowMap, coords.st + offset).r;
-                    if (dist < coords.z - 0.00002)
-                        shadow = ambient;
-                    return shadow;
-                }
-
-                float samplePCF(vec4 coords)
-                {
-                    ivec2 texDim = textureSize(shadowMap, 0);
-                    float scale = 1.5;
-                    float dx = scale * 1.0 / float(texDim.x);
-                    float dy = scale * 1.0 / float(texDim.y);
-
-                    float shadowFactor = 0.0;
-                    int count = 0;
-                    int range = 1;
-                    
-                    for (int x = -range; x <= range; x++)
-                    {
-                        for (int y = -range; y <= range; y++)
-                        {
-                            shadowFactor += sampleShadow(coords, vec2(dx * x, dy * y));
-                            count++;
-                        }
-                    
-                    }
-                    return shadowFactor / count;
-                }
-
-                void main()
-                {
-                    vec3 n = normalize(normal);
-                    vec3 l = normalize(lightVec);
-                    vec3 v = normalize(viewVec);
-                    vec3 r = normalize(-reflect(l, n));
-                    float diffuse = max(dot(n, l), ambient);
-
-                    vec4 coords = shadowCoord / shadowCoord.w;
-                    float shadow = samplePCF(coords);
-
-                    fragColor = texture(mainTex, uv) * min(diffuse, shadow);
-                }
-            ]]
-        }
-    }
-
     ---
 
     function createLightCamera()
@@ -197,43 +44,45 @@ function demo()
         rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
         transform:setParent(rootNode:findComponent("Transform"))
 
-        return cam, node, transform, depthTex
+        return {
+            camera = cam,
+            node = node,
+            transform = transform,
+            depthTex = depthTex
+        }
     end
 
-    function createModel(material)
+    function createBackdrop(material)
         local node = scene:createNode()
     
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMaterial(0, material)
     
         local transform = node:findComponent("Transform")
-        -- transform:setLocalScale(vec3(2, 2, 2))
     
         local layout = sl.VertexBufferLayout()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/backdrop.obj"), layout):done(
-            function(mesh)
-                renderer:setMesh(mesh)
-            end)
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/backdrop.obj"), layout)
+            :done(function(mesh) renderer:setMesh(mesh) end)
 
-        return renderer
+        return { renderer = renderer }
     end
 
     ---
 
-    local lightCam, lightCamNode, lightCamTransform, depthTex = createLightCamera()
+    local lightCam = createLightCamera()
 
-    local colorPassEffect = sl.Effect.createFromSource(dev, sl.generateEffectSource(colorPassEffectDesc))
+    local colorPassEffect = assetCache.getEffect("shadowed")
     local colorPassMaterial = sl.Material.create(dev, colorPassEffect)
     colorPassMaterial:setFaceCull(sl.FaceCull.None)
-    colorPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    colorPassMaterial:bindParameter("matrices:model", sl.BindParameterSemantics.WorldMatrix)
+    colorPassMaterial:bindParameter("uniforms:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    colorPassMaterial:bindParameter("uniforms:model", sl.BindParameterSemantics.WorldMatrix)
     colorPassMaterial:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
-    colorPassMaterial:setTextureParameter("shadowMap", depthTex)
+    colorPassMaterial:setTextureParameter("shadowMap", lightCam.depthTex)
 
-    local depthPassEffect = sl.Effect.createFromSource(dev, sl.generateEffectSource(depthPassEffectDesc))
+    local depthPassEffect = assetCache.getEffect("shadow-depth-pass")
     local depthPassMaterial = sl.Material.create(dev, depthPassEffect)
     depthPassMaterial:setFaceCull(sl.FaceCull.None)
     depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
@@ -243,7 +92,7 @@ function demo()
     camNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
 
     local skybox = createSkybox(scene, assetCache)
-    local modelRenderer = createModel(colorPassMaterial)
+    local backdrop = createBackdrop(colorPassMaterial)
 
     ---
 
@@ -262,21 +111,21 @@ function demo()
     end
 
     function renderLightCamFrame()
-        modelRenderer:setMaterial(0, depthPassMaterial)
+        backdrop.renderer:setMaterial(0, depthPassMaterial)
         scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function renderMainCamFrame()
-        modelRenderer:setMaterial(0, colorPassMaterial)
+        backdrop.renderer:setMaterial(0, colorPassMaterial)
         scene:visitByTags(skybox.tag, renderCmp)
         scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function update()
         scene:visit(updateCmp)
-        colorPassMaterial:setMatrixParameter("matrices:lightVp", lightCam:getViewProjectionMatrix())
-        colorPassMaterial:setVector3Parameter("matrices:lightPos", lightCamTransform:getWorldPosition())
-        lightCam:renderFrame(renderLightCamFrame)
+        colorPassMaterial:setMatrixParameter("uniforms:lightVp", lightCam.camera:getViewProjectionMatrix())
+        colorPassMaterial:setVector3Parameter("uniforms:lightPos", lightCam.transform:getWorldPosition())
+        lightCam.camera:renderFrame(renderLightCamFrame)
         mainCam:renderFrame(renderMainCamFrame)
     end
 
