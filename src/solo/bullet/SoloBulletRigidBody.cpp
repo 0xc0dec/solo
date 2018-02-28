@@ -98,6 +98,21 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
     }
 }
 
+bool BulletRigidBody::isKinematic()
+{
+    return (body->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT) == btCollisionObject::CF_KINEMATIC_OBJECT;
+}
+
+void BulletRigidBody::setKinematic(bool kinematic)
+{
+    auto flags = body->getCollisionFlags();
+    if (kinematic)
+        flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
+    else
+        flags &= ~btCollisionObject::CF_KINEMATIC_OBJECT;
+    body->setCollisionFlags(flags);
+}
+
 void BulletRigidBody::syncScale()
 {
     const auto scale = transformCmp->getWorldScale();

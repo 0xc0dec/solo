@@ -24,6 +24,9 @@ namespace solo
 
         void setCollider(sptr<Collider> collider) override final;
 
+        bool isKinematic() override final;
+        void setKinematic(bool kinematic) override final;
+
     private:
         float mass = 0;
         sptr<Collider> collider;
