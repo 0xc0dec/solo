@@ -18,6 +18,14 @@ function demo()
     local createMainCamera = require "main-camera"
     local createSkybox = require "skybox"
     local assetCache = (require "asset-cache")()
+    local createPostProcessor = require "post-processor"
+    local createPostProcessorControlPanel = require "post-processor-control-panel"
+    local createTracer = require "tracer"
+    local createSpawner = require "spawner"
+    local createCheckerBox = require "checker-box"
+    local createDynamicQuad = require "dynamic-quad"
+    local attachAxes = (require "axes")(assetCache)
+    local createLookAt = require "look-at"
 
     ---
 
@@ -41,7 +49,7 @@ function demo()
         transform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
         local rootNode = scene:createNode()
-        rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
+        rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 0.3))
         transform:setParent(rootNode:findComponent("Transform"))
 
         return {
@@ -52,7 +60,7 @@ function demo()
         }
     end
 
-    function createBackdrop(material)
+    function createMesh(meshPath, material)
         local node = scene:createNode()
     
         local renderer = node:addComponent("MeshRenderer")
@@ -64,10 +72,23 @@ function demo()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/backdrop.obj"), layout)
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath(meshPath), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
-        return { renderer = renderer }
+        return {
+            node = node,
+            transform = transform,
+            renderer = renderer
+        }
+    end
+
+    function createTracker(parentTransform, pos, target)
+        local node = scene:createNode()
+        local transform = node:findComponent("Transform")
+        transform:setParent(parentTransform)
+        transform:setLocalPosition(pos)
+        node:addScriptComponent(createLookAt(target))
+        attachAxes(node)
     end
 
     ---
@@ -87,12 +108,36 @@ function demo()
     depthPassMaterial:setFaceCull(sl.FaceCull.None)
     depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
 
-    local mainCam, camNode = createMainCamera(scene)
-    camNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
-    camNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
+    local mainCamera, mainCameraNode = createMainCamera(scene)
+    mainCameraNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
+    mainCameraNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
+    mainCameraNode:addScriptComponent(createTracer(physics))
+    mainCameraNode:addScriptComponent(createSpawner(assetCache))
+
+    local postProcessor = createPostProcessor(assetCache, mainCamera)
+    local postProcessorControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
+    postProcessorControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
+    postProcessorControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
+    mainCameraNode:addScriptComponent(postProcessorControlPanel.cmp)
 
     local skybox = createSkybox(scene, assetCache)
-    local backdrop = createBackdrop(colorPassMaterial)
+    local backdrop = createMesh("meshes/backdrop.obj", colorPassMaterial)
+    local dynamicQuad = createDynamicQuad(scene, assetCache)
+    dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
+
+    local teapot = createMesh("meshes/teapot.obj", colorPassMaterial)
+    teapot.transform:setLocalPosition(vec3(3, 0, -3))
+    local checkerBox = createCheckerBox(scene, assetCache)
+    checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
+
+    local rootNode = scene:createNode()
+    local rootNodeTransform = rootNode:findComponent("Transform")
+    attachAxes(rootNode)
+    rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 1))
+
+    createTracker(rootNodeTransform, vec3(4, 4, 4), vec3(3, 0, -3))
+    createTracker(rootNodeTransform, vec3(-4, 4, 4), vec3(-3, 1, 3))
+    createTracker(rootNodeTransform, vec3(4, 4, -4), vec3(3, 1, 3))
 
     ---
 
@@ -112,13 +157,14 @@ function demo()
 
     function renderLightCamFrame()
         backdrop.renderer:setMaterial(0, depthPassMaterial)
-        scene:visitByTags(~skybox.tag, renderCmp)
+        scene:visitByTags(~(skybox.tag | tags.postProcessorStep), renderCmp)
     end
 
     function renderMainCamFrame()
         backdrop.renderer:setMaterial(0, colorPassMaterial)
         scene:visitByTags(skybox.tag, renderCmp)
-        scene:visitByTags(~skybox.tag, renderCmp)
+        scene:visitByTags(~(skybox.tag | tags.postProcessorStep | tags.transparent), renderCmp)
+        scene:visitByTags(tags.transparent, renderCmp)
     end
 
     function update()
@@ -126,7 +172,8 @@ function demo()
         colorPassMaterial:setMatrixParameter("uniforms:lightVp", lightCam.camera:getViewProjectionMatrix())
         colorPassMaterial:setVector3Parameter("uniforms:lightPos", lightCam.transform:getWorldPosition())
         lightCam.camera:renderFrame(renderLightCamFrame)
-        mainCam:renderFrame(renderMainCamFrame)
+        mainCamera:renderFrame(renderMainCamFrame)
+        postProcessor:apply()
     end
 
     function run()

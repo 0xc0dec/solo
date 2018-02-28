@@ -6,6 +6,8 @@
 local tags = require "tags"
 
 return function(assetCache, mainCameraNode, postProcessor)
+    local scene = mainCameraNode:getScene()
+
     local effect = assetCache.getEffect("color")
 
     function createMaterial(color)
@@ -43,31 +45,59 @@ return function(assetCache, mainCameraNode, postProcessor)
         }
     end
 
-    return sl.createComponent("PostProcessorControlPanel", {
+    local function createBtn(parentNode, localPos, localScale, material, ppMode, tipText)
+        local node = scene:createNode()
+        
+        local renderer = node:addComponent("MeshRenderer")
+        renderer:setMesh(assetCache.meshes.getBox())
+        renderer:setMaterial(0, material)
+
+        local transform = node:findComponent("Transform")
+        if parentNode then
+            transform:setParent(parentNode:findComponent("Transform"))
+        end
+        transform:setLocalPosition(localPos)
+        transform:setLocalScale(localScale)
+
+        local params = sl.RigidBodyConstructionParameters()
+        params.mass = 1 -- non-zero otherwise being kinematic doesn't trigger transform sync for the body
+        params.friction = 0.5
+        local body = node:addComponent("RigidBody", params)
+        body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
+        body:setKinematic(true)
+
+        node:addScriptComponent(sl.createComponent("PostProcessorControlPanelBtn", {
+            tipText = tipText,
+
+            update = function(self)
+                if self.highlighted and sl.device:isMouseButtonDown(sl.MouseButton.Left, true) then
+                    postProcessor:setMode(ppMode)
+                end
+            end
+        }))
+    end
+
+    local baseMat = createMaterial(vec4(0, 1, 1, 1))
+    local btnMat = createMaterial(vec4(0, 1, 0, 1))
+
+    local root = scene:createNode()
+    local rootTransform = root:findComponent("Transform")
+
+    local btnScale = vec3(0.3, 0.1, 0.3)
+    createBtn(root, vec3(-0.8, 0, 0), btnScale, btnMat, "1", "Enable PP mode 1")
+    createBtn(root, vec3(0, 0, 0), btnScale, btnMat, "2", "Enable PP mode 2")
+    createBtn(root, vec3(0.8, 0, 0), btnScale, btnMat, "none", "Disable PP")
+
+    local textNode = scene:createNode()
+    local textTransform = textNode:findComponent("Transform")
+    textTransform:setParent(rootTransform)
+    textTransform:setLocalScale(vec3(0.01, 0.01, 1))
+    textTransform:setLocalPosition(vec3(-1.1, 0.4, -0.4))
+
+    local cmp = sl.createComponent("PostProcessorControlPanel", {
         init = function(self)
-            self.scene = self.node:getScene()
             self.tracer = mainCameraNode:findScriptComponent(sl.getCmpId("Tracer"))
-
-            local baseMat = createMaterial(vec4(0, 1, 1, 1))
-            local btnMat = createMaterial(vec4(0, 1, 0, 1))
-
-            local root = self.scene:createNode()
-            local rootTransform = root:findComponent("Transform")
-            rootTransform:setLocalPosition(vec3(0, -1.8, 3))
-
-            local btnScale = vec3(0.3, 0.1, 0.3)
-            self.btn1Node = self:_createBtn(root, vec3(-0.8, 0, 0), btnScale, btnMat, "1", "Enable PP mode 1")
-            self.btn2Node = self:_createBtn(root, vec3(0, 0, 0), btnScale, btnMat, "2", "Enable PP mode 2")
-            self.btn3Node = self:_createBtn(root, vec3(0.8, 0, 0), btnScale, btnMat, "none", "Disable PP")
-
             self.font = createFont()
-
-            local textNode = self.scene:createNode()
-            local textTransform = textNode:findComponent("Transform")
-            textTransform:setParent(rootTransform)
-            textTransform:setLocalScale(vec3(0.01, 0.01, 1))
-            textTransform:setLocalPosition(vec3(-1.1, 0.4, -0.4))
-
             self.fontRenderer = textNode:addComponent("MeshRenderer")
             self.fontRenderer:setMaterial(0, self.font.material)
             self.fontRenderer:setTag(tags.transparent)
@@ -91,39 +121,12 @@ return function(assetCache, mainCameraNode, postProcessor)
                 self.font.mesh:setText(btn.tipText)
                 self.fontRenderer:setMesh(self.font.mesh:getMesh())
             end
-        end,
-
-        _createBtn = function(self, parentNode, localPos, localScale, material, ppMode, tipText)
-            local node = self.scene:createNode()
-            
-            local renderer = node:addComponent("MeshRenderer")
-            renderer:setMesh(assetCache.meshes.getBox())
-            renderer:setMaterial(0, material)
-    
-            local transform = node:findComponent("Transform")
-            if parentNode then
-                transform:setParent(parentNode:findComponent("Transform"))
-            end
-            transform:setLocalPosition(localPos)
-            transform:setLocalScale(localScale)
-
-            local params = sl.RigidBodyConstructionParameters()
-            params.mass = 0
-            params.friction = 0.5
-            local body = node:addComponent("RigidBody", params)
-            body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
-
-            node:addScriptComponent(sl.createComponent("PostProcessorControlPanelBtn", {
-                tipText = tipText,
-
-                update = function(self)
-                    if self.highlighted and sl.device:isMouseButtonDown(sl.MouseButton.Left, true) then
-                        postProcessor:setMode(ppMode)
-                    end
-                end
-            }))
-
-            return node
         end
     })
+
+    return {
+        node = root,
+        transform = rootTransform,
+        cmp = cmp
+    }
 end

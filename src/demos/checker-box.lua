@@ -13,8 +13,17 @@ return function(scene, assetCache)
     material:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
 
     local node = scene:createNode()
-    node:addComponent("MeshRenderer"):setMesh(assetCache.meshes.getBox())
-    node:findComponent("MeshRenderer"):setMaterial(0, material)
-    node:findComponent("Transform"):setLocalPosition(vec3(-5, 0, 0))
+    
+    local renderer = node:addComponent("MeshRenderer")
+    renderer:setMesh(assetCache.meshes.getBox())
+    renderer:setMaterial(0, material)
+
     node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
+
+    local transform = node:findComponent("Transform")
+
+    return {
+        node = node,
+        transform = transform
+    }
 end

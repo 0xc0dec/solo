@@ -42,7 +42,9 @@ function demo()
     mainCameraNode:addScriptComponent(createSpawner(assetCache))
     
     local postProcessor = createPostProcessor(assetCache, mainCamera)
-    mainCameraNode:addScriptComponent(createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor))
+    local postProcessorControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
+    postProcessorControlPanel.transform:setLocalPosition(vec3(0, -1.8, 3))
+    mainCameraNode:addScriptComponent(postProcessorControlPanel.cmp)
 
     local skybox = createSkybox(scene, assetCache)
     createCheckerBox(scene, assetCache)

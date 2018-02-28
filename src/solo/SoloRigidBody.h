@@ -37,6 +37,9 @@ namespace solo
 
         virtual void setCollider(sptr<Collider> collider) = 0;
 
+        virtual bool isKinematic() = 0;
+        virtual void setKinematic(bool kinematic) = 0;
+
     protected:
         explicit RigidBody(const Node &node);
     };
