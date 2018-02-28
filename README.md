@@ -11,5 +11,6 @@ A playground for my graphics/gamedev experiments.
 
 ## Screenshots
 
-![1](/screenshots/screenshot7.png?raw=true)
-![1](/screenshots/screenshot8.png?raw=true)
+![1](/screenshots/screenshot9.png?raw=true)
+![1](/screenshots/screenshot10.png?raw=true)
+![1](/screenshots/screenshot11.png?raw=true)
