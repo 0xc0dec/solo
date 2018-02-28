@@ -3,13 +3,10 @@
 -- MIT license
 -- 
 
-local createScreenshoter = require "screenshoter"
-
 return function(scene)
     local node = scene:createNode()
     
     node:addComponent("Spectator")
-    node:addScriptComponent(createScreenshoter("Demo.bmp"))
 
     local cam = node:addComponent("Camera")
     cam:setClearColor(vec4(0.0, 0.6, 0.6, 1.0))

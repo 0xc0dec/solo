@@ -16,128 +16,210 @@ function demo()
     local tags = require "tags"
     local createRotator = require "rotator"
     local createMainCamera = require "main-camera"
-    local createSkybox = require "skybox"
     local assetCache = (require "asset-cache")()
-    local createPostProcessor = require "post-processor"
-    local createPostProcessorControlPanel = require "post-processor-control-panel"
-    local createTracer = require "tracer"
-    local createSpawner = require "spawner"
-    local createCheckerBox = require "checker-box"
-    local createDynamicQuad = require "dynamic-quad"
-    local attachAxes = (require "axes")(assetCache)
-    local createLookAt = require "look-at"
 
     ---
 
-    function createLightCamera()
-        local node = scene:createNode()
-
-        local cam = node:addComponent("Camera")
-        cam:setZNear(0.05)
-        cam:setZFar(1000)
-        cam:setFOV(sl.Radians.fromRawDegrees(50))
-        cam:setViewport(vec4(0, 0, 2048, 2048))
-
-        local depthTex = sl.Texture2D.createEmpty(sl.device, 2048, 2048, sl.TextureFormat.Depth24)
-        depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
-
-        local fb = sl.FrameBuffer.create(dev, { depthTex })
-        cam:setRenderTarget(fb)
+    local mrtEffectDesc = {
+        vertex = {
+            uniformBuffers = {
+                matrices = {
+                    world = "mat4",
+                    wvp = "mat4"
+                }
+            },
     
-        local transform = node:findComponent("Transform")
-        transform:setLocalPosition(vec3(-20, 20, -20))
-        transform:lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+            inputs = {
+                sl_Position = "vec3",
+                sl_TexCoord = "vec2",
+                sl_Normal = "vec3",
+                sl_Tangent = "vec3"
+            },
+    
+            outputs = {
+                position = "vec4",
+                uv = "vec2",
+                normal = "vec3",
+                tangent = "vec3"
+            },
+    
+            code = [[
+                void main()
+                {
+                    gl_Position = #matrices:wvp# * vec4(sl_Position, 1);
+                    SL_FIX_Y#gl_Position#;
 
-        local rootNode = scene:createNode()
-        rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 0.3))
-        transform:setParent(rootNode:findComponent("Transform"))
+                    position = #matrices:world# * vec4(sl_Position, 1);
+                    SL_FIX_Y#position#;
 
-        return {
-            camera = cam,
-            node = node,
-            transform = transform,
-            depthTex = depthTex
+                    uv = sl_TexCoord;
+                    SL_FIX_UV#uv#;
+
+                    mat3 transpInvWorld = transpose(inverse(mat3(#matrices:world#)));
+                    normal = transpInvWorld * normalize(sl_Normal);
+                    tangent = transpInvWorld * normalize(sl_Tangent);
+                }
+            ]]
+        },
+    
+        fragment = {
+            samplers = {
+                mainTex = "sampler2D",
+                normalTex = "sampler2D"
+            },
+    
+            outputs = {
+                fragColor = { type = "vec4", target = 0 },
+                fragPos = { type = "vec4", target = 1 },
+                fragNormal = { type = "vec3", target = 2 },
+                fragTangent = { type = "vec3", target = 3 }
+            },
+    
+            code = [[
+                void main()
+                {
+                    fragColor = texture(mainTex, uv);
+
+                    fragPos = position;
+
+                    vec3 n = normalize(normal);
+                    vec3 t = normalize(tangent);
+                    vec3 b = cross(n, t);
+                    mat3 tbn = mat3(t, b, n);
+                    fragNormal = tbn * normalize(texture(normalTex, uv).xyz * 2.0 - vec3(1.0));
+                }
+            ]]
         }
-    end
+    }
 
-    function createMesh(meshPath, material)
+    local deferEffectDesc = {
+        vertex = {
+            inputs = {
+                sl_Position = "vec3",
+                sl_TexCoord = "vec2"
+            },
+    
+            outputs = {
+                position = "vec4",
+                uv = "vec2"
+            },
+    
+            code = [[
+                void main()
+                {
+                    gl_Position = vec4(sl_Position, 1);
+                    SL_FIX_Y#gl_Position#;
+
+                    uv = sl_TexCoord;
+                    SL_FIX_UV#uv#;
+                }
+            ]]
+        },
+    
+        fragment = {
+            samplers = {
+                albedoMap = "sampler2D",
+                positionMap = "sampler2D",
+                normalMap = "sampler2D"
+            },
+
+            uniformBuffers = {
+                uniforms = {
+                    lightPos = "vec3",
+                    eyePos = "vec3"
+                }
+            },
+    
+            outputs = {
+                fragColor = { type = "vec4", target = 0 }
+            },
+    
+            code = [[
+                void main()
+                {
+                    vec4 albedo = texture(albedoMap, uv);
+                    vec3 position = texture(positionMap, uv).rgb;
+                    vec3 normal = normalize(texture(normalMap, uv).rgb);
+
+                    vec3 toLight = normalize(#uniforms:lightPos# - position);
+                    vec3 toEye = normalize(#uniforms:eyePos# - position);
+                    float ndotl = max(0.0, dot(normal, toLight));
+
+                    vec3 r = reflect(-toLight, normal);
+                    float ndotr = max(0.0, dot(r, toEye));
+                    vec3 spec = vec3(1, 1, 1) * pow(ndotr, 16.0);
+
+                    fragColor = albedo * ndotl + vec4(spec, 1);
+                }
+            ]]
+        }
+    }
+
+    function createModel(material)
         local node = scene:createNode()
     
         local renderer = node:addComponent("MeshRenderer")
         renderer:setMaterial(0, material)
     
         local transform = node:findComponent("Transform")
+        transform:setLocalPosition(vec3(0, -1, 0))
     
         local layout = sl.VertexBufferLayout()
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.loadFromFileAsync(dev, getAssetPath(meshPath), layout)
-            :done(function(mesh) renderer:setMesh(mesh) end)
+        layout:addSemanticAttribute(sl.VertexAttributeSemantics.Tangent)
+        sl.Mesh.loadFromFileAsync(dev, getAssetPath("meshes/Teapot.obj"), layout):done(
+            function(mesh)
+                renderer:setMesh(mesh)
+            end)
 
-        return {
-            node = node,
-            transform = transform,
-            renderer = renderer
-        }
+        return renderer
     end
 
-    function createTracker(parentTransform, pos, target)
-        local node = scene:createNode()
-        local transform = node:findComponent("Transform")
-        transform:setParent(parentTransform)
-        transform:setLocalPosition(pos)
-        node:addScriptComponent(createLookAt(target))
-        attachAxes(node)
-    end
+    local canvasSize = dev:getCanvasSize()
 
-    ---
+    local bricksTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/rock_color.jpg"), true)
+    bricksTex:setAnisotropyLevel(16)
 
-    local lightCam = createLightCamera()
+    local bricksNormalTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/rock_normal.jpg"), true)
+    bricksNormalTex:setAnisotropyLevel(16)
+    
+    local positionTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local normalTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local tangentTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)
+    local albedoTex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA8)
+    local mrtFrameBuffer = sl.FrameBuffer.create(dev, { albedoTex, positionTex, normalTex, tangentTex })
+    local mrtEffectDesc = sl.generateEffectSource(mrtEffectDesc)
+    local mrtEffect = sl.Effect.createFromSource(dev, mrtEffectDesc)
+    local mrtMaterial = sl.Material.create(dev, mrtEffect)
+    mrtMaterial:setFaceCull(sl.FaceCull.Back)
+    mrtMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    mrtMaterial:bindParameter("matrices:world", sl.BindParameterSemantics.WorldMatrix)
+    mrtMaterial:setTextureParameter("mainTex", bricksTex)
+    mrtMaterial:setTextureParameter("normalTex", bricksNormalTex)
 
-    local colorPassEffect = assetCache.getEffect("shadowed")
-    local colorPassMaterial = sl.Material.create(dev, colorPassEffect)
-    colorPassMaterial:setFaceCull(sl.FaceCull.None)
-    colorPassMaterial:bindParameter("uniforms:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
-    colorPassMaterial:bindParameter("uniforms:model", sl.BindParameterSemantics.WorldMatrix)
-    colorPassMaterial:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
-    colorPassMaterial:setTextureParameter("shadowMap", lightCam.depthTex)
+    local deferEffectSrc = sl.generateEffectSource(deferEffectDesc)
+    local deferEffect = sl.Effect.createFromSource(dev, deferEffectSrc)
+    local deferMaterial = sl.Material.create(dev, deferEffect)
+    deferMaterial:setFaceCull(sl.FaceCull.None)
+    deferMaterial:setTextureParameter("albedoMap", albedoTex)
+    deferMaterial:setTextureParameter("positionMap", positionTex)
+    deferMaterial:setTextureParameter("normalMap", normalTex)
+    deferMaterial:setVector3Parameter("uniforms:lightPos", vec3(10, 10, 10))
+    deferMaterial:bindParameter("uniforms:eyePos", sl.BindParameterSemantics.CameraWorldPosition)
 
-    local depthPassEffect = assetCache.getEffect("shadow-depth-pass")
-    local depthPassMaterial = sl.Material.create(dev, depthPassEffect)
-    depthPassMaterial:setFaceCull(sl.FaceCull.None)
-    depthPassMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    local deferQuadNode = scene:createNode()
+    local deferQuadRenderer = deferQuadNode:addComponent("MeshRenderer")
+    deferQuadRenderer:setTag(tags.postProcessorStep) -- TODO use other tag
+    deferQuadRenderer:setMesh(assetCache.meshes.getQuad())
+    deferQuadRenderer:setMaterial(0, deferMaterial);
 
-    local mainCamera, mainCameraNode = createMainCamera(scene)
-    mainCameraNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
-    mainCameraNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-    mainCameraNode:addScriptComponent(createTracer(physics))
-    mainCameraNode:addScriptComponent(createSpawner(assetCache))
+    local mainCam, camNode = createMainCamera(scene)
+    camNode:findComponent("Transform"):setLocalPosition(vec3(5, 5, 5))
+    camNode:findComponent("Transform"):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
-    local postProcessor = createPostProcessor(assetCache, mainCamera)
-    local postProcessorControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
-    postProcessorControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
-    postProcessorControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
-    mainCameraNode:addScriptComponent(postProcessorControlPanel.cmp)
-
-    local skybox = createSkybox(scene, assetCache)
-    local backdrop = createMesh("meshes/backdrop.obj", colorPassMaterial)
-    local dynamicQuad = createDynamicQuad(scene, assetCache)
-    dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
-
-    local teapot = createMesh("meshes/teapot.obj", colorPassMaterial)
-    teapot.transform:setLocalPosition(vec3(3, 0, -3))
-    local checkerBox = createCheckerBox(scene, assetCache)
-    checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
-
-    local rootNode = scene:createNode()
-    local rootNodeTransform = rootNode:findComponent("Transform")
-    attachAxes(rootNode)
-    rootNode:addScriptComponent(createRotator("world", vec3(0, 1, 0), 1))
-
-    createTracker(rootNodeTransform, vec3(4, 4, 4), vec3(3, 0, -3))
-    createTracker(rootNodeTransform, vec3(-4, 4, 4), vec3(-3, 1, 3))
-    createTracker(rootNodeTransform, vec3(4, 4, -4), vec3(3, 1, 3))
+    createModel(mrtMaterial)
 
     ---
 
@@ -155,25 +237,23 @@ function demo()
         cmp:update()
     end
 
-    function renderLightCamFrame()
-        backdrop.renderer:setMaterial(0, depthPassMaterial)
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep), renderCmp)
+    function renderScene()
+        scene:visitByTags(tags.skybox, renderCmp)
+        scene:visitByTags(~(tags.skybox | tags.postProcessorStep), renderCmp)
     end
 
-    function renderMainCamFrame()
-        backdrop.renderer:setMaterial(0, colorPassMaterial)
-        scene:visitByTags(skybox.tag, renderCmp)
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep | tags.transparent), renderCmp)
-        scene:visitByTags(tags.transparent, renderCmp)
+    function renderQuad()
+        scene:visitByTags(tags.postProcessorStep, renderCmp)
     end
 
     function update()
         scene:visit(updateCmp)
-        colorPassMaterial:setMatrixParameter("uniforms:lightVp", lightCam.camera:getViewProjectionMatrix())
-        colorPassMaterial:setVector3Parameter("uniforms:lightPos", lightCam.transform:getWorldPosition())
-        lightCam.camera:renderFrame(renderLightCamFrame)
-        mainCamera:renderFrame(renderMainCamFrame)
-        postProcessor:apply()
+
+        mainCam:setRenderTarget(mrtFrameBuffer)
+        mainCam:renderFrame(renderScene)
+
+        mainCam:setRenderTarget(nil)
+        mainCam:renderFrame(renderQuad)
     end
 
     function run()
