@@ -14,12 +14,12 @@
 
 using namespace solo;
 
-const u32 viewDirtyBit = 1;
-const u32 projectionDirtyBit = 1 << 1;
-const u32 viewProjectionDirtyBit = 1 << 2;
-const u32 invViewDirtyBit = 1 << 3;
-const u32 invViewProjectionDirtyBit = 1 << 4;
-const u32 allProjectionDirtyBits = projectionDirtyBit | viewProjectionDirtyBit | invViewProjectionDirtyBit;
+static const u32 ViewDirtyBit = 1;
+static const u32 ProjectionDirtyBit = 1 << 1;
+static const u32 ViewProjectionDirtyBit = 1 << 2;
+static const u32 InvViewDirtyBit = 1 << 3;
+static const u32 InvViewProjectionDirtyBit = 1 << 4;
+static const u32 AllProjectionDirtyBits = ProjectionDirtyBit | ViewProjectionDirtyBit | InvViewProjectionDirtyBit;
 
 auto Camera::create(const Node &node) -> sptr<Camera>
 {
@@ -41,7 +41,7 @@ void Camera::init()
     transform = node.findComponent<Transform>();
     const auto canvasSize = device->getCanvasSize();
     aspectRatio = canvasSize.x() / canvasSize.y();
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::update()
@@ -49,92 +49,92 @@ void Camera::update()
     if (lastTransformVersion != transform->getVersion())
     {
         lastTransformVersion = transform->getVersion();
-        dirtyFlags |= viewDirtyBit | viewProjectionDirtyBit | invViewDirtyBit | invViewProjectionDirtyBit;
+        dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
     }
 }
 
 void Camera::setPerspective(bool perspective)
 {
     ortho = !perspective;
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::setFOV(const Radians &fov)
 {
     this->fov = fov;
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::setOrthoSize(const Vector2& size)
 {
     orthoSize = size;
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::setZFar(float far)
 {
     this->zFar = far;
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 void Camera::setZNear(float near)
 {
     this->zNear = near;
-    dirtyFlags |= allProjectionDirtyBits;
+    dirtyFlags |= AllProjectionDirtyBits;
 }
 
 auto Camera::getViewMatrix() const -> Matrix
 {
-    if (dirtyFlags & viewDirtyBit)
+    if (dirtyFlags & ViewDirtyBit)
     {
         viewMatrix = transform->getWorldMatrix();
         viewMatrix.invert();
-        dirtyFlags &= ~viewDirtyBit;
+        dirtyFlags &= ~ViewDirtyBit;
     }
     return viewMatrix;
 }
 
 auto Camera::getInvViewMatrix() const -> Matrix
 {
-    if (dirtyFlags & invViewDirtyBit)
+    if (dirtyFlags & InvViewDirtyBit)
     {
         invViewMatrix = getViewMatrix();
         invViewMatrix.invert();
-        dirtyFlags &= ~invViewDirtyBit;
+        dirtyFlags &= ~InvViewDirtyBit;
     }
     return invViewMatrix;
 }
 
 auto Camera::getProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & projectionDirtyBit)
+    if (dirtyFlags & ProjectionDirtyBit)
     {
         if (ortho)
             projectionMatrix = Matrix::createOrthographic(orthoSize.x(), orthoSize.y(), zNear, zFar);
         else
             projectionMatrix = Matrix::createPerspective(fov, aspectRatio, zNear, zFar);
-        dirtyFlags &= ~projectionDirtyBit;
+        dirtyFlags &= ~ProjectionDirtyBit;
     }
     return projectionMatrix;
 }
 
 auto Camera::getViewProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & viewProjectionDirtyBit)
+    if (dirtyFlags & ViewProjectionDirtyBit)
     {
         viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
-        dirtyFlags &= ~viewProjectionDirtyBit;
+        dirtyFlags &= ~ViewProjectionDirtyBit;
     }
     return viewProjectionMatrix;
 }
 
 auto Camera::getInvViewProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & invViewProjectionDirtyBit)
+    if (dirtyFlags & InvViewProjectionDirtyBit)
     {
         invViewProjectionMatrix = getViewProjectionMatrix();
         invViewProjectionMatrix.invert();
-        dirtyFlags &= ~invViewProjectionDirtyBit;
+        dirtyFlags &= ~InvViewProjectionDirtyBit;
     }
     return invViewProjectionMatrix;
 }

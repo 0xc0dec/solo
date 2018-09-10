@@ -9,10 +9,10 @@
 
 using namespace solo;
 
-static const u32 dirtyFlagLocal = 1 << 0;
-static const u32 dirtyFlagWorld = 1 << 1;
-static const u32 dirtyFlagInvTransposedWorld = 1 << 2;
-static const u32 dirtyFlagAll = dirtyFlagLocal | dirtyFlagWorld | dirtyFlagInvTransposedWorld;
+static const u32 DirtyFlagLocal = 1 << 0;
+static const u32 DirtyFlagWorld = 1 << 1;
+static const u32 DirtyFlagInvTransposedWorld = 1 << 2;
+static const u32 DirtyFlagAll = DirtyFlagLocal | DirtyFlagWorld | DirtyFlagInvTransposedWorld;
 
 Transform::Transform(const Node &node):
     ComponentBase(node)
@@ -48,7 +48,7 @@ void Transform::setParent(Transform *parent)
     if (parent)
         parent->children.push_back(this);
 
-    setDirtyWithChildren(dirtyFlagWorld | dirtyFlagInvTransposedWorld);
+    setDirtyWithChildren(DirtyFlagWorld | DirtyFlagInvTransposedWorld);
 }
 
 void Transform::clearChildren()
@@ -62,37 +62,37 @@ void Transform::clearChildren()
 
 auto Transform::getMatrix() const -> Matrix
 {
-    if (dirtyFlags & dirtyFlagLocal)
+    if (dirtyFlags & DirtyFlagLocal)
     {
         matrix = Matrix::createTranslation(localPosition);
         matrix.rotateByQuaternion(localRotation);
         matrix.scaleByVector(localScale);
-        dirtyFlags &= ~dirtyFlagLocal;
+        dirtyFlags &= ~DirtyFlagLocal;
     }
     return matrix;
 }
 
 auto Transform::getWorldMatrix() const -> Matrix
 {
-    if (dirtyFlags & dirtyFlagWorld)
+    if (dirtyFlags & DirtyFlagWorld)
     {
         if (parent)
             worldMatrix = parent->getWorldMatrix() * getMatrix();
         else
             worldMatrix = getMatrix();
-        dirtyFlags &= ~dirtyFlagWorld;
+        dirtyFlags &= ~DirtyFlagWorld;
     }
     return worldMatrix;
 }
 
 auto Transform::getInvTransposedWorldMatrix() const -> Matrix
 {
-    if (dirtyFlags & dirtyFlagInvTransposedWorld)
+    if (dirtyFlags & DirtyFlagInvTransposedWorld)
     {
         invTransposedWorldMatrix = getWorldMatrix();
         invTransposedWorldMatrix.invert();
         invTransposedWorldMatrix.transpose();
-        dirtyFlags &= ~dirtyFlagInvTransposedWorld;
+        dirtyFlags &= ~DirtyFlagInvTransposedWorld;
     }
     return invTransposedWorldMatrix;
 }
@@ -118,7 +118,7 @@ auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> M
 void Transform::translateLocal(const Vector3 &translation)
 {
     localPosition += translation;
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::rotate(const Quaternion &rotation, TransformSpace space)
@@ -145,7 +145,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
             break;
     }
 
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::rotateByAxisAngle(const Vector3 &axis, const Radians &angle, TransformSpace space)
@@ -159,13 +159,13 @@ void Transform::scaleLocal(const Vector3 &scale)
     localScale.x() *= scale.x();
     localScale.y() *= scale.y();
     localScale.z() *= scale.z();
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalScale(const Vector3 &scale)
 {
     localScale = scale;
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::lookAt(const Vector3 &target, const Vector3 &up)
@@ -198,19 +198,19 @@ auto Transform::transformDirection(const Vector3 &direction) const -> Vector3
 void Transform::setLocalRotation(const Quaternion &rotation)
 {
     localRotation = rotation;
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle)
 {
     localRotation = Quaternion::createFromAxisAngle(axis, angle);
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setLocalPosition(const Vector3 &position)
 {
     localPosition = position;
-    setDirtyWithChildren(dirtyFlagAll);
+    setDirtyWithChildren(DirtyFlagAll);
 }
 
 void Transform::setDirtyWithChildren(u32 flags) const
