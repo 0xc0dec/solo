@@ -3,6 +3,7 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(Solo)
 
+option(AMD64 "" OFF)
 option(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT "" OFF)
 option(ASSIMP_BUILD_3DS_IMPORTER "" ON)
 option(ASSIMP_BUILD_COLLADA_IMPORTER "" ON)
