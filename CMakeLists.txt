@@ -101,12 +101,6 @@ target_compile_definitions(Solo PRIVATE
     SDL_JOYSTICK_DISABLED
 )
 
-if (WIN32)
-    target_compile_definitions(Solo PRIVATE
-        BUILD_WINDOWS
-    )
-endif()
-
 target_compile_definitions(Solo PRIVATE "$<$<CONFIG:DEBUG>:SL_DEBUG>")
 
 # Vendor.Lua
@@ -377,9 +371,3 @@ target_compile_definitions(Vendor PRIVATE
     SDL_HAPTIC_DISABLED
     SDL_JOYSTICK_DISABLED
 )
-
-if (WIN32)
-    target_compile_definitions(Vendor PRIVATE
-        BUILD_WINDOWS
-    )
-endif()
