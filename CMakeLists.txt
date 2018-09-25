@@ -27,6 +27,15 @@ option(SKIP_SPIRV_TOOLS_INSTALL "" ON)
 option(ENABLE_GLSLANG_BINARIES "" OFF)
 option(DISABLE_RTTI "" ON)
 
+function(set_default_compile_defs TARGET)
+    target_compile_definitions(${TARGET} PRIVATE
+        HAVE_LIBC
+        GLEW_STATIC
+        SDL_HAPTIC_DISABLED
+        SDL_JOYSTICK_DISABLED
+    )
+endfunction()
+
 add_subdirectory("vendor/assimp/4.1.0")
 
 if (WIN32)
@@ -35,11 +44,12 @@ endif()
 
 set(CMAKE_SUPPRESS_REGENERATION true)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Config types" FORCE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
+add_compile_options(-std=c++14)
 
 if (MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} /MTd")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /MT")
+    add_compile_options("$<$<CONFIG:DEBUG>:/MTd>")
+    add_compile_options("$<$<CONFIG:RELEASE>:/MT>")
 endif()
 
 # Engine
@@ -94,12 +104,7 @@ if (MSVC)
     target_compile_options(Solo PRIVATE /wd4267 /wd4244 /wd4312)
 endif()
 
-target_compile_definitions(Solo PRIVATE
-    HAVE_LIBC
-    GLEW_STATIC
-    SDL_HAPTIC_DISABLED
-    SDL_JOYSTICK_DISABLED
-)
+set_default_compile_defs(Solo)
 
 target_compile_definitions(Solo PRIVATE "$<$<CONFIG:DEBUG>:SL_DEBUG>")
 
@@ -364,10 +369,4 @@ set(SL_VENDOR_LIBS
 
 target_link_libraries(Vendor ${SL_VENDOR_LIBS})
 
-# TODO Remove copy-paste from same config for Solo
-target_compile_definitions(Vendor PRIVATE
-    HAVE_LIBC
-    GLEW_STATIC
-    SDL_HAPTIC_DISABLED
-    SDL_JOYSTICK_DISABLED
-)
+set_default_compile_defs(Vendor)
