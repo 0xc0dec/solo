@@ -11,17 +11,15 @@ namespace solo
 {
     struct MeshData;
 
-    class MeshLoader
+    class MeshLoader: public NoCopyAndMove
     {
     public:
-        SL_DISABLE_COPY_AND_MOVE(MeshLoader)
-
-        virtual ~MeshLoader() {}
+        virtual ~MeshLoader() = default;
 
         virtual bool isLoadable(const str &path) const = 0;
         virtual auto loadData(const str &path) const -> sptr<MeshData> = 0;
 
     protected:
-        MeshLoader() {}
+        MeshLoader() = default;
     };
 }
