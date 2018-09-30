@@ -70,7 +70,7 @@ source_group("stb" FILES ${SL_ENGINE_SRC_STB})
 source_group("vk" FILES ${SL_ENGINE_SRC_VK})
 source_group("" FILES ${SL_ENGINE_SRC_CORE})
 
-add_executable(Solo
+add_library(Solo STATIC
     ${SL_ENGINE_SRC_BULLET}
     ${SL_ENGINE_SRC_GL}
     ${SL_ENGINE_SRC_LUA}
@@ -108,6 +108,26 @@ set_default_compile_defs(Solo)
 
 target_compile_definitions(Solo PRIVATE "$<$<CONFIG:DEBUG>:SL_DEBUG>")
 
+
+# Soloist (pure Lua runner)
+
+file(GLOB SL_RUNNER_SRC "src/soloist/*.cpp" "src/soloist/*.h")
+
+source_group("" FILES ${SL_RUNNER_SRC})
+
+add_executable(Soloist ${SL_RUNNER_SRC})
+
+target_link_libraries(Soloist Solo)
+
+target_include_directories(Soloist PRIVATE
+    "src/solo"
+    "vendor/glm/0.9.8.4")
+
+if (MSVC)
+    target_compile_options(Soloist PRIVATE /wd4267 /wd4244 /wd4312)
+endif()
+
+
 # Vendor.Lua
 
 file(GLOB_RECURSE SL_LUA_SRC "vendor/lua/5.3.1/*.c")
@@ -115,6 +135,7 @@ add_library(Vendor.Lua STATIC ${SL_LUA_SRC})
 
 set_source_files_properties(${SL_LUA_SRC} PROPERTIES LANGUAGE CXX)
 target_include_directories(Vendor.Lua PRIVATE "vendor/lua/5.3.1")
+
 
 # Vendor
 
