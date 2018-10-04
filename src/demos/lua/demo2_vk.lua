@@ -12,4 +12,4 @@ deviceSetup.vsync = true
 deviceSetup.windowTitle = "Demo 2 (Vulkan)"
 deviceSetup.logFilePath = "demo2_vk.log"
 
-runScript = "../../src/demos/demo2.lua"
+runScript = "../../src/demos/lua/demo2.lua"

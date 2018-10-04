@@ -3,7 +3,7 @@
 -- MIT license
 -- 
 
-package.path = "../../src/demos/?.lua;" .. package.path
+package.path = "../../src/demos/lua/?.lua;" .. package.path
 
 require "common"
 
