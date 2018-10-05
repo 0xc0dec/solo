@@ -1,0 +1,53 @@
+file(GLOB SL_ENGINE_SRC_BULLET "src/solo/bullet/*.cpp" "src/solo/bullet/*.h")
+file(GLOB SL_ENGINE_SRC_GL "src/solo/gl/*.cpp" "src/solo/gl/*.h")
+file(GLOB SL_ENGINE_SRC_LUA "src/solo/lua/*.cpp" "src/solo/lua/*.h")
+file(GLOB SL_ENGINE_SRC_SDL "src/solo/sdl/*.cpp" "src/solo/sdl/*.h")
+file(GLOB SL_ENGINE_SRC_STB "src/solo/stb/*.cpp" "src/solo/stb/*.h")
+file(GLOB SL_ENGINE_SRC_VK "src/solo/vk/*.cpp" "src/solo/vk/*.h")
+file(GLOB SL_ENGINE_SRC_CORE "src/solo/*.cpp" "src/solo/*.h")
+
+source_group("bullet" FILES ${SL_ENGINE_SRC_BULLET})
+source_group("gl" FILES ${SL_ENGINE_SRC_GL})
+source_group("lua" FILES ${SL_ENGINE_SRC_LUA})
+source_group("sdl" FILES ${SL_ENGINE_SRC_SDL})
+source_group("stb" FILES ${SL_ENGINE_SRC_STB})
+source_group("vk" FILES ${SL_ENGINE_SRC_VK})
+source_group("" FILES ${SL_ENGINE_SRC_CORE})
+
+add_library(Solo STATIC
+    ${SL_ENGINE_SRC_BULLET}
+    ${SL_ENGINE_SRC_GL}
+    ${SL_ENGINE_SRC_LUA}
+    ${SL_ENGINE_SRC_SDL}
+    ${SL_ENGINE_SRC_STB}
+    ${SL_ENGINE_SRC_VK}
+    ${SL_ENGINE_SRC_CORE})
+
+target_include_directories(Solo PRIVATE
+    "src/solo"
+    "vendor" # TODO needed?
+    "vendor/glew/1.13/include"
+    "vendor/SDL/2.0.4/include"
+    "vendor/bullet/2.83.7"
+    "vendor/stb_truetype/1.11"
+    "vendor/vulkan/include"
+    "vendor/LuaIntf"
+    "vendor/lua/5.3.1"
+    "vendor/stb_image/2.15"
+    "vendor/spirv_cross"
+    "vendor/glm/0.9.8.4"
+    "vendor/stb_image/2.15"
+    "vendor/shaderc/libshaderc/include"
+    "vendor/assimp/4.1.0/include"
+    "${PROJECT_BINARY_DIR}/vendor/assimp/4.1.0/include" # For assimp generated config.h
+)
+
+target_link_libraries(Solo Vendor Vendor.Lua)
+
+if (MSVC)
+    target_compile_options(Solo PRIVATE /wd4267 /wd4244 /wd4312)
+endif()
+
+set_default_compile_defs(Solo)
+
+target_compile_definitions(Solo PRIVATE "$<$<CONFIG:DEBUG>:SL_DEBUG>")

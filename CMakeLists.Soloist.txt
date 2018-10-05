@@ -1,0 +1,15 @@
+file(GLOB SL_RUNNER_SRC "src/soloist/*.cpp" "src/soloist/*.h")
+
+source_group("" FILES ${SL_RUNNER_SRC})
+
+add_executable(Soloist ${SL_RUNNER_SRC})
+
+target_link_libraries(Soloist Solo)
+
+target_include_directories(Soloist PRIVATE
+    "src/solo"
+    "vendor/glm/0.9.8.4")
+
+if (MSVC)
+    target_compile_options(Soloist PRIVATE /wd4267 /wd4244 /wd4312)
+endif()
