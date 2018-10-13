@@ -15,6 +15,7 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
     const auto mesh = Mesh::loadFromFile(device, "../../assets/meshes/quad.dae", layout);
 
+    // TODO move lua effect files elsewhere?
     const auto effect = Effect::loadFromDescriptionFile(device, "../../src/demos/lua/effects/skybox.lua");
     const auto material = Material::create(device, effect);
     material->setDepthTest(true);
