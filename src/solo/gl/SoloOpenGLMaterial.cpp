@@ -28,7 +28,7 @@ void OpenGLMaterial::applyParams(const Camera *camera, const Transform *nodeTran
 
 void OpenGLMaterial::setFloatParameter(const str &name, float value)
 {
-    setParameter(name, [value](GLuint location, GLuint index)
+    setParameter(name, [value](GLuint location, GLuint)
     {
         return [location, value](const Camera *, const Transform *)
         {
@@ -39,7 +39,7 @@ void OpenGLMaterial::setFloatParameter(const str &name, float value)
 
 void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
-    setParameter(name, [value](GLuint location, GLuint index)
+    setParameter(name, [value](GLuint location, GLuint)
     {
         return [location, value](const Camera *, const Transform *)
         {
@@ -50,7 +50,7 @@ void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 
 void OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
-    setParameter(name, [value](GLuint location, GLuint index)
+    setParameter(name, [value](GLuint location, GLuint)
     {
         return [location, value](const Camera *, const Transform *)
         {
@@ -61,7 +61,7 @@ void OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 
 void OpenGLMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
-    setParameter(name, [value](GLuint location, GLuint index)
+    setParameter(name, [value](GLuint location, GLuint)
     {
         return [location, value](const Camera *, const Transform *)
         {
@@ -72,7 +72,7 @@ void OpenGLMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 
 void OpenGLMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
-    setParameter(name, [value](GLuint location, GLuint index)
+    setParameter(name, [value](GLuint location, GLuint)
     {
         return [location, value](const Camera *, const Transform *)
         {
@@ -101,9 +101,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
     {
         case ParameterBinding::WorldMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *, const Transform *nodeTransform)
                 {
                     if (nodeTransform)
                     {
@@ -117,9 +117,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::ViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *)
                 {
                     if (camera)
                     {
@@ -133,9 +133,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::ProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *)
                 {
                     if (camera)
                     {
@@ -149,7 +149,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::WorldViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
                 return [location](const Camera *camera, const Transform *nodeTransform)
                 {
@@ -165,9 +165,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::ViewProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *)
                 {
                     if (camera)
                     {
@@ -181,7 +181,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::WorldViewProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
                 return [location](const Camera *camera, const Transform *nodeTransform)
                 {
@@ -197,9 +197,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::InverseTransposedWorldMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *, const Transform *nodeTransform)
                 {
                     if (nodeTransform)
                     {
@@ -213,7 +213,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
                 return [location](const Camera *camera, const Transform *nodeTransform)
                 {
@@ -229,9 +229,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 
         case ParameterBinding::CameraWorldPosition:
         {
-            setParameter(name, [](GLuint location, GLuint index)
+            setParameter(name, [](GLuint location, GLuint)
             {
-                return [location](const Camera *camera, const Transform *nodeTransform)
+                return [location](const Camera *camera, const Transform *)
                 {
                     if (camera)
                     {
