@@ -13,7 +13,7 @@ return function(assetCache, mainCameraNode, postProcessor)
     function createMaterial(color)
         local m = sl.Material.create(sl.device, effect)
         m:setFaceCull(sl.FaceCull.None)
-        m:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        m:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         m:setVector4Parameter("variables:color", color)
         return m
     end
@@ -35,7 +35,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         material:setBlend(true)
         material:setDepthTest(true)
         material:setDepthWrite(false)
-        material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         material:setTextureParameter("mainTex", font:getAtlas())
 
         return {

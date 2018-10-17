@@ -183,7 +183,7 @@ void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
     // TODO Optimize and mark only this sampler as dirty
 }
 
-void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
+void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
     auto parsedName = parseName(name);
     auto bufferName = std::get<0>(parsedName);
@@ -196,9 +196,9 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
     auto itemInfo = bufferInfo.members.at(fieldName);
     auto &item = bufferItems[bufferName][fieldName];
 
-    switch (semantics)
+    switch (binding)
     {
-        case BindParameterSemantics::WorldMatrix:
+        case ParameterBinding::WorldMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -211,7 +211,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ViewMatrix:
+        case ParameterBinding::ViewMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -224,7 +224,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ProjectionMatrix:
+        case ParameterBinding::ProjectionMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -237,7 +237,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::WorldViewMatrix:
+        case ParameterBinding::WorldViewMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -250,7 +250,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ViewProjectionMatrix:
+        case ParameterBinding::ViewProjectionMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -263,7 +263,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::WorldViewProjectionMatrix:
+        case ParameterBinding::WorldViewProjectionMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -276,7 +276,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::InverseTransposedWorldMatrix:
+        case ParameterBinding::InverseTransposedWorldMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -289,7 +289,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::InverseTransposedWorldViewMatrix:
+        case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -302,7 +302,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::CameraWorldPosition:
+        case ParameterBinding::CameraWorldPosition:
         {
             item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
             {
@@ -316,7 +316,7 @@ void VulkanMaterial::bindParameter(const str &name, BindParameterSemantics seman
         }
 
         default:
-            SL_DEBUG_PANIC(true, "Unsupported bind parameter semantics");
+            SL_DEBUG_PANIC(true, "Unsupported parameter binding");
     }
 }
 

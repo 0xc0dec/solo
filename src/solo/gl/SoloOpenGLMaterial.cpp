@@ -95,11 +95,11 @@ void OpenGLMaterial::setTextureParameter(const str &name, sptr<Texture> value)
     });
 }
 
-void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics semantics)
+void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
-    switch (semantics)
+    switch (binding)
     {
-        case BindParameterSemantics::WorldMatrix:
+        case ParameterBinding::WorldMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -115,7 +115,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ViewMatrix:
+        case ParameterBinding::ViewMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -131,7 +131,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ProjectionMatrix:
+        case ParameterBinding::ProjectionMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -147,7 +147,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::WorldViewMatrix:
+        case ParameterBinding::WorldViewMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -163,7 +163,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::ViewProjectionMatrix:
+        case ParameterBinding::ViewProjectionMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -179,7 +179,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::WorldViewProjectionMatrix:
+        case ParameterBinding::WorldViewProjectionMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -195,7 +195,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::InverseTransposedWorldMatrix:
+        case ParameterBinding::InverseTransposedWorldMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -211,7 +211,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::InverseTransposedWorldViewMatrix:
+        case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -227,7 +227,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
             break;
         }
 
-        case BindParameterSemantics::CameraWorldPosition:
+        case ParameterBinding::CameraWorldPosition:
         {
             setParameter(name, [](GLuint location, GLuint index)
             {
@@ -244,7 +244,7 @@ void OpenGLMaterial::bindParameter(const str &name, BindParameterSemantics seman
         }
 
         default:
-            SL_DEBUG_PANIC(true, "Unsupported bind parameter semantics")
+            SL_DEBUG_PANIC(true, "Unsupported parameter binding")
     }
 }
 

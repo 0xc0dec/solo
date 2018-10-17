@@ -13,7 +13,7 @@ return function(assetCache)
     local createColorMaterial = function(color)
         local mat = sl.Material.create(sl.device, effect)
         mat:setFaceCull(sl.FaceCull.None)
-        mat:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+        mat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         mat:setVector4Parameter("variables:color", color)
 
         return mat

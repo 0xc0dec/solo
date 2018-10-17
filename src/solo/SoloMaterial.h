@@ -64,7 +64,7 @@ namespace solo
         SrcAlphaSaturate
     };
 
-    enum class BindParameterSemantics
+    enum class ParameterBinding
     {
         WorldMatrix,
         ViewMatrix,
@@ -91,7 +91,7 @@ namespace solo
         virtual void setMatrixParameter(const str &name, const Matrix &value) = 0;
         virtual void setTextureParameter(const str &name, sptr<Texture> value) = 0;
 
-        virtual void bindParameter(const str &name, BindParameterSemantics semantics) = 0;
+        virtual void bindParameter(const str &name, ParameterBinding binding) = 0;
 
         virtual auto getEffect() const -> sptr<Effect> = 0;
 

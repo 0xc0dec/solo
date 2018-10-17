@@ -8,13 +8,13 @@ return function(assetCache)
 
     local material = sl.Material.create(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     material:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
 
     local highlightMaterial = sl.Material.create(sl.device, effect)
     highlightMaterial:setFaceCull(sl.FaceCull.None)
     highlightMaterial:setPolygonMode(sl.PolygonMode.Wireframe)
-    highlightMaterial:bindParameter("matrices:wvp", sl.BindParameterSemantics.WorldViewProjectionMatrix)
+    highlightMaterial:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     highlightMaterial:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
 
     return sl.createComponent("Spawner", {

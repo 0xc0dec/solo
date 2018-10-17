@@ -21,8 +21,8 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::None);
-    material->bindParameter("matrices:proj", BindParameterSemantics::ProjectionMatrix);
-    material->bindParameter("matrices:worldView", BindParameterSemantics::WorldViewMatrix);
+    material->bindParameter("matrices:proj", ParameterBinding::ProjectionMatrix);
+    material->bindParameter("matrices:worldView", ParameterBinding::WorldViewMatrix);
 
     const auto skyboxNode = scene->createNode();
     const auto renderer = skyboxNode->addComponent<MeshRenderer>();
@@ -44,7 +44,7 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     return renderer;
 }
 
-int main(int argc, s8 *argv[])
+int main()
 {
     const auto device = Device::create({DeviceMode::OpenGL, 1366, 768, false, false, "Demo 1"});
     const auto scene = Scene::create(device.get());

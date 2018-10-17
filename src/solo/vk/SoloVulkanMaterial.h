@@ -49,7 +49,7 @@ namespace solo
         void setMatrixParameter(const str &name, const Matrix &value) override final;
         void setTextureParameter(const str &name, sptr<Texture> value) override final;
 
-        void bindParameter(const str &name, BindParameterSemantics semantics) override final;
+        void bindParameter(const str &name, ParameterBinding binding) override final;
 
         auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
         auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename

@@ -104,16 +104,16 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("BindParameterSemantics");
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, ViewMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, ProjectionMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldViewMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, ViewProjectionMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, WorldViewProjectionMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, InverseTransposedWorldMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, InverseTransposedWorldViewMatrix);
-        REG_MODULE_CONSTANT(m, BindParameterSemantics, CameraWorldPosition);
+        auto m = module.beginModule("ParameterBinding");
+        REG_MODULE_CONSTANT(m, ParameterBinding, WorldMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, ViewMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, ProjectionMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, WorldViewMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, ViewProjectionMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, WorldViewProjectionMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, InverseTransposedWorldMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, InverseTransposedWorldViewMatrix);
+        REG_MODULE_CONSTANT(m, ParameterBinding, CameraWorldPosition);
         m.endModule();
     }
 
