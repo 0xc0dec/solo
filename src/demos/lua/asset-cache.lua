@@ -20,7 +20,7 @@ return function()
 
     return {
         getEffect = function(name)
-            local path = "../../src/demos/lua/effects/" .. name .. ".lua"
+            local path = getAssetPath("effects/" .. name .. ".lua")
             return getOrAdd(path, function()
                 return sl.Effect.loadFromDescriptionFile(sl.device, path)
             end)
