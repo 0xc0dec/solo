@@ -122,9 +122,9 @@ void VulkanTexture2D::rebuild()
 void VulkanTexture2D::rebuildSampler()
 {
     sampler = createSampler(
-        renderer->getDevice(),
-        renderer->getPhysicalFeatures(),
-        renderer->getPhysicalProperties(),
+        renderer->device(),
+        renderer->physicalFeatures(),
+        renderer->physicalProperties(),
         minFilter, magFilter, mipFilter, image.getMipLevels(),
         horizontalWrap, verticalWrap, TextureWrap::Repeat,
         anisotropyLevel > 1, anisotropyLevel);
@@ -153,9 +153,9 @@ void VulkanCubeTexture::rebuild()
 void VulkanCubeTexture::rebuildSampler()
 {
     sampler = createSampler(
-        renderer->getDevice(),
-        renderer->getPhysicalFeatures(),
-        renderer->getPhysicalProperties(),
+        renderer->device(),
+        renderer->physicalFeatures(),
+        renderer->physicalProperties(),
         minFilter, magFilter, mipFilter, image.getMipLevels(),
         horizontalWrap, verticalWrap, depthWrap,
         anisotropyLevel > 1, anisotropyLevel);

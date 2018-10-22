@@ -34,7 +34,7 @@ auto VulkanBuffer::createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size
 {
     auto stagingBuffer = createStaging(renderer, size, data);
     auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-    stagingBuffer.transferTo(buffer, renderer->getQueue(), renderer->getCommandPool());
+    stagingBuffer.transferTo(buffer, renderer->queue(), renderer->commandPool());
     return buffer;
 }
 
@@ -46,7 +46,7 @@ auto VulkanBuffer::createHostVisible(VulkanRenderer *renderer, VkDeviceSize size
 }
 
 VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
-    device(renderer->getDevice()),
+    device(renderer->device()),
     renderer(renderer),
     size(size)
 {
@@ -68,7 +68,7 @@ VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBuffer
     VkMemoryAllocateInfo allocInfo {};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = vk::findMemoryType(renderer->getPhysicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
+    allocInfo.memoryTypeIndex = vk::findMemoryType(renderer->physicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
     memory = VulkanResource<VkDeviceMemory>{device, vkFreeMemory};
     SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));

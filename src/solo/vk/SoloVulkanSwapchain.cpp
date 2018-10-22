@@ -27,10 +27,10 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
 static auto getPresentMode(VulkanRenderer *renderer, VulkanSDLDevice *device, bool vsync) -> VkPresentModeKHR
 {
     u32 presentModeCount;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->getPhysicalDevice(), device->getSurface(), &presentModeCount, nullptr));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->physicalDevice(), device->getSurface(), &presentModeCount, nullptr));
 
     vec<VkPresentModeKHR> presentModes(presentModeCount);
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->getPhysicalDevice(), device->getSurface(), &presentModeCount, presentModes.data()));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->physicalDevice(), device->getSurface(), &presentModeCount, presentModes.data()));
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
@@ -54,7 +54,7 @@ static auto getPresentMode(VulkanRenderer *renderer, VulkanSDLDevice *device, bo
 static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(renderer->getPhysicalDevice(), device->getSurface(), &capabilities));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(renderer->physicalDevice(), device->getSurface(), &capabilities));
 
     if (capabilities.currentExtent.width != static_cast<u32>(-1))
     {
@@ -79,8 +79,8 @@ static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u
     swapchainInfo.pNext = nullptr;
     swapchainInfo.surface = device->getSurface();
     swapchainInfo.minImageCount = requestedImageCount;
-    swapchainInfo.imageFormat = renderer->getColorFormat();
-    swapchainInfo.imageColorSpace = renderer->getColorSpace();
+    swapchainInfo.imageFormat = renderer->colorFormat();
+    swapchainInfo.imageColorSpace = renderer->colorSpace();
     swapchainInfo.imageExtent = {width, height};
     swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
@@ -93,17 +93,17 @@ static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
-    VulkanResource<VkSwapchainKHR> swapchain{renderer->getDevice(), vkDestroySwapchainKHR};
-    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(renderer->getDevice(), &swapchainInfo, nullptr, swapchain.cleanRef()));
+    VulkanResource<VkSwapchainKHR> swapchain{renderer->device(), vkDestroySwapchainKHR};
+    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(renderer->device(), &swapchainInfo, nullptr, swapchain.cleanRef()));
 
     return swapchain;
 }
 
 VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync):
-    device(renderer->getDevice())
+    device(renderer->device())
 {
-    const auto colorFormat = renderer->getColorFormat();
-    const auto depthFormat = renderer->getDepthFormat();
+    const auto colorFormat = renderer->colorFormat();
+    const auto depthFormat = renderer->depthFormat();
 
     swapchain = createSwapchain(renderer, device, width, height, vsync);
 
@@ -121,7 +121,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
 
     auto images = getSwapchainImages(this->device, swapchain);
 
-    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+    const auto cmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -146,7 +146,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
             subresourceRange);
     }
 
-    vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+    vk::flushCommandBuffer(cmdBuf, renderer->queue());
 
     presentCompleteSem = vk::createSemaphore(this->device);
 }

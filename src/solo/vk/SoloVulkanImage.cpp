@@ -102,7 +102,7 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
         VK_IMAGE_VIEW_TYPE_2D,
         aspect);
 
-    const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+    const auto initCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask;
@@ -119,7 +119,7 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
         VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, // TODO veeery unsure about this, but validator doesn't complain
         VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-    vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+    vk::flushCommandBuffer(initCmdBuf, renderer->queue());
 
     return image;
 }
@@ -166,7 +166,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
 
-    const auto initCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+    const auto initCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
 
     VkBufferImageCopy bufferCopyRegion{};
     bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -215,9 +215,9 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
             VK_PIPELINE_STAGE_TRANSFER_BIT,
             VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-        vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(initCmdBuf, renderer->queue());
 
-        const auto blitCmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool(), true);
+        const auto blitCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
 
         for (u32 i = 1; i < mipLevels; i++)
         {
@@ -284,7 +284,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
             VK_PIPELINE_STAGE_TRANSFER_BIT,
             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-        vk::flushCommandBuffer(blitCmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(blitCmdBuf, renderer->queue());
     }
     else
     {
@@ -297,7 +297,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
             VK_PIPELINE_STAGE_TRANSFER_BIT,
             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-        vk::flushCommandBuffer(initCmdBuf, renderer->getQueue());
+        vk::flushCommandBuffer(initCmdBuf, renderer->queue());
     }
 
     return image;
@@ -342,7 +342,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     subresourceRange.levelCount = mipLevels;
     subresourceRange.layerCount = layers;
 
-    const auto cmdBuf = vk::createCommandBuffer(renderer->getDevice(), renderer->getCommandPool());
+    const auto cmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool());
     vk::beginCommandBuffer(cmdBuf, true);
 
     vk::setImageLayout(
@@ -401,7 +401,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         VK_PIPELINE_STAGE_TRANSFER_BIT,
         VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-    vk::flushCommandBuffer(cmdBuf, renderer->getQueue());
+    vk::flushCommandBuffer(cmdBuf, renderer->queue());
 
     return image;
 }
@@ -415,9 +415,9 @@ VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mi
     height(height),
     aspectMask(aspectMask)
 {
-    const auto device = renderer->getDevice();
+    const auto device = renderer->device();
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
-    auto memory = allocateImageMemory(device, renderer->getPhysicalMemoryFeatures(), image);
+    auto memory = allocateImageMemory(device, renderer->physicalMemoryFeatures(), image);
     auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
     this->image = std::move(image);
     this->memory = std::move(memory);

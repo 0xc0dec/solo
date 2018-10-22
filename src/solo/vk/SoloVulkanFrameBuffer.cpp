@@ -47,8 +47,8 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     views.push_back(result->depthAttachment->getImage().getView());
     config.withDepthAttachment(result->depthAttachment->getImage().getFormat());
 
-    result->renderPass = VulkanRenderPass(renderer->getDevice(), config);
-    result->frameBuffer = vk::createFrameBuffer(renderer->getDevice(), views, result->renderPass, result->dimensions.x(), result->dimensions.y());
+    result->renderPass = VulkanRenderPass(renderer->device(), config);
+    result->frameBuffer = vk::createFrameBuffer(renderer->device(), views, result->renderPass, result->dimensions.x(), result->dimensions.y());
 
     return result;
 }

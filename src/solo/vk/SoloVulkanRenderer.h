@@ -30,7 +30,7 @@ namespace solo
     {
     public:
         explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer() {}
+        ~VulkanRenderer() = default;
 
         void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
         void endCamera(Camera *camera, FrameBuffer *renderTarget) override final;
@@ -38,36 +38,36 @@ namespace solo
         void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 
         // TODO avoid these?
-        auto getDevice() const -> VkDevice { return device; }
-        auto getPhysicalDevice() const -> VkPhysicalDevice { return physicalDevice; }
-        auto getPhysicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures; }
-        auto getPhysicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties; }
-        auto getPhysicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures; }
-        auto getColorFormat() const -> VkFormat { return colorFormat; }
-        auto getDepthFormat() const -> VkFormat { return depthFormat; }
-        auto getColorSpace() const -> VkColorSpaceKHR { return colorSpace; }
-        auto getCommandPool() const -> VkCommandPool { return commandPool; }
-        auto getQueue() const -> VkQueue { return queue; }
+        auto device() const -> VkDevice { return device_; }
+        auto physicalDevice() const -> VkPhysicalDevice { return physicalDevice_; }
+        auto physicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures_; }
+        auto physicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties_; }
+        auto physicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures_; }
+        auto colorFormat() const -> VkFormat { return colorFormat_; }
+        auto depthFormat() const -> VkFormat { return depthFormat_; }
+        auto colorSpace() const -> VkColorSpaceKHR { return colorSpace_; }
+        auto commandPool() const -> VkCommandPool { return commandPool_; }
+        auto queue() const -> VkQueue { return queue_; }
 
     protected:
         void beginFrame() override final;
         void endFrame() override final;
 
     private:
-        Device *engineDevice = nullptr;
+        Device *engineDevice_ = nullptr;
 
-        VulkanResource<VkDevice> device;
-        VulkanResource<VkCommandPool> commandPool;
-        VkPhysicalDevice physicalDevice = nullptr;
-        VkPhysicalDeviceFeatures physicalFeatures{};
-        VkPhysicalDeviceProperties physicalProperties{};
-        VkPhysicalDeviceMemoryProperties physicalMemoryFeatures{};
-        VkFormat colorFormat = VK_FORMAT_UNDEFINED;
-        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
-        VkColorSpaceKHR colorSpace = VK_COLOR_SPACE_MAX_ENUM_KHR;
-        VkQueue queue = nullptr;
-        VulkanResource<VkDebugReportCallbackEXT> debugCallback;
-        VulkanSwapchain swapchain;
+        VulkanResource<VkDevice> device_;
+        VulkanResource<VkCommandPool> commandPool_;
+        VkPhysicalDevice physicalDevice_ = nullptr;
+        VkPhysicalDeviceFeatures physicalFeatures_{};
+        VkPhysicalDeviceProperties physicalProperties_{};
+        VkPhysicalDeviceMemoryProperties physicalMemoryFeatures_{};
+        VkFormat colorFormat_ = VK_FORMAT_UNDEFINED;
+        VkFormat depthFormat_ = VK_FORMAT_UNDEFINED;
+        VkColorSpaceKHR colorSpace_ = VK_COLOR_SPACE_MAX_ENUM_KHR;
+        VkQueue queue_ = nullptr;
+        VulkanResource<VkDebugReportCallbackEXT> debugCallback_;
+        VulkanSwapchain swapchain_;
 
         struct PipelineContext
         {
@@ -89,15 +89,15 @@ namespace solo
             u32 frameOfLastUse = 0;
         };
 
-        u32 frame = 0;
+        u32 frame_ = 0;
 
-        umap<VulkanRenderPass*, RenderPassContext> renderPassContexts;
-        umap<size_t, PipelineContext> pipelineContexts;
+        umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
+        umap<size_t, PipelineContext> pipelineContexts_;
 
-        Camera *currentCamera = nullptr;
-        VulkanRenderPass *currentRenderPass = nullptr;
-        VkCommandBuffer currentCmdBuffer = nullptr;
-        VkSemaphore prevSemaphore = nullptr;
+        Camera *currentCamera_ = nullptr;
+        VulkanRenderPass *currentRenderPass_ = nullptr;
+        VkCommandBuffer currentCmdBuffer_ = nullptr;
+        VkSemaphore prevSemaphore_ = nullptr;
 
         void prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh);
         auto ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&;
