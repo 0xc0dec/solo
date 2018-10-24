@@ -124,8 +124,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     VulkanResource<VkPipeline> pipeline{device, vkDestroyPipeline};
     SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline.cleanRef()));
 
-    this->pipeline = std::move(pipeline);
-    this->layout = std::move(layout);
+    this->pipeline_ = std::move(pipeline);
+    this->layout_ = std::move(layout);
 }
 
 VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):

@@ -13,10 +13,10 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
 {
     const auto colorAttachments = config.colorAttachmentRefs.empty() ? nullptr : config.colorAttachmentRefs.data();
     const auto depthAttachment = config.depthAttachmentRef.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef : nullptr;
-    clearValues.resize(config.colorAttachmentRefs.size() + 1);
-    clearValues.rbegin()->depthStencil = {1, 0};
+    clearValues_.resize(config.colorAttachmentRefs.size() + 1);
+    clearValues_.rbegin()->depthStencil = {1, 0};
 
-    colorAttachmentCount = config.colorAttachmentRefs.size();
+    colorAttachmentCount_ = config.colorAttachmentRefs.size();
 
     VkSubpassDescription subpass{};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
@@ -64,7 +64,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     VulkanResource<VkRenderPass> pass{device, vkDestroyRenderPass};
     SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass.cleanRef()));
 
-    this->pass = std::move(pass);
+    this->pass_ = std::move(pass);
 }
 
 void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
@@ -72,13 +72,13 @@ void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, 
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     info.pNext = nullptr;
-    info.renderPass = pass;
+    info.renderPass = pass_;
     info.renderArea.offset.x = 0;
     info.renderArea.offset.y = 0;
     info.renderArea.extent.width = canvasWidth;
     info.renderArea.extent.height = canvasHeight;
-    info.clearValueCount = clearValues.size();
-    info.pClearValues = clearValues.data();
+    info.clearValueCount = clearValues_.size();
+    info.pClearValues = clearValues_.data();
     info.framebuffer = framebuffer;
 
     vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_INLINE);

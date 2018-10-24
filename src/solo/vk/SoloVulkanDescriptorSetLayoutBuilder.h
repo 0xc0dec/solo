@@ -24,8 +24,8 @@ namespace solo
         auto build() -> VulkanResource<VkDescriptorSetLayout>;
 
     private:
-        VkDevice device = nullptr;
-        vec<VkDescriptorSetLayoutBinding> bindings;
+        VkDevice device_ = nullptr;
+        vec<VkDescriptorSetLayoutBinding> bindings_;
     };
 }
 

@@ -69,23 +69,23 @@ auto VulkanEffect::createFromSources(Device *device,
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
-    renderer = dynamic_cast<VulkanRenderer*>(device->getRenderer());
-    vertexShader = createShaderModule(renderer->device(), vsSrc, vsSrcLen);
-    fragmentShader = createShaderModule(renderer->device(), fsSrc, fsSrcLen);
+    renderer_ = dynamic_cast<VulkanRenderer*>(device->getRenderer());
+    vertexShader_ = createShaderModule(renderer_->device(), vsSrc, vsSrcLen);
+    fragmentShader_ = createShaderModule(renderer_->device(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32), true);
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
-auto VulkanEffect::getUniformBuffer(const str &name) -> UniformBuffer
+auto VulkanEffect::uniformBuffer(const str &name) -> UniformBuffer
 {
     SL_DEBUG_PANIC(!uniformBuffers.count(name), "Uniform buffer ", name, " not found");
-    return uniformBuffers.at(name);
+    return uniformBuffers_.at(name);
 }
 
-auto VulkanEffect::getSampler(const str &name) -> Sampler
+auto VulkanEffect::sampler(const str &name) -> Sampler
 {
     SL_DEBUG_PANIC(!samplers.count(name), "Sampler ", name, " not found");
-    return samplers.at(name);
+    return samplers_.at(name);
 }
 
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
@@ -96,7 +96,7 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
     for (auto &buffer: resources.uniform_buffers)
     {
         const auto& name = compiler.get_name(buffer.id);
-        uniformBuffers[name].binding = compiler.get_decoration(buffer.id, spv::DecorationBinding);
+        uniformBuffers_[name].binding = compiler.get_decoration(buffer.id, spv::DecorationBinding);
 
         u32 size = 0;
         const auto ranges = compiler.get_active_buffer_ranges(buffer.id);
@@ -105,18 +105,18 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
             auto memberName = compiler.get_member_name(buffer.base_type_id, range.index);
             if (memberName.empty())
                 memberName = compiler.get_member_qualified_name(buffer.base_type_id, range.index);
-            uniformBuffers[name].members[memberName].size = range.range;
-            uniformBuffers[name].members[memberName].offset = range.offset;
+            uniformBuffers_[name].members[memberName].size = range.range;
+            uniformBuffers_[name].members[memberName].offset = range.offset;
             size += range.range;
         }
 
-        uniformBuffers[name].size = size;
+        uniformBuffers_[name].size = size;
     }
 
     for (auto &sampler: resources.sampled_images)
     {
         const auto binding = compiler.get_decoration(sampler.id, spv::DecorationBinding);
-        samplers[sampler.name].binding = binding;
+        samplers_[sampler.name].binding = binding;
     }
 
     if (vertex)
@@ -125,7 +125,7 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
         {
             const auto name = stageInput.name;
             const auto location = compiler.get_decoration(stageInput.id, spv::DecorationLocation);
-            vertexAttributes[name].location = location;
+            vertexAttributes_[name].location = location;
         }
     }
 }

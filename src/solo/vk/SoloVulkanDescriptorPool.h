@@ -21,7 +21,7 @@ namespace solo
     private:
         friend class VulkanDescriptorPool;
 
-        vec<VkDescriptorPoolSize> sizes;
+        vec<VkDescriptorPoolSize> sizes_;
     };
 
     class VulkanDescriptorPool
@@ -39,8 +39,8 @@ namespace solo
         auto allocateSet(VkDescriptorSetLayout layout) const -> VkDescriptorSet;
 
     private:
-        VkDevice device = nullptr;
-        VulkanResource<VkDescriptorPool> pool;
+        VkDevice device_ = nullptr;
+        VulkanResource<VkDescriptorPool> pool_;
     };
 }
 

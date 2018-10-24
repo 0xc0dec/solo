@@ -22,15 +22,15 @@ namespace solo
 
         void saveScreenshot(const str &path) override final;
 
-        auto getInstance() const -> VkInstance { return instance; }
-        auto getSurface() const -> VkSurfaceKHR { return surface; }
+        auto instance() const -> VkInstance { return instance_; }
+        auto surface() const -> VkSurfaceKHR { return surface_; }
 
     protected:
         void endUpdate() override final;
 
     private:
-        VulkanResource<VkInstance> instance;
-        VulkanResource<VkSurfaceKHR> surface;
+        VulkanResource<VkInstance> instance_;
+        VulkanResource<VkSurfaceKHR> surface_;
     };
 }
 

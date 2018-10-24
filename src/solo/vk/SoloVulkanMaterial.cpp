@@ -53,11 +53,11 @@ static auto convertBlendFactor(BlendFactor factor) -> VkBlendFactor
 }
 
 VulkanMaterial::VulkanMaterial(const sptr<Effect> &effect):
-    effect(std::static_pointer_cast<VulkanEffect>(effect))
+    effect_(std::static_pointer_cast<VulkanEffect>(effect))
 {
 }
 
-auto VulkanMaterial::getStateHash() const -> size_t
+auto VulkanMaterial::stateHash() const -> size_t
 {
     size_t seed = 0;
     const std::hash<u32> unsignedHasher;
@@ -164,10 +164,10 @@ void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFu
     auto fieldName = std::get<1>(parsedName);
     SL_DEBUG_PANIC(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
-    auto bufferInfo = effect->getUniformBuffer(bufferName);
+    auto bufferInfo = effect_->uniformBuffer(bufferName);
     const auto itemInfo = bufferInfo.members.at(fieldName);
 
-    auto &item = bufferItems[bufferName][fieldName];
+    auto &item = bufferItems_[bufferName][fieldName];
     item.write = [itemInfo, write](VulkanBuffer &buffer, const Camera *camera, const Transform *transform)
     {
         write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
@@ -176,8 +176,8 @@ void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFu
 
 void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 {
-    const auto samplerInfo = effect->getSampler(name);
-    auto &sampler = samplers[name];
+    const auto samplerInfo = effect_->sampler(name);
+    auto &sampler = samplers_[name];
     sampler.binding = samplerInfo.binding;
     sampler.texture = std::dynamic_pointer_cast<VulkanTexture>(value);
     // TODO Optimize and mark only this sampler as dirty
@@ -190,11 +190,11 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
     auto fieldName = std::get<1>(parsedName);
     SL_DEBUG_PANIC(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
-    auto bufferInfo = effect->getUniformBuffer(bufferName);
+    auto bufferInfo = effect_->uniformBuffer(bufferName);
     SL_DEBUG_PANIC(!bufferInfo.size || bufferInfo.members.empty(), "Material parameter ", name, " not found");
 
     auto itemInfo = bufferInfo.members.at(fieldName);
-    auto &item = bufferItems[bufferName][fieldName];
+    auto &item = bufferItems_[bufferName][fieldName];
 
     switch (binding)
     {

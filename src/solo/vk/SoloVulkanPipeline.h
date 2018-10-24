@@ -59,14 +59,14 @@ namespace solo
         auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
         auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
 
-        operator VkPipeline() { return pipeline; }
+        operator VkPipeline() { return pipeline_; }
 
-        auto getHandle() const -> VkPipeline { return pipeline; }
-        auto getLayout() const -> VkPipelineLayout { return layout; }
+        auto handle() const -> VkPipeline { return pipeline_; }
+        auto layout() const -> VkPipelineLayout { return layout_; }
 
     private:
-        VulkanResource<VkPipeline> pipeline;
-        VulkanResource<VkPipelineLayout> layout;
+        VulkanResource<VkPipeline> pipeline_;
+        VulkanResource<VkPipelineLayout> layout_;
     };
 
     inline auto VulkanPipelineConfig::withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&

@@ -105,14 +105,14 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
     const auto initCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
 
     VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = image.aspectMask;
+    subresourceRange.aspectMask = image.aspectMask_;
     subresourceRange.baseMipLevel = 0;
     subresourceRange.levelCount = 1;
     subresourceRange.layerCount = 1;
 
     vk::setImageLayout(
         initCmdBuf,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         targetLayout,
         subresourceRange,
@@ -181,7 +181,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
 
     VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = image.aspectMask;
+    subresourceRange.aspectMask = image.aspectMask_;
     subresourceRange.baseArrayLayer = 0;
     subresourceRange.baseMipLevel = 0;
     subresourceRange.levelCount = 1;
@@ -189,7 +189,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
 
     vk::setImageLayout(
         initCmdBuf,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         subresourceRange,
@@ -199,7 +199,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     vkCmdCopyBufferToImage(
         initCmdBuf,
         srcBuf,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         1,
         &bufferCopyRegion);
@@ -208,7 +208,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     {
         vk::setImageLayout(
             initCmdBuf,
-            image.image,
+            image.image_,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
             VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             subresourceRange,
@@ -247,7 +247,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
 
             vk::setImageLayout(
                 blitCmdBuf,
-                image.image,
+                image.image_,
                 VK_IMAGE_LAYOUT_UNDEFINED,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 mipSubRange,
@@ -256,9 +256,9 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
 
             vkCmdBlitImage(
                 blitCmdBuf,
-                image.image,
+                image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                image.image,
+                image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 1,
                 &imageBlit,
@@ -266,7 +266,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
 
             vk::setImageLayout(
                 blitCmdBuf,
-                image.image,
+                image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                 mipSubRange,
@@ -277,7 +277,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
         subresourceRange.levelCount = static_cast<u32>(mipLevels);
         vk::setImageLayout(
             blitCmdBuf,
-            image.image,
+            image.image_,
             VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             targetLayout,
             subresourceRange,
@@ -290,7 +290,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     {
         vk::setImageLayout(
             initCmdBuf,
-            image.image,
+            image.image_,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
             targetLayout,
             subresourceRange,
@@ -336,7 +336,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     );
 
     VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = image.aspectMask;
+    subresourceRange.aspectMask = image.aspectMask_;
     subresourceRange.baseArrayLayer = 0;
     subresourceRange.baseMipLevel = 0;
     subresourceRange.levelCount = mipLevels;
@@ -347,7 +347,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
     vk::setImageLayout(
         cmdBuf,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         subresourceRange,
@@ -387,14 +387,14 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     vkCmdCopyBufferToImage(
         cmdBuf,
         srcBuffer,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         static_cast<u32>(copyRegions.size()),
         copyRegions.data());
 
     vk::setImageLayout(
         cmdBuf,
-        image.image,
+        image.image_,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         targetLayout,
         subresourceRange,
@@ -408,20 +408,20 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 
 VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
-    layout(layout),
-    format(format),
-    mipLevels(mipLevels),
-    width(width),
-    height(height),
-    aspectMask(aspectMask)
+    layout_(layout),
+    format_(format),
+    mipLevels_(mipLevels),
+    width_(width),
+    height_(height),
+    aspectMask_(aspectMask)
 {
     const auto device = renderer->device();
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
     auto memory = allocateImageMemory(device, renderer->physicalMemoryFeatures(), image);
     auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
-    this->image = std::move(image);
-    this->memory = std::move(memory);
-    this->view = std::move(view);
+    this->image_ = std::move(image);
+    this->memory_ = std::move(memory);
+    this->view_ = std::move(view);
 }
 
 #endif

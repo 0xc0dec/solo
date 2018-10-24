@@ -24,15 +24,15 @@ namespace solo
         
         ~VulkanFrameBuffer() = default;
 
-        auto getHandle() const -> VkFramebuffer { return frameBuffer; }
-        auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
-        auto getColorAttachmentCount() const -> u32 { return static_cast<u32>(colorAttachments.size()); }
+        auto handle() const -> VkFramebuffer { return frameBuffer_; }
+        auto renderPass() -> VulkanRenderPass& { return renderPass_; }
+        auto colorAttachmentCount() const -> u32 { return static_cast<u32>(colorAttachments_.size()); }
 
     private:
-        VulkanRenderPass renderPass;
-        VulkanResource<VkFramebuffer> frameBuffer;
-        vec<sptr<VulkanTexture2D>> colorAttachments;
-        sptr<VulkanTexture2D> depthAttachment;
+        VulkanRenderPass renderPass_;
+        VulkanResource<VkFramebuffer> frameBuffer_;
+        vec<sptr<VulkanTexture2D>> colorAttachments_;
+        sptr<VulkanTexture2D> depthAttachment_;
 
         VulkanFrameBuffer() = default;
     };

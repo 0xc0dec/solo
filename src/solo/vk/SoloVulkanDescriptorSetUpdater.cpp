@@ -10,21 +10,21 @@
 using namespace solo;
 
 VulkanDescriptorSetUpdater::VulkanDescriptorSetUpdater(VkDevice device):
-    device(device)
+    device_(device)
 {
 }
 
 auto VulkanDescriptorSetUpdater::forUniformBuffer(u32 binding, VkDescriptorSet set, VkBuffer buffer,
     VkDeviceSize offset, VkDeviceSize range) -> VulkanDescriptorSetUpdater&
 {
-    items.push_back({{buffer, offset, range}, {}, binding, set});
+    items_.push_back({{buffer, offset, range}, {}, binding, set});
     return *this;
 }
 
 auto VulkanDescriptorSetUpdater::forImageSampler(u32 binding, VkDescriptorSet set, VkImageView view,
     VkSampler sampler, VkImageLayout layout) -> VulkanDescriptorSetUpdater&
 {
-    items.push_back({{}, {sampler, view, layout}, binding, set});
+    items_.push_back({{}, {sampler, view, layout}, binding, set});
     return *this;
 }
 
@@ -32,7 +32,7 @@ void VulkanDescriptorSetUpdater::updateSets()
 {
     vec<VkWriteDescriptorSet> writes;
 
-    for (const auto &item: items)
+    for (const auto &item: items_)
     {
         const auto bufferInfo = item.buffer.buffer ? &item.buffer : nullptr;
         const auto imageInfo = item.image.imageView ? &item.image : nullptr;
@@ -51,7 +51,7 @@ void VulkanDescriptorSetUpdater::updateSets()
         writes.push_back(write);
     }
 
-    vkUpdateDescriptorSets(device, writes.size(), writes.data(), 0, nullptr);
+    vkUpdateDescriptorSets(device_, writes.size(), writes.data(), 0, nullptr);
 }
 
 #endif

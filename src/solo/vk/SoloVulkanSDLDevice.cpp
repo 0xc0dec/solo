@@ -64,8 +64,8 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 
-    instance = VulkanResource<VkInstance>{vkDestroyInstance};
-    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance.cleanRef()));
+    instance_ = VulkanResource<VkInstance>{vkDestroyInstance};
+    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance_.cleanRef()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -82,8 +82,8 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
-    surface = VulkanResource<VkSurfaceKHR>{instance, vkDestroySurfaceKHR};
-    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance, &surfaceInfo, nullptr, surface.cleanRef()));
+    surface_ = VulkanResource<VkSurfaceKHR>{instance_, vkDestroySurfaceKHR};
+    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance_, &surfaceInfo, nullptr, surface_.cleanRef()));
 #endif
 }
 

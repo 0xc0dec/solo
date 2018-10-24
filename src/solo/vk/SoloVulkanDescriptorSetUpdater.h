@@ -34,8 +34,8 @@ namespace solo
             VkDescriptorSet targetSet;
         };
 
-        VkDevice device = nullptr;
-        vec<Item> items;
+        VkDevice device_ = nullptr;
+        vec<Item> items_;
     };
 }
 

@@ -19,13 +19,13 @@ namespace solo
     class VulkanTexture
     {
     public:
-        auto getImage() const -> VulkanImage const& { return image; }
-        auto getSampler() const -> VkSampler { return sampler; }
+        auto image() const -> VulkanImage const& { return image_; }
+        auto sampler() const -> VkSampler { return sampler_; }
 
     protected:
-        VulkanRenderer *renderer = nullptr;
-        VulkanImage image;
-        VulkanResource<VkSampler> sampler;
+        VulkanRenderer *renderer_ = nullptr;
+        VulkanImage image_;
+        VulkanResource<VkSampler> sampler_;
 
         explicit VulkanTexture(Device *device);
     };

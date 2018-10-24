@@ -41,17 +41,17 @@ namespace solo
         auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
-        auto getColorAttachmentCount() const -> u32 { return colorAttachmentCount; }
+        auto colorAttachmentCount() const -> u32 { return colorAttachmentCount_; }
 
         void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
         void end(VkCommandBuffer cmdBuf);
 
-        operator VkRenderPass() { return pass; }
+        operator VkRenderPass() { return pass_; }
 
     private:
-        VulkanResource<VkRenderPass> pass;
-        vec<VkClearValue> clearValues;
-        u32 colorAttachmentCount = 0;
+        VulkanResource<VkRenderPass> pass_;
+        vec<VkClearValue> clearValues_;
+        u32 colorAttachmentCount_ = 0;
     };
 }
 

@@ -10,7 +10,7 @@
 using namespace solo;
 
 VulkanDescriptorSetLayoutBuilder::VulkanDescriptorSetLayoutBuilder(VkDevice device):
-    device(device)
+    device_(device)
 {
 }
 
@@ -23,7 +23,7 @@ auto VulkanDescriptorSetLayoutBuilder::withBinding(u32 binding, VkDescriptorType
     b.descriptorCount = descriptorCount;
     b.stageFlags = stageFlags;
     b.pImmutableSamplers = nullptr;
-    bindings.push_back(b);
+    bindings_.push_back(b);
 
     return *this;
 }
@@ -32,11 +32,11 @@ auto VulkanDescriptorSetLayoutBuilder::build() -> VulkanResource<VkDescriptorSet
 {
     VkDescriptorSetLayoutCreateInfo layoutInfo {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutInfo.bindingCount = bindings.size();
-    layoutInfo.pBindings = bindings.data();
+    layoutInfo.bindingCount = bindings_.size();
+    layoutInfo.pBindings = bindings_.data();
 
-    VulkanResource<VkDescriptorSetLayout> result{device, vkDestroyDescriptorSetLayout};
-    SL_VK_CHECK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, result.cleanRef()));
+    VulkanResource<VkDescriptorSetLayout> result{device_, vkDestroyDescriptorSetLayout};
+    SL_VK_CHECK_RESULT(vkCreateDescriptorSetLayout(device_, &layoutInfo, nullptr, result.cleanRef()));
     
     return result;
 }

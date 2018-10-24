@@ -186,8 +186,8 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     engineDevice_(engineDevice)
 {
     const auto vulkanDevice = dynamic_cast<VulkanSDLDevice*>(engineDevice);
-    const auto instance = vulkanDevice->getInstance();
-    const auto surface = vulkanDevice->getSurface();
+    const auto instance = vulkanDevice->instance();
+    const auto surface = vulkanDevice->surface();
     const auto canvasSize = engineDevice->getCanvasSize();
 
 #ifdef SL_DEBUG
@@ -214,19 +214,19 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
 void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 {
     currentCamera_ = camera;
-    currentRenderPass_ = &swapchain_.getRenderPass();
+    currentRenderPass_ = &swapchain_.renderPass();
     
-    auto currentFrameBuffer = swapchain_.getCurrentFrameBuffer();
+    auto currentFrameBuffer = swapchain_.currentFrameBuffer();
     auto dimensions = engineDevice_->getCanvasSize();
     vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
 
     if (renderTarget)
     {
         const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
-        currentRenderPass_ = &targetFrameBuffer->getRenderPass();
-        currentFrameBuffer = targetFrameBuffer->getHandle();
+        currentRenderPass_ = &targetFrameBuffer->renderPass();
+        currentFrameBuffer = targetFrameBuffer->handle();
         dimensions = targetFrameBuffer->getDimensions();
-        clearAttachments.resize(targetFrameBuffer->getColorAttachmentCount());
+        clearAttachments.resize(targetFrameBuffer->colorAttachmentCount());
     }
 
     if (!renderPassContexts_.count(currentRenderPass_))
@@ -291,22 +291,22 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
     {
         for (u32 part = 0; part < vkMesh->getPartCount(); part++)
         {
-            const auto indexBuffer = vkMesh->getPartBuffer(part);
+            const auto indexBuffer = vkMesh->partBuffer(part);
             vkCmdBindIndexBuffer(currentCmdBuffer_, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-            vkCmdDrawIndexed(currentCmdBuffer_, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
+            vkCmdDrawIndexed(currentCmdBuffer_, vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
         }
     }
     else
-        vkCmdDraw(currentCmdBuffer_, vkMesh->getMinVertexCount(), 1, 0, 0);
+        vkCmdDraw(currentCmdBuffer_, vkMesh->minVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     prepareAndBindMesh(material, transform, mesh);
-    const auto indexBuffer = vkMesh->getPartBuffer(part);
+    const auto indexBuffer = vkMesh->partBuffer(part);
     vkCmdBindIndexBuffer(currentCmdBuffer_, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
-    vkCmdDrawIndexed(currentCmdBuffer_, vkMesh->getPartIndexElementCount(part), 1, 0, 0, 0);
+    vkCmdDrawIndexed(currentCmdBuffer_, vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
 }
 
 auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&
@@ -320,8 +320,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 
     if (!context.descSet)
     {
-        const auto &uniformBufs = vkEffect->getUniformBuffers();
-        const auto &effectSamplers = vkEffect->getSamplers();
+        const auto &uniformBufs = vkEffect->uniformBuffers();
+        const auto &effectSamplers = vkEffect->samplers();
 
         auto builder = VulkanDescriptorSetLayoutBuilder(device_);
 
@@ -347,25 +347,25 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         context.descSet = context.descPool.allocateSet(context.descSetLayout);
     }
 
-    const auto materialFlagsHash = vkMaterial->getStateHash();
-    const auto meshLayoutHash = vkMesh->getLayoutHash();
+    const auto materialFlagsHash = vkMaterial->stateHash();
+    const auto meshLayoutHash = vkMesh->layoutHash();
     const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
     const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
 
     if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
     {
-        const auto vs = vkEffect->getVertexShaderModule();
-        const auto fs = vkEffect->getFragmentShaderModule();
+        const auto vs = vkEffect->vertexShaderModule();
+        const auto fs = vkEffect->fragmentShaderModule();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
             .withDescriptorSetLayout(context.descSetLayout)
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-            .withColorBlendAttachmentCount(currentRenderPass_->getColorAttachmentCount());
+            .withColorBlendAttachmentCount(currentRenderPass_->colorAttachmentCount());
         vkMaterial->configurePipeline(pipelineConfig);
 
-        const auto &effectVertexAttrs = vkEffect->getVertexAttributes();
-        for (u32 binding = 0; binding < vkMesh->getVertexBufferCount(); binding++)
+        const auto &effectVertexAttrs = vkEffect->vertexAttributes();
+        for (u32 binding = 0; binding < vkMesh->vertexBufferCount(); binding++)
         {
-            const auto &layout = vkMesh->getVertexBufferLayout(binding);
+            const auto &layout = vkMesh->vertexBufferLayout(binding);
             
             pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
 
@@ -404,8 +404,8 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    const auto &uniformBufs = vkEffect->getUniformBuffers();
-    const auto &materialSamplers = vkMaterial->getSamplers();
+    const auto &uniformBufs = vkEffect->uniformBuffers();
+    const auto &materialSamplers = vkMaterial->samplers();
     
     auto &context = ensurePipelineContext(transform, vkMaterial, vkMesh);
     context.frameOfLastUse = frame_;
@@ -429,9 +429,9 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
         updater.forImageSampler(
             info.binding,
             context.descSet,
-            info.texture->getImage().getView(),
-            info.texture->getSampler(),
-            info.texture->getImage().getLayout()
+            info.texture->image().view(),
+            info.texture->sampler(),
+            info.texture->image().layout()
         );
     }
 
@@ -439,7 +439,7 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
 
     // Update buffers content
 
-    auto &bufferItems = vkMaterial->getBufferItems();
+    auto &bufferItems = vkMaterial->bufferItems();
     for (auto &p: bufferItems)
     {
         auto &buffer = context.uniformBuffers[p.first];
@@ -450,12 +450,12 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
     // Issue commands
 
     vkCmdBindPipeline(currentCmdBuffer_, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline);
-    vkCmdBindDescriptorSets(currentCmdBuffer_, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.getLayout(), 0, 1, &context.descSet, 0, nullptr);
+    vkCmdBindDescriptorSets(currentCmdBuffer_, VK_PIPELINE_BIND_POINT_GRAPHICS, context.pipeline.layout(), 0, 1, &context.descSet, 0, nullptr);
 
     VkDeviceSize vertexBufferOffset = 0;
-    for (u32 i = 0; i < vkMesh->getVertexBufferCount(); i++)
+    for (u32 i = 0; i < vkMesh->vertexBufferCount(); i++)
     {
-        auto vertexBuffer = vkMesh->getVertexBuffer(i);
+        auto vertexBuffer = vkMesh->vertexBuffer(i);
         vkCmdBindVertexBuffers(currentCmdBuffer_, i, 1, &vertexBuffer, &vertexBufferOffset);
     }
 }

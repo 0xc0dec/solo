@@ -49,24 +49,24 @@ namespace solo
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect() = default;
 
-        auto getVertexShaderModule() const -> VkShaderModule { return vertexShader; }
-        auto getFragmentShaderModule() const -> VkShaderModule { return fragmentShader; }
+        auto vertexShaderModule() const -> VkShaderModule { return vertexShader_; }
+        auto fragmentShaderModule() const -> VkShaderModule { return fragmentShader_; }
 
-        auto getUniformBuffer(const str &name) -> UniformBuffer;
-        auto getSampler(const str &name) -> Sampler;
+        auto uniformBuffer(const str &name) -> UniformBuffer;
+        auto sampler(const str &name) -> Sampler;
 
-        auto getUniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers; }
-        auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
-        auto getVertexAttributes() const -> umap<str, VertexAttribute> const& { return vertexAttributes; }
+        auto uniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers_; }
+        auto samplers() const -> umap<str, Sampler> const& { return samplers_; }
+        auto vertexAttributes() const -> umap<str, VertexAttribute> const& { return vertexAttributes_; }
 
     private:
-        VulkanRenderer *renderer = nullptr;
-        VulkanResource<VkShaderModule> vertexShader;
-        VulkanResource<VkShaderModule> fragmentShader;
+        VulkanRenderer *renderer_ = nullptr;
+        VulkanResource<VkShaderModule> vertexShader_;
+        VulkanResource<VkShaderModule> fragmentShader_;
             
-        umap<str, UniformBuffer> uniformBuffers;
-        umap<str, Sampler> samplers;
-        umap<str, VertexAttribute> vertexAttributes;
+        umap<str, UniformBuffer> uniformBuffers_;
+        umap<str, Sampler> samplers_;
+        umap<str, VertexAttribute> vertexAttributes_;
 
         void introspectShader(const u32 *src, u32 len, bool vertex);
     };

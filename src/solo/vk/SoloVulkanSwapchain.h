@@ -30,11 +30,11 @@ namespace solo
         auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain& = delete;
         auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain& = default;
 
-        operator VkSwapchainKHR() { return swapchain; }
-        operator VkSwapchainKHR() const { return swapchain; }
+        operator VkSwapchainKHR() { return swapchain_; }
+        operator VkSwapchainKHR() const { return swapchain_; }
 
-        auto getCurrentFrameBuffer() -> VkFramebuffer { return steps[currentStep].framebuffer; }
-        auto getRenderPass() -> VulkanRenderPass& { return renderPass; }
+        auto currentFrameBuffer() -> VkFramebuffer { return steps_[currentStep_].framebuffer; }
+        auto renderPass() -> VulkanRenderPass& { return renderPass_; }
 
         auto moveNext() -> VkSemaphore;
         void present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
@@ -48,13 +48,13 @@ namespace solo
             VulkanResource<VkCommandBuffer> cmdBuffer;
         };
 
-        VkDevice device = nullptr;
-        VulkanResource<VkSwapchainKHR> swapchain;
-        VulkanImage depthStencil;
-        vec<Step> steps;
-        VulkanResource<VkSemaphore> presentCompleteSem;
-        VulkanRenderPass renderPass;
-        u32 currentStep = 0;
+        VkDevice device_ = nullptr;
+        VulkanResource<VkSwapchainKHR> swapchain_;
+        VulkanImage depthStencil_;
+        vec<Step> steps_;
+        VulkanResource<VkSemaphore> presentCompleteSem_;
+        VulkanRenderPass renderPass_;
+        u32 currentStep_ = 0;
     };
 }
 

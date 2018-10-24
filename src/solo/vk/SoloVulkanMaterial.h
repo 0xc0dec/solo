@@ -40,7 +40,7 @@ namespace solo
         explicit VulkanMaterial(const sptr<Effect> &effect);
         ~VulkanMaterial() = default;
 
-        auto getEffect() const -> sptr<Effect> override final { return effect; }
+        auto getEffect() const -> sptr<Effect> override final { return effect_; }
 
         void setFloatParameter(const str &name, float value) override final;
         void setVector2Parameter(const str &name, const Vector2 &value) override final;
@@ -51,18 +51,18 @@ namespace solo
 
         void bindParameter(const str &name, ParameterBinding binding) override final;
 
-        auto getSamplers() const -> umap<str, Sampler> const& { return samplers; }
-        auto getBufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems; } // TODO rename
-        auto getStateHash() const -> size_t;
+        auto samplers() const -> umap<str, Sampler> const& { return samplers_; }
+        auto bufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems_; } // TODO rename
+        auto stateHash() const -> size_t;
 
         void configurePipeline(VulkanPipelineConfig &cfg);
 
     private:
         using ParameterWriteFunc = std::function<void(VulkanBuffer &, u32, u32, const Camera *, const Transform *)>;
 
-        sptr<VulkanEffect> effect;
-        umap<str, umap<str, UniformBufferItem>> bufferItems;
-        umap<str, Sampler> samplers;
+        sptr<VulkanEffect> effect_;
+        umap<str, umap<str, UniformBufferItem>> bufferItems_;
+        umap<str, Sampler> samplers_;
 
         void setUniformParameter(const str &name, const ParameterWriteFunc &write);
     };

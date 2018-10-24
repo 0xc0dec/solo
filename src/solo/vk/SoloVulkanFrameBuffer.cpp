@@ -27,28 +27,28 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     {
         const auto vkTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
         if (tex->getFormat() == TextureFormat::Depth24)
-            result->depthAttachment = vkTexture;
+            result->depthAttachment_ = vkTexture;
         else
         {
-            result->colorAttachments.push_back(vkTexture);
-            config.withColorAttachment(vkTexture->getImage().getFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
-            views.push_back(vkTexture->getImage().getView());
+            result->colorAttachments_.push_back(vkTexture);
+            config.withColorAttachment(vkTexture->image().format(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
+            views.push_back(vkTexture->image().view());
         }
     }
 
     result->dimensions = attachments[0]->getDimensions();
 
-    if (!result->depthAttachment)
+    if (!result->depthAttachment_)
     {
-        result->depthAttachment = VulkanTexture2D::createEmpty(device,
+        result->depthAttachment_ = VulkanTexture2D::createEmpty(device,
             static_cast<u32>(result->dimensions.x()), static_cast<u32>(result->dimensions.y()), TextureFormat::Depth24);
     }
 
-    views.push_back(result->depthAttachment->getImage().getView());
-    config.withDepthAttachment(result->depthAttachment->getImage().getFormat());
+    views.push_back(result->depthAttachment_->image().view());
+    config.withDepthAttachment(result->depthAttachment_->image().format());
 
-    result->renderPass = VulkanRenderPass(renderer->device(), config);
-    result->frameBuffer = vk::createFrameBuffer(renderer->device(), views, result->renderPass, result->dimensions.x(), result->dimensions.y());
+    result->renderPass_ = VulkanRenderPass(renderer->device(), config);
+    result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions.x(), result->dimensions.y());
 
     return result;
 }

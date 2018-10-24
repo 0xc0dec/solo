@@ -31,22 +31,22 @@ namespace solo
 
         explicit VulkanResource(std::function<void(T, VkAllocationCallbacks*)> del)
         {
-            this->del = [=](T handle) { del(handle, nullptr); };
+            this->del_ = [=](T handle) { del(handle, nullptr); };
         }
 
         VulkanResource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks*)> del)
         {
-            this->del = [instance, del](T obj) { del(instance, obj, nullptr); };
+            this->del_ = [instance, del](T obj) { del(instance, obj, nullptr); };
         }
 
         VulkanResource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks*)> del)
         {
-            this->del = [device, del](T obj) { del(device, obj, nullptr); };
+            this->del_ = [device, del](T obj) { del(device, obj, nullptr); };
         }
 
         VulkanResource(VkDevice device, VkCommandPool cmdPool, std::function<void(VkDevice, VkCommandPool, u32, T*)> del)
         {
-            this->del = [device, cmdPool, del](T obj) { del(device, cmdPool, 1, &obj); };
+            this->del_ = [device, cmdPool, del](T obj) { del(device, cmdPool, 1, &obj); };
         }
 
         ~VulkanResource()
@@ -62,49 +62,49 @@ namespace solo
 
         auto operator&() const -> const T*
         {
-            return &handle;
+            return &handle_;
         }
 
         auto operator&() -> T*
         {
-            return &handle;
+            return &handle_;
         }
 
         auto cleanRef() -> T*
         {
             ensureInitialized();
             cleanup();
-            return &handle;
+            return &handle_;
         }
 
         operator T() const
         {
-            return handle;
+            return handle_;
         }
 
         operator bool() const
         {
-            return handle != VK_NULL_HANDLE;
+            return handle_ != VK_NULL_HANDLE;
         }
 
         template<typename V>
         bool operator==(V rhs)
         {
-            return handle == T(rhs);
+            return handle_ == T(rhs);
         }
 
     private:
-        T handle = VK_NULL_HANDLE;
-        std::function<void(T)> del;
+        T handle_ = VK_NULL_HANDLE;
+        std::function<void(T)> del_;
 
         void cleanup()
         {
-            if (handle != VK_NULL_HANDLE)
+            if (handle_ != VK_NULL_HANDLE)
             {
                 ensureInitialized();
-                del(handle);
+                del_(handle_);
             }
-            handle = VK_NULL_HANDLE;
+            handle_ = VK_NULL_HANDLE;
         }
 
         void ensureInitialized()
@@ -114,8 +114,8 @@ namespace solo
 
         void swap(VulkanResource<T> &other) noexcept
         {
-            std::swap(handle, other.handle);
-            std::swap(del, other.del);
+            std::swap(handle_, other.handle_);
+            std::swap(del_, other.del_);
         }
     };
 }

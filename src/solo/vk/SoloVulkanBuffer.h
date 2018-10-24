@@ -32,20 +32,20 @@ namespace solo
         auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
         auto operator=(VulkanBuffer &&other) -> VulkanBuffer& = default;
 
-        operator VkBuffer() { return buffer; }
+        operator VkBuffer() { return buffer_; }
 
-        auto getHandle() const -> VkBuffer { return buffer; }
+        auto handle() const -> VkBuffer { return buffer_; }
 
         void updateAll(const void *newData) const;
         void updatePart(const void *newData, u32 offset, u32 size);
         void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool) const;
 
     private:
-        VkDevice device = nullptr;
-        VulkanRenderer *renderer = nullptr;
-        VulkanResource<VkDeviceMemory> memory;
-        VulkanResource<VkBuffer> buffer;
-        VkDeviceSize size = 0;
+        VkDevice device_ = nullptr;
+        VulkanRenderer *renderer_ = nullptr;
+        VulkanResource<VkDeviceMemory> memory_;
+        VulkanResource<VkBuffer> buffer_;
+        VkDeviceSize size_ = 0;
     };
 }
 

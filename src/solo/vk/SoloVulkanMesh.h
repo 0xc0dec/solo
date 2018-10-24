@@ -30,29 +30,29 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
         void removePart(u32 index) override final;
-        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers.size()); }
+        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
 
         auto getPrimitiveType() const -> PrimitiveType override final;
         void setPrimitiveType(PrimitiveType type) override final;
 
-        auto getVertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers.size()); }
-        auto getVertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts.at(index); }
-        auto getVertexBuffer(u32 index) const -> VkBuffer { return vertexBuffers.at(index).getHandle(); }
-        auto getPartBuffer(u32 index) const -> VkBuffer { return indexBuffers.at(index).getHandle(); }
-        auto getPartIndexElementCount(u32 index) const -> u32 { return indexElementCounts.at(index); }
-        auto getMinVertexCount() const -> u32 { return minVertexCount; }
+        auto vertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers_.size()); }
+        auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }
+        auto vertexBuffer(u32 index) const -> VkBuffer { return vertexBuffers_.at(index).handle(); }
+        auto partBuffer(u32 index) const -> VkBuffer { return indexBuffers_.at(index).handle(); }
+        auto partIndexElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }
+        auto minVertexCount() const -> u32 { return minVertexCount_; }
 
-        auto getLayoutHash() const -> size_t;
+        auto layoutHash() const -> size_t;
 
     private:
-        VulkanRenderer *renderer = nullptr;
+        VulkanRenderer *renderer_ = nullptr;
 
-        vec<VulkanBuffer> vertexBuffers;
-        vec<VulkanBuffer> indexBuffers;
-        vec<VertexBufferLayout> layouts;
-        vec<u32> vertexCounts;
-        vec<u32> indexElementCounts;
-        u32 minVertexCount = 0;
+        vec<VulkanBuffer> vertexBuffers_;
+        vec<VulkanBuffer> indexBuffers_;
+        vec<VertexBufferLayout> layouts_;
+        vec<u32> vertexCounts_;
+        vec<u32> indexElementCounts_;
+        u32 minVertexCount_ = 0;
 
         void updateMinVertexCount();
         auto addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout &layout, u32 vertexCount) -> s32;

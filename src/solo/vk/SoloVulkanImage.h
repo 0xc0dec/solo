@@ -34,22 +34,22 @@ namespace solo
         auto operator=(const VulkanImage &other) -> VulkanImage& = delete;
         auto operator=(VulkanImage &&other) -> VulkanImage& = default;
 
-        auto getFormat() const -> VkFormat { return format;  }
-        auto getSize() const -> Vector2 { return {static_cast<float>(width), static_cast<float>(height)}; }
-        auto getMipLevels() const -> u32 { return mipLevels; }
-        auto getLayout() const -> VkImageLayout { return layout; }
-        auto getView() const -> VkImageView { return view; }
+        auto format() const -> VkFormat { return format_;  }
+        auto size() const -> Vector2 { return {static_cast<float>(width_), static_cast<float>(height_)}; }
+        auto mipLevels() const -> u32 { return mipLevels_; }
+        auto layout() const -> VkImageLayout { return layout_; }
+        auto view() const -> VkImageView { return view_; }
 
     private:
-        VulkanResource<VkImage> image;
-        VulkanResource<VkDeviceMemory> memory;
-        VulkanResource<VkImageView> view;
-        VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;
-        VkFormat format = VK_FORMAT_UNDEFINED;
-        u32 mipLevels = 0;
-        u32 width = 0;
-        u32 height = 0;
-        VkImageAspectFlags aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        VulkanResource<VkImage> image_;
+        VulkanResource<VkDeviceMemory> memory_;
+        VulkanResource<VkImageView> view_;
+        VkImageLayout layout_ = VK_IMAGE_LAYOUT_UNDEFINED;
+        VkFormat format_ = VK_FORMAT_UNDEFINED;
+        u32 mipLevels_ = 0;
+        u32 width_ = 0;
+        u32 height_ = 0;
+        VkImageAspectFlags aspectMask_ = VK_IMAGE_ASPECT_COLOR_BIT;
     };
 }
 
