@@ -11,9 +11,9 @@ using namespace solo;
 
 LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent):
     ComponentBase<LuaScriptComponent>(node),
-    ref(scriptComponent)
+    ref_(scriptComponent)
 {
-    typeId = MinTypeId + scriptComponent.get<u32>("typeId");
+    typeId_ = MinTypeId + scriptComponent.get<u32>("typeId");
     
     initFunc = scriptComponent.has("init")
         ? scriptComponent.get<std::function<void(LuaRef)>>("init")
@@ -36,20 +36,20 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent)
 
 void LuaScriptComponent::init()
 {
-    initFunc(ref);
+    initFunc(ref_);
 }
 
 void LuaScriptComponent::terminate()
 {
-    terminateFunc(ref);
+    terminateFunc(ref_);
 }
 
 void LuaScriptComponent::update()
 {
-    updateFunc(ref);
+    updateFunc(ref_);
 }
 
 void LuaScriptComponent::render()
 {
-    renderFunc(ref);
+    renderFunc(ref_);
 }

@@ -13,15 +13,15 @@ namespace solo
     public:
         explicit InMemoryTexture2DData(Vector2 dimensions, TextureDataFormat format, const vec<u8> &data):
             Texture2DData(format, dimensions),
-            data(data)
+            data_(data)
         {
         }
 
-        auto getSize() const -> u32 override final { return data.size(); }
-        auto getData() const -> const void* override final { return data.data(); }
+        auto getSize() const -> u32 override final { return data_.size(); }
+        auto getData() const -> const void* override final { return data_.data(); }
 
     private:
-        vec<u8> data;
+        vec<u8> data_;
     };
 }
 
@@ -58,12 +58,12 @@ auto Texture2DData::createFromMemory(u32 width, u32 height, TextureDataFormat fo
 
 auto Texture2DData::getTextureFormat() const -> TextureFormat
 {
-    return toTextureFormat(format);
+    return toTextureFormat(format_);
 }
 
 Texture2DData::Texture2DData(TextureDataFormat format, Vector2 dimensions):
-    dimensions(dimensions),
-    format(format)
+    dimensions_(dimensions),
+    format_(format)
 {
 }
 
@@ -81,11 +81,11 @@ auto CubeTextureData::loadFromFaceFiles(
 
 auto CubeTextureData::getTextureFormat() const -> TextureFormat
 {
-    return toTextureFormat(format);
+    return toTextureFormat(format_);
 }
 
 CubeTextureData::CubeTextureData(TextureDataFormat format, u32 dimension):
-    dimension(dimension),
-    format(format)
+    dimension_(dimension),
+    format_(format)
 {
 }

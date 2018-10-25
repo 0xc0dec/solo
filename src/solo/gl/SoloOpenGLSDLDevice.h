@@ -22,7 +22,7 @@ namespace solo
         void saveScreenshot(const str &path) override final;
 
     private:
-        SDL_GLContext context = nullptr;
+        SDL_GLContext context_ = nullptr;
 
         void endUpdate() override final;
 

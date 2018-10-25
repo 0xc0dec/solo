@@ -37,15 +37,15 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
 OpenGLMesh::~OpenGLMesh()
 {
     resetVertexArrayCache();
-    while (!vertexBuffers.empty())
+    while (!vertexBuffers_.empty())
         removeVertexBuffer(0);
-    while (!indexBuffers.empty())
+    while (!indexBuffers_.empty())
         removePart(0);
 }
 
 auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
 {
-    auto &cacheEntry = vertexArrayCache[effect];
+    auto &cacheEntry = vertexArrayCache_[effect];
     cacheEntry.age = 0;
 
     auto &handle = cacheEntry.handle;
@@ -57,10 +57,10 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
 
     glBindVertexArray(handle);
 
-    for (u32 i = 0; i < vertexBuffers.size(); i++)
+    for (u32 i = 0; i < vertexBuffers_.size(); i++)
     {
-        const auto &bufferHandle = vertexBuffers.at(i);
-        const auto &layout = layouts.at(i);
+        const auto &bufferHandle = vertexBuffers_.at(i);
+        const auto &layout = layouts_.at(i);
         const auto attrCount = layout.getAttributeCount();
         if (!attrCount)
             continue;
@@ -79,7 +79,7 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
             {
                 if (effect->hasAttribute(attr.name))
                 {
-                    const auto attrInfo = effect->getAttributeInfo(attr.name);
+                    const auto attrInfo = effect->attributeInfo(attr.name);
                     location = attrInfo.location;
                 }
                 else
@@ -105,35 +105,35 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
 
 void OpenGLMesh::resetVertexArrayCache()
 {
-    for (auto &p: vertexArrayCache)
+    for (auto &p: vertexArrayCache_)
         glDeleteVertexArrays(1, &p.second.handle);
-    vertexArrayCache.clear();
+    vertexArrayCache_.clear();
 }
 
 void OpenGLMesh::flushVertexArrayCache()
 {
     uset<OpenGLEffect*> toRemove;
-    for (auto &entry: vertexArrayCache)
+    for (auto &entry: vertexArrayCache_)
     {
         if (++entry.second.age >= 1000) // TODO more sophisticated way
             toRemove.insert(entry.first);
     }
     
     for (auto &key: toRemove)
-        vertexArrayCache.erase(key);
+        vertexArrayCache_.erase(key);
 }
 
 void OpenGLMesh::updateMinVertexCount()
 {
     constexpr auto max = (std::numeric_limits<u32>::max)();
 
-    minVertexCount = max;
+    minVertexCount_ = max;
 
-    for (const auto &count : vertexCounts)
-        minVertexCount = (std::min)(count, minVertexCount);
+    for (const auto &count : vertexCounts_)
+        minVertexCount_ = (std::min)(count, minVertexCount_);
 
-    if (minVertexCount == max)
-        minVertexCount = 0;
+    if (minVertexCount_ == max)
+        minVertexCount_ = 0;
 }
 
 auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
@@ -156,34 +156,34 @@ auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
     glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    vertexBuffers.push_back(handle);
-    layouts.push_back(layout);
-    vertexCounts.push_back(vertexCount);
-    vertexSizes.push_back(layout.getSize());
+    vertexBuffers_.push_back(handle);
+    layouts_.push_back(layout);
+    vertexCounts_.push_back(vertexCount);
+    vertexSizes_.push_back(layout.getSize());
     
     updateMinVertexCount();
     resetVertexArrayCache();
 
-    return static_cast<u32>(vertexBuffers.size() - 1);
+    return static_cast<u32>(vertexBuffers_.size() - 1);
 }
 
 void OpenGLMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
-    const auto vertexSize = vertexSizes.at(index);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers.at(index));
+    const auto vertexSize = vertexSizes_.at(index);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers_.at(index));
     glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void OpenGLMesh::removeVertexBuffer(u32 index)
 {
-    auto handle = vertexBuffers.at(index);
+    auto handle = vertexBuffers_.at(index);
     glDeleteBuffers(1, &handle);
 
-    vertexBuffers.erase(vertexBuffers.begin() + index);
-    vertexCounts.erase(vertexCounts.begin() + index);
-    vertexSizes.erase(vertexSizes.begin() + index);
-    layouts.erase(layouts.begin() + index);
+    vertexBuffers_.erase(vertexBuffers_.begin() + index);
+    vertexCounts_.erase(vertexCounts_.begin() + index);
+    vertexSizes_.erase(vertexSizes_.begin() + index);
+    layouts_.erase(layouts_.begin() + index);
 
     updateMinVertexCount();
     resetVertexArrayCache();
@@ -199,18 +199,18 @@ auto OpenGLMesh::addPart(const void *data, u32 elementCount) -> u32
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * elementCount, data, GL_STATIC_DRAW); // 2 because we currently support only UNSIGNED_SHORT indexes
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    indexBuffers.push_back(handle);
-    indexElementCounts.push_back(elementCount);
+    indexBuffers_.push_back(handle);
+    indexElementCounts_.push_back(elementCount);
 
-    return static_cast<u32>(indexBuffers.size() - 1);
+    return static_cast<u32>(indexBuffers_.size() - 1);
 }
 
 void OpenGLMesh::removePart(u32 part)
 {
-    auto handle = indexBuffers.at(part);
+    auto handle = indexBuffers_.at(part);
     glDeleteBuffers(1, &handle);
-    indexBuffers.erase(indexBuffers.begin() + part);
-    indexElementCounts.erase(indexElementCounts.begin() + part);
+    indexBuffers_.erase(indexBuffers_.begin() + part);
+    indexElementCounts_.erase(indexElementCounts_.begin() + part);
 }
 
 void OpenGLMesh::draw(OpenGLEffect *effect)
@@ -218,15 +218,15 @@ void OpenGLMesh::draw(OpenGLEffect *effect)
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();
 
-    if (indexBuffers.empty())
+    if (indexBuffers_.empty())
     {
         glBindVertexArray(va);
-        glDrawArrays(toPrimitiveType(primitiveType), 0, minVertexCount);
+        glDrawArrays(toPrimitiveType(primitiveType_), 0, minVertexCount_);
         glBindVertexArray(0);
     }
     else
     {
-        for (auto i = 0; i < indexBuffers.size(); i++)
+        for (auto i = 0; i < indexBuffers_.size(); i++)
             drawPart(i, effect);
     }
 }
@@ -237,8 +237,8 @@ void OpenGLMesh::drawPart(u32 part, OpenGLEffect *effect)
     flushVertexArrayCache();
 
     glBindVertexArray(va);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers.at(part));
-    glDrawElements(toPrimitiveType(primitiveType), indexElementCounts.at(part), GL_UNSIGNED_SHORT, nullptr);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
+    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), GL_UNSIGNED_SHORT, nullptr);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

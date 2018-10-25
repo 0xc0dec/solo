@@ -37,8 +37,8 @@ bool STBTexture2DData::canLoadFromFile(const str &path)
 
 STBTexture2DData::~STBTexture2DData()
 {
-    if (data)
-        stbi_image_free(data);
+    if (data_)
+        stbi_image_free(data_);
 }
 
 auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
@@ -51,8 +51,8 @@ auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STB
     SL_DEBUG_PANIC(!data, "Unable to load image ", path);
 
     const auto result = std::make_shared<STBTexture2DData>(toFormat(4), Vector2(width, height));
-    result->channels = 4;
-    result->data = data;
+    result->channels_ = 4;
+    result->data_ = data;
     return result;
 }
 

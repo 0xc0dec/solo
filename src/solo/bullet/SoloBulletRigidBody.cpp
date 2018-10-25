@@ -42,34 +42,34 @@ private:
 
 BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
     RigidBody(node),
-    mass(parameters.mass),
-    shape(nullptr)
+    mass_(parameters.mass),
+    shape_(nullptr)
 {
-    world = static_cast<BulletPhysics *>(node.getScene()->getDevice()->getPhysics())->getWorld();
-    transformCmp = node.findComponent<Transform>();
-    motionState = std::make_unique<MotionState>(transformCmp);
+    world_ = static_cast<BulletPhysics *>(node.getScene()->getDevice()->getPhysics())->world();
+    transformCmp_ = node.findComponent<Transform>();
+    motionState_ = std::make_unique<MotionState>(transformCmp_);
 
-    btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState.get(), nullptr);
+    btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState_.get(), nullptr);
     info.m_friction = parameters.friction;
     info.m_restitution = parameters.restitution;
     info.m_linearDamping = parameters.linearDamping;
     info.m_angularDamping = parameters.angularDamping;
 
-    body = std::make_unique<btRigidBody>(info);
-    body->setUserPointer(this);
+    body_ = std::make_unique<btRigidBody>(info);
+    body_->setUserPointer(this);
 }
 
 BulletRigidBody::~BulletRigidBody()
 {
-    world->removeRigidBody(body.get());
+    world_->removeRigidBody(body_.get());
 }
 
 void BulletRigidBody::update()
 {
-    if (lastTransformVersion != transformCmp->getVersion())
+    if (lastTransformVersion_ != transformCmp_->getVersion())
     {
-        lastTransformVersion = transformCmp->getVersion();
-        if (shape)
+        lastTransformVersion_ = transformCmp_->getVersion();
+        if (shape_)
             syncScale();
     }
 }
@@ -78,43 +78,43 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 {
     if (newCollider)
     {
-        collider = newCollider; // store ownership
-        shape = std::dynamic_pointer_cast<BulletCollider>(collider)->getShape();
+        collider_ = newCollider; // store ownership
+        shape_ = std::dynamic_pointer_cast<BulletCollider>(collider_)->getShape();
 
         btVector3 inertia;
-        shape->calculateLocalInertia(mass, inertia);
+        shape_->calculateLocalInertia(mass_, inertia);
         syncScale();
 
-        body->setCollisionShape(shape);
-        body->setMassProps(mass, inertia);
+        body_->setCollisionShape(shape_);
+        body_->setMassProps(mass_, inertia);
 
-        world->addRigidBody(body.get());
+        world_->addRigidBody(body_.get());
     }
     else
     {
-        world->removeRigidBody(body.get());
-        collider = nullptr;
-        shape = nullptr;
+        world_->removeRigidBody(body_.get());
+        collider_ = nullptr;
+        shape_ = nullptr;
     }
 }
 
 bool BulletRigidBody::isKinematic()
 {
-    return (body->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT) == btCollisionObject::CF_KINEMATIC_OBJECT;
+    return (body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT) == btCollisionObject::CF_KINEMATIC_OBJECT;
 }
 
 void BulletRigidBody::setKinematic(bool kinematic)
 {
-    auto flags = body->getCollisionFlags();
+    auto flags = body_->getCollisionFlags();
     if (kinematic)
         flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
     else
         flags &= ~btCollisionObject::CF_KINEMATIC_OBJECT;
-    body->setCollisionFlags(flags);
+    body_->setCollisionFlags(flags);
 }
 
 void BulletRigidBody::syncScale()
 {
-    const auto scale = transformCmp->getWorldScale();
-    shape->setLocalScaling(SL_TOBTVEC3(scale));
+    const auto scale = transformCmp_->getWorldScale();
+    shape_->setLocalScaling(SL_TOBTVEC3(scale));
 }

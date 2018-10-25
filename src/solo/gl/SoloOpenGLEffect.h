@@ -31,16 +31,16 @@ namespace solo
         OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~OpenGLEffect();
 
-        auto getHandle() const -> GLuint { return handle; }
+        auto handle() const -> GLuint { return handle_; }
 
-        auto getUniformInfo(const str &name) -> UniformInfo;
+        auto uniformInfo(const str &name) -> UniformInfo;
         auto hasAttribute(const str &name) -> bool;
-        auto getAttributeInfo(const str &name) -> AttributeInfo;
+        auto attributeInfo(const str &name) -> AttributeInfo;
 
     private:
-        GLuint handle = 0;
-        umap<str, UniformInfo> uniforms;
-        umap<str, AttributeInfo> attributes;
+        GLuint handle_ = 0;
+        umap<str, UniformInfo> uniforms_;
+        umap<str, AttributeInfo> attributes_;
 
         void introspectUniforms();
         void introspectAttributes();

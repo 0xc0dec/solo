@@ -175,7 +175,7 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 {
     if (renderTarget)
     {
-        const auto fb = static_cast<OpenGLFrameBuffer*>(renderTarget)->getHandle();
+        const auto fb = static_cast<OpenGLFrameBuffer*>(renderTarget)->handle();
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
         
@@ -188,7 +188,7 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     setDepthTest(true);
     clear(hasClearColor, clearColor);
 
-    currentCamera = camera;
+    currentCamera_ = camera;
 }
 
 // TODO pass render target, just as in beginCamera method
@@ -196,7 +196,7 @@ void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 {
     if (renderTarget)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    currentCamera = nullptr;
+    currentCamera_ = nullptr;
 }
 
 void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
@@ -210,7 +210,7 @@ void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
     const auto srcBlendFactor = material->getSrcBlendFactor();
     const auto dstBlendFactor = material->getDstBlendFactor();
     const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
-    const auto program = effect->getHandle();
+    const auto program = effect->handle();
 
     glUseProgram(program);
     setFaceCull(faceCull);
@@ -221,7 +221,7 @@ void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
     setBlend(blend);
     setBlendFactor(srcBlendFactor, dstBlendFactor);
 
-    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera, transform);
+    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
     static_cast<OpenGLMesh*>(mesh)->draw(effect);
 }
 
@@ -237,7 +237,7 @@ void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
     const auto srcBlendFactor = material->getSrcBlendFactor();
     const auto dstBlendFactor = material->getDstBlendFactor();
     const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
-    const auto program = effect->getHandle();
+    const auto program = effect->handle();
 
     glUseProgram(program);
     setFaceCull(faceCull);
@@ -248,13 +248,13 @@ void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
     setBlend(blend);
     setBlendFactor(srcBlendFactor, dstBlendFactor);
 
-    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera, transform);
+    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
     static_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
 }
 
 void OpenGLRenderer::beginFrame()
 {
-    currentCamera = nullptr;
+    currentCamera_ = nullptr;
 }
 
 void OpenGLRenderer::endFrame()

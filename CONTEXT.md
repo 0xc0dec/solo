@@ -2,6 +2,7 @@ This is a list of notes and TODOs to keep me in context.
 
 # TODO
 
+* Rename static "create..." funcs into "from..."
 * Static mesh collider (demo1 currently has no collision on backdrop mesh)
 * Deferred demo - add shadows
 * Use GENERAL image layout in Vulkan for now, for simplicity

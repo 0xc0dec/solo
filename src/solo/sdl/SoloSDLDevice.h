@@ -26,10 +26,10 @@ namespace solo
         auto getDpiIndependentCanvasSize() const -> Vector2 override final;
 
     protected:
-        SDL_Window *window = nullptr;
+        SDL_Window *window_ = nullptr;
 
-        bool hasMouseFocus = false;
-        bool hasKeyboardFocus = false;
+        bool hasMouseFocus_ = false;
+        bool hasKeyboardFocus_ = false;
 
         explicit SDLDevice(const DeviceSetup &setup);
 

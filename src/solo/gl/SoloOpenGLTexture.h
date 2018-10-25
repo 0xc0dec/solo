@@ -20,12 +20,12 @@ namespace solo
         OpenGLTexture();
         virtual ~OpenGLTexture();
 
-        auto getHandle() const -> GLuint { return handle; }
+        auto handle() const -> GLuint { return handle_; }
 
         virtual void bind() = 0;
 
     protected:
-        GLuint handle = 0;
+        GLuint handle_ = 0;
     };
 
     class OpenGLTexture2D final: public Texture2D, public OpenGLTexture

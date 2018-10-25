@@ -22,14 +22,14 @@ namespace solo
         auto rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult override final;
         auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> override final;
 
-        auto getWorld() const -> btDiscreteDynamicsWorld* { return world.get(); }
+        auto world() const -> btDiscreteDynamicsWorld* { return world_.get(); }
 
     private:
         // Note: order matters for proper destruction
-        uptr<btBroadphaseInterface> broadPhase;
-        uptr<btCollisionConfiguration> collisionConfig;
-        uptr<btCollisionDispatcher> collisionDispatcher;
-        uptr<btSequentialImpulseConstraintSolver> solver;
-        uptr<btDiscreteDynamicsWorld> world;
+        uptr<btBroadphaseInterface> broadPhase_;
+        uptr<btCollisionConfiguration> collisionConfig_;
+        uptr<btCollisionDispatcher> collisionDispatcher_;
+        uptr<btSequentialImpulseConstraintSolver> solver_;
+        uptr<btDiscreteDynamicsWorld> world_;
     };
 }

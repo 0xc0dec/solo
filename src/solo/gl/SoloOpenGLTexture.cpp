@@ -193,13 +193,13 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
 
 OpenGLTexture::OpenGLTexture()
 {
-    glGenTextures(1, &handle);
+    glGenTextures(1, &handle_);
     SL_DEBUG_PANIC(!handle, "Unable to create texture handle");
 }
 
 OpenGLTexture::~OpenGLTexture()
 {
-    glDeleteTextures(1, &handle);
+    glDeleteTextures(1, &handle_);
 }
 
 OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
@@ -220,7 +220,7 @@ auto OpenGLTexture2D::createFromData(sptr<Texture2DData> data, bool generateMipm
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getTextureFormat(), dimensions));
 
-    glBindTexture(GL_TEXTURE_2D, result->handle);
+    glBindTexture(GL_TEXTURE_2D, result->handle_);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
@@ -248,7 +248,7 @@ auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
 
-    glBindTexture(GL_TEXTURE_2D, result->handle);
+    glBindTexture(GL_TEXTURE_2D, result->handle_);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
@@ -261,7 +261,7 @@ auto OpenGLTexture2D::createEmpty(u32 width, u32 height, TextureFormat format) -
 
 void OpenGLTexture2D::bind()
 {
-    glBindTexture(GL_TEXTURE_2D, handle);
+    glBindTexture(GL_TEXTURE_2D, handle_);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));
@@ -275,7 +275,7 @@ auto OpenGLCubeTexture::createFromData(sptr<CubeTextureData> data) -> sptr<OpenG
 {
     const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getTextureFormat(), data->getDimension()));
 
-    glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle_);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, 0);
 
@@ -301,7 +301,7 @@ OpenGLCubeTexture::OpenGLCubeTexture(TextureFormat format, u32 dimension):
 
 void OpenGLCubeTexture::bind()
 {
-    glBindTexture(GL_TEXTURE_CUBE_MAP, handle);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));

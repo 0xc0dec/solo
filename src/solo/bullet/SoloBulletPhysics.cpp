@@ -12,22 +12,22 @@ using namespace solo;
 BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceToken) :
     Physics(device, deviceToken)
 {
-    broadPhase = std::make_unique<btDbvtBroadphase>();
-    collisionConfig = std::make_unique<btDefaultCollisionConfiguration>();
-    collisionDispatcher = std::make_unique<btCollisionDispatcher>(collisionConfig.get());
-    solver = std::make_unique<btSequentialImpulseConstraintSolver>();
-    world = std::make_unique<btDiscreteDynamicsWorld>(collisionDispatcher.get(), broadPhase.get(), solver.get(), collisionConfig.get());
-    world->setGravity(btVector3(0, -10, 0));
+    broadPhase_ = std::make_unique<btDbvtBroadphase>();
+    collisionConfig_ = std::make_unique<btDefaultCollisionConfiguration>();
+    collisionDispatcher_ = std::make_unique<btCollisionDispatcher>(collisionConfig_.get());
+    solver_ = std::make_unique<btSequentialImpulseConstraintSolver>();
+    world_ = std::make_unique<btDiscreteDynamicsWorld>(collisionDispatcher_.get(), broadPhase_.get(), solver_.get(), collisionConfig_.get());
+    world_->setGravity(btVector3(0, -10, 0));
 }
 
 void BulletPhysics::update()
 {
-    world->stepSimulation(device->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
+    world_->stepSimulation(device->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
 
 void BulletPhysics::setGravity(const Vector3 &gravity)
 {
-    world->setGravity(SL_TOBTVEC3(gravity));
+    world_->setGravity(SL_TOBTVEC3(gravity));
 }
 
 auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult
@@ -36,7 +36,7 @@ auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayT
     const auto btTo = SL_TOBTVEC3(to);
 
     btCollisionWorld::ClosestRayResultCallback callback(btFrom, btTo);
-    world->rayTest(btFrom, btTo, callback);
+    world_->rayTest(btFrom, btTo, callback);
     if (!callback.hasHit())
         return RayTestResult();
 
@@ -54,7 +54,7 @@ auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<Ra
     const auto btTo = SL_TOBTVEC3(to);
 
     btCollisionWorld::AllHitsRayResultCallback callback(btFrom, btTo);
-    world->rayTest(btFrom, btTo, callback);
+    world_->rayTest(btFrom, btTo, callback);
     const auto size = callback.m_collisionObjects.size();
     if (size == 0)
         return {};

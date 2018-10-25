@@ -64,11 +64,11 @@ OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u
 {
     const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
     const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
-    handle = linkProgram(vs, fs);
+    handle_ = linkProgram(vs, fs);
 
-    glDetachShader(handle, vs);
+    glDetachShader(handle_, vs);
     glDeleteShader(vs);
-    glDetachShader(handle, fs);
+    glDetachShader(handle_, fs);
     glDeleteShader(fs);
 
     introspectUniforms();
@@ -77,26 +77,26 @@ OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u
 
 OpenGLEffect::~OpenGLEffect()
 {
-    glDeleteProgram(handle);
+    glDeleteProgram(handle_);
 }
 
-auto OpenGLEffect::getUniformInfo(const str &name) -> UniformInfo
+auto OpenGLEffect::uniformInfo(const str &name) -> UniformInfo
 {
-    if (uniforms.count(name))
-        return uniforms.at(name);
+    if (uniforms_.count(name))
+        return uniforms_.at(name);
     SL_DEBUG_PANIC(true, "Uniform ", name, " not found");
     return {};
 }
 
 auto OpenGLEffect::hasAttribute(const str& name) -> bool
 {
-    return attributes.count(name);
+    return attributes_.count(name);
 }
 
-auto OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
+auto OpenGLEffect::attributeInfo(const str &name) -> AttributeInfo
 {
-    if (attributes.count(name))
-        return attributes.at(name);
+    if (attributes_.count(name))
+        return attributes_.at(name);
     SL_DEBUG_PANIC(true, "Attribute ", name, " not found");
     return {};
 }
@@ -104,12 +104,12 @@ auto OpenGLEffect::getAttributeInfo(const str &name) -> AttributeInfo
 void OpenGLEffect::introspectUniforms()
 {
     GLint activeUniforms;
-    glGetProgramiv(handle, GL_ACTIVE_UNIFORMS, &activeUniforms);
+    glGetProgramiv(handle_, GL_ACTIVE_UNIFORMS, &activeUniforms);
     if (activeUniforms <= 0)
         return;
 
     GLint nameMaxLength;
-    glGetProgramiv(handle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
+    glGetProgramiv(handle_, GL_ACTIVE_UNIFORM_MAX_LENGTH, &nameMaxLength);
     if (nameMaxLength <= 0)
         return;
 
@@ -119,7 +119,7 @@ void OpenGLEffect::introspectUniforms()
     {
         GLint size;
         GLenum type;
-        glGetActiveUniform(handle, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
+        glGetActiveUniform(handle_, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
         
         nameArr[nameMaxLength] = '\0';
         str name = nameArr.data();
@@ -130,15 +130,15 @@ void OpenGLEffect::introspectUniforms()
         if (bracketIndex != str::npos)
             name.erase(bracketIndex);
 
-        uniforms[name].location = glGetUniformLocation(handle, nameArr.data());
-        uniforms.at(name).samplerIndex = 0;
+        uniforms_[name].location = glGetUniformLocation(handle_, nameArr.data());
+        uniforms_.at(name).samplerIndex = 0;
 
         u32 idx = 0;
         if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
         {
             idx = samplerIndex;
             samplerIndex += size;
-            uniforms.at(name).samplerIndex = idx;
+            uniforms_.at(name).samplerIndex = idx;
         }
     }
 }
@@ -146,10 +146,10 @@ void OpenGLEffect::introspectUniforms()
 void OpenGLEffect::introspectAttributes()
 {
     GLint activeAttributes;
-    glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+    glGetProgramiv(handle_, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 
     GLint nameMaxLength;
-    glGetProgramiv(handle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
+    glGetProgramiv(handle_, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &nameMaxLength);
     if (nameMaxLength <= 0)
         return;
 
@@ -158,10 +158,10 @@ void OpenGLEffect::introspectAttributes()
     {
         GLint size;
         GLenum type;
-        glGetActiveAttrib(handle, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
+        glGetActiveAttrib(handle_, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
 
         str name = nameArr.data();
-        attributes[name].location = glGetAttribLocation(handle, name.c_str());
+        attributes_[name].location = glGetAttribLocation(handle_, name.c_str());
     }
 }
 

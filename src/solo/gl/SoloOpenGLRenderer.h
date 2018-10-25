@@ -31,7 +31,7 @@ namespace solo
         void endFrame() override final;
 
     private:
-        Camera *currentCamera = nullptr;
+        Camera *currentCamera_ = nullptr;
     };
 }
 

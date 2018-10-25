@@ -11,5 +11,5 @@ using namespace solo;
 
 BulletBoxCollider::BulletBoxCollider(const Vector3 &halfExtents)
 {
-    shape = std::make_unique<btBoxShape>(SL_TOBTVEC3(halfExtents));
+    shape_ = std::make_unique<btBoxShape>(SL_TOBTVEC3(halfExtents));
 }

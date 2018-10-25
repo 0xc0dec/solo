@@ -22,12 +22,12 @@ namespace solo
         STBTexture2DData(TextureDataFormat format, Vector2 dimensions);
         ~STBTexture2DData();
 
-        auto getSize() const -> u32 override final { return static_cast<u32>(dimensions.x()) * static_cast<u32>(dimensions.y()) * channels; }
-        auto getData() const -> const void * override final { return data; }
+        auto getSize() const -> u32 override final { return static_cast<u32>(dimensions_.x()) * static_cast<u32>(dimensions_.y()) * channels_; }
+        auto getData() const -> const void * override final { return data_; }
 
     private:
-        u32 channels = 0;
-        stbi_uc *data = nullptr;
+        u32 channels_ = 0;
+        stbi_uc *data_ = nullptr;
     };
 
     class STBCubeTextureData final: public CubeTextureData

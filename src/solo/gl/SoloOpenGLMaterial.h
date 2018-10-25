@@ -29,7 +29,7 @@ namespace solo
         explicit OpenGLMaterial(sptr<Effect> effect);
         ~OpenGLMaterial() {}
 
-        auto getEffect() const -> sptr<Effect> override final { return effect; }
+        auto getEffect() const -> sptr<Effect> override final { return effect_; }
 
         void setFloatParameter(const str &name, float value) override final;
         void setVector2Parameter(const str &name, const Vector2 &value) override final;
@@ -45,10 +45,10 @@ namespace solo
     protected:
         using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
 
-        sptr<OpenGLEffect> effect = nullptr;
+        sptr<OpenGLEffect> effect_ = nullptr;
 
         // Maybe not the fastest, but convenient and good enough for now
-        umap<str, ParameterApplier> appliers;
+        umap<str, ParameterApplier> appliers_;
 
         void setParameter(const str &paramName, const std::function<ParameterApplier(GLuint, GLint)> &getApplier);
     };

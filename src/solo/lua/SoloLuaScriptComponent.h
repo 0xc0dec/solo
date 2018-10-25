@@ -16,24 +16,24 @@ namespace solo
     public:
         static const u32 MinTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
 
-        LuaScriptComponent(const Node& node, LuaIntf::LuaRef scriptComponent);
+        LuaScriptComponent(const Node& node, LuaRef scriptComponent);
 
         void init() override final;
         void terminate() override final;
         void update() override final;
         void render() override final;
 
-        auto getTypeId() -> u32 override final { return typeId; }
+        auto getTypeId() -> u32 override final { return typeId_; }
 
-        auto getRef() const -> LuaIntf::LuaRef { return ref; }
+        auto getRef() const -> LuaRef { return ref_; }
 
     private:
-        u32 typeId;
-        LuaIntf::LuaRef ref;
+        u32 typeId_;
+        LuaRef ref_;
 
-        std::function<void(LuaIntf::LuaRef)> initFunc;
-        std::function<void(LuaIntf::LuaRef)> terminateFunc;
-        std::function<void(LuaIntf::LuaRef)> updateFunc;
-        std::function<void(LuaIntf::LuaRef)> renderFunc;
+        std::function<void(LuaRef)> initFunc;
+        std::function<void(LuaRef)> terminateFunc;
+        std::function<void(LuaRef)> updateFunc;
+        std::function<void(LuaRef)> renderFunc;
     };
 }

@@ -21,12 +21,12 @@ SDLDevice::~SDLDevice()
 
 auto SDLDevice::getWindowTitle() const -> str
 {
-    return str(SDL_GetWindowTitle(window));
+    return str(SDL_GetWindowTitle(window_));
 }
 
 void SDLDevice::setWindowTitle(const str &title)
 {
-    SDL_SetWindowTitle(window, title.c_str());
+    SDL_SetWindowTitle(window_, title.c_str());
 }
 
 void SDLDevice::setCursorCaptured(bool captured)
@@ -42,14 +42,14 @@ auto SDLDevice::getLifetime() const -> float
 auto SDLDevice::getCanvasSize() const -> Vector2
 {
     s32 width, height;
-    SDL_GL_GetDrawableSize(window, &width, &height);
+    SDL_GL_GetDrawableSize(window_, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
 auto SDLDevice::getDpiIndependentCanvasSize() const -> Vector2
 {
     s32 width, height;
-    SDL_GetWindowSize(window, &width, &height);
+    SDL_GetWindowSize(window_, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
@@ -67,7 +67,7 @@ void SDLDevice::beginUpdate()
 void SDLDevice::prepareKeyboardState()
 {
     releasedKeys.clear();
-    if (hasKeyboardFocus)
+    if (hasKeyboardFocus_)
     {
         for (auto &pair : pressedKeys)
             pair.second = false; // not "pressed for the first time" anymore
@@ -89,7 +89,7 @@ void SDLDevice::prepareMouseState()
     
     mouseDelta.x() = mouseDelta.y() = 0;
     releasedMouseButtons.clear();
-    if (hasMouseFocus)
+    if (hasMouseFocus_)
     {
         for (const auto &pair : pressedMouseButtons)
             pressedMouseButtons[pair.first] = false;
@@ -104,14 +104,14 @@ void SDLDevice::prepareMouseState()
 
 void SDLDevice::readWindowState()
 {
-    const auto flags = SDL_GetWindowFlags(window);
-    hasKeyboardFocus = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
-    hasMouseFocus = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
+    const auto flags = SDL_GetWindowFlags(window_);
+    hasKeyboardFocus_ = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
+    hasMouseFocus_ = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
 }
 
 void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 {
-    if (!hasKeyboardFocus)
+    if (!hasKeyboardFocus_)
         return;
 
     switch (evt.type)
@@ -142,7 +142,7 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 
 void SDLDevice::processMouseEvent(const SDL_Event &evt)
 {
-    if (!hasMouseFocus)
+    if (!hasMouseFocus_)
         return;
 
     switch (evt.type)

@@ -16,13 +16,13 @@
 using namespace solo;
 
 OpenGLMaterial::OpenGLMaterial(sptr<Effect> effect):
-    effect(std::static_pointer_cast<OpenGLEffect>(effect))
+    effect_(std::static_pointer_cast<OpenGLEffect>(effect))
 {
 }
 
 void OpenGLMaterial::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
-    for (const auto &p : appliers)
+    for (const auto &p : appliers_)
         p.second(camera, nodeTransform);
 }
 
@@ -254,8 +254,8 @@ void OpenGLMaterial::setParameter(const str &paramName, const std::function<Para
     const auto idx = paramName.find_last_of(':');
     if (idx != std::string::npos)
         name.replace(idx, 1, "_");
-    const auto info = effect->getUniformInfo(name);
-    appliers[paramName] = getApplier(info.location, info.samplerIndex);
+    const auto info = effect_->uniformInfo(name);
+    appliers_[paramName] = getApplier(info.location, info.samplerIndex);
 }
 
 #endif

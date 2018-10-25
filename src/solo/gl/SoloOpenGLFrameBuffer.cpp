@@ -35,22 +35,22 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     {
         const auto glTex = std::static_pointer_cast<OpenGLTexture2D>(tex);
         if (tex->getFormat() == TextureFormat::Depth24)
-            result->depthAttachment = glTex;
+            result->depthAttachment_ = glTex;
         else
-            result->colorAttachments.push_back(glTex);
+            result->colorAttachments_.push_back(glTex);
     }
 
-    glGenFramebuffers(1, &result->handle);
+    glGenFramebuffers(1, &result->handle_);
     SL_DEBUG_PANIC(!result->handle, "Unable to create frame buffer handle");
     
-    glBindFramebuffer(GL_FRAMEBUFFER, result->handle);
+    glBindFramebuffer(GL_FRAMEBUFFER, result->handle_);
 
     vec<GLenum> drawBuffers;
-    for (u32 i = 0; i < result->colorAttachments.size(); i++)
+    for (u32 i = 0; i < result->colorAttachments_.size(); i++)
     {
-        const auto tex = result->colorAttachments.at(i);
+        const auto tex = result->colorAttachments_.at(i);
         const auto attachment = GL_COLOR_ATTACHMENT0 + i;
-        glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex->getHandle(), 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex->handle(), 0);
         drawBuffers.push_back(attachment);
     }
 
@@ -58,13 +58,13 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     result->dimensions = attachments[0]->getDimensions();
 
-    if (!result->depthAttachment)
+    if (!result->depthAttachment_)
     {
-        result->depthAttachment = OpenGLTexture2D::createEmpty(
+        result->depthAttachment_ = OpenGLTexture2D::createEmpty(
             result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth24);
     }
 
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment->getHandle(), 0);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment_->handle(), 0);
 
     SL_DEBUG_PANIC(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "Frame buffer has invalid state");
 
@@ -75,7 +75,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
 OpenGLFrameBuffer::~OpenGLFrameBuffer()
 {
-    glDeleteFramebuffers(1, &handle);
+    glDeleteFramebuffers(1, &handle_);
 }
 
 #endif

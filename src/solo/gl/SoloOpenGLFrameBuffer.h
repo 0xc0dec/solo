@@ -24,12 +24,12 @@ namespace solo
 
         ~OpenGLFrameBuffer();
 
-        auto getHandle() const -> GLuint { return handle; }
+        auto handle() const -> GLuint { return handle_; }
 
     private:
-        GLuint handle = 0;
-        vec<sptr<OpenGLTexture2D>> colorAttachments;
-        sptr<OpenGLTexture2D> depthAttachment;
+        GLuint handle_ = 0;
+        vec<sptr<OpenGLTexture2D>> colorAttachments_;
+        sptr<OpenGLTexture2D> depthAttachment_;
 
         OpenGLFrameBuffer() = default;
     };

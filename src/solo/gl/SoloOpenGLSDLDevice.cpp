@@ -23,7 +23,7 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(
+    window_ = SDL_CreateWindow(
         setup.windowTitle.c_str(),
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         setup.canvasWidth, setup.canvasHeight,
@@ -31,7 +31,7 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     );
     SL_DEBUG_PANIC(!window, "Unable to create device window");
 
-    context = SDL_GL_CreateContext(window);
+    context_ = SDL_GL_CreateContext(window_);
     SL_DEBUG_PANIC(!context, "Unable to create OpenGL context");
 
     glewExperimental = true;
@@ -49,28 +49,28 @@ OpenGLSDLDevice::~OpenGLSDLDevice()
 
 void OpenGLSDLDevice::cleanup()
 {
-    if (context)
+    if (context_)
     {
-        SDL_GL_DeleteContext(context);
-        context = nullptr;
+        SDL_GL_DeleteContext(context_);
+        context_ = nullptr;
     }
-    if (window)
+    if (window_)
     {
-        SDL_DestroyWindow(window);
-        window = nullptr;
+        SDL_DestroyWindow(window_);
+        window_ = nullptr;
     }
     SDL_Quit();
 }
 
 void OpenGLSDLDevice::endUpdate()
 {
-    SDL_GL_SwapWindow(window);
+    SDL_GL_SwapWindow(window_);
 }
 
 void OpenGLSDLDevice::saveScreenshot(const str &path)
 {
     s32 width, height;
-    SDL_GetWindowSize(window, &width, &height);
+    SDL_GetWindowSize(window_, &width, &height);
 
     auto surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
     glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);

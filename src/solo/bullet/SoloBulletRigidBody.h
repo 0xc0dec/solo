@@ -28,14 +28,14 @@ namespace solo
         void setKinematic(bool kinematic) override final;
 
     private:
-        float mass = 0;
-        sptr<Collider> collider;
-        btCollisionShape *shape;
-        Transform *transformCmp;
-        btDiscreteDynamicsWorld *world;
-        uptr<btMotionState> motionState;
-        uptr<btRigidBody> body;
-        u32 lastTransformVersion = ~0;
+        float mass_ = 0;
+        sptr<Collider> collider_;
+        btCollisionShape *shape_;
+        Transform *transformCmp_;
+        btDiscreteDynamicsWorld *world_;
+        uptr<btMotionState> motionState_;
+        uptr<btRigidBody> body_;
+        u32 lastTransformVersion_ = ~0;
 
         void syncScale();
     };

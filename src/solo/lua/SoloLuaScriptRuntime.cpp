@@ -199,51 +199,51 @@ static void registerLibrary(LuaState &state)
 
 LuaScriptRuntime::LuaScriptRuntime()
 {
-    lua = LuaState::newState();
-    lua.openLibs();
+    lua_ = LuaState::newState();
+    lua_.openLibs();
 
-    auto module = LuaBinding(lua).beginModule("sl");
+    auto module = LuaBinding(lua_).beginModule("sl");
     registerApi(module);
-    registerLibrary(lua);
+    registerLibrary(lua_);
     module.endModule();
 }
 
 LuaScriptRuntime::LuaScriptRuntime(Device *device):
     LuaScriptRuntime()
 {
-    auto module = LuaBinding(lua).beginModule("sl");
+    auto module = LuaBinding(lua_).beginModule("sl");
     module.addConstant("device", device);
     module.endModule();
 }
 
 LuaScriptRuntime::~LuaScriptRuntime()
 {
-    lua.close();
+    lua_.close();
 }
 
 void LuaScriptRuntime::executeFile(const str& path)
 {
-    if (lua.loadFile(path.c_str()))
+    if (lua_.loadFile(path.c_str()))
     {
-        const auto msg = lua.getString(-1);
+        const auto msg = lua_.getString(-1);
         SL_DEBUG_PANIC(true, "Script failed to load: ", msg);
     }
 
     // TODO use FileSystem to read the file
-    lua.doFile(path.c_str());
+    lua_.doFile(path.c_str());
 }
 
 auto LuaScriptRuntime::eval(const str& code) -> str
 {
-    return lua.eval<str>(code.c_str());
+    return lua_.eval<str>(code.c_str());
 }
 
 auto LuaScriptRuntime::getString(const str& name) -> str
 {
-    return LuaRef(lua, name.c_str()).toValue<str>();
+    return LuaRef(lua_, name.c_str()).toValue<str>();
 }
 
 auto LuaScriptRuntime::getDeviceSetup(const str &name) -> DeviceSetup
 {
-    return LuaRef(lua, name.c_str()).toValue<DeviceSetup>();
+    return LuaRef(lua_, name.c_str()).toValue<DeviceSetup>();
 }

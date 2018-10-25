@@ -31,15 +31,15 @@ namespace solo
         virtual auto getSize() const -> u32 = 0;
         virtual auto getData() const -> const void* = 0;
 
-        auto getDimensions() const -> Vector2 { return dimensions; }
+        auto getDimensions() const -> Vector2 { return dimensions_; }
         
         /// Returns "best suited" texture format for this data
         auto getTextureFormat() const -> TextureFormat;
-        auto getFormat() const -> TextureDataFormat { return format; }
+        auto getFormat() const -> TextureDataFormat { return format_; }
 
     protected:
-        Vector2 dimensions;
-        TextureDataFormat format = TextureDataFormat::RGBA;
+        Vector2 dimensions_;
+        TextureDataFormat format_ = TextureDataFormat::RGBA;
 
         explicit Texture2DData(TextureDataFormat format, Vector2 dimensions);
     };
@@ -59,15 +59,15 @@ namespace solo
         virtual auto getSize(u32 face) const -> u32 = 0; // TODO use TextureFace enum
         virtual auto getData(u32 face) const -> const void* = 0;
 
-        auto getDimension() const -> u32 { return dimension; }
+        auto getDimension() const -> u32 { return dimension_; }
         
         /// Returns "best suited" texture format for this data
         auto getTextureFormat() const -> TextureFormat;
-        auto getFormat() const -> TextureDataFormat { return format; }
+        auto getFormat() const -> TextureDataFormat { return format_; }
 
     protected:
-        u32 dimension = 0;
-        TextureDataFormat format = TextureDataFormat::RGBA;
+        u32 dimension_ = 0;
+        TextureDataFormat format_ = TextureDataFormat::RGBA;
 
         CubeTextureData(TextureDataFormat format, u32 dimension);
     };

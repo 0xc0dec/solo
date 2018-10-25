@@ -21,7 +21,7 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     if (setup.fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
-    window = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    window_ = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         setup.canvasWidth, setup.canvasHeight, flags);
     SL_DEBUG_PANIC(!window, "Unable to create device window");
 
@@ -70,7 +70,7 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
     SDL_VERSION(&wmInfo.version);
-    SDL_GetWindowWMInfo(window, &wmInfo);
+    SDL_GetWindowWMInfo(window_, &wmInfo);
 
     const auto hwnd = wmInfo.info.win.window;
     const auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));

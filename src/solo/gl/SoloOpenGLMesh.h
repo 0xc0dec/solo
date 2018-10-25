@@ -20,7 +20,7 @@ namespace solo
     class OpenGLMesh final : public Mesh
     {
     public:
-        OpenGLMesh() {}
+        OpenGLMesh() = default;
         ~OpenGLMesh();
 
         auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
@@ -30,23 +30,23 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
         void removePart(u32 index) override final;
-        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers.size()); }
+        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
 
-        auto getPrimitiveType() const -> PrimitiveType override final { return primitiveType; }
-        void setPrimitiveType(PrimitiveType type) override final { primitiveType = type; }
+        auto getPrimitiveType() const -> PrimitiveType override final { return primitiveType_; }
+        void setPrimitiveType(PrimitiveType type) override final { primitiveType_ = type; }
 
         void draw(OpenGLEffect *effect);
         void drawPart(u32 part, OpenGLEffect *effect);
 
     private:
-        PrimitiveType primitiveType = PrimitiveType::Triangles;
-        vec<GLuint> vertexBuffers;
-        vec<VertexBufferLayout> layouts;
-        vec<GLuint> indexBuffers;
-        vec<u32> indexElementCounts;
-        vec<u32> vertexCounts;
-        vec<u32> vertexSizes; // TODO use layouts and don't store these
-        u32 minVertexCount = 0;
+        PrimitiveType primitiveType_ = PrimitiveType::Triangles;
+        vec<GLuint> vertexBuffers_;
+        vec<VertexBufferLayout> layouts_;
+        vec<GLuint> indexBuffers_;
+        vec<u32> indexElementCounts_;
+        vec<u32> vertexCounts_;
+        vec<u32> vertexSizes_; // TODO use layouts and don't store these
+        u32 minVertexCount_ = 0;
             
         struct VertexArrayCacheEntry
         {
@@ -54,7 +54,7 @@ namespace solo
             u32 age;
         };
 
-        umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache; // TODO clean!
+        umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache_; // TODO clean!
 
         auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32;
 
