@@ -15,8 +15,8 @@ namespace solo
     public:
         Node(Scene *scene, u32 nodeId);
 
-        auto getId() const -> u32 { return id; }
-        auto getScene() const -> Scene* { return scene; }
+        auto getId() const -> u32 { return id_; }
+        auto getScene() const -> Scene* { return scene_; }
 
         template <typename T>
         static auto findComponent(Scene *scene, u32 nodeId) -> T*;
@@ -37,8 +37,8 @@ namespace solo
         void removeComponent();
 
     private:
-        Scene *scene = nullptr;
-        u32 id;
+        Scene *scene_ = nullptr;
+        u32 id_;
     };
 
     // Helper needed for making addComponent work with any kind of default components
@@ -65,7 +65,7 @@ namespace solo
     template <typename T, typename... Args>
     auto Node::addComponent(Args &&... args) -> T *
     {
-        return addComponent<T>(scene, id, std::forward<Args>(args)...);
+        return addComponent<T>(scene_, id_, std::forward<Args>(args)...);
     }
 
     template <typename T>
@@ -79,7 +79,7 @@ namespace solo
     template <typename T>
     auto Node::findComponent() const -> T *
     {
-        return findComponent<T>(scene, id);
+        return findComponent<T>(scene_, id_);
     }
 
     template <typename T>
@@ -91,6 +91,6 @@ namespace solo
     template <typename T>
     void Node::removeComponent()
     {
-        removeComponent<T>(scene, id);
+        removeComponent<T>(scene_, id_);
     }
 }

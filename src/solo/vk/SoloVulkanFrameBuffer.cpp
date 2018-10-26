@@ -36,19 +36,19 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
         }
     }
 
-    result->dimensions = attachments[0]->getDimensions();
+    result->dimensions_ = attachments[0]->getDimensions();
 
     if (!result->depthAttachment_)
     {
         result->depthAttachment_ = VulkanTexture2D::createEmpty(device,
-            static_cast<u32>(result->dimensions.x()), static_cast<u32>(result->dimensions.y()), TextureFormat::Depth24);
+            static_cast<u32>(result->dimensions_.x()), static_cast<u32>(result->dimensions_.y()), TextureFormat::Depth24);
     }
 
     views.push_back(result->depthAttachment_->image().view());
     config.withDepthAttachment(result->depthAttachment_->image().format());
 
     result->renderPass_ = VulkanRenderPass(renderer->device(), config);
-    result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions.x(), result->dimensions.y());
+    result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions_.x(), result->dimensions_.y());
 
     return result;
 }

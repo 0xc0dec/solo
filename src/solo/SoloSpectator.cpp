@@ -12,34 +12,34 @@ using namespace solo;
 
 Spectator::Spectator(const Node &node):
     ComponentBase(node),
-    device(node.getScene()->getDevice())
+    device_(node.getScene()->getDevice())
 {
 }
 
 void Spectator::init()
 {
-    transform = node.findComponent<Transform>();
+    transform_ = node_.findComponent<Transform>();
 }
 
 void Spectator::update()
 {
-    const auto mouseMotion = device->getMouseMotion();
-    const auto dt = device->getTimeDelta();
+    const auto mouseMotion = device_->getMouseMotion();
+    const auto dt = device_->getTimeDelta();
 
-    if (device->isMouseButtonDown(MouseButton::Right, true))
-        device->setCursorCaptured(true);
-    if (device->isMouseButtonReleased(MouseButton::Right))
-        device->setCursorCaptured(false);
+    if (device_->isMouseButtonDown(MouseButton::Right, true))
+        device_->setCursorCaptured(true);
+    if (device_->isMouseButtonReleased(MouseButton::Right))
+        device_->setCursorCaptured(false);
 
-    if (device->isMouseButtonDown(MouseButton::Right, false))
+    if (device_->isMouseButtonDown(MouseButton::Right, false))
     {
         if (mouseMotion.x() != 0)
-            transform->rotateByAxisAngle({0, 1, 0}, Radians(mouseSensitivity * -mouseMotion.x()), TransformSpace::World);
+            transform_->rotateByAxisAngle({0, 1, 0}, Radians(mouseSensitivity_ * -mouseMotion.x()), TransformSpace::World);
 
         if (mouseMotion.y() != 0)
         {
-            const auto angleToUp = transform->getLocalForward().angle({0, 1, 0}).toRawRadians();
-            auto delta = mouseSensitivity * -mouseMotion.y();
+            const auto angleToUp = transform_->getLocalForward().angle({0, 1, 0}).toRawRadians();
+            auto delta = mouseSensitivity_ * -mouseMotion.y();
             if (delta > 0)
             {
                 if (angleToUp - delta <= 0.1f)
@@ -51,25 +51,25 @@ void Spectator::update()
                     delta = angleToUp - 3.04f;
             }
 
-            transform->rotateByAxisAngle({1, 0, 0}, Radians(delta), TransformSpace::Self);
+            transform_->rotateByAxisAngle({1, 0, 0}, Radians(delta), TransformSpace::Self);
         }
     }
 
     auto movement = Vector3();
-    if (device->isKeyPressed(KeyCode::W, false))
-        movement += transform->getLocalForward();
-    if (device->isKeyPressed(KeyCode::S, false))
-        movement += transform->getLocalBack();
-    if (device->isKeyPressed(KeyCode::A, false))
-        movement += transform->getLocalLeft();
-    if (device->isKeyPressed(KeyCode::D, false))
-        movement += transform->getLocalRight();
-    if (device->isKeyPressed(KeyCode::Q, false))
-        movement += transform->getLocalDown();
-    if (device->isKeyPressed(KeyCode::E, false))
-        movement += transform->getLocalUp();
+    if (device_->isKeyPressed(KeyCode::W, false))
+        movement += transform_->getLocalForward();
+    if (device_->isKeyPressed(KeyCode::S, false))
+        movement += transform_->getLocalBack();
+    if (device_->isKeyPressed(KeyCode::A, false))
+        movement += transform_->getLocalLeft();
+    if (device_->isKeyPressed(KeyCode::D, false))
+        movement += transform_->getLocalRight();
+    if (device_->isKeyPressed(KeyCode::Q, false))
+        movement += transform_->getLocalDown();
+    if (device_->isKeyPressed(KeyCode::E, false))
+        movement += transform_->getLocalUp();
     movement.normalize();
-    movement *= dt * movementSpeed;
+    movement *= dt * movementSpeed_;
 
-    transform->translateLocal(movement);
+    transform_->translateLocal(movement);
 }

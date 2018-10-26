@@ -46,8 +46,8 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 }
 
 Device::Device(const DeviceSetup &setup):
-    mode(setup.mode),
-    vsync(setup.vsync)
+    mode_(setup.mode),
+    vsync_(setup.vsync)
 {
 }
 
@@ -58,61 +58,61 @@ void Device::initSubsystems(const DeviceSetup &setup)
     if (!setup.logFilePath.empty())
         Logger::global().setOutputFile(setup.logFilePath);
 
-    renderer = Renderer::create(this, token);
-    physics = Physics::create(this, token);
-    fs = FileSystem::create(this, token);
-    scriptRuntime = ScriptRuntime::create(this, token);
-    jobPool = std::make_shared<JobPool>();
+    renderer_ = Renderer::create(this, token);
+    physics_ = Physics::create(this, token);
+    fs_ = FileSystem::create(this, token);
+    scriptRuntime_ = ScriptRuntime::create(this, token);
+    jobPool_ = std::make_shared<JobPool>();
 }
 
 void Device::cleanupSubsystems()
 {
     // Order matters
-    jobPool.reset();
-    scriptRuntime.reset();
-    fs.reset();
-    renderer.reset();
+    jobPool_.reset();
+    scriptRuntime_.reset();
+    fs_.reset();
+    renderer_.reset();
 }
 
 bool Device::hasActiveBackgroundJobs() const
 {
-    return jobPool->hasActiveJobs();
+    return jobPool_->hasActiveJobs();
 }
 
 bool Device::isKeyPressed(KeyCode code, bool firstTime) const
 {
-    const auto where = pressedKeys.find(code);
-    return where != pressedKeys.end() && (!firstTime || where->second);
+    const auto where = pressedKeys_.find(code);
+    return where != pressedKeys_.end() && (!firstTime || where->second);
 }
 
 bool Device::isKeyReleased(KeyCode code) const
 {
-    return releasedKeys.find(code) != releasedKeys.end();
+    return releasedKeys_.find(code) != releasedKeys_.end();
 }
 
 bool Device::isMouseButtonDown(MouseButton button, bool firstTime) const
 {
-    const auto where = pressedMouseButtons.find(button);
-    return where != pressedMouseButtons.end() && (!firstTime || where->second);
+    const auto where = pressedMouseButtons_.find(button);
+    return where != pressedMouseButtons_.end() && (!firstTime || where->second);
 }
 
 bool Device::isMouseButtonReleased(MouseButton button) const
 {
-    return releasedMouseButtons.find(button) != releasedMouseButtons.end();
+    return releasedMouseButtons_.find(button) != releasedMouseButtons_.end();
 }
 
 void Device::update(const std::function<void()> &update)
 {
     beginUpdate();
-    jobPool->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
-    physics->update();
-    renderer->renderFrame([&]() { update(); });
+    jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
+    physics_->update();
+    renderer_->renderFrame([&]() { update(); });
     endUpdate();
 }
 
 void Device::updateTime()
 {
     const auto time = getLifetime();
-    timeDelta = time - lastUpdateTime;
-    lastUpdateTime = time;
+    timeDelta_ = time - lastUpdateTime_;
+    lastUpdateTime_ = time;
 }

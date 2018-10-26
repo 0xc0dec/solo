@@ -32,23 +32,23 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        auto getVersion() const -> u32 { return version; }
+        auto getVersion() const -> u32 { return version_; }
 
         void setParent(Transform *parent);
-        auto getParent() const -> Transform* { return parent; }
+        auto getParent() const -> Transform* { return parent_; }
         
-        auto getChild(u32 index) const -> Transform* { return children[index]; }
-        auto getChildrenCount() const -> u32 { return static_cast<u32>(children.size()); }
+        auto getChild(u32 index) const -> Transform* { return children_[index]; }
+        auto getChildrenCount() const -> u32 { return static_cast<u32>(children_.size()); }
         void clearChildren();
 
         auto getWorldScale() const -> Vector3 { return getWorldMatrix().getScale(); }
-        auto getLocalScale() const -> Vector3 { return localScale; }
+        auto getLocalScale() const -> Vector3 { return localScale_; }
 
         auto getWorldRotation() const -> Quaternion { return getWorldMatrix().getRotation(); }
-        auto getLocalRotation() const -> Quaternion { return localRotation; }
+        auto getLocalRotation() const -> Quaternion { return localRotation_; }
 
         auto getWorldPosition() const -> Vector3 { return getWorldMatrix().getTranslation(); }
-        auto getLocalPosition() const -> Vector3 { return localPosition; }
+        auto getLocalPosition() const -> Vector3 { return localPosition_; }
 
         auto getWorldUp() const -> Vector3 { return getWorldMatrix().getUpVector(); }
         auto getLocalUp() const -> Vector3 { return getMatrix().getUpVector(); }
@@ -93,18 +93,18 @@ namespace solo
         auto transformDirection(const Vector3 &direction) const -> Vector3;
 
     private:
-        mutable u32 dirtyFlags = ~0;
-        mutable u32 version = 0;
+        mutable u32 dirtyFlags_ = ~0;
+        mutable u32 version_ = 0;
 
-        Transform *parent = nullptr;
-        vec<Transform *> children;
+        Transform *parent_ = nullptr;
+        vec<Transform *> children_;
 
-        Vector3 localPosition;
-        Vector3 localScale;
-        Quaternion localRotation;
-        mutable Matrix matrix;
-        mutable Matrix worldMatrix;
-        mutable Matrix invTransposedWorldMatrix;
+        Vector3 localPosition_;
+        Vector3 localScale_;
+        Quaternion localRotation_;
+        mutable Matrix matrix_;
+        mutable Matrix worldMatrix_;
+        mutable Matrix invTransposedWorldMatrix_;
 
         void setDirtyWithChildren(u32 flags) const;
         void setChildrenDirty(u32 flags) const;

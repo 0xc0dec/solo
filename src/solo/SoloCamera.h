@@ -35,36 +35,36 @@ namespace solo
 
         auto windowPointToWorldRay(const Vector2 &pt) const -> Ray;
 
-        auto getTransform() const -> Transform* { return transform; }
+        auto getTransform() const -> Transform* { return transform_; }
 
-        auto getRenderTarget() const -> sptr<FrameBuffer> { return renderTarget; }
-        void setRenderTarget(sptr<FrameBuffer> target) { renderTarget = target; }
+        auto getRenderTarget() const -> sptr<FrameBuffer> { return renderTarget_; }
+        void setRenderTarget(sptr<FrameBuffer> target) { renderTarget_ = target; }
 
-        auto getClearColor() const -> Vector4 { return clearColor; }
-        void setClearColor(const Vector4 &color) { clearColor = color; }
+        auto getClearColor() const -> Vector4 { return clearColor_; }
+        void setClearColor(const Vector4 &color) { clearColor_ = color; }
 
-        bool hasColorClearing() const { return colorClearing; }
-        void setColorClearing(bool enabled) { this->colorClearing = enabled; }
+        bool hasColorClearing() const { return colorClearing_; }
+        void setColorClearing(bool enabled) { this->colorClearing_ = enabled; }
 
-        auto getViewport() const -> Vector4 { return viewport; }
-        void setViewport(const Vector4 &rect) { viewport = rect; }
+        auto getViewport() const -> Vector4 { return viewport_; }
+        void setViewport(const Vector4 &rect) { viewport_ = rect; }
 
-        bool isPerspective() const { return !ortho; }
+        bool isPerspective() const { return !ortho_; }
         void setPerspective(bool perspective);
 
-        auto getZNear() const -> float { return zNear; }
+        auto getZNear() const -> float { return zNear_; }
         void setZNear(float near);
 
-        auto getZFar() const -> float { return zFar; }
+        auto getZFar() const -> float { return zFar_; }
         void setZFar(float far);
 
-        auto getFOV() const -> Radians { return fov; }
+        auto getFOV() const -> Radians { return fov_; }
         void setFOV(const Radians &fov);
 
-        auto getOrthoSize() const -> Vector2 { return orthoSize; }
+        auto getOrthoSize() const -> Vector2 { return orthoSize_; }
         void setOrthoSize(const Vector2 &size);
 
-        auto getAspectRatio() const -> float { return aspectRatio; }
+        auto getAspectRatio() const -> float { return aspectRatio_; }
 
         auto getViewMatrix() const -> Matrix;
         auto getInvViewMatrix() const -> Matrix;
@@ -73,30 +73,30 @@ namespace solo
         auto getInvViewProjectionMatrix() const -> Matrix;
 
     protected:
-        Device *device = nullptr;
-        Renderer *renderer = nullptr;
+        Device *device_ = nullptr;
+        Renderer *renderer_ = nullptr;
 
-        Transform *transform = nullptr;
-        sptr<FrameBuffer> renderTarget = nullptr;
+        Transform *transform_ = nullptr;
+        sptr<FrameBuffer> renderTarget_ = nullptr;
 
-        Vector4 viewport;
-        Vector4 clearColor{0, 0.5, 0.5, 1};
-        bool colorClearing = true;
-        bool ortho = false;
-        Vector2 orthoSize{1, 1};
-        Radians fov;
-        float zNear = 1;
-        float zFar = 100;
-        float aspectRatio = 1;
+        Vector4 viewport_;
+        Vector4 clearColor_{0, 0.5, 0.5, 1};
+        bool colorClearing_ = true;
+        bool ortho_ = false;
+        Vector2 orthoSize_{1, 1};
+        Radians fov_;
+        float zNear_ = 1;
+        float zFar_ = 100;
+        float aspectRatio_ = 1;
 
-        mutable u32 lastTransformVersion = ~0;
-        mutable u32 dirtyFlags = ~0;
+        mutable u32 lastTransformVersion_ = ~0;
+        mutable u32 dirtyFlags_ = ~0;
 
-        mutable Matrix viewMatrix;
-        mutable Matrix projectionMatrix;
-        mutable Matrix viewProjectionMatrix;
-        mutable Matrix invViewMatrix;
-        mutable Matrix invViewProjectionMatrix;
+        mutable Matrix viewMatrix_;
+        mutable Matrix projectionMatrix_;
+        mutable Matrix viewProjectionMatrix_;
+        mutable Matrix invViewMatrix_;
+        mutable Matrix invViewProjectionMatrix_;
 
         explicit Camera(const Node &node);
     };

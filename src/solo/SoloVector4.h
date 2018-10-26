@@ -18,14 +18,14 @@ namespace solo
         Vector4(float all);
         Vector4(float x, float y, float z, float w);
 
-        auto x() -> float& { return data.x; }
-        auto x() const -> float { return data.x; }
-        auto y() -> float& { return data.y; }
-        auto y() const -> float { return data.y; }
-        auto z() -> float& { return data.z; }
-        auto z() const -> float { return data.z; }
-        auto w() -> float& { return data.w; }
-        auto w() const -> float { return data.w; }
+        auto x() -> float& { return data_.x; }
+        auto x() const -> float { return data_.x; }
+        auto y() -> float& { return data_.y; }
+        auto y() const -> float { return data_.y; }
+        auto z() -> float& { return data_.z; }
+        auto z() const -> float { return data_.z; }
+        auto w() -> float& { return data_.w; }
+        auto w() const -> float { return data_.w; }
 
         bool isZero() const;
         bool isUnit() const;
@@ -61,6 +61,6 @@ namespace solo
         auto operator/=(float x) -> Vector4&;
 
     private:
-        glm::vec4 data;
+        glm::vec4 data_;
     };
 }

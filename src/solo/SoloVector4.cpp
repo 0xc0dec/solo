@@ -8,17 +8,17 @@
 using namespace solo;
 
 Vector4::Vector4(const glm::vec4 &data):
-    data(data)
+    data_(data)
 {
 }
 
 Vector4::Vector4(float all):
-    data(all)
+    data_(all)
 {
 }
 
 Vector4::Vector4(float x, float y, float z, float w):
-    data(x, y, z, w)
+    data_(x, y, z, w)
 {
 }
 
@@ -45,44 +45,44 @@ auto Vector4::angle(const Vector4 &v) -> Radians
 
 void Vector4::clamp(const Vector4 &min, const Vector4 &max)
 {
-    data = glm::clamp(data, min.data, max.data);
+    data_ = glm::clamp(data_, min.data_, max.data_);
 }
 
 auto Vector4::distance(const Vector4 &v) const -> float
 {
-    return glm::distance(data, v.data);
+    return glm::distance(data_, v.data_);
 }
 
 auto Vector4::dot(const Vector4 &v) const -> float
 {
-    return glm::dot(data, v.data);
+    return glm::dot(data_, v.data_);
 }
 
 auto Vector4::operator=(const glm::vec4 &other) -> Vector4 &
 {
-    data = other;
+    data_ = other;
     return *this;
 }
 
 auto Vector4::length() const -> float
 {
-    return glm::length(data);
+    return glm::length(data_);
 }
 
 auto Vector4::normalized() const -> Vector4
 {
-    return glm::normalize(data);
+    return glm::normalize(data_);
 }
 
 void Vector4::normalize()
 {
     if (!isZero())
-        data = glm::normalize(data);
+        data_ = glm::normalize(data_);
 }
 
 bool Vector4::operator==(const Vector4 &v) const
 {
-    return glm::all(glm::epsilonEqual(data, v.data, glm::epsilon<float>()));
+    return glm::all(glm::epsilonEqual(data_, v.data_, glm::epsilon<float>()));
 }
 
 bool Vector4::operator!=(const Vector4 &v) const
@@ -92,71 +92,71 @@ bool Vector4::operator!=(const Vector4 &v) const
 
 auto Vector4::operator+(float scalar) const -> Vector4
 {
-    return data + scalar;
+    return data_ + scalar;
 }
 
 auto Vector4::operator+(const Vector4 &v) const -> Vector4
 {
-    return data + v.data;
+    return data_ + v.data_;
 }
 
 auto Vector4::operator+=(const Vector4 &v) -> Vector4 &
 {
-    data += v.data;
+    data_ += v.data_;
     return *this;
 }
 
 auto Vector4::operator+=(float scalar) -> Vector4 &
 {
-    data += scalar;
+    data_ += scalar;
     return *this;
 }
 
 auto Vector4::operator-() const -> Vector4
 {
-    return -data;
+    return -data_;
 }
 
 auto Vector4::operator-(float scalar) const -> Vector4
 {
-    return data - scalar;
+    return data_ - scalar;
 }
 
 auto Vector4::operator-(const Vector4 &v) const -> Vector4
 {
-    return data - v.data;
+    return data_ - v.data_;
 }
 
 auto Vector4::operator-=(float scalar) -> Vector4 &
 {
-    data -= scalar;
+    data_ -= scalar;
     return *this;
 }
 
 auto Vector4::operator-=(const Vector4 &v) -> Vector4 &
 {
-    data -= v.data;
+    data_ -= v.data_;
     return *this;
 }
 
 auto Vector4::operator*(float scalar) const -> Vector4
 {
-    return data * scalar;
+    return data_ * scalar;
 }
 
 auto Vector4::operator*=(float scalar) -> Vector4 &
 {
-    data *= scalar;
+    data_ *= scalar;
     return *this;
 }
 
 auto Vector4::operator/(const float scalar) const -> Vector4
 {
-    return data / scalar;
+    return data_ / scalar;
 }
 
 auto Vector4::operator/=(const float scalar) -> Vector4 &
 {
-    data /= scalar;
+    data_ /= scalar;
     return *this;
 }

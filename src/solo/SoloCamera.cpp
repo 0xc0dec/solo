@@ -28,133 +28,133 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 
 Camera::Camera(const Node &node):
     ComponentBase(node),
-    device(node.getScene()->getDevice()),
-    renderer(device->getRenderer()),
-    fov(Degrees(60))
+    device_(node.getScene()->getDevice()),
+    renderer_(device_->getRenderer()),
+    fov_(Degrees(60))
 {
-    auto canvasSize = device->getCanvasSize();
-    viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
+    auto canvasSize = device_->getCanvasSize();
+    viewport_ = Vector4(0, 0, canvasSize.x(), canvasSize.y());
 }
 
 void Camera::init()
 {
-    transform = node.findComponent<Transform>();
-    const auto canvasSize = device->getCanvasSize();
-    aspectRatio = canvasSize.x() / canvasSize.y();
-    dirtyFlags |= AllProjectionDirtyBits;
+    transform_ = node_.findComponent<Transform>();
+    const auto canvasSize = device_->getCanvasSize();
+    aspectRatio_ = canvasSize.x() / canvasSize.y();
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 void Camera::update()
 {
-    if (lastTransformVersion != transform->getVersion())
+    if (lastTransformVersion_ != transform_->getVersion())
     {
-        lastTransformVersion = transform->getVersion();
-        dirtyFlags |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
+        lastTransformVersion_ = transform_->getVersion();
+        dirtyFlags_ |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
     }
 }
 
 void Camera::setPerspective(bool perspective)
 {
-    ortho = !perspective;
-    dirtyFlags |= AllProjectionDirtyBits;
+    ortho_ = !perspective;
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 void Camera::setFOV(const Radians &fov)
 {
-    this->fov = fov;
-    dirtyFlags |= AllProjectionDirtyBits;
+    this->fov_ = fov;
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 void Camera::setOrthoSize(const Vector2& size)
 {
-    orthoSize = size;
-    dirtyFlags |= AllProjectionDirtyBits;
+    orthoSize_ = size;
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 void Camera::setZFar(float far)
 {
-    this->zFar = far;
-    dirtyFlags |= AllProjectionDirtyBits;
+    this->zFar_ = far;
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 void Camera::setZNear(float near)
 {
-    this->zNear = near;
-    dirtyFlags |= AllProjectionDirtyBits;
+    this->zNear_ = near;
+    dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
 auto Camera::getViewMatrix() const -> Matrix
 {
-    if (dirtyFlags & ViewDirtyBit)
+    if (dirtyFlags_ & ViewDirtyBit)
     {
-        viewMatrix = transform->getWorldMatrix();
-        viewMatrix.invert();
-        dirtyFlags &= ~ViewDirtyBit;
+        viewMatrix_ = transform_->getWorldMatrix();
+        viewMatrix_.invert();
+        dirtyFlags_ &= ~ViewDirtyBit;
     }
-    return viewMatrix;
+    return viewMatrix_;
 }
 
 auto Camera::getInvViewMatrix() const -> Matrix
 {
-    if (dirtyFlags & InvViewDirtyBit)
+    if (dirtyFlags_ & InvViewDirtyBit)
     {
-        invViewMatrix = getViewMatrix();
-        invViewMatrix.invert();
-        dirtyFlags &= ~InvViewDirtyBit;
+        invViewMatrix_ = getViewMatrix();
+        invViewMatrix_.invert();
+        dirtyFlags_ &= ~InvViewDirtyBit;
     }
-    return invViewMatrix;
+    return invViewMatrix_;
 }
 
 auto Camera::getProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & ProjectionDirtyBit)
+    if (dirtyFlags_ & ProjectionDirtyBit)
     {
-        if (ortho)
-            projectionMatrix = Matrix::createOrthographic(orthoSize.x(), orthoSize.y(), zNear, zFar);
+        if (ortho_)
+            projectionMatrix_ = Matrix::createOrthographic(orthoSize_.x(), orthoSize_.y(), zNear_, zFar_);
         else
-            projectionMatrix = Matrix::createPerspective(fov, aspectRatio, zNear, zFar);
-        dirtyFlags &= ~ProjectionDirtyBit;
+            projectionMatrix_ = Matrix::createPerspective(fov_, aspectRatio_, zNear_, zFar_);
+        dirtyFlags_ &= ~ProjectionDirtyBit;
     }
-    return projectionMatrix;
+    return projectionMatrix_;
 }
 
 auto Camera::getViewProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & ViewProjectionDirtyBit)
+    if (dirtyFlags_ & ViewProjectionDirtyBit)
     {
-        viewProjectionMatrix = getProjectionMatrix() * getViewMatrix();
-        dirtyFlags &= ~ViewProjectionDirtyBit;
+        viewProjectionMatrix_ = getProjectionMatrix() * getViewMatrix();
+        dirtyFlags_ &= ~ViewProjectionDirtyBit;
     }
-    return viewProjectionMatrix;
+    return viewProjectionMatrix_;
 }
 
 auto Camera::getInvViewProjectionMatrix() const -> Matrix
 {
-    if (dirtyFlags & InvViewProjectionDirtyBit)
+    if (dirtyFlags_ & InvViewProjectionDirtyBit)
     {
-        invViewProjectionMatrix = getViewProjectionMatrix();
-        invViewProjectionMatrix.invert();
-        dirtyFlags &= ~InvViewProjectionDirtyBit;
+        invViewProjectionMatrix_ = getViewProjectionMatrix();
+        invViewProjectionMatrix_.invert();
+        dirtyFlags_ &= ~InvViewProjectionDirtyBit;
     }
-    return invViewProjectionMatrix;
+    return invViewProjectionMatrix_;
 }
 
 void Camera::renderFrame(const std::function<void()> &render)
 {
-    renderer->beginCamera(this, renderTarget.get());
+    renderer_->beginCamera(this, renderTarget_.get());
     render();
-    renderer->endCamera(this, renderTarget.get());
+    renderer_->endCamera(this, renderTarget_.get());
 }
 
 auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
 {
-    const auto halfHeightInWorldUnits = zNear * std::tan(fov.toRawRadians() / 2);
-    const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio;
-    const auto canvasSize = device->getDpiIndependentCanvasSize();
-    const auto right = transform->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
-    const auto down = transform->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
-    const auto pos = transform->getWorldPosition();
-    const auto canvasCenter = pos + transform->getWorldForward() * zNear;
+    const auto halfHeightInWorldUnits = zNear_ * std::tan(fov_.toRawRadians() / 2);
+    const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio_;
+    const auto canvasSize = device_->getDpiIndependentCanvasSize();
+    const auto right = transform_->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
+    const auto down = transform_->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
+    const auto pos = transform_->getWorldPosition();
+    const auto canvasCenter = pos + transform_->getWorldForward() * zNear_;
     const auto origin = canvasCenter + right + down;
     return Ray{origin, (origin - pos).normalized()};
 }

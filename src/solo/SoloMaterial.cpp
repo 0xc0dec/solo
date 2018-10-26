@@ -31,6 +31,6 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 
 void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
 {
-    srcBlendFactor = srcFactor;
-    dstBlendFactor = dstFactor;
+    srcBlendFactor_ = srcFactor;
+    dstBlendFactor_ = dstFactor;
 }

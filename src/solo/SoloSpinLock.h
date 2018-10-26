@@ -30,16 +30,16 @@ namespace solo
 
         ~SpinLock()
         {
-            flag.clear(std::memory_order_release);
+            flag_.clear(std::memory_order_release);
         }
 
         auto acquire()
         {
-            while (flag.test_and_set(std::memory_order_acquire)) {}
-            return LockToken(flag);
+            while (flag_.test_and_set(std::memory_order_acquire)) {}
+            return LockToken(flag_);
         }
 
     private:
-        std::atomic_flag flag = ATOMIC_FLAG_INIT;
+        std::atomic_flag flag_ = ATOMIC_FLAG_INIT;
     };
 }

@@ -8,17 +8,17 @@
 using namespace solo;
 
 Vector2::Vector2(float x, float y):
-    data(x, y)
+    data_(x, y)
 {
 }
 
 Vector2::Vector2(const glm::vec2 &data):
-    data(data)
+    data_(data)
 {
 }
 
 Vector2::Vector2(float all):
-    data(all)
+    data_(all)
 {
 }
 
@@ -39,44 +39,44 @@ auto Vector2::angle(const Vector2 &v) const -> Radians
 
 void Vector2::clamp(const Vector2 &min, const Vector2 &max)
 {
-    data = glm::clamp(data, min.data, max.data);
+    data_ = glm::clamp(data_, min.data_, max.data_);
 }
 
 auto Vector2::distance(const Vector2 &v) const -> float
 {
-    return glm::distance(data, v.data);
+    return glm::distance(data_, v.data_);
 }
 
 auto Vector2::dot(const Vector2 &v) const -> float
 {
-    return glm::dot(data, v.data);
+    return glm::dot(data_, v.data_);
 }
 
 auto Vector2::operator=(const glm::vec2 &other) -> Vector2 &
 {
-    data = other;
+    data_ = other;
     return *this;
 }
 
 auto Vector2::length() const -> float
 {
-    return glm::length(data);
+    return glm::length(data_);
 }
 
 auto Vector2::normalized() const -> Vector2
 {
-    return glm::normalize(data);
+    return glm::normalize(data_);
 }
 
 void Vector2::normalize()
 {
     if (!isZero())
-        data = glm::normalize(data);
+        data_ = glm::normalize(data_);
 }
 
 bool Vector2::operator==(const Vector2 &v) const
 {
-    return glm::all(glm::epsilonEqual(data, v.data, glm::epsilon<float>()));
+    return glm::all(glm::epsilonEqual(data_, v.data_, glm::epsilon<float>()));
 }
 
 bool Vector2::operator!=(const Vector2 &v) const
@@ -86,61 +86,61 @@ bool Vector2::operator!=(const Vector2 &v) const
 
 auto Vector2::operator+(const Vector2 &v) const -> Vector2
 {
-    return data + v.data;
+    return data_ + v.data_;
 }
 
 auto Vector2::operator+=(float scalar) -> Vector2 &
 {
-    data += scalar;
+    data_ += scalar;
     return *this;
 }
 
 auto Vector2::operator+=(const Vector2 &v) -> Vector2 &
 {
-    data += v.data;
+    data_ += v.data_;
     return *this;
 }
 
 auto Vector2::operator-() const -> Vector2
 {
-    return -data;
+    return -data_;
 }
 
 auto Vector2::operator-(const Vector2 &v) const -> Vector2
 {
-    return data - v.data;
+    return data_ - v.data_;
 }
 
 auto Vector2::operator-=(float scalar) -> Vector2 &
 {
-    data -= scalar;
+    data_ -= scalar;
     return *this;
 }
 
 auto Vector2::operator-=(const Vector2 &v) -> Vector2 &
 {
-    data -= v.data;
+    data_ -= v.data_;
     return *this;
 }
 
 auto Vector2::operator*(float scalar) const -> Vector2
 {
-    return data * scalar;
+    return data_ * scalar;
 }
 
 auto Vector2::operator*=(float scalar) -> Vector2 &
 {
-    data *= scalar;
+    data_ *= scalar;
     return *this;
 }
 
 auto Vector2::operator/(const float scalar) const -> Vector2
 {
-    return data / scalar;
+    return data_ / scalar;
 }
 
 auto Vector2::operator/=(float scalar) -> Vector2 &
 {
-    data /= scalar;
+    data_ /= scalar;
     return *this;
 }

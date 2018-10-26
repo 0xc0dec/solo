@@ -11,12 +11,12 @@
 using namespace solo;
 
 Quaternion::Quaternion(float x, float y, float z, float w):
-    data{x, y, z, w}
+    data_{x, y, z, w}
 {
 }
 
 Quaternion::Quaternion(const glm::quat &data):
-    data(data)
+    data_(data)
 {
 }
 
@@ -55,17 +55,17 @@ void Quaternion::conjugate()
 
 void Quaternion::invert()
 {
-    data = glm::inverse(data);
+    data_ = glm::inverse(data_);
 }
 
 void Quaternion::normalize()
 {
-    data = glm::normalize(data);
+    data_ = glm::normalize(data_);
 }
 
 auto Quaternion::normalized() const -> Quaternion
 {
-    return glm::normalize(data);
+    return glm::normalize(data_);
 }
 
 auto Quaternion::toAxisAngle(Vector3 &axis) const -> Radians
@@ -90,11 +90,11 @@ auto Quaternion::slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Q
 
 auto Quaternion::operator*=(const Quaternion &q) -> Quaternion &
 {
-    data *= q.data;
+    data_ *= q.data_;
     return *this;
 }
 
 auto Quaternion::operator*(const Quaternion &q) const -> Quaternion
 {
-    return data * q.data;
+    return data_ * q.data_;
 }

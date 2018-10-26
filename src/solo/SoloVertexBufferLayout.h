@@ -35,16 +35,16 @@ namespace solo
     public:
         void addSemanticAttribute(VertexAttributeSemantics semantics);
 
-        auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs.size()); }
-        auto getAttribute(u32 index) const -> VertexAttribute { return attrs.at(index); }
+        auto getAttributeCount() const -> u32 { return static_cast<u32>(attrs_.size()); }
+        auto getAttribute(u32 index) const -> VertexAttribute { return attrs_.at(index); }
 
-        auto getSize() const -> u32 { return size; }
-        auto getElementCount() const -> u32 { return elementCount; }
+        auto getSize() const -> u32 { return size_; }
+        auto getElementCount() const -> u32 { return elementCount_; }
 
     private:
-        vec<VertexAttribute> attrs;
-        u32 size = 0; // in bytes
-        u32 elementCount = 0; // number of floats
+        vec<VertexAttribute> attrs_;
+        u32 size_ = 0; // in bytes
+        u32 elementCount_ = 0; // number of floats
 
         void addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics);
     };

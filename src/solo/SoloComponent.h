@@ -14,12 +14,12 @@ namespace solo
         template <typename T>
         static auto get() -> u32
         {
-            static const auto id = counter++;
+            static const auto id = counter_++;
             return id;
         }
 
     private:
-        static u32 counter;
+        static u32 counter_;
     };
 
     class Component: public NoCopyAndMove
@@ -35,16 +35,16 @@ namespace solo
         virtual void update() {}
         virtual void render() {}
 
-        auto getNode() const -> Node { return node; }
+        auto getNode() const -> Node { return node_; }
 
-        auto getTag() const -> u32 { return tag; }
-        void setTag(u32 tag) { this->tag = tag; }
+        auto getTag() const -> u32 { return tag_; }
+        void setTag(u32 tag) { this->tag_ = tag; }
 
     protected:
-        Node node;
-        u32 tag = 1;
+        Node node_;
+        u32 tag_ = 1;
 
-        explicit Component(const Node &node): node(node)
+        explicit Component(const Node &node): node_(node)
         {
         }
     };

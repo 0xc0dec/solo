@@ -9,21 +9,21 @@ using namespace solo;
 
 void JobPool::addJob(sptr<Job> job)
 {
-    auto token = lock.acquire();
-    jobs.push_back(job);
+    auto token = lock_.acquire();
+    jobs_.push_back(job);
 }
 
 void JobPool::update()
 {
-    if (!jobs.empty())
+    if (!jobs_.empty())
     {
-        decltype(jobs) oldJobs;
+        decltype(jobs_) oldJobs;
         {
-            auto token = lock.acquire();
-            if (!jobs.empty())
+            auto token = lock_.acquire();
+            if (!jobs_.empty())
             {
-                oldJobs = jobs;
-                anyActiveJobs = true;
+                oldJobs = jobs_;
+                anyActiveJobs_ = true;
             }
         }
 
@@ -37,10 +37,10 @@ void JobPool::update()
 
         if (anyDone)
         {
-            auto token = lock.acquire();
-            jobs.remove_if([](sptr<Job> job) { return job->isDone(); });
-            if (jobs.empty())
-                anyActiveJobs = false;
+            auto token = lock_.acquire();
+            jobs_.remove_if([](sptr<Job> job) { return job->isDone(); });
+            if (jobs_.empty())
+                anyActiveJobs_ = false;
         }
     }
 }

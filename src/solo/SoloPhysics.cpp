@@ -14,6 +14,6 @@ auto Physics::create(Device *device, const FriendToken<Device> &deviceToken) -> 
 }
 
 Physics::Physics(Device *device, const FriendToken<Device> &):
-    device(device)
+    device_(device)
 {
 }

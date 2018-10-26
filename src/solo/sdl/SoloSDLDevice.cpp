@@ -55,8 +55,8 @@ auto SDLDevice::getDpiIndependentCanvasSize() const -> Vector2
 
 void SDLDevice::beginUpdate()
 {
-    windowCloseRequested = false;
-    quitRequested = false;
+    windowCloseRequested_ = false;
+    quitRequested_ = false;
     readWindowState();
     prepareMouseState();
     prepareKeyboardState();
@@ -66,17 +66,17 @@ void SDLDevice::beginUpdate()
 
 void SDLDevice::prepareKeyboardState()
 {
-    releasedKeys.clear();
+    releasedKeys_.clear();
     if (hasKeyboardFocus_)
     {
-        for (auto &pair : pressedKeys)
+        for (auto &pair : pressedKeys_)
             pair.second = false; // not "pressed for the first time" anymore
     }
     else
     {
-        for (const auto &pair : pressedKeys)
-            releasedKeys.insert(pair.first);
-        pressedKeys.clear();
+        for (const auto &pair : pressedKeys_)
+            releasedKeys_.insert(pair.first);
+        pressedKeys_.clear();
     }
 }
 
@@ -84,21 +84,21 @@ void SDLDevice::prepareMouseState()
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
-    mousePos.x() = x;
-    mousePos.y() = y;
+    mousePos_.x() = x;
+    mousePos_.y() = y;
     
-    mouseDelta.x() = mouseDelta.y() = 0;
-    releasedMouseButtons.clear();
+    mouseDelta_.x() = mouseDelta_.y() = 0;
+    releasedMouseButtons_.clear();
     if (hasMouseFocus_)
     {
-        for (const auto &pair : pressedMouseButtons)
-            pressedMouseButtons[pair.first] = false;
+        for (const auto &pair : pressedMouseButtons_)
+            pressedMouseButtons_[pair.first] = false;
     }
     else
     {
-        for (const auto &pair : pressedMouseButtons)
-            releasedMouseButtons.insert(pair.first);
-        pressedMouseButtons.clear();
+        for (const auto &pair : pressedMouseButtons_)
+            releasedMouseButtons_.insert(pair.first);
+        pressedMouseButtons_.clear();
     }
 }
 
@@ -125,13 +125,13 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
             const auto code = it->second;
             if (evt.type == SDL_KEYUP)
             {
-                releasedKeys.insert(code);
-                pressedKeys.erase(code);
+                releasedKeys_.insert(code);
+                pressedKeys_.erase(code);
             }
             else
             {
-                pressedKeys[code] = pressedKeys.find(code) == pressedKeys.end(); // first time?
-                releasedKeys.erase(code);
+                pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end(); // first time?
+                releasedKeys_.erase(code);
             }
             break;
         }
@@ -149,26 +149,26 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
     {
         case SDL_MOUSEMOTION:
         {
-            mouseDelta.x() += evt.motion.xrel;
-            mouseDelta.y() += evt.motion.yrel;
-            mousePos.x() = evt.motion.x;
-            mousePos.y() = evt.motion.y;
+            mouseDelta_.x() += evt.motion.xrel;
+            mouseDelta_.y() += evt.motion.yrel;
+            mousePos_.x() = evt.motion.x;
+            mousePos_.y() = evt.motion.y;
             break;
         }
         case SDL_MOUSEBUTTONDOWN:
         {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
-            pressedMouseButtons[button] = true; // pressed for the first time
-            releasedMouseButtons.erase(button);
+            pressedMouseButtons_[button] = true; // pressed for the first time
+            releasedMouseButtons_.erase(button);
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
-            if (pressedMouseButtons.find(button) != pressedMouseButtons.end())
+            if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end())
             {
-                releasedMouseButtons.insert(button);
-                pressedMouseButtons.erase(button);
+                releasedMouseButtons_.insert(button);
+                pressedMouseButtons_.erase(button);
             }
             break;
         }
@@ -182,7 +182,7 @@ void SDLDevice::processWindowEvent(const SDL_Event &evt)
     switch (evt.window.event)
     {
         case SDL_WINDOWEVENT_CLOSE:
-            windowCloseRequested = true;
+            windowCloseRequested_ = true;
             break;
         default:
             break;
@@ -198,7 +198,7 @@ void SDLDevice::readEvents()
         switch (evt.type)
         {
             case SDL_QUIT:
-                quitRequested = true;
+                quitRequested_ = true;
                 break;
             case SDL_WINDOWEVENT:
                 processWindowEvent(evt);

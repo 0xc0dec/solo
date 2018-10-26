@@ -10,10 +10,10 @@ using namespace solo;
 void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics)
 {
     const auto size = static_cast<u32>(sizeof(float) * elementCount);
-    const auto offset = attrs.empty() ? 0 : attrs.crbegin()->offset + attrs.crbegin()->size;
-    attrs.push_back(VertexAttribute{name, elementCount, size, 0, offset, semantics});
-    this->elementCount += elementCount;
-    this->size += size;
+    const auto offset = attrs_.empty() ? 0 : attrs_.crbegin()->offset + attrs_.crbegin()->size;
+    attrs_.push_back(VertexAttribute{name, elementCount, size, 0, offset, semantics});
+    this->elementCount_ += elementCount;
+    this->size_ += size;
 }
 
 void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics)

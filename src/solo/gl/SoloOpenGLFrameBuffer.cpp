@@ -56,12 +56,12 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     glDrawBuffers(drawBuffers.size(), drawBuffers.data());
 
-    result->dimensions = attachments[0]->getDimensions();
+    result->dimensions_ = attachments[0]->getDimensions();
 
     if (!result->depthAttachment_)
     {
         result->depthAttachment_ = OpenGLTexture2D::createEmpty(
-            result->dimensions.x(), result->dimensions.y(), TextureFormat::Depth24);
+            result->dimensions_.x(), result->dimensions_.y(), TextureFormat::Depth24);
     }
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, result->depthAttachment_->handle(), 0);

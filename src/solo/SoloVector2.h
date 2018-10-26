@@ -18,10 +18,10 @@ namespace solo
         Vector2(float all);
         Vector2(float x, float y);
 
-        auto x() -> float& { return data.x; }
-        auto x() const -> float { return data.x; }
-        auto y() -> float& { return data.y; }
-        auto y() const -> float { return data.y; }
+        auto x() -> float& { return data_.x; }
+        auto x() const -> float { return data_.x; }
+        auto y() -> float& { return data_.y; }
+        auto y() const -> float { return data_.y; }
 
         bool isZero() const;
         bool isUnit() const;
@@ -55,6 +55,6 @@ namespace solo
         auto operator/=(float scalar) -> Vector2&;
 
     private:
-        glm::vec2 data;
+        glm::vec2 data_;
     };
 }

@@ -83,55 +83,55 @@ namespace solo
         virtual void setCursorCaptured(bool captured) = 0;
 
         virtual auto getLifetime() const -> float = 0;
-        auto getTimeDelta() const -> float { return timeDelta; }
+        auto getTimeDelta() const -> float { return timeDelta_; }
 
-        bool isWindowCloseRequested() const { return windowCloseRequested; }
-        bool isQuitRequested() const { return quitRequested; }
+        bool isWindowCloseRequested() const { return windowCloseRequested_; }
+        bool isQuitRequested() const { return quitRequested_; }
         bool hasActiveBackgroundJobs() const;
 
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
-        auto getMouseMotion() const -> Vector2 { return mouseDelta; }
-        auto getMousePosition() const -> Vector2 { return mousePos; }
+        auto getMouseMotion() const -> Vector2 { return mouseDelta_; }
+        auto getMousePosition() const -> Vector2 { return mousePos_; }
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
         void update(const std::function<void()> &update);
 
-        auto getMode() const -> DeviceMode { return mode; }
-        bool isVsync() const { return vsync; }
+        auto getMode() const -> DeviceMode { return mode_; }
+        bool isVsync() const { return vsync_; }
 
-        auto getFileSystem() const -> FileSystem* { return fs.get(); }
-        auto getRenderer() const -> Renderer* { return renderer.get(); }
-        auto getPhysics() const -> Physics* { return physics.get(); }
-        auto getScriptRuntime() const -> ScriptRuntime* { return scriptRuntime.get(); }
-        auto getJobPool() const -> JobPool* { return jobPool.get(); }
+        auto getFileSystem() const -> FileSystem* { return fs_.get(); }
+        auto getRenderer() const -> Renderer* { return renderer_.get(); }
+        auto getPhysics() const -> Physics* { return physics_.get(); }
+        auto getScriptRuntime() const -> ScriptRuntime* { return scriptRuntime_.get(); }
+        auto getJobPool() const -> JobPool* { return jobPool_.get(); }
 
     protected:
-        sptr<Renderer> renderer;
-        sptr<Physics> physics;
-        sptr<FileSystem> fs;
-        sptr<ScriptRuntime> scriptRuntime;
-        sptr<JobPool> jobPool;
+        sptr<Renderer> renderer_;
+        sptr<Physics> physics_;
+        sptr<FileSystem> fs_;
+        sptr<ScriptRuntime> scriptRuntime_;
+        sptr<JobPool> jobPool_;
 
-        DeviceMode mode;
-        bool vsync;
+        DeviceMode mode_;
+        bool vsync_;
 
         // key code -> was pressed for the first time
-        umap<KeyCode, bool> pressedKeys;
-        uset<KeyCode> releasedKeys;
+        umap<KeyCode, bool> pressedKeys_;
+        uset<KeyCode> releasedKeys_;
 
-        Vector2 mouseDelta;
-        Vector2 mousePos;
-        umap<MouseButton, bool> pressedMouseButtons;
-        uset<MouseButton> releasedMouseButtons;
+        Vector2 mouseDelta_;
+        Vector2 mousePos_;
+        umap<MouseButton, bool> pressedMouseButtons_;
+        uset<MouseButton> releasedMouseButtons_;
 
-        float lastUpdateTime = 0;
-        float timeDelta = 0;
+        float lastUpdateTime_ = 0;
+        float timeDelta_ = 0;
 
-        bool windowCloseRequested = false;
-        bool quitRequested = false;
+        bool windowCloseRequested_ = false;
+        bool quitRequested_ = false;
 
         explicit Device(const DeviceSetup &setup);
         

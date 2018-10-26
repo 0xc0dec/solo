@@ -62,18 +62,18 @@ auto VulkanMaterial::stateHash() const -> size_t
     size_t seed = 0;
     const std::hash<u32> unsignedHasher;
     const std::hash<bool> boolHash;
-    combineHash(seed, unsignedHasher(static_cast<u32>(faceCull)));
-    combineHash(seed, unsignedHasher(static_cast<u32>(polygonMode)));
-    combineHash(seed, unsignedHasher(static_cast<u32>(srcBlendFactor)));
-    combineHash(seed, unsignedHasher(static_cast<u32>(dstBlendFactor)));
-    combineHash(seed, boolHash(depthTest));
-    combineHash(seed, boolHash(depthWrite));
+    combineHash(seed, unsignedHasher(static_cast<u32>(faceCull_)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(polygonMode_)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(srcBlendFactor_)));
+    combineHash(seed, unsignedHasher(static_cast<u32>(dstBlendFactor_)));
+    combineHash(seed, boolHash(depthTest_));
+    combineHash(seed, boolHash(depthWrite_));
     return seed;
 }
 
 void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
 {
-    switch (polygonMode)
+    switch (polygonMode_)
     {
         case PolygonMode::Points:
             cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
@@ -91,7 +91,7 @@ void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
             SL_DEBUG_PANIC(true, "Unsupported polygon mode");
     }
 
-    switch (faceCull)
+    switch (faceCull_)
     {
         case FaceCull::None:
             cfg.withCullMode(VK_CULL_MODE_NONE);
@@ -106,14 +106,14 @@ void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
             SL_DEBUG_PANIC(true, "Unsupported face cull mode");
     }
 
-    cfg.withDepthTest(depthWrite, depthTest);
+    cfg.withDepthTest(depthWrite_, depthTest_);
 
     cfg.withBlend(
-        blend,
-        convertBlendFactor(srcBlendFactor),
-        convertBlendFactor(dstBlendFactor),
-        convertBlendFactor(srcBlendFactor),
-        convertBlendFactor(dstBlendFactor));
+        blend_,
+        convertBlendFactor(srcBlendFactor_),
+        convertBlendFactor(dstBlendFactor_),
+        convertBlendFactor(srcBlendFactor_),
+        convertBlendFactor(dstBlendFactor_));
 }
 
 void VulkanMaterial::setFloatParameter(const str &name, float value)

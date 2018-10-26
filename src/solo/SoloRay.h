@@ -12,19 +12,19 @@ namespace solo
     class Ray final
     {
     public:
-        Ray() {}
+        Ray() = default;
         Ray(const Vector3 &origin, const Vector3 &direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
-        auto getOrigin() const -> Vector3 { return origin; }
+        auto getOrigin() const -> Vector3 { return origin_; }
         void setOrigin(const Vector3 &origin);
 
-        auto getDirection() const -> Vector3 { return direction; }
+        auto getDirection() const -> Vector3 { return direction_; }
         void setDirection(const Vector3 &direction);
 
     private:
-        Vector3 origin{0, 0, 0};
-        Vector3 direction{0, 0, 1};
+        Vector3 origin_{0, 0, 0};
+        Vector3 direction_{0, 0, 1};
       
         void normalize();
     };

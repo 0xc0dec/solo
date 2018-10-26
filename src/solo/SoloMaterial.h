@@ -95,37 +95,37 @@ namespace solo
 
         virtual auto getEffect() const -> sptr<Effect> = 0;
 
-        auto getPolygonMode() const -> PolygonMode { return polygonMode; }
-        void setPolygonMode(PolygonMode mode) { polygonMode = mode; }
+        auto getPolygonMode() const -> PolygonMode { return polygonMode_; }
+        void setPolygonMode(PolygonMode mode) { polygonMode_ = mode; }
 
-        bool getBlend() const { return blend; }
-        void setBlend(bool enabled) { blend = enabled; }
+        bool getBlend() const { return blend_; }
+        void setBlend(bool enabled) { blend_ = enabled; }
 
-        auto getSrcBlendFactor() const -> BlendFactor { return srcBlendFactor; }
-        auto getDstBlendFactor() const -> BlendFactor { return dstBlendFactor; }
+        auto getSrcBlendFactor() const -> BlendFactor { return srcBlendFactor_; }
+        auto getDstBlendFactor() const -> BlendFactor { return dstBlendFactor_; }
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        auto getFaceCull() const -> FaceCull { return faceCull; }
-        void setFaceCull(FaceCull face) { faceCull = face; }
+        auto getFaceCull() const -> FaceCull { return faceCull_; }
+        void setFaceCull(FaceCull face) { faceCull_ = face; }
 
-        bool hasDepthWrite() const { return depthWrite; }
-        void setDepthWrite(bool enabled) { depthWrite = enabled; }
+        bool hasDepthWrite() const { return depthWrite_; }
+        void setDepthWrite(bool enabled) { depthWrite_ = enabled; }
 
-        bool hasDepthTest() const { return depthTest; }
-        void setDepthTest(bool enabled) { depthTest = enabled; }
+        bool hasDepthTest() const { return depthTest_; }
+        void setDepthTest(bool enabled) { depthTest_ = enabled; }
 
-        auto getDepthFunction() const -> DepthFunction { return depthFunc; }
-        void setDepthFunction(DepthFunction func) { depthFunc = func; }
+        auto getDepthFunction() const -> DepthFunction { return depthFunc_; }
+        void setDepthFunction(DepthFunction func) { depthFunc_ = func; }
 
     protected:
-        FaceCull faceCull = FaceCull::Back;
-        PolygonMode polygonMode = PolygonMode::Fill;
-        bool depthWrite = true;
-        bool depthTest = true;
-        bool blend = false;
-        BlendFactor srcBlendFactor = BlendFactor::SrcAlpha;
-        BlendFactor dstBlendFactor = BlendFactor::OneMinusSrcAlpha;
-        DepthFunction depthFunc = DepthFunction::Less;
+        FaceCull faceCull_ = FaceCull::Back;
+        PolygonMode polygonMode_ = PolygonMode::Fill;
+        bool depthWrite_ = true;
+        bool depthTest_ = true;
+        bool blend_ = false;
+        BlendFactor srcBlendFactor_ = BlendFactor::SrcAlpha;
+        BlendFactor dstBlendFactor_ = BlendFactor::OneMinusSrcAlpha;
+        DepthFunction depthFunc_ = DepthFunction::Less;
 
         Material() = default;
     };

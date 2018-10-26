@@ -17,14 +17,14 @@ namespace solo
     public:
         virtual ~Job() = default;
 
-        bool isDone() const { return done; }
+        bool isDone() const { return done_; }
 
         virtual void update() = 0;
 
     protected:
         Job() = default;
 
-        bool done = false;
+        bool done_ = false;
     };
 
     template <class T>
@@ -36,13 +36,13 @@ namespace solo
         using Consumer = std::function<void(const vec<sptr<T>> &)>;
 
         JobBase(const vec<Producer> &funcs, const Consumer &onDone):
-            callback(onDone)
+            callback_(onDone)
         {
             for (auto &func : funcs)
             {
                 auto future = std::async(std::launch::async, func);
-                futures.push_back(std::move(future));
-                results.push_back(nullptr);
+                futures_.push_back(std::move(future));
+                results_.push_back(nullptr);
             }
         }
 
@@ -50,13 +50,13 @@ namespace solo
         {
             auto readyCount = 0;
             auto i = 0;
-            for (auto &future : futures)
+            for (auto &future : futures_)
             {
                 if (future.valid())
                 {
                     const auto status = future.wait_for(std::chrono::nanoseconds(0));
                     if (status == std::future_status::ready)
-                        results[i] = future.get();
+                        results_[i] = future.get();
                 }
                 else
                 {
@@ -66,17 +66,17 @@ namespace solo
                 i++;
             }
 
-            if (readyCount == futures.size())
+            if (readyCount == futures_.size())
             {
-                callback(results);
-                done = true;
+                callback_(results_);
+                done_ = true;
             }
         }
 
     private:
-        vec<std::future<sptr<T>>> futures;
-        vec<sptr<T>> results;
-        Consumer callback;
+        vec<std::future<sptr<T>>> futures_;
+        vec<sptr<T>> results_;
+        Consumer callback_;
     };
 
     class JobPool final: public NoCopyAndMove
@@ -84,13 +84,13 @@ namespace solo
     public:
         JobPool() = default;
 
-        bool hasActiveJobs() const { return anyActiveJobs; }
+        bool hasActiveJobs() const { return anyActiveJobs_; }
         void addJob(sptr<Job> job);
         void update();
 
     private:
-        list<sptr<Job>> jobs;
-        bool anyActiveJobs = false;
-        SpinLock lock;
+        list<sptr<Job>> jobs_;
+        bool anyActiveJobs_ = false;
+        SpinLock lock_;
     };
 }

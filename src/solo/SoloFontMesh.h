@@ -21,16 +21,16 @@ namespace solo
         static auto create(Device *device, sptr<Font> font) -> sptr<FontMesh>;
 
         void setText(const str &text);
-        auto getMesh() const -> sptr<Mesh> { return mesh; }
+        auto getMesh() const -> sptr<Mesh> { return mesh_; }
 
     private:
-        Device *device = nullptr;
-        sptr<Font> font;
-        sptr<Mesh> mesh;
-        vec<Vector3> vertices;
-        vec<Vector2> uvs;
-        vec<u16> indexes;
-        str text;
+        Device *device_ = nullptr;
+        sptr<Font> font_;
+        sptr<Mesh> mesh_;
+        vec<Vector3> vertices_;
+        vec<Vector2> uvs_;
+        vec<u16> indexes_;
+        str text_;
 
         explicit FontMesh(Device *device, sptr<Font> font);
 

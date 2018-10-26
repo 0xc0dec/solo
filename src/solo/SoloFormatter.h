@@ -16,17 +16,17 @@ namespace solo
     public:
         auto operator()() const
         {
-            return buf.str();
+            return buf_.str();
         }
 
         template <class TFirst, class... TRest>
         auto operator()(TFirst first, TRest... rest)
         {
-            buf << first;
+            buf_ << first;
             return operator()(rest...);
         }
 
     private:
-        std::ostringstream buf;
+        std::ostringstream buf_;
     };
 }

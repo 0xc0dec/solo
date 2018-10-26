@@ -7,4 +7,4 @@
 
 using namespace solo;
 
-u32 ComponentTypeId::counter = 0;
+u32 ComponentTypeId::counter_ = 0;

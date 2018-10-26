@@ -41,7 +41,7 @@ namespace solo
         virtual auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> = 0;
 
     protected:
-        Device *device = nullptr;
+        Device *device_ = nullptr;
       
         Physics(Device *device, const FriendToken<Device> &);
     };

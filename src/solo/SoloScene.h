@@ -22,7 +22,7 @@ namespace solo
 
         ~Scene() = default;
 
-        auto getDevice() const -> Device* { return device; }
+        auto getDevice() const -> Device* { return device_; }
 
         auto createNode() -> sptr<Node>;
         void removeNodeById(u32 nodeId);
@@ -45,11 +45,11 @@ namespace solo
             sptr<Component> component;
         };
 
-        Device *device = nullptr;
-        u32 nodeCounter = 0;
-        umap<u32, umap<u32, ComponentContext>> nodes;
-        umap<u32, uset<u32>> deletedComponents;
-        vec<Camera*> cameras;
+        Device *device_ = nullptr;
+        u32 nodeCounter_ = 0;
+        umap<u32, umap<u32, ComponentContext>> nodes_;
+        umap<u32, uset<u32>> deletedComponents_;
+        vec<Camera*> cameras_;
 
         explicit Scene(Device *device);
 

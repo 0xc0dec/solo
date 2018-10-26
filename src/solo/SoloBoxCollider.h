@@ -17,6 +17,6 @@ namespace solo
         static auto create(const Vector3 &size) -> sptr<BoxCollider>;
 
     protected:
-        BoxCollider() {}
+        BoxCollider() = default;
     };
 }
