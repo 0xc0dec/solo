@@ -194,7 +194,7 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
 OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle_);
-    SL_DEBUG_PANIC(!handle, "Unable to create texture handle");
+    SL_DEBUG_PANIC(!handle_, "Unable to create texture handle");
 }
 
 OpenGLTexture::~OpenGLTexture()

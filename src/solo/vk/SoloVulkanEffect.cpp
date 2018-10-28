@@ -78,13 +78,13 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
 
 auto VulkanEffect::uniformBuffer(const str &name) -> UniformBuffer
 {
-    SL_DEBUG_PANIC(!uniformBuffers.count(name), "Uniform buffer ", name, " not found");
+    SL_DEBUG_PANIC(!uniformBuffers_.count(name), "Uniform buffer ", name, " not found");
     return uniformBuffers_.at(name);
 }
 
 auto VulkanEffect::sampler(const str &name) -> Sampler
 {
-    SL_DEBUG_PANIC(!samplers.count(name), "Sampler ", name, " not found");
+    SL_DEBUG_PANIC(!samplers_.count(name), "Sampler ", name, " not found");
     return samplers_.at(name);
 }
 

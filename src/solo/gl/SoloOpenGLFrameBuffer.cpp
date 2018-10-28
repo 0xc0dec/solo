@@ -41,7 +41,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     }
 
     glGenFramebuffers(1, &result->handle_);
-    SL_DEBUG_PANIC(!result->handle, "Unable to create frame buffer handle");
+    SL_DEBUG_PANIC(!result->handle_, "Unable to create frame buffer handle");
     
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle_);
 

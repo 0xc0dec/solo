@@ -109,7 +109,7 @@ namespace solo
 
         void ensureInitialized()
         {
-            assert(del /* Calling cleanup() on a Resource with empty deleter */);
+            assert(del_ /* Calling cleanup() on a Resource with empty deleter */);
         }
 
         void swap(VulkanResource<T> &other) noexcept

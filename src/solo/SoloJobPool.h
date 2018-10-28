@@ -60,7 +60,7 @@ namespace solo
                 }
                 else
                 {
-                    SL_DEBUG_PANIC(!results[i], "Unable to obtain job result");
+                    SL_DEBUG_PANIC(!results_[i], "Unable to obtain job result");
                     readyCount++;
                 }
                 i++;

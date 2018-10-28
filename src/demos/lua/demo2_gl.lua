@@ -10,6 +10,5 @@ deviceSetup.canvasHeight = 700
 deviceSetup.fullScreen = false
 deviceSetup.vsync = true
 deviceSetup.windowTitle = "Demo 2 (OpenGL)"
-deviceSetup.logFilePath = "demo2_gl.log"
 
 runScript = "../../src/demos/lua/demo2.lua"
