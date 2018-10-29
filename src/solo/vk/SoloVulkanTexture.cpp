@@ -86,7 +86,7 @@ static auto createSampler(
 }
 
 VulkanTexture::VulkanTexture(Device *device):
-    renderer_(static_cast<VulkanRenderer*>(device->getRenderer()))
+    renderer_(static_cast<VulkanRenderer*>(device->renderer()))
 {
 }
 

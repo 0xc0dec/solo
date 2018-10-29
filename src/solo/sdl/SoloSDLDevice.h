@@ -15,15 +15,15 @@ namespace solo
     public:
         virtual ~SDLDevice();
 
-        auto getWindowTitle() const -> str override final;
+        auto windowTitle() const -> str override final;
         void setWindowTitle(const str &title) override final;
 
         void setCursorCaptured(bool captured) override final;
 
-        auto getLifetime() const -> float override final;
+        auto lifetime() const -> float override final;
 
-        auto getCanvasSize() const -> Vector2 override final;
-        auto getDpiIndependentCanvasSize() const -> Vector2 override final;
+        auto canvasSize() const -> Vector2 override final;
+        auto dpiIndependentCanvasSize() const -> Vector2 override final;
 
     protected:
         SDL_Window *window_ = nullptr;

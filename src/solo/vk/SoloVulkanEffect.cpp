@@ -69,7 +69,7 @@ auto VulkanEffect::createFromSources(Device *device,
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
-    renderer_ = dynamic_cast<VulkanRenderer*>(device->getRenderer());
+    renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
     vertexShader_ = createShaderModule(renderer_->device(), vsSrc, vsSrcLen);
     fragmentShader_ = createShaderModule(renderer_->device(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32), true);

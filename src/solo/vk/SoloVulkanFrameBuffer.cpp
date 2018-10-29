@@ -17,7 +17,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 
-    const auto renderer = static_cast<VulkanRenderer*>(device->getRenderer());
+    const auto renderer = static_cast<VulkanRenderer*>(device->renderer());
     auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
 
     vec<VkImageView> views;

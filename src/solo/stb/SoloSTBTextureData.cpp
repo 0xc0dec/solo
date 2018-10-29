@@ -43,9 +43,9 @@ STBTexture2DData::~STBTexture2DData()
 
 auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
 {
-    auto bytes = device->getFileSystem()->readBytes(path);
+    auto bytes = device->fileSystem()->readBytes(path);
     int width, height, channels;
-    stbi_set_flip_vertically_on_load(device->getMode() == DeviceMode::OpenGL);
+    stbi_set_flip_vertically_on_load(device->mode() == DeviceMode::OpenGL);
     // According to the docs, channels are not affected by the requested channels
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &channels, 4);
     SL_DEBUG_PANIC(!data, "Unable to load image ", path);

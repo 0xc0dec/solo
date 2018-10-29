@@ -61,7 +61,7 @@ static void registerLibrary(LuaState &state)
         end
 
         sl.generateEffectSource = function(desc)
-            local vulkan = sl.device:getMode() == sl.DeviceMode.Vulkan -- otherwise 330
+            local vulkan = sl.device:mode() == sl.DeviceMode.Vulkan -- otherwise 330
 
             function generateAttributes(desc, typeStr)
                 local all = {}

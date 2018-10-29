@@ -56,7 +56,7 @@ bool STBTrueTypeFont::canLoadFromFile(const str &path)
 auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u32 atlasWidth, u32 atlasHeight,
     u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>
 {
-    auto data = device->getFileSystem()->readBytes(path);
+    auto data = device->fileSystem()->readBytes(path);
 
     auto result = sptr<STBTrueTypeFont>(new STBTrueTypeFont());
     result->firstChar_ = firstChar;

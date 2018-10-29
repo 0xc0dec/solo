@@ -23,8 +23,8 @@ void Spectator::init()
 
 void Spectator::update()
 {
-    const auto mouseMotion = device_->getMouseMotion();
-    const auto dt = device_->getTimeDelta();
+    const auto mouseMotion = device_->mouseMotion();
+    const auto dt = device_->timeDelta();
 
     if (device_->isMouseButtonDown(MouseButton::Right, true))
         device_->setCursorCaptured(true);

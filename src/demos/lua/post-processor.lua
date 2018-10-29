@@ -31,7 +31,7 @@ local function createStep(camera, material, target, assetCache)
 end
 
 local function init1(camera, assetCache)
-    local canvasSize = sl.device:getCanvasSize()
+    local canvasSize = sl.device:canvasSize()
 
     local createTarget = function()
         local tex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB8)
@@ -107,7 +107,7 @@ end
 
 local function init2(camera, assetCache)
     local stitchWidth = 30
-    local canvasSize = sl.device:getCanvasSize()
+    local canvasSize = sl.device:canvasSize()
 
     local stitchTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/stitches.png"))
     stitchTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)

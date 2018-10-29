@@ -60,7 +60,6 @@ namespace solo
 
     enum class DeviceMode
     {
-        Null,
         OpenGL,
         Vulkan
     };
@@ -72,18 +71,18 @@ namespace solo
 
         virtual ~Device() = default;
 
-        virtual auto getWindowTitle() const -> str = 0;
+        virtual auto windowTitle() const -> str = 0;
         virtual void setWindowTitle(const str &title) = 0;
 
-        virtual auto getCanvasSize() const -> Vector2 = 0;
-        virtual auto getDpiIndependentCanvasSize() const -> Vector2 = 0;
+        virtual auto canvasSize() const -> Vector2 = 0;
+        virtual auto dpiIndependentCanvasSize() const -> Vector2 = 0;
 
         virtual void saveScreenshot(const str &path) = 0; // TODO return bytes?
 
         virtual void setCursorCaptured(bool captured) = 0;
 
-        virtual auto getLifetime() const -> float = 0;
-        auto getTimeDelta() const -> float { return timeDelta_; }
+        virtual auto lifetime() const -> float = 0;
+        auto timeDelta() const -> float { return timeDelta_; }
 
         bool isWindowCloseRequested() const { return windowCloseRequested_; }
         bool isQuitRequested() const { return quitRequested_; }
@@ -92,21 +91,21 @@ namespace solo
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
-        auto getMouseMotion() const -> Vector2 { return mouseDelta_; }
-        auto getMousePosition() const -> Vector2 { return mousePos_; }
+        auto mouseMotion() const -> Vector2 { return mouseDelta_; }
+        auto mousePosition() const -> Vector2 { return mousePos_; }
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
         bool isMouseButtonReleased(MouseButton button) const;
 
         void update(const std::function<void()> &update);
 
-        auto getMode() const -> DeviceMode { return mode_; }
+        auto mode() const -> DeviceMode { return mode_; }
         bool isVsync() const { return vsync_; }
 
-        auto getFileSystem() const -> FileSystem* { return fs_.get(); }
-        auto getRenderer() const -> Renderer* { return renderer_.get(); }
-        auto getPhysics() const -> Physics* { return physics_.get(); }
-        auto getScriptRuntime() const -> ScriptRuntime* { return scriptRuntime_.get(); }
-        auto getJobPool() const -> JobPool* { return jobPool_.get(); }
+        auto fileSystem() const -> FileSystem* { return fs_.get(); }
+        auto renderer() const -> Renderer* { return renderer_.get(); }
+        auto physics() const -> Physics* { return physics_.get(); }
+        auto scriptRuntime() const -> ScriptRuntime* { return scriptRuntime_.get(); }
+        auto jobPool() const -> JobPool* { return jobPool_.get(); }
 
     protected:
         sptr<Renderer> renderer_;

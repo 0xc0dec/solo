@@ -16,7 +16,7 @@ using namespace solo;
 
 VulkanMesh::VulkanMesh(Device *device)
 {
-    renderer_ = dynamic_cast<VulkanRenderer*>(device->getRenderer());
+    renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
 }
 
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32

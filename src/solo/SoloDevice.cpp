@@ -9,7 +9,6 @@
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
-#include "null/SoloNullDevice.h"
 #include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
 
@@ -31,9 +30,6 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             device = std::make_unique<VulkanSDLDevice>(setup);
             break;
 #endif
-        case DeviceMode::Null:
-            device = std::make_unique<NullDevice>(setup);
-            break;
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
             break;
@@ -112,7 +108,7 @@ void Device::update(const std::function<void()> &update)
 
 void Device::updateTime()
 {
-    const auto time = getLifetime();
+    const auto time = lifetime();
     timeDelta_ = time - lastUpdateTime_;
     lastUpdateTime_ = time;
 }

@@ -188,7 +188,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     const auto vulkanDevice = dynamic_cast<VulkanSDLDevice*>(engineDevice);
     const auto instance = vulkanDevice->instance();
     const auto surface = vulkanDevice->surface();
-    const auto canvasSize = engineDevice->getCanvasSize();
+    const auto canvasSize = engineDevice->canvasSize();
 
 #ifdef SL_DEBUG
     debugCallback_ = createDebugCallback(instance, debugCallbackFunc);
@@ -217,7 +217,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     currentRenderPass_ = &swapchain_.renderPass();
     
     auto currentFrameBuffer = swapchain_.currentFrameBuffer();
-    auto dimensions = engineDevice_->getCanvasSize();
+    auto dimensions = engineDevice_->canvasSize();
     vec<VkClearAttachment> clearAttachments = {{VK_IMAGE_ASPECT_COLOR_BIT, 0, {{0, 0, 0, 1}}}}; // TODO avoid mem allocation
 
     if (renderTarget)

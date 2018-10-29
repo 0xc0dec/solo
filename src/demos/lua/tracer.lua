@@ -17,7 +17,7 @@ return function(physics)
                 return
             end
 
-            local mousePos = sl.device:getMousePosition()
+            local mousePos = sl.device:mousePosition()
             local ray = self.camera:windowPointToWorldRay(mousePos)
             local from = ray:getOrigin()
             local to = from + ray:getDirection() * 100

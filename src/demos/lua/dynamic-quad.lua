@@ -9,7 +9,7 @@ return function(scene, assetCache)
 
         return sl.createComponent("DynamicQuadUpdater", {
             update = function()
-                time = time + 2 * sl.device:getTimeDelta()
+                time = time + 2 * sl.device:timeDelta()
                 data[3] = 0.5 * math.sin(time + 1)
                 data[8] = 0.5 * math.sin(time + 2)
                 data[13] = 0.5 * math.sin(time + 3)

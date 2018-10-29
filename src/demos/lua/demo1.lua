@@ -9,8 +9,8 @@ require "common"
 
 function demo()
     local dev = sl.device
-    local physics = dev:getPhysics()
-    local fs = dev:getFileSystem()
+    local fs = dev:fileSystem()
+    local physics = dev:physics()
     local scene = sl.Scene.create(dev)
 
     local tags = require "tags"

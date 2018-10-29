@@ -10,7 +10,6 @@
 #include "SoloFileSystem.h"
 #include "gl/SoloOpenGLMesh.h"
 #include "vk/SoloVulkanMesh.h"
-#include "null/SoloNullMesh.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -27,7 +26,7 @@ struct MeshData
 static auto loadMeshData(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<MeshData>
 {
     // TODO Implement proper io system for assimp to avoid loading file into memory
-    const auto bytes = device->getFileSystem()->readBytes(path);
+    const auto bytes = device->fileSystem()->readBytes(path);
     
     Assimp::Importer importer;
     const auto flags = aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
@@ -111,7 +110,7 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
 
 auto Mesh::create(Device *device) -> sptr<Mesh>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -122,7 +121,8 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
             return std::make_shared<VulkanMesh>(device);
 #endif
         default:
-            return std::make_shared<NullMesh>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 
@@ -157,7 +157,7 @@ auto Mesh::loadFromFileAsync(Device *device, const str &path, const VertexBuffer
         handle->resolve(mesh);
     };
 
-    device->getJobPool()->addJob(std::make_shared<JobBase<MeshData>>(producers, consumer));
+    device->jobPool()->addJob(std::make_shared<JobBase<MeshData>>(producers, consumer));
 
     return handle;
 }

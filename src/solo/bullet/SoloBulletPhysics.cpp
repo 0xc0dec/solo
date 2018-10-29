@@ -22,7 +22,7 @@ BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceTo
 
 void BulletPhysics::update()
 {
-    world_->stepSimulation(device_->getTimeDelta(), 7); // 7 is debatable, but good enough. See docs
+    world_->stepSimulation(device_->timeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
 
 void BulletPhysics::setGravity(const Vector3 &gravity)

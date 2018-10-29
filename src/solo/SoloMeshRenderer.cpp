@@ -13,7 +13,7 @@ using namespace solo;
 
 MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node),
-    renderer_(node.getScene()->getDevice()->getRenderer())
+    renderer_(node.getScene()->getDevice()->renderer())
 {
     transform_ = node.findComponent<Transform>();
 }

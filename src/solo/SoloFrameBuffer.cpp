@@ -8,13 +8,12 @@
 #include "SoloTexture.h"
 #include "gl/SoloOpenGLFrameBuffer.h"
 #include "vk/SoloVulkanFrameBuffer.h"
-#include "null/SoloNullFrameBuffer.h"
 
 using namespace solo;
 
 auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -25,7 +24,8 @@ auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments
             return VulkanFrameBuffer::create(device, attachments);
 #endif
         default:
-            return std::make_shared<NullFrameBuffer>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 

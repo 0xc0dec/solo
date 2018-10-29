@@ -182,7 +182,6 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     
     {
         auto m = module.beginModule("DeviceMode");
-        REG_MODULE_CONSTANT(m, DeviceMode, Null);
         REG_MODULE_CONSTANT(m, DeviceMode, OpenGL);
         REG_MODULE_CONSTANT(m, DeviceMode, Vulkan);
         m.endModule();

@@ -7,13 +7,12 @@
 #include "SoloDevice.h"
 #include "gl/SoloOpenGLRenderer.h"
 #include "vk/SoloVulkanRenderer.h"
-#include "null/SoloNullRenderer.h"
 
 using namespace solo;
 
 auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -24,7 +23,8 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
             return std::make_shared<VulkanRenderer>(device);
 #endif
         default:
-            return std::make_shared<NullRenderer>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 

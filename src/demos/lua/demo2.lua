@@ -9,8 +9,8 @@ require "common"
 
 function demo()
     local dev = sl.device
-    local physics = dev:getPhysics()
-    local fs = dev:getFileSystem()
+    local physics = dev:physics()
+    local fs = dev:fileSystem()
     local scene = sl.Scene.create(dev)
 
     local tags = require "tags"
@@ -177,7 +177,7 @@ function demo()
         return renderer
     end
 
-    local canvasSize = dev:getCanvasSize()
+    local canvasSize = dev:canvasSize()
 
     local bricksTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/rock_color.jpg"), true)
     bricksTex:setAnisotropyLevel(16)

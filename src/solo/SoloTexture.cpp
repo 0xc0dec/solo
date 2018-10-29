@@ -9,7 +9,6 @@
 #include "SoloJobPool.h"
 #include "gl/SoloOpenGLTexture.h"
 #include "vk/SoloVulkanTexture.h"
-#include "null/SoloNullTexture.h"
 
 using namespace solo;
 
@@ -69,14 +68,14 @@ auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generate
         handle->resolve(texture);
     };
 
-    device->getJobPool()->addJob(std::make_shared<JobBase<Texture2DData>>(producers, consumer));
+    device->jobPool()->addJob(std::make_shared<JobBase<Texture2DData>>(producers, consumer));
 
     return handle;
 }
 
 auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -87,13 +86,14 @@ auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat
             return VulkanTexture2D::createEmpty(device, width, height, format);
 #endif
         default:
-            return std::make_shared<NullTexture2D>(format, Vector2(width, height));
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 
 auto Texture2D::createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -104,7 +104,8 @@ auto Texture2D::createFromData(Device *device, sptr<Texture2DData> data, bool ge
             return VulkanTexture2D::createFromData(device, data, generateMipmaps);
 #endif
         default:
-            return std::make_shared<NullTexture2D>(data->getTextureFormat(), data->getDimensions());
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 
@@ -151,14 +152,14 @@ auto CubeTexture::loadFromFaceFilesAsync(
         handle->resolve(texture);
     };
 
-    device->getJobPool()->addJob(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));
+    device->jobPool()->addJob(std::make_shared<JobBase<CubeTextureData>>(producers, consumer));
 
     return handle;
 }
 
 auto CubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -169,7 +170,8 @@ auto CubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> 
             return VulkanCubeTexture::createFromData(device, data);
 #endif
         default:
-            return std::make_shared<NullCubeTexture>(data->getTextureFormat(), data->getDimension());
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 

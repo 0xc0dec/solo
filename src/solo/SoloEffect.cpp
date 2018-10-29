@@ -9,25 +9,24 @@
 #include "SoloScriptRuntime.h"
 #include "gl/SoloOpenGLEffect.h"
 #include "vk/SoloVulkanEffect.h"
-#include "null/SoloNullEffect.h"
 
 using namespace solo;
 
 auto Effect::loadFromSourceFile(Device *device, const str &path) -> sptr<Effect>
 {
-    const auto source = device->getFileSystem()->readText(path);
+    const auto source = device->fileSystem()->readText(path);
     return createFromSource(device, source);
 }
 
 auto Effect::loadFromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
 {
-    const auto desc = device->getFileSystem()->readText(path);
+    const auto desc = device->fileSystem()->readText(path);
     return createFromDescription(device, desc);
 }
 
 auto Effect::createFromDescription(Device* device, const str& description) -> sptr<Effect>
 {
-    const auto source = device->getScriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
+    const auto source = device->scriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
     return createFromSource(device, source);
 }
 
@@ -49,7 +48,7 @@ auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
     const auto fsBytes = source.c_str() + fragShaderStartIdx;
     const auto fsSize = fragShaderEndIdx - fragShaderStartIdx + 1;
 
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -60,13 +59,14 @@ auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
             return VulkanEffect::createFromSources(device, vsBytes, vsSize, "source", fsBytes, fsSize, "source");
 #endif
         default:
-            return std::make_shared<NullEffect>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 
 auto Effect::createFromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -77,6 +77,7 @@ auto Effect::createFromShaderSources(Device *device, const void *vsSrc, u32 vsSr
             return VulkanEffect::createFromSources(device, vsSrc, vsSrcLen, "vert-src", fsSrc, fsSrcLen, "frag-src");
 #endif
         default:
-            return std::make_shared<NullEffect>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }

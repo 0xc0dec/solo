@@ -19,7 +19,7 @@ SDLDevice::~SDLDevice()
     SDL_Quit();
 }
 
-auto SDLDevice::getWindowTitle() const -> str
+auto SDLDevice::windowTitle() const -> str
 {
     return str(SDL_GetWindowTitle(window_));
 }
@@ -34,19 +34,19 @@ void SDLDevice::setCursorCaptured(bool captured)
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
-auto SDLDevice::getLifetime() const -> float
+auto SDLDevice::lifetime() const -> float
 {
     return SDL_GetTicks() / 1000.0f;
 }
 
-auto SDLDevice::getCanvasSize() const -> Vector2
+auto SDLDevice::canvasSize() const -> Vector2
 {
     s32 width, height;
     SDL_GL_GetDrawableSize(window_, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-auto SDLDevice::getDpiIndependentCanvasSize() const -> Vector2
+auto SDLDevice::dpiIndependentCanvasSize() const -> Vector2
 {
     s32 width, height;
     SDL_GetWindowSize(window_, &width, &height);

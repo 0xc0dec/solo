@@ -29,17 +29,17 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 Camera::Camera(const Node &node):
     ComponentBase(node),
     device_(node.getScene()->getDevice()),
-    renderer_(device_->getRenderer()),
+    renderer_(device_->renderer()),
     fov_(Degrees(60))
 {
-    auto canvasSize = device_->getCanvasSize();
+    auto canvasSize = device_->canvasSize();
     viewport_ = Vector4(0, 0, canvasSize.x(), canvasSize.y());
 }
 
 void Camera::init()
 {
     transform_ = node_.findComponent<Transform>();
-    const auto canvasSize = device_->getCanvasSize();
+    const auto canvasSize = device_->canvasSize();
     aspectRatio_ = canvasSize.x() / canvasSize.y();
     dirtyFlags_ |= AllProjectionDirtyBits;
 }
@@ -150,7 +150,7 @@ auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
 {
     const auto halfHeightInWorldUnits = zNear_ * std::tan(fov_.toRawRadians() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio_;
-    const auto canvasSize = device_->getDpiIndependentCanvasSize();
+    const auto canvasSize = device_->dpiIndependentCanvasSize();
     const auto right = transform_->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
     const auto down = transform_->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
     const auto pos = transform_->getWorldPosition();

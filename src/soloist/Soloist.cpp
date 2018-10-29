@@ -22,7 +22,7 @@ int main(int argc, s8 *argv[])
         const auto runScript = transientRuntime->getString("runScript");
 
         const auto device = Device::create(setup);
-        device->getScriptRuntime()->executeFile(runScript);
+        device->scriptRuntime()->executeFile(runScript);
     }
     catch (const std::exception &e)
     {

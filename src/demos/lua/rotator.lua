@@ -11,7 +11,7 @@ return function(space, axis, speed)
         end,
 
         update = function(self)
-            local angle = sl.device:getTimeDelta() * speed
+            local angle = sl.device:timeDelta() * speed
             local rotationSpace = sl.TransformSpace.World
             if space == "local" then
                 rotationSpace = sl.TransformSpace.Self

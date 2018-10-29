@@ -5,15 +5,12 @@
 
 #include "SoloFileSystem.h"
 #include "SoloDevice.h"
-#include "null/SoloNullFileSystem.h"
 #include <fstream>
 
 using namespace solo;
 
 auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>
 {
-    if (device->getMode() == DeviceMode::Null)
-        return std::make_shared<NullFileSystem>();
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 

@@ -8,13 +8,12 @@
 #include "SoloDevice.h"
 #include "gl/SoloOpenGLMaterial.h"
 #include "vk/SoloVulkanMaterial.h"
-#include "null/SoloNullMaterial.h"
 
 using namespace solo;
 
 auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
 {
-    switch (device->getMode())
+    switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
@@ -25,7 +24,8 @@ auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
             return std::make_shared<VulkanMaterial>(effect);
 #endif
         default:
-            return std::make_shared<NullMaterial>();
+            SL_DEBUG_PANIC(true, "Unknown device mode");
+            break;
     }
 }
 
