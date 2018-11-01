@@ -53,7 +53,7 @@ if (MSVC)
 endif()
 
 include("CMakeLists.Solo.txt")
-include("CMakeLists.Soloist.txt")
+include("CMakeLists.Solr.txt")
 include("CMakeLists.Demos.txt")
 include("CMakeLists.Vendor.txt")
 include("CMakeLists.Vendor.Lua.txt")
