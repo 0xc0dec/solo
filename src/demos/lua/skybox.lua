@@ -28,7 +28,7 @@ return function(scene, assetCache)
     renderer:setTag(tag)
     renderer:setMaterial(0, material)
 
-    sl.CubeTexture.loadFromFaceFilesAsync(sl.device,
+    sl.CubeTexture.fromFaceFilesAsync(sl.device,
         getImagePath("+x.png"), getImagePath("-x.png"),
         getImagePath("+y.png"), getImagePath("-y.png"),
         getImagePath("+z.png"), getImagePath("-z.png")

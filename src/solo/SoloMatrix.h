@@ -40,16 +40,16 @@ namespace solo
         void invert();
         void transpose();
 
-        auto getScale() const -> Vector3;
-        auto getRotation() const -> Quaternion;
-        auto getTranslation() const -> Vector3;
+        auto scale() const -> Vector3;
+        auto rotation() const -> Quaternion;
+        auto translation() const -> Vector3;
 
-        auto getUpVector() const -> Vector3 { return {data_[1][0], data_[1][1], data_[1][2]}; }
-        auto getDownVector() const -> Vector3 { return {-data_[1][0], -data_[1][1], -data_[1][2]}; }
-        auto getLeftVector() const -> Vector3 { return {-data_[0][0], -data_[0][1], -data_[0][2]}; }
-        auto getRightVector() const -> Vector3 { return {data_[0][0], data_[0][1], data_[0][2]}; }
-        auto getForwardVector() const -> Vector3 { return {-data_[2][0], -data_[2][1], -data_[2][2]}; }
-        auto getBackVector() const -> Vector3 { return {data_[2][0], data_[2][1], data_[2][2]}; }
+        auto upVector() const -> Vector3 { return {data_[1][0], data_[1][1], data_[1][2]}; }
+        auto downVector() const -> Vector3 { return {-data_[1][0], -data_[1][1], -data_[1][2]}; }
+        auto leftVector() const -> Vector3 { return {-data_[0][0], -data_[0][1], -data_[0][2]}; }
+        auto rightVector() const -> Vector3 { return {data_[0][0], data_[0][1], data_[0][2]}; }
+        auto forwardVector() const -> Vector3 { return {-data_[2][0], -data_[2][1], -data_[2][2]}; }
+        auto backVector() const -> Vector3 { return {data_[2][0], data_[2][1], data_[2][2]}; }
 
         void rotateByQuaternion(const Quaternion &q);
         void rotateByAxisAngle(const Vector3 &axis, const Radians &angle);

@@ -30,9 +30,9 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
         void removePart(u32 index) override final;
-        auto getPartCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
+        auto partCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
 
-        auto getPrimitiveType() const -> PrimitiveType override final { return primitiveType_; }
+        auto primitiveType() const -> PrimitiveType override final { return primitiveType_; }
         void setPrimitiveType(PrimitiveType type) override final { primitiveType_ = type; }
 
         void draw(OpenGLEffect *effect);

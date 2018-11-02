@@ -21,7 +21,7 @@ namespace solo
         static auto create(Device *device, sptr<Font> font) -> sptr<FontMesh>;
 
         void setText(const str &text);
-        auto getMesh() const -> sptr<Mesh> { return mesh_; }
+        auto mesh() const -> sptr<Mesh> { return mesh_; }
 
     private:
         Device *device_ = nullptr;

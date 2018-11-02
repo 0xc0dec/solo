@@ -33,8 +33,8 @@ namespace solo
 
         virtual ~Font() = default;
 
-        virtual auto getAtlas() const -> sptr<Texture2D> = 0;
-        virtual auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;
+        virtual auto atlas() const -> sptr<Texture2D> = 0;
+        virtual auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;
 
     protected:
         Font() = default;

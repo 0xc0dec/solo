@@ -35,42 +35,42 @@ namespace solo
 
         auto windowPointToWorldRay(const Vector2 &pt) const -> Ray;
 
-        auto getTransform() const -> Transform* { return transform_; }
+        auto transform() const -> Transform* { return transform_; }
 
-        auto getRenderTarget() const -> sptr<FrameBuffer> { return renderTarget_; }
+        auto renderTarget() const -> sptr<FrameBuffer> { return renderTarget_; }
         void setRenderTarget(sptr<FrameBuffer> target) { renderTarget_ = target; }
 
-        auto getClearColor() const -> Vector4 { return clearColor_; }
+        auto clearColor() const -> Vector4 { return clearColor_; }
         void setClearColor(const Vector4 &color) { clearColor_ = color; }
 
         bool hasColorClearing() const { return colorClearing_; }
         void setColorClearing(bool enabled) { this->colorClearing_ = enabled; }
 
-        auto getViewport() const -> Vector4 { return viewport_; }
+        auto viewport() const -> Vector4 { return viewport_; }
         void setViewport(const Vector4 &rect) { viewport_ = rect; }
 
         bool isPerspective() const { return !ortho_; }
         void setPerspective(bool perspective);
 
-        auto getZNear() const -> float { return zNear_; }
+        auto zNear() const -> float { return zNear_; }
         void setZNear(float near);
 
-        auto getZFar() const -> float { return zFar_; }
+        auto zFar() const -> float { return zFar_; }
         void setZFar(float far);
 
-        auto getFOV() const -> Radians { return fov_; }
-        void setFOV(const Radians &fov);
+        auto fieldOfView() const -> Radians { return fov_; }
+        void setFieldOfView(const Radians &fov);
 
-        auto getOrthoSize() const -> Vector2 { return orthoSize_; }
+        auto orthoSize() const -> Vector2 { return orthoSize_; }
         void setOrthoSize(const Vector2 &size);
 
-        auto getAspectRatio() const -> float { return aspectRatio_; }
+        auto aspectRatio() const -> float { return aspectRatio_; }
 
-        auto getViewMatrix() const -> Matrix;
-        auto getInvViewMatrix() const -> Matrix;
-        auto getProjectionMatrix() const -> Matrix;
-        auto getViewProjectionMatrix() const -> Matrix;
-        auto getInvViewProjectionMatrix() const -> Matrix;
+        auto viewMatrix() const -> Matrix;
+        auto invViewMatrix() const -> Matrix;
+        auto projectionMatrix() const -> Matrix;
+        auto viewProjectionMatrix() const -> Matrix;
+        auto invViewProjectionMatrix() const -> Matrix;
 
     protected:
         Device *device_ = nullptr;

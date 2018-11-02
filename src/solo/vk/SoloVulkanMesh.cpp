@@ -21,13 +21,13 @@ VulkanMesh::VulkanMesh(Device *device)
 
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::createDeviceLocal(renderer_, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+    auto buf = VulkanBuffer::createDeviceLocal(renderer_, layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
     return addVertexBuffer(buf, layout, vertexCount);
 }
 
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::createHostVisible(renderer_, layout.getSize() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+    auto buf = VulkanBuffer::createHostVisible(renderer_, layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
     return addVertexBuffer(buf, layout, vertexCount);
 }
 
@@ -44,7 +44,7 @@ auto VulkanMesh::addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout 
 
 void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
-    const auto vertexSize = layouts_[index].getSize();
+    const auto vertexSize = layouts_[index].size();
     vertexBuffers_[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
 }
 
@@ -71,7 +71,7 @@ void VulkanMesh::removePart(u32 index)
     indexElementCounts_.erase(indexElementCounts_.begin() + index);
 }
 
-auto VulkanMesh::getPrimitiveType() const -> PrimitiveType
+auto VulkanMesh::primitiveType() const -> PrimitiveType
 {
     // TODO
     return PrimitiveType::Triangles;
@@ -93,9 +93,9 @@ auto VulkanMesh::layoutHash() const -> size_t
         auto layout = vertexBufferLayout(i);
         combineHash(seed, unsignedHasher(i));
 
-        for (u32 j = 0; j < layout.getAttributeCount(); j++)
+        for (u32 j = 0; j < layout.attributeCount(); j++)
         {
-            const auto attr = layout.getAttribute(j);
+            const auto attr = layout.attribute(j);
             combineHash(seed, unsignedHasher(j));
             combineHash(seed, strHasher(attr.name));
             combineHash(seed, unsignedHasher(attr.elementCount));

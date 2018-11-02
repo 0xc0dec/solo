@@ -49,18 +49,18 @@ void Scene::removeNodeById(u32 nodeId)
     if (nodes_.count(nodeId))
     {
         for (auto &component: nodes_.at(nodeId))
-            removeComponent(nodeId, component.second.component->getTypeId());
+            removeComponent(nodeId, component.second.component->typeId());
     }
 }
 
 void Scene::removeNode(Node *node)
 {
-    removeNodeById(node->getId());
+    removeNodeById(node->id());
 }
 
 void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
-    const auto typeId = cmp->getTypeId();
+    const auto typeId = cmp->typeId();
 
     SL_DEBUG_BLOCK(
     {
@@ -75,7 +75,7 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
     nodes_[nodeId][typeId].component = cmp;
     cmp->init();
 
-    if (cmp->getTypeId() == Camera::getId())
+    if (cmp->typeId() == Camera::getId())
         cameras_.push_back(static_cast<Camera*>(cmp.get()));
 }
 
@@ -97,7 +97,7 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
 
     deletedComponents_[nodeId].insert(typeId);
 
-    if (cmp.component->getTypeId() == Camera::getId())
+    if (cmp.component->typeId() == Camera::getId())
         cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), cmp.component.get()));
 }
 
@@ -112,7 +112,7 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &acce
     {
         for (const auto &cmp : node.second)
         {
-            if (!cmp.second.deleted && cmp.second.component->getTag() & tagMask)
+            if (!cmp.second.deleted && cmp.second.component->tag() & tagMask)
                 accept(cmp.second.component.get());
         }
     }

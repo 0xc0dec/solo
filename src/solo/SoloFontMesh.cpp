@@ -50,7 +50,7 @@ void FontMesh::rebuildMesh()
     float offsetX = 0, offsetY = 0;
     for (auto c : text_)
     {
-        auto glyphInfo = font_->getGlyphInfo(c, offsetX, offsetY);
+        auto glyphInfo = font_->glyphInfo(c, offsetX, offsetY);
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 
@@ -75,11 +75,11 @@ void FontMesh::rebuildMesh()
     mesh_ = Mesh::create(device_);
 
     VertexBufferLayout positionsLayout;
-    positionsLayout.addSemanticAttribute(VertexAttributeSemantics::Position);
+    positionsLayout.addAttribute(VertexAttributeSemantics::Position);
     mesh_->addDynamicVertexBuffer(positionsLayout, vertices_.data(), static_cast<u32>(vertices_.size()));
 
     VertexBufferLayout uvsLayout;
-    uvsLayout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
+    uvsLayout.addAttribute(VertexAttributeSemantics::TexCoord);
     mesh_->addDynamicVertexBuffer(uvsLayout, uvs_.data(), static_cast<u32>(uvs_.size()));
 
     mesh_->addPart(reinterpret_cast<const void *>(indexes_.data()), static_cast<u32>(indexes_.size()));
@@ -94,7 +94,7 @@ void FontMesh::updateMesh()
     float offsetX = 0, offsetY = 0;
     for (auto c : text_)
     {
-        auto glyphInfo = font_->getGlyphInfo(c, offsetX, offsetY);
+        auto glyphInfo = font_->glyphInfo(c, offsetX, offsetY);
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 

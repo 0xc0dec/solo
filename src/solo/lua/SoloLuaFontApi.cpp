@@ -21,8 +21,8 @@ static void registerFont(CppBindModule<LuaBinding> &module)
 
     auto font = BEGIN_CLASS(module, Font);
     REG_STATIC_METHOD(font, Font, loadFromFile);
-    REG_METHOD(font, Font, getAtlas);
-    REG_METHOD(font, Font, getGlyphInfo);
+    REG_METHOD(font, Font, atlas);
+    REG_METHOD(font, Font, glyphInfo);
     font.endClass();
 }
 
@@ -31,7 +31,7 @@ static void registerFontMesh(CppBindModule<LuaBinding> &module)
     auto fm = BEGIN_CLASS(module, FontMesh);
     REG_STATIC_METHOD(fm, FontMesh, create);
     REG_METHOD(fm, FontMesh, setText);
-    REG_METHOD(fm, FontMesh, getMesh);
+    REG_METHOD(fm, FontMesh, mesh);
     fm.endClass();
 }
 

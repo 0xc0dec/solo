@@ -23,12 +23,12 @@ namespace solo
 
         void render() override final;
 
-        auto getMesh() const -> sptr<Mesh> { return mesh_; }
+        auto mesh() const -> sptr<Mesh> { return mesh_; }
         void setMesh(sptr<Mesh> mesh) { this->mesh_ = mesh; }
 
-        auto getMaterial(u32 index) const -> sptr<Material> { return materials_.at(index); }
+        auto material(u32 index) const -> sptr<Material> { return materials_.at(index); }
+        auto materialCount() const -> u32 { return static_cast<u32>(materials_.size()); }
         void setMaterial(u32 index, sptr<Material> material);
-        auto getMaterialCount() const -> u32 { return static_cast<u32>(materials_.size()); }
 
     private:
         sptr<Mesh> mesh_;

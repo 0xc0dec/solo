@@ -32,41 +32,41 @@ namespace solo
         void init() override final;
         void terminate() override final;
 
-        auto getVersion() const -> u32 { return version_; }
+        auto version() const -> u32 { return version_; }
 
+        auto parent() const -> Transform* { return parent_; }
         void setParent(Transform *parent);
-        auto getParent() const -> Transform* { return parent_; }
         
-        auto getChild(u32 index) const -> Transform* { return children_[index]; }
-        auto getChildrenCount() const -> u32 { return static_cast<u32>(children_.size()); }
+        auto child(u32 index) const -> Transform* { return children_[index]; }
+        auto childrenCount() const -> u32 { return static_cast<u32>(children_.size()); }
         void clearChildren();
 
-        auto getWorldScale() const -> Vector3 { return getWorldMatrix().getScale(); }
-        auto getLocalScale() const -> Vector3 { return localScale_; }
+        auto worldScale() const -> Vector3 { return worldMatrix().scale(); }
+        auto localScale() const -> Vector3 { return localScale_; }
 
-        auto getWorldRotation() const -> Quaternion { return getWorldMatrix().getRotation(); }
-        auto getLocalRotation() const -> Quaternion { return localRotation_; }
+        auto worldRotation() const -> Quaternion { return worldMatrix().rotation(); }
+        auto localRotation() const -> Quaternion { return localRotation_; }
 
-        auto getWorldPosition() const -> Vector3 { return getWorldMatrix().getTranslation(); }
-        auto getLocalPosition() const -> Vector3 { return localPosition_; }
+        auto worldPosition() const -> Vector3 { return worldMatrix().translation(); }
+        auto localPosition() const -> Vector3 { return localPosition_; }
 
-        auto getWorldUp() const -> Vector3 { return getWorldMatrix().getUpVector(); }
-        auto getLocalUp() const -> Vector3 { return getMatrix().getUpVector(); }
+        auto worldUp() const -> Vector3 { return worldMatrix().upVector(); }
+        auto localUp() const -> Vector3 { return matrix().upVector(); }
 
-        auto getWorldDown() const -> Vector3 { return getWorldMatrix().getDownVector(); }
-        auto getLocalDown() const -> Vector3 { return getMatrix().getDownVector(); }
+        auto worldDown() const -> Vector3 { return worldMatrix().downVector(); }
+        auto localDown() const -> Vector3 { return matrix().downVector(); }
 
-        auto getWorldLeft() const -> Vector3 { return getWorldMatrix().getLeftVector(); }
-        auto getLocalLeft() const -> Vector3 { return getMatrix().getLeftVector(); }
+        auto worldLeft() const -> Vector3 { return worldMatrix().leftVector(); }
+        auto localLeft() const -> Vector3 { return matrix().leftVector(); }
 
-        auto getWorldRight() const -> Vector3 { return getWorldMatrix().getRightVector(); }
-        auto getLocalRight() const -> Vector3 { return getMatrix().getRightVector(); }
+        auto worldRight() const -> Vector3 { return worldMatrix().rightVector(); }
+        auto localRight() const -> Vector3 { return matrix().rightVector(); }
 
-        auto getWorldForward() const -> Vector3 { return getWorldMatrix().getForwardVector(); }
-        auto getLocalForward() const -> Vector3 { return getMatrix().getForwardVector(); }
+        auto worldForward() const -> Vector3 { return worldMatrix().forwardVector(); }
+        auto localForward() const -> Vector3 { return matrix().forwardVector(); }
 
-        auto getWorldBack() const -> Vector3 { return getWorldMatrix().getBackVector(); }
-        auto getLocalBack() const -> Vector3 { return getMatrix().getBackVector(); }
+        auto worldBack() const -> Vector3 { return worldMatrix().backVector(); }
+        auto localBack() const -> Vector3 { return matrix().backVector(); }
 
         void translateLocal(const Vector3 &translation);
         void scaleLocal(const Vector3 &scale);
@@ -82,12 +82,12 @@ namespace solo
 
         void lookAt(const Vector3 &target, const Vector3 &up);
 
-        auto getMatrix() const -> Matrix;
-        auto getWorldMatrix() const -> Matrix;
-        auto getWorldViewMatrix(const Camera *camera) const -> Matrix;
-        auto getWorldViewProjMatrix(const Camera *camera) const -> Matrix;
-        auto getInvTransposedWorldViewMatrix(const Camera *camera) const -> Matrix;
-        auto getInvTransposedWorldMatrix() const -> Matrix;
+        auto matrix() const -> Matrix;
+        auto worldMatrix() const -> Matrix;
+        auto worldViewMatrix(const Camera *camera) const -> Matrix;
+        auto worldViewProjMatrix(const Camera *camera) const -> Matrix;
+        auto invTransposedWorldViewMatrix(const Camera *camera) const -> Matrix;
+        auto invTransposedWorldMatrix() const -> Matrix;
 
         auto transformPoint(const Vector3 &point) const -> Vector3;
         auto transformDirection(const Vector3 &direction) const -> Vector3;

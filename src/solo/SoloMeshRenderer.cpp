@@ -13,7 +13,7 @@ using namespace solo;
 
 MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node),
-    renderer_(node.getScene()->getDevice()->renderer())
+    renderer_(node.scene()->device()->renderer())
 {
     transform_ = node.findComponent<Transform>();
 }
@@ -23,20 +23,20 @@ void MeshRenderer::render()
     if (!mesh_ || materials_.empty())
         return;
 
-    const auto partCount = mesh_->getPartCount();
+    const auto partCount = mesh_->partCount();
     if (partCount == 0)
     {
-        const auto material = getMaterial(0);
-        if (material)
-            renderer_->drawMesh(mesh_.get(), transform_, material.get());
+        const auto mat = material(0);
+        if (mat)
+            renderer_->drawMesh(mesh_.get(), transform_, mat.get());
     }
     else
     {
         for (u32 part = 0; part < partCount; ++part)
         {
-            const auto material = getMaterial(part);
-            if (material)
-                renderer_->drawMeshPart(mesh_.get(), part, transform_, material.get());
+            const auto mat = material(part);
+            if (mat)
+                renderer_->drawMeshPart(mesh_.get(), part, transform_, mat.get());
         }
     }
 }

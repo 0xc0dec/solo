@@ -12,7 +12,7 @@ using namespace solo;
 
 Spectator::Spectator(const Node &node):
     ComponentBase(node),
-    device_(node.getScene()->getDevice())
+    device_(node.scene()->device())
 {
 }
 
@@ -38,7 +38,7 @@ void Spectator::update()
 
         if (mouseMotion.y() != 0)
         {
-            const auto angleToUp = transform_->getLocalForward().angle({0, 1, 0}).toRawRadians();
+            const auto angleToUp = transform_->localForward().angle({0, 1, 0}).toRawRadians();
             auto delta = mouseSensitivity_ * -mouseMotion.y();
             if (delta > 0)
             {
@@ -57,17 +57,17 @@ void Spectator::update()
 
     auto movement = Vector3();
     if (device_->isKeyPressed(KeyCode::W, false))
-        movement += transform_->getLocalForward();
+        movement += transform_->localForward();
     if (device_->isKeyPressed(KeyCode::S, false))
-        movement += transform_->getLocalBack();
+        movement += transform_->localBack();
     if (device_->isKeyPressed(KeyCode::A, false))
-        movement += transform_->getLocalLeft();
+        movement += transform_->localLeft();
     if (device_->isKeyPressed(KeyCode::D, false))
-        movement += transform_->getLocalRight();
+        movement += transform_->localRight();
     if (device_->isKeyPressed(KeyCode::Q, false))
-        movement += transform_->getLocalDown();
+        movement += transform_->localDown();
     if (device_->isKeyPressed(KeyCode::E, false))
-        movement += transform_->getLocalUp();
+        movement += transform_->localUp();
     movement.normalize();
     movement *= dt * movementSpeed_;
 

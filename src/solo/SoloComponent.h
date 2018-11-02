@@ -27,7 +27,7 @@ namespace solo
     public:
         virtual ~Component() = default;
 
-        virtual auto getTypeId() -> u32 = 0;
+        virtual auto typeId() -> u32 = 0;
 
         virtual void init() {}
         virtual void terminate() {}
@@ -35,9 +35,9 @@ namespace solo
         virtual void update() {}
         virtual void render() {}
 
-        auto getNode() const -> Node { return node_; }
+        auto node() const -> Node { return node_; }
 
-        auto getTag() const -> u32 { return tag_; }
+        auto tag() const -> u32 { return tag_; }
         void setTag(u32 tag) { this->tag_ = tag; }
 
     protected:
@@ -57,6 +57,6 @@ namespace solo
 
         explicit ComponentBase(const Node &node): Component(node) {}
 
-        auto getTypeId() -> u32 override { return getId(); }
+        auto typeId() -> u32 override { return getId(); }
     };
 }

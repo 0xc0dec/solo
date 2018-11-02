@@ -209,24 +209,24 @@ OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
 
 auto OpenGLTexture2D::createFromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
 {
-    const auto dimensions = data->getDimensions();
-    const auto internalFormat = toInternalFormat(data->getTextureFormat());
-    const auto dataFormat = toDataFormat(data->getFormat());
+    const auto dimensions = data->dimensions();
+    const auto internalFormat = toInternalFormat(data->textureFormat());
+    const auto dataFormat = toDataFormat(data->format());
     const auto mipLevels = generateMipmaps
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
 
     SL_DEBUG_PANIC(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
 
-    const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->getTextureFormat(), dimensions));
+    const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->textureFormat(), dimensions));
 
     glBindTexture(GL_TEXTURE_2D, result->handle_);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, GL_UNSIGNED_BYTE, data->data());
 
-    if (generateMipmaps && data->getTextureFormat() != TextureFormat::Depth24)
+    if (generateMipmaps && data->textureFormat() != TextureFormat::Depth24)
     {
         glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -263,17 +263,17 @@ void OpenGLTexture2D::bind()
 {
     glBindTexture(GL_TEXTURE_2D, handle_);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(verticalWrap));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter_, mipFilter_));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter_));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap_));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, toWrap(verticalWrap_));
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel_);
 }
 
 auto OpenGLCubeTexture::createFromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>
 {
-    const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->getTextureFormat(), data->getDimension()));
+    const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->textureFormat(), data->dimension()));
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle_);
 
@@ -282,11 +282,11 @@ auto OpenGLCubeTexture::createFromData(sptr<CubeTextureData> data) -> sptr<OpenG
     for (s32 i = 0; i < 6; ++i)
     {
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
-        const auto internalFormat = toInternalFormat(data->getTextureFormat());
-        const auto dataFormat = toDataFormat(data->getFormat());
+        const auto internalFormat = toInternalFormat(data->textureFormat());
+        const auto dataFormat = toDataFormat(data->format());
         SL_DEBUG_PANIC(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(glFace, 0, internalFormat, data->getDimension(), data->getDimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->getData(i));
+        glTexImage2D(glFace, 0, internalFormat, data->dimension(), data->dimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->faceData(i));
     }
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -303,13 +303,13 @@ void OpenGLCubeTexture::bind()
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
 
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter, mipFilter));
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter));
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap));
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, toWrap(verticalWrap));
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, toWrap(depthWrap));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter_, mipFilter_));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, toMagFilter(magFilter_));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, toWrap(horizontalWrap_));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, toWrap(verticalWrap_));
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, toWrap(depthWrap_));
 
-    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel);
+    glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel_);
 }
 
 #endif

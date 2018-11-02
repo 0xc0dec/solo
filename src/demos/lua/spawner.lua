@@ -20,7 +20,7 @@ return function(assetCache)
     return sl.createComponent("Spawner", {
         init = function(self)
             self.transform = self.node:findComponent("Transform")
-            self.scene = self.node:getScene()
+            self.scene = self.node:scene()
             self.camera = self.node:findComponent("Camera")
             self.tracer = self.node:findScriptComponent(sl.getCmpId("Tracer"))
         end,
@@ -46,8 +46,8 @@ return function(assetCache)
         end,
 
         spawn = function(self)
-            local initialPos = self.transform:getLocalPosition() + self.transform:getLocalForward() * 3
-            local initialRotation = self.transform:getLocalRotation()
+            local initialPos = self.transform:localPosition() + self.transform:localForward() * 3
+            local initialRotation = self.transform:localRotation()
 
             local node = self.scene:createNode()
             
@@ -98,7 +98,7 @@ return function(assetCache)
 
         highlight = function(self, target)
             local renderer = target:findComponent("MeshRenderer")
-            local prevMaterial = renderer:getMaterial(0)
+            local prevMaterial = renderer:material(0)
             renderer:setMaterial(0, highlightMaterial)
             self.prevHighlighted = renderer
             self.prevHighlightedMaterial = prevMaterial

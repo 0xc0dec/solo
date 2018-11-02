@@ -20,7 +20,7 @@ namespace solo
 
         virtual ~FrameBuffer() = default;
 
-        auto getDimensions() const -> Vector2 { return dimensions_; }
+        auto dimensions() const -> Vector2 { return dimensions_; }
 
     protected:
         Vector2 dimensions_;

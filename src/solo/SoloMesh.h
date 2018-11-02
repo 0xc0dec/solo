@@ -26,8 +26,8 @@ namespace solo
     {
     public:
         static auto create(Device *device) -> sptr<Mesh>;
-        static auto loadFromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
-        static auto loadFromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
+        static auto fromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
+        static auto fromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
 
         virtual ~Mesh() = default;
 
@@ -38,9 +38,9 @@ namespace solo
 
         virtual auto addPart(const void *indexData, u32 indexElementCount) -> u32 = 0;
         virtual void removePart(u32 index) = 0;
-        virtual auto getPartCount() const -> u32 = 0;
+        virtual auto partCount() const -> u32 = 0;
 
-        virtual auto getPrimitiveType() const -> PrimitiveType = 0;
+        virtual auto primitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;
 
     protected:

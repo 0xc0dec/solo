@@ -8,7 +8,7 @@ require "common"
 local tags = require "tags"
 
 local function createStep(camera, material, target, assetCache)
-    local scene = camera:getNode():getScene()
+    local scene = camera:node():scene()
     local node = scene:createNode()
     local quadRenderer = node:addComponent("MeshRenderer")
     quadRenderer:setTag(tags.postProcessorStep)
@@ -34,7 +34,7 @@ local function init1(camera, assetCache)
     local canvasSize = sl.device:canvasSize()
 
     local createTarget = function()
-        local tex = sl.Texture2D.createEmpty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB8)
+        local tex = sl.Texture2D.empty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB8)
         tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
         
@@ -109,10 +109,10 @@ local function init2(camera, assetCache)
     local stitchWidth = 30
     local canvasSize = sl.device:canvasSize()
 
-    local stitchTex = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/stitches.png"))
+    local stitchTex = sl.Texture2D.fromFile(sl.device, getAssetPath("textures/stitches.png"))
     stitchTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
 
-    local stitchTexSize = stitchTex:getDimensions()
+    local stitchTexSize = stitchTex:dimensions()
 
     local resX = math.floor(canvasSize.x / stitchWidth) * 2
     resX = (resX >= 2048) and 2048 or resX
@@ -124,7 +124,7 @@ local function init2(camera, assetCache)
 
     local stitchCount = vec2(offscreenRes.x * stitchWidth / (2 * stitchTexSize.x), offscreenRes.y / 2)
 
-    local fbTex = sl.Texture2D.createEmpty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB8)
+    local fbTex = sl.Texture2D.empty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB8)
     fbTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
     fbTex:setWrap(sl.TextureWrap.ClampToEdge)
     local target = sl.FrameBuffer.create(sl.device, { fbTex })

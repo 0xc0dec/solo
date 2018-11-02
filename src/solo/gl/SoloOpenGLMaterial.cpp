@@ -107,7 +107,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->getWorldMatrix().columns();
+                        auto data = nodeTransform->worldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -123,7 +123,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->getViewMatrix().columns();
+                        auto data = camera->viewMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -139,7 +139,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->getProjectionMatrix().columns();
+                        auto data = camera->projectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -155,7 +155,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getWorldViewMatrix(camera).columns();
+                        auto data = nodeTransform->worldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -171,7 +171,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->getViewProjectionMatrix().columns();
+                        auto data = camera->viewProjectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -187,7 +187,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getWorldViewProjMatrix(camera).columns();
+                        auto data = nodeTransform->worldViewProjMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -203,7 +203,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->getInvTransposedWorldMatrix().columns();
+                        auto data = nodeTransform->invTransposedWorldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -219,7 +219,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->getInvTransposedWorldViewMatrix(camera).columns();
+                        auto data = nodeTransform->invTransposedWorldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -235,7 +235,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto pos = camera->getTransform()->getWorldPosition();
+                        auto pos = camera->transform()->worldPosition();
                         glUniform3f(location, pos.x(), pos.y(), pos.z());
                     }
                 };

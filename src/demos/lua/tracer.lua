@@ -6,8 +6,8 @@
 return function(physics)
     return sl.createComponent("Tracer", {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
-            self.scene = self.node:getScene()
+            self.transform = self.node:findComponent("Transform") 
+            self.scene = self.node:scene()
             self.camera = self.node:findComponent("Camera")
         end,
 
@@ -19,11 +19,11 @@ return function(physics)
 
             local mousePos = sl.device:mousePosition()
             local ray = self.camera:windowPointToWorldRay(mousePos)
-            local from = ray:getOrigin()
-            local to = from + ray:getDirection() * 100
+            local from = ray:origin()
+            local to = from + ray:direction() * 100
             local hitResult = physics:rayTestFirst(from, to)
             if hitResult.body then
-                self.hitNode = hitResult.body:getNode()
+                self.hitNode = hitResult.body:node()
             else
                 self.hitNode = nil
             end

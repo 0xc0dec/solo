@@ -122,7 +122,7 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     binding.addProperty("w",
         static_cast<float(Quaternion::*)()const>(&Quaternion::w),
         [](Quaternion *v, float val) { v->w() = val; });
-    REG_STATIC_METHOD(binding, Quaternion, createFromAxisAngle);
+    REG_STATIC_METHOD(binding, Quaternion, fromAxisAngle);
     REG_STATIC_METHOD(binding, Quaternion, lerp);
     REG_STATIC_METHOD(binding, Quaternion, slerp);
     REG_METHOD(binding, Quaternion, isIdentity);
@@ -182,15 +182,15 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_STATIC_METHOD(bindinb, Matrix, createRotationFromQuaternion);
     REG_STATIC_METHOD(bindinb, Matrix, createRotationFromAxisAngle);
     REG_STATIC_METHOD(bindinb, Matrix, createTranslation);
-    REG_METHOD(bindinb, Matrix, getScale);
-    REG_METHOD(bindinb, Matrix, getTranslation);
-    REG_METHOD(bindinb, Matrix, getRotation);
-    REG_METHOD(bindinb, Matrix, getUpVector);
-    REG_METHOD(bindinb, Matrix, getDownVector);
-    REG_METHOD(bindinb, Matrix, getLeftVector);
-    REG_METHOD(bindinb, Matrix, getRightVector);
-    REG_METHOD(bindinb, Matrix, getForwardVector);
-    REG_METHOD(bindinb, Matrix, getBackVector);
+    REG_METHOD(bindinb, Matrix, scale);
+    REG_METHOD(bindinb, Matrix, translation);
+    REG_METHOD(bindinb, Matrix, rotation);
+    REG_METHOD(bindinb, Matrix, upVector);
+    REG_METHOD(bindinb, Matrix, downVector);
+    REG_METHOD(bindinb, Matrix, leftVector);
+    REG_METHOD(bindinb, Matrix, rightVector);
+    REG_METHOD(bindinb, Matrix, forwardVector);
+    REG_METHOD(bindinb, Matrix, backVector);
     REG_METHOD(bindinb, Matrix, rotateByQuaternion);
     REG_METHOD(bindinb, Matrix, rotateByAxisAngle);
     REG_METHOD(bindinb, Matrix, scaleByScalar);
@@ -208,9 +208,9 @@ static void registerRay(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Ray);
     REG_CTOR(binding, const Vector3&, const Vector3&);
-    REG_METHOD(binding, Ray, getOrigin);
+    REG_METHOD(binding, Ray, origin);
     REG_METHOD(binding, Ray, setOrigin);
-    REG_METHOD(binding, Ray, getDirection);
+    REG_METHOD(binding, Ray, direction);
     REG_METHOD(binding, Ray, setDirection);
     binding.endClass();
 }

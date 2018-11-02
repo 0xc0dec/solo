@@ -92,7 +92,7 @@ VulkanTexture::VulkanTexture(Device *device):
 
 auto VulkanTexture2D::createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<VulkanTexture2D>
 {
-    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->getTextureFormat(), data->getDimensions()));
+    auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->textureFormat(), data->dimensions()));
     result->image_ = VulkanImage::create2D(result->renderer_, data.get(), generateMipmaps);
     result->rebuildSampler();
     return result;
@@ -125,14 +125,14 @@ void VulkanTexture2D::rebuildSampler()
         renderer_->device(),
         renderer_->physicalFeatures(),
         renderer_->physicalProperties(),
-        minFilter, magFilter, mipFilter, image_.mipLevels(),
-        horizontalWrap, verticalWrap, TextureWrap::Repeat,
-        anisotropyLevel > 1, anisotropyLevel);
+        minFilter_, magFilter_, mipFilter_, image_.mipLevels(),
+        horizontalWrap_, verticalWrap_, TextureWrap::Repeat,
+        anisotropyLevel_ > 1, anisotropyLevel_);
 }
 
 auto VulkanCubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture>
 {
-    auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->getTextureFormat(), data->getDimension()));
+    auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->textureFormat(), data->dimension()));
     result->image_ = VulkanImage::createCube(result->renderer_, data.get());
     result->rebuildSampler();
     return result;
@@ -156,9 +156,9 @@ void VulkanCubeTexture::rebuildSampler()
         renderer_->device(),
         renderer_->physicalFeatures(),
         renderer_->physicalProperties(),
-        minFilter, magFilter, mipFilter, image_.mipLevels(),
-        horizontalWrap, verticalWrap, depthWrap,
-        anisotropyLevel > 1, anisotropyLevel);
+        minFilter_, magFilter_, mipFilter_, image_.mipLevels(),
+        horizontalWrap_, verticalWrap_, depthWrap_,
+        anisotropyLevel_ > 1, anisotropyLevel_);
 }
 
 #endif

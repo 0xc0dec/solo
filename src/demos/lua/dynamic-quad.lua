@@ -32,8 +32,8 @@ return function(scene, assetCache)
     }
 
     local layout = sl.VertexBufferLayout()
-    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
-    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
+    layout:addAttribute(sl.VertexAttributeSemantics.Position)
+    layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
 
     local mesh = sl.Mesh.create(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)
@@ -45,7 +45,7 @@ return function(scene, assetCache)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     
-    local texHandle = sl.Texture2D.loadFromFileAsync(sl.device, getAssetPath("textures/rock_color.jpg"), true)
+    local texHandle = sl.Texture2D.fromFileAsync(sl.device, getAssetPath("textures/rock_color.jpg"), true)
     texHandle:done(function(tex)
         tex:setAnisotropyLevel(16)
         material:setTextureParameter("mainTex", tex)

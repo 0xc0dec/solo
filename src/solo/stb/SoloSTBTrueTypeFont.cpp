@@ -14,9 +14,9 @@
 
 using namespace solo;
 
-auto STBTrueTypeFont::getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
+auto STBTrueTypeFont::glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
 {
-    const auto dimensions = atlas_->getDimensions();
+    const auto dimensions = atlas_->dimensions();
 
     stbtt_aligned_quad quad;
     stbtt_GetPackedQuad(charInfo_.get(), static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()),
@@ -73,8 +73,8 @@ auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u3
     stbtt_PackFontRange(&context, data.data(), 0, static_cast<float>(size), firstChar, charCount, result->charInfo_.get());
     stbtt_PackEnd(&context);
 
-    const auto atlasData = Texture2DData::createFromMemory(atlasWidth, atlasHeight, TextureDataFormat::Red, pixels);
-    result->atlas_ = Texture2D::createFromData(device, atlasData, true);
+    const auto atlasData = Texture2DData::fromMemory(atlasWidth, atlasHeight, TextureDataFormat::Red, pixels);
+    result->atlas_ = Texture2D::fromData(device, atlasData, true);
     result->atlas_->setFilter(TextureFilter::Linear, TextureFilter::Linear, TextureMipFilter::Linear);
 
     return result;

@@ -28,7 +28,7 @@ auto Camera::create(const Node &node) -> sptr<Camera>
 
 Camera::Camera(const Node &node):
     ComponentBase(node),
-    device_(node.getScene()->getDevice()),
+    device_(node.scene()->device()),
     renderer_(device_->renderer()),
     fov_(Degrees(60))
 {
@@ -46,9 +46,9 @@ void Camera::init()
 
 void Camera::update()
 {
-    if (lastTransformVersion_ != transform_->getVersion())
+    if (lastTransformVersion_ != transform_->version())
     {
-        lastTransformVersion_ = transform_->getVersion();
+        lastTransformVersion_ = transform_->version();
         dirtyFlags_ |= ViewDirtyBit | ViewProjectionDirtyBit | InvViewDirtyBit | InvViewProjectionDirtyBit;
     }
 }
@@ -59,7 +59,7 @@ void Camera::setPerspective(bool perspective)
     dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
-void Camera::setFOV(const Radians &fov)
+void Camera::setFieldOfView(const Radians &fov)
 {
     this->fov_ = fov;
     dirtyFlags_ |= AllProjectionDirtyBits;
@@ -83,29 +83,29 @@ void Camera::setZNear(float near)
     dirtyFlags_ |= AllProjectionDirtyBits;
 }
 
-auto Camera::getViewMatrix() const -> Matrix
+auto Camera::viewMatrix() const -> Matrix
 {
     if (dirtyFlags_ & ViewDirtyBit)
     {
-        viewMatrix_ = transform_->getWorldMatrix();
+        viewMatrix_ = transform_->worldMatrix();
         viewMatrix_.invert();
         dirtyFlags_ &= ~ViewDirtyBit;
     }
     return viewMatrix_;
 }
 
-auto Camera::getInvViewMatrix() const -> Matrix
+auto Camera::invViewMatrix() const -> Matrix
 {
     if (dirtyFlags_ & InvViewDirtyBit)
     {
-        invViewMatrix_ = getViewMatrix();
+        invViewMatrix_ = viewMatrix();
         invViewMatrix_.invert();
         dirtyFlags_ &= ~InvViewDirtyBit;
     }
     return invViewMatrix_;
 }
 
-auto Camera::getProjectionMatrix() const -> Matrix
+auto Camera::projectionMatrix() const -> Matrix
 {
     if (dirtyFlags_ & ProjectionDirtyBit)
     {
@@ -118,21 +118,21 @@ auto Camera::getProjectionMatrix() const -> Matrix
     return projectionMatrix_;
 }
 
-auto Camera::getViewProjectionMatrix() const -> Matrix
+auto Camera::viewProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags_ & ViewProjectionDirtyBit)
     {
-        viewProjectionMatrix_ = getProjectionMatrix() * getViewMatrix();
+        viewProjectionMatrix_ = projectionMatrix() * viewMatrix();
         dirtyFlags_ &= ~ViewProjectionDirtyBit;
     }
     return viewProjectionMatrix_;
 }
 
-auto Camera::getInvViewProjectionMatrix() const -> Matrix
+auto Camera::invViewProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags_ & InvViewProjectionDirtyBit)
     {
-        invViewProjectionMatrix_ = getViewProjectionMatrix();
+        invViewProjectionMatrix_ = viewProjectionMatrix();
         invViewProjectionMatrix_.invert();
         dirtyFlags_ &= ~InvViewProjectionDirtyBit;
     }
@@ -151,10 +151,10 @@ auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray
     const auto halfHeightInWorldUnits = zNear_ * std::tan(fov_.toRawRadians() / 2);
     const auto halfWidthInWorldUnits = halfHeightInWorldUnits * aspectRatio_;
     const auto canvasSize = device_->dpiIndependentCanvasSize();
-    const auto right = transform_->getWorldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
-    const auto down = transform_->getWorldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
-    const auto pos = transform_->getWorldPosition();
-    const auto canvasCenter = pos + transform_->getWorldForward() * zNear_;
+    const auto right = transform_->worldRight() * (halfWidthInWorldUnits * (2 * pt.x() / canvasSize.x() - 1));
+    const auto down = transform_->worldDown() * (halfHeightInWorldUnits * (2 * pt.y() / canvasSize.y() - 1));
+    const auto pos = transform_->worldPosition();
+    const auto canvasCenter = pos + transform_->worldForward() * zNear_;
     const auto origin = canvasCenter + right + down;
     return Ray{origin, (origin - pos).normalized()};
 }

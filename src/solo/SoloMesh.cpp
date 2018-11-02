@@ -53,9 +53,9 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
 
             data.vertexCount++;
 
-            for (u32 k = 0; k < bufferLayout.getAttributeCount(); k++)
+            for (u32 k = 0; k < bufferLayout.attributeCount(); k++)
             {
-                const auto attr = bufferLayout.getAttribute(k);
+                const auto attr = bufferLayout.attribute(k);
                 switch (attr.semantics)
                 {
                     case VertexAttributeSemantics::Position:
@@ -126,12 +126,12 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
     }
 }
 
-auto Mesh::loadFromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>
+auto Mesh::fromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>
 {
     auto data = loadMeshData(device, path, bufferLayout);
     auto mesh = create(device);
     
-    mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.getElementCount());
+    mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.elementCount());
     
     for (auto &part : data->indexData)
         mesh->addPart(part.data(), part.size());
@@ -139,7 +139,7 @@ auto Mesh::loadFromFile(Device *device, const str &path, const VertexBufferLayou
     return mesh;
 }
 
-auto Mesh::loadFromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>
+auto Mesh::fromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>
 {
     auto handle = std::make_shared<AsyncHandle<Mesh>>();
 
@@ -149,7 +149,7 @@ auto Mesh::loadFromFileAsync(Device *device, const str &path, const VertexBuffer
         auto data = results[0];
         auto mesh = create(device);
     
-        mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.getElementCount());
+        mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.elementCount());
     
         for (auto &part : data->indexData)
             mesh->addPart(part.data(), part.size());

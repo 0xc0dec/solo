@@ -12,25 +12,25 @@
 
 using namespace solo;
 
-auto Effect::loadFromSourceFile(Device *device, const str &path) -> sptr<Effect>
+auto Effect::fromSourceFile(Device *device, const str &path) -> sptr<Effect>
 {
     const auto source = device->fileSystem()->readText(path);
-    return createFromSource(device, source);
+    return fromSource(device, source);
 }
 
-auto Effect::loadFromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
+auto Effect::fromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
 {
     const auto desc = device->fileSystem()->readText(path);
-    return createFromDescription(device, desc);
+    return fromDescription(device, desc);
 }
 
-auto Effect::createFromDescription(Device* device, const str& description) -> sptr<Effect>
+auto Effect::fromDescription(Device* device, const str& description) -> sptr<Effect>
 {
     const auto source = device->scriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
-    return createFromSource(device, source);
+    return fromSource(device, source);
 }
 
-auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
+auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
 {
     const auto vertTagStartIdx = source.find("// VERTEX");
     SL_DEBUG_PANIC(vertTagStartIdx == std::string::npos, "Vertex shader not found in ", source);
@@ -64,7 +64,7 @@ auto Effect::createFromSource(Device* device, const str& source) -> sptr<Effect>
     }
 }
 
-auto Effect::createFromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
+auto Effect::fromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
 {
     switch (device->mode())
     {

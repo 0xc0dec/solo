@@ -60,7 +60,7 @@ void Transform::clearChildren()
     }
 }
 
-auto Transform::getMatrix() const -> Matrix
+auto Transform::matrix() const -> Matrix
 {
     if (dirtyFlags_ & DirtyFlagLocal)
     {
@@ -72,24 +72,24 @@ auto Transform::getMatrix() const -> Matrix
     return matrix_;
 }
 
-auto Transform::getWorldMatrix() const -> Matrix
+auto Transform::worldMatrix() const -> Matrix
 {
     if (dirtyFlags_ & DirtyFlagWorld)
     {
         if (parent_)
-            worldMatrix_ = parent_->getWorldMatrix() * getMatrix();
+            worldMatrix_ = parent_->worldMatrix() * matrix();
         else
-            worldMatrix_ = getMatrix();
+            worldMatrix_ = matrix();
         dirtyFlags_ &= ~DirtyFlagWorld;
     }
     return worldMatrix_;
 }
 
-auto Transform::getInvTransposedWorldMatrix() const -> Matrix
+auto Transform::invTransposedWorldMatrix() const -> Matrix
 {
     if (dirtyFlags_ & DirtyFlagInvTransposedWorld)
     {
-        invTransposedWorldMatrix_ = getWorldMatrix();
+        invTransposedWorldMatrix_ = worldMatrix();
         invTransposedWorldMatrix_.invert();
         invTransposedWorldMatrix_.transpose();
         dirtyFlags_ &= ~DirtyFlagInvTransposedWorld;
@@ -97,19 +97,19 @@ auto Transform::getInvTransposedWorldMatrix() const -> Matrix
     return invTransposedWorldMatrix_;
 }
 
-auto Transform::getWorldViewMatrix(const Camera *camera) const -> Matrix
+auto Transform::worldViewMatrix(const Camera *camera) const -> Matrix
 {
-    return camera->getViewMatrix() * getWorldMatrix();
+    return camera->viewMatrix() * worldMatrix();
 }
 
-auto Transform::getWorldViewProjMatrix(const Camera *camera) const -> Matrix
+auto Transform::worldViewProjMatrix(const Camera *camera) const -> Matrix
 {
-    return camera->getViewProjectionMatrix() * getWorldMatrix();
+    return camera->viewProjectionMatrix() * worldMatrix();
 }
 
-auto Transform::getInvTransposedWorldViewMatrix(const Camera *camera) const -> Matrix
+auto Transform::invTransposedWorldViewMatrix(const Camera *camera) const -> Matrix
 {
-    auto result = camera->getViewMatrix() * getWorldMatrix();
+    auto result = camera->viewMatrix() * worldMatrix();
     result.invert();
     result.transpose();
     return result;
@@ -136,9 +136,9 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
             break;
         case TransformSpace::World:
         {
-            auto invWorldRotation = getWorldRotation();
+            auto invWorldRotation = worldRotation();
             invWorldRotation.invert();
-            localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * getWorldRotation();
+            localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * worldRotation();
             break;
         }
         default:
@@ -150,7 +150,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 
 void Transform::rotateByAxisAngle(const Vector3 &axis, const Radians &angle, TransformSpace space)
 {
-    const auto rotation = Quaternion::createFromAxisAngle(axis, angle);
+    const auto rotation = Quaternion::fromAxisAngle(axis, angle);
     rotate(rotation, space);
 }
 
@@ -175,24 +175,24 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
 
     if (parent_)
     {
-        auto m(parent_->getWorldMatrix());
+        auto m(parent_->worldMatrix());
         m.invert();
         localTarget = m.transformPoint(target);
         localUp = m.transformDirection(up);
     }
 
     auto lookAtMatrix = Matrix::createLookAt(localPosition_, localTarget, localUp);
-    setLocalRotation(lookAtMatrix.getRotation());
+    setLocalRotation(lookAtMatrix.rotation());
 }
 
 auto Transform::transformPoint(const Vector3 &point) const -> Vector3
 {
-    return getMatrix().transformPoint(point);
+    return matrix().transformPoint(point);
 }
 
 auto Transform::transformDirection(const Vector3 &direction) const -> Vector3
 {
-    return getMatrix().transformDirection(direction);
+    return matrix().transformDirection(direction);
 }
 
 void Transform::setLocalRotation(const Quaternion &rotation)
@@ -203,7 +203,7 @@ void Transform::setLocalRotation(const Quaternion &rotation)
 
 void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle)
 {
-    localRotation_ = Quaternion::createFromAxisAngle(axis, angle);
+    localRotation_ = Quaternion::fromAxisAngle(axis, angle);
     setDirtyWithChildren(DirtyFlagAll);
 }
 

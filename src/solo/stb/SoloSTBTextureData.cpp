@@ -90,13 +90,13 @@ auto STBCubeTextureData::loadFromFaceFiles(
 
     SL_DEBUG_BLOCK(
     {
-        const auto dim = faces[0]->getDimensions();
+        const auto dim = faces[0]->dimensions();
         SL_DEBUG_PANIC(dim.x() != dim.y(), "Cube texture width must be equal to height");
         for (const auto &face: faces)
-            SL_DEBUG_PANIC(face->getDimensions() != dim, "All cube texture sizes must match");
+            SL_DEBUG_PANIC(face->dimensions() != dim, "All cube texture sizes must match");
     });
 
-    auto tex = std::make_shared<STBCubeTextureData>(faces[0]->getFormat(), static_cast<u32>(faces[0]->getDimensions().x()));
+    auto tex = std::make_shared<STBCubeTextureData>(faces[0]->format(), static_cast<u32>(faces[0]->dimensions().x()));
     tex->faces = std::move(faces);
     return tex;
 }
@@ -106,22 +106,22 @@ STBCubeTextureData::STBCubeTextureData(TextureDataFormat format, u32 dimension):
 {
 }
 
-auto STBCubeTextureData::getSize() const -> u32
+auto STBCubeTextureData::size() const -> u32
 {
-    return faces[0]->getSize() + 
-           faces[1]->getSize() + 
-           faces[2]->getSize() + 
-           faces[3]->getSize() + 
-           faces[4]->getSize() + 
-           faces[5]->getSize();
+    return faces[0]->size() + 
+           faces[1]->size() + 
+           faces[2]->size() + 
+           faces[3]->size() + 
+           faces[4]->size() + 
+           faces[5]->size();
 }
 
-auto STBCubeTextureData::getSize(u32 face) const -> u32
+auto STBCubeTextureData::faceSize(u32 face) const -> u32
 {
-    return faces[face]->getSize();
+    return faces[face]->size();
 }
 
-auto STBCubeTextureData::getData(u32 face) const -> const void*
+auto STBCubeTextureData::faceData(u32 face) const -> const void*
 {
-    return faces[face]->getData();
+    return faces[face]->data();
 }

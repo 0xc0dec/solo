@@ -19,8 +19,8 @@ namespace solo
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
 
-        auto getAtlas() const -> sptr<Texture2D> override final { return atlas_; }
-        auto getGlyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
+        auto atlas() const -> sptr<Texture2D> override final { return atlas_; }
+        auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
 
     private:
         sptr<Texture2D> atlas_;

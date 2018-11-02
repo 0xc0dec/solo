@@ -127,9 +127,9 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
 // TODO Refactor, reduce copy-paste
 auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
-    const auto width = static_cast<u32>(data->getDimensions().x());
-    const auto height = static_cast<u32>(data->getDimensions().y());
-    const auto format = toVulkanFormat(data->getTextureFormat());
+    const auto width = static_cast<u32>(data->dimensions().x());
+    const auto height = static_cast<u32>(data->dimensions().y());
+    const auto format = toVulkanFormat(data->textureFormat());
     const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
@@ -178,7 +178,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     bufferCopyRegion.imageExtent.depth = 1;
     bufferCopyRegion.bufferOffset = 0;
 
-    auto srcBuf = VulkanBuffer::createStaging(renderer, data->getSize(), data->getData());
+    auto srcBuf = VulkanBuffer::createStaging(renderer, data->size(), data->data());
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask_;
@@ -307,9 +307,9 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
 {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
-    const auto width = data->getDimension();
+    const auto width = data->dimension();
     const auto height = width;
-    const auto format = toVulkanFormat(data->getTextureFormat());
+    const auto format = toVulkanFormat(data->textureFormat());
     const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     const auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
@@ -354,7 +354,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
         VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-    auto srcBuffer = VulkanBuffer::createStaging(renderer, data->getSize());
+    auto srcBuffer = VulkanBuffer::createStaging(renderer, data->size());
 
     // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
     // Vulkan's Y axis is inverted, so we invert
@@ -364,7 +364,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
     vec<VkBufferImageCopy> copyRegions;
     for (u32 layer = 0; layer < layers; layer++)
     {
-        srcBuffer.updatePart(data->getData(layerFaceMapping[layer]), offset, data->getSize(layerFaceMapping[layer]));
+        srcBuffer.updatePart(data->faceData(layerFaceMapping[layer]), offset, data->faceSize(layerFaceMapping[layer]));
 
         for (u32 level = 0; level < mipLevels; level++)
         {
@@ -373,14 +373,14 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
             bufferCopyRegion.imageSubresource.mipLevel = level;
             bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
             bufferCopyRegion.imageSubresource.layerCount = 1;
-            bufferCopyRegion.imageExtent.width = data->getDimension();
-            bufferCopyRegion.imageExtent.height = data->getDimension();
+            bufferCopyRegion.imageExtent.width = data->dimension();
+            bufferCopyRegion.imageExtent.height = data->dimension();
             bufferCopyRegion.imageExtent.depth = 1;
             bufferCopyRegion.bufferOffset = offset;
 
             copyRegions.push_back(bufferCopyRegion);
 
-            offset += data->getSize(layer); // TODO use per-level size once TextureData supports mip levels
+            offset += data->faceSize(layer); // TODO use per-level size once TextureData supports mip levels
         }
     }
 

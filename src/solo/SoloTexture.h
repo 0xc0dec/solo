@@ -52,33 +52,33 @@ namespace solo
     public:
         virtual ~Texture() = default;
 
-        auto getFormat() const -> TextureFormat { return format; }
+        auto format() const -> TextureFormat { return format_; }
 
-        auto getHorizontalWrap() const -> TextureWrap { return horizontalWrap; }
-        auto getVerticalWrap() const -> TextureWrap { return verticalWrap; }
-        virtual void setWrap(TextureWrap wrap);
+        auto horizontalWrap() const -> TextureWrap { return horizontalWrap_; }
+        auto verticalWrap() const -> TextureWrap { return verticalWrap_; }
         void setHorizontalWrap(TextureWrap wrap);
         void setVerticalWrap(TextureWrap wrap);
+        virtual void setWrap(TextureWrap wrap);
 
-        auto getMinFilter() const -> TextureFilter { return minFilter; }
-        auto getMagFilter() const -> TextureFilter { return magFilter; }
-        auto getMipFilter() const -> TextureMipFilter { return mipFilter; }
+        auto minFilter() const -> TextureFilter { return minFilter_; }
+        auto magFilter() const -> TextureFilter { return magFilter_; }
+        auto mipFilter() const -> TextureMipFilter { return mipFilter_; }
         void setFilter(TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter);
 
-        auto getAnisotropyLevel() const -> float { return anisotropyLevel; }
+        auto anisotropyLevel() const -> float { return anisotropyLevel_; }
         void setAnisotropyLevel(float level);
 
     protected:
-        TextureFormat format = TextureFormat::RGBA8;
+        TextureFormat format_ = TextureFormat::RGBA8;
 
-        TextureWrap horizontalWrap = TextureWrap::ClampToEdge;
-        TextureWrap verticalWrap = TextureWrap::ClampToEdge;
+        TextureWrap horizontalWrap_ = TextureWrap::ClampToEdge;
+        TextureWrap verticalWrap_ = TextureWrap::ClampToEdge;
 
-        TextureFilter minFilter = TextureFilter::Linear;
-        TextureFilter magFilter = TextureFilter::Linear;
-        TextureMipFilter mipFilter = TextureMipFilter::Linear;
+        TextureFilter minFilter_ = TextureFilter::Linear;
+        TextureFilter magFilter_ = TextureFilter::Linear;
+        TextureMipFilter mipFilter_ = TextureMipFilter::Linear;
 
-        float anisotropyLevel = 1.0f;
+        float anisotropyLevel_ = 1.0f;
 
         explicit Texture(TextureFormat format);
 
@@ -88,15 +88,15 @@ namespace solo
     class Texture2D: public Texture
     {
     public:
-        static auto loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>;
-        static auto loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>;
-        static auto createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>;
-        static auto createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>;
+        static auto fromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>;
+        static auto fromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>;
+        static auto fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>;
+        static auto empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>;
 
-        auto getDimensions() const -> Vector2 { return dimensions; }
+        auto dimensions() const -> Vector2 { return dimensions_; }
 
     protected:
-        Vector2 dimensions;
+        Vector2 dimensions_;
 
         explicit Texture2D(TextureFormat format, Vector2 dimensions);
     };
@@ -104,23 +104,23 @@ namespace solo
     class CubeTexture: public Texture
     {
     public:
-        static auto loadFromFaceFiles(Device *device,
+        static auto fromFaceFiles(Device *device,
             const str& positiveXPath, const str& negativeXPath,
             const str& positiveYPath, const str& negativeYPath,
             const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>;
-        static auto loadFromFaceFilesAsync(Device *device,
+        static auto fromFaceFilesAsync(Device *device,
             const str& positiveXPath, const str& negativeXPath,
             const str& positiveYPath, const str& negativeYPath,
             const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
-        static auto createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>;
+        static auto fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>;
 
-        auto getDepthWrap() const -> TextureWrap { return depthWrap; }
+        auto depthWrap() const -> TextureWrap { return depthWrap_; }
         void setDepthWrap(TextureWrap wrap);
         void setWrap(TextureWrap wrap) override;
 
     protected:
-        TextureWrap depthWrap = TextureWrap::Repeat;
-        u32 dimension = 0;
+        TextureWrap depthWrap_ = TextureWrap::Repeat;
+        u32 dimension_ = 0;
 
         CubeTexture(TextureFormat format, u32 dimension);
     };

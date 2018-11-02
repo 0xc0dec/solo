@@ -4,7 +4,7 @@
 -- 
 
 return function()
-    local cobbleStone = sl.Texture2D.loadFromFile(sl.device, getAssetPath("textures/cobblestone_color.png"), true)
+    local cobbleStone = sl.Texture2D.fromFile(sl.device, getAssetPath("textures/cobblestone_color.png"), true)
     cobbleStone:setAnisotropyLevel(16)
     cobbleStone:setWrap(sl.TextureWrap.Repeat)
 
@@ -22,7 +22,7 @@ return function()
         getEffect = function(name)
             local path = getAssetPath("effects/" .. name .. ".lua")
             return getOrAdd(path, function()
-                return sl.Effect.loadFromDescriptionFile(sl.device, path)
+                return sl.Effect.fromDescriptionFile(sl.device, path)
             end)
         end,
 
@@ -30,20 +30,20 @@ return function()
             getBox = function()
                 return getOrAdd("mesh_box", function()
                     local layout = sl.VertexBufferLayout()
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/box.dae"), layout)
+                    layout:addAttribute(sl.VertexAttributeSemantics.Position)
+                    layout:addAttribute(sl.VertexAttributeSemantics.Normal)
+                    layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
+                    return sl.Mesh.fromFile(sl.device, getAssetPath("meshes/box.dae"), layout)
                 end)
             end,
 
             getQuad = function()
                 return getOrAdd("mesh_quad", function()
                     local layout = sl.VertexBufferLayout()
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Position)
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.Normal)
-                    layout:addSemanticAttribute(sl.VertexAttributeSemantics.TexCoord)
-                    return sl.Mesh.loadFromFile(sl.device, getAssetPath("meshes/quad.dae"), layout)
+                    layout:addAttribute(sl.VertexAttributeSemantics.Position)
+                    layout:addAttribute(sl.VertexAttributeSemantics.Normal)
+                    layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
+                    return sl.Mesh.fromFile(sl.device, getAssetPath("meshes/quad.dae"), layout)
                 end)
             end
         },

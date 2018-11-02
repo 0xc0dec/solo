@@ -16,7 +16,7 @@ void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexA
     this->size_ += size;
 }
 
-void VertexBufferLayout::addSemanticAttribute(VertexAttributeSemantics semantics)
+void VertexBufferLayout::addAttribute(VertexAttributeSemantics semantics)
 {
     switch (semantics)
     {

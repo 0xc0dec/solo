@@ -22,7 +22,7 @@ Quaternion::Quaternion(const glm::quat &data):
 
 Quaternion::Quaternion(const Vector3 &axis, const Radians &angle)
 {
-    *this = createFromAxisAngle(axis, angle);
+    *this = fromAxisAngle(axis, angle);
 }
 
 bool Quaternion::isIdentity() const
@@ -41,7 +41,7 @@ bool Quaternion::isZero() const
            math::isZero(w());
 }
 
-auto Quaternion::createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion
+auto Quaternion::fromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion
 {
     return glm::angleAxis(angle.toRawRadians(), static_cast<glm::vec3>(axis));
 }

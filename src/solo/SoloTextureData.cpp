@@ -17,8 +17,8 @@ namespace solo
         {
         }
 
-        auto getSize() const -> u32 override final { return data_.size(); }
-        auto getData() const -> const void* override final { return data_.data(); }
+        auto size() const -> u32 override final { return data_.size(); }
+        auto data() const -> const void* override final { return data_.data(); }
 
     private:
         vec<u8> data_;
@@ -45,18 +45,18 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
     return TextureFormat::RGBA8;
 }
 
-auto Texture2DData::loadFromFile(Device *device, const str &path) -> sptr<Texture2DData>
+auto Texture2DData::fromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
     SL_DEBUG_PANIC(!STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
     return STBTexture2DData::loadFromFile(device, path);
 }
 
-auto Texture2DData::createFromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>
+auto Texture2DData::fromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>
 {
     return std::make_shared<InMemoryTexture2DData>(Vector2(width, height), format, data);
 }
 
-auto Texture2DData::getTextureFormat() const -> TextureFormat
+auto Texture2DData::textureFormat() const -> TextureFormat
 {
     return toTextureFormat(format_);
 }
@@ -67,7 +67,7 @@ Texture2DData::Texture2DData(TextureDataFormat format, Vector2 dimensions):
 {
 }
 
-auto CubeTextureData::loadFromFaceFiles(
+auto CubeTextureData::fromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
     const str& positiveYPath, const str& negativeYPath,
@@ -79,7 +79,7 @@ auto CubeTextureData::loadFromFaceFiles(
     return STBCubeTextureData::loadFromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
 }
 
-auto CubeTextureData::getTextureFormat() const -> TextureFormat
+auto CubeTextureData::textureFormat() const -> TextureFormat
 {
     return toTextureFormat(format_);
 }

@@ -20,7 +20,7 @@ namespace solo
         Quaternion(float x, float y, float z, float w);
         Quaternion(const Vector3 &axis, const Radians &angle);
 
-        static auto createFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion;
+        static auto fromAxisAngle(const Vector3 &axis, const Radians &angle) -> Quaternion;
         static auto lerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
         static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
 
@@ -42,7 +42,7 @@ namespace solo
         auto normalized() const -> Quaternion;
         void normalize();
 
-        auto toAxisAngle(Vector3 &e) const -> Radians;
+        auto toAxisAngle(Vector3 &axis) const -> Radians;
 
         operator glm::quat() const { return data_; }
 

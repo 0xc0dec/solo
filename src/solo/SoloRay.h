@@ -16,10 +16,10 @@ namespace solo
         Ray(const Vector3 &origin, const Vector3 &direction);
         Ray(float originX, float originY, float originZ, float dirX, float dirY, float dirZ);
 
-        auto getOrigin() const -> Vector3 { return origin_; }
+        auto origin() const -> Vector3 { return origin_; }
         void setOrigin(const Vector3 &origin);
 
-        auto getDirection() const -> Vector3 { return direction_; }
+        auto direction() const -> Vector3 { return direction_; }
         void setDirection(const Vector3 &direction);
 
     private:

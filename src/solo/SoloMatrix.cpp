@@ -129,7 +129,7 @@ auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
 
 auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
 {
-    return glm::mat4_cast(static_cast<glm::quat>(Quaternion::createFromAxisAngle(axis, angle)));
+    return glm::mat4_cast(static_cast<glm::quat>(Quaternion::fromAxisAngle(axis, angle)));
 }
 
 auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
@@ -146,7 +146,7 @@ auto Matrix::columns() const -> const float*
     return glm::value_ptr(data_);
 }
 
-auto Matrix::getScale() const -> Vector3
+auto Matrix::scale() const -> Vector3
 {
     Quaternion rotation;
     Vector3 scale, translation;
@@ -154,7 +154,7 @@ auto Matrix::getScale() const -> Vector3
     return scale;
 }
 
-auto Matrix::getRotation() const -> Quaternion
+auto Matrix::rotation() const -> Quaternion
 {
     Quaternion rotation;
     Vector3 scale, translation;
@@ -162,7 +162,7 @@ auto Matrix::getRotation() const -> Quaternion
     return rotation;
 }
 
-auto Matrix::getTranslation() const -> Vector3
+auto Matrix::translation() const -> Vector3
 {
     return glm::vec3(data_[3]);
 }
@@ -179,8 +179,8 @@ auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
 
 auto Matrix::transformRay(const Ray &ray) const -> Ray
 {
-    const auto origin = transformPoint(ray.getOrigin());
-    const auto direction = transformDirection(ray.getDirection()).normalized();
+    const auto origin = transformPoint(ray.origin());
+    const auto direction = transformDirection(ray.direction()).normalized();
     return {origin, direction};
 }
 

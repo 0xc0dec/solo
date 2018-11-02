@@ -19,7 +19,7 @@ namespace solo
 
         virtual ~FileSystem() = default;
 
-        virtual auto getStream(const str &path) -> sptr<std::istream>;
+        virtual auto stream(const str &path) -> sptr<std::istream>;
 
         virtual auto readBytes(const str &path) -> vec<u8>;
         virtual void writeBytes(const str &path, const vec<u8> &data);

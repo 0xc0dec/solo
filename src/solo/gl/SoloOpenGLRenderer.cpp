@@ -179,9 +179,9 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
         
-    const auto viewport = camera->getViewport();
+    const auto viewport = camera->viewport();
     const auto hasClearColor = camera->hasColorClearing();
-    const auto clearColor = camera->getClearColor();
+    const auto clearColor = camera->clearColor();
 
     setViewport(viewport);
     setDepthWrite(true);
@@ -201,15 +201,15 @@ void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
-    const auto faceCull = material->getFaceCull();
-    const auto polygonMode = material->getPolygonMode();
+    const auto faceCull = material->faceCull();
+    const auto polygonMode = material->polygonMode();
     const auto depthTest = material->hasDepthTest();
     const auto depthWrite = material->hasDepthWrite();
-    const auto depthFunc = material->getDepthFunction();
-    const auto blend = material->getBlend();
-    const auto srcBlendFactor = material->getSrcBlendFactor();
-    const auto dstBlendFactor = material->getDstBlendFactor();
-    const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
+    const auto depthFunc = material->depthFunction();
+    const auto blend = material->hasBlend();
+    const auto srcBlendFactor = material->srcBlendFactor();
+    const auto dstBlendFactor = material->dstBlendFactor();
+    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
     const auto program = effect->handle();
 
     glUseProgram(program);
@@ -228,15 +228,15 @@ void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
 void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     // TODO Remove copy-paste
-    const auto faceCull = material->getFaceCull();
-    const auto polygonMode = material->getPolygonMode();
+    const auto faceCull = material->faceCull();
+    const auto polygonMode = material->polygonMode();
     const auto depthTest = material->hasDepthTest();
     const auto depthWrite = material->hasDepthWrite();
-    const auto depthFunc = material->getDepthFunction();
-    const auto blend = material->getBlend();
-    const auto srcBlendFactor = material->getSrcBlendFactor();
-    const auto dstBlendFactor = material->getDstBlendFactor();
-    const auto effect = static_cast<OpenGLEffect*>(material->getEffect().get());
+    const auto depthFunc = material->depthFunction();
+    const auto blend = material->hasBlend();
+    const auto srcBlendFactor = material->srcBlendFactor();
+    const auto dstBlendFactor = material->dstBlendFactor();
+    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
     const auto program = effect->handle();
 
     glUseProgram(program);

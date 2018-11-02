@@ -22,7 +22,7 @@ namespace solo
 
         ~Scene() = default;
 
-        auto getDevice() const -> Device* { return device_; }
+        auto device() const -> Device* { return device_; }
 
         auto createNode() -> sptr<Node>;
         void removeNodeById(u32 nodeId);

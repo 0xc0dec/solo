@@ -6,7 +6,7 @@
 local tags = require "tags"
 
 return function(assetCache, mainCameraNode, postProcessor)
-    local scene = mainCameraNode:getScene()
+    local scene = mainCameraNode:scene()
 
     local effect = assetCache.getEffect("color")
 
@@ -36,7 +36,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         material:setDepthTest(true)
         material:setDepthWrite(false)
         material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
-        material:setTextureParameter("mainTex", font:getAtlas())
+        material:setTextureParameter("mainTex", font:atlas())
 
         return {
             font = font,
@@ -119,7 +119,7 @@ return function(assetCache, mainCameraNode, postProcessor)
                 btn.highlighted = true
                 self.lastHighlightedBtn = btn
                 self.font.mesh:setText(btn.tipText)
-                self.fontRenderer:setMesh(self.font.mesh:getMesh())
+                self.fontRenderer:setMesh(self.font.mesh:mesh())
             end
         end
     })

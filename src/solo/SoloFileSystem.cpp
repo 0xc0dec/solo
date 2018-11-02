@@ -14,7 +14,7 @@ auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<Fil
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
 
-auto FileSystem::getStream(const str &path) -> sptr<std::istream>
+auto FileSystem::stream(const str &path) -> sptr<std::istream>
 {
     std::ifstream file{path};
     SL_DEBUG_PANIC(!file.is_open(), "Unable to open read stream for file ", path);

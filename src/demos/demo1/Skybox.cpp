@@ -5,13 +5,13 @@ using namespace solo;
 auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
 {
     auto layout = VertexBufferLayout();
-    layout.addSemanticAttribute(VertexAttributeSemantics::Position);
-    layout.addSemanticAttribute(VertexAttributeSemantics::Normal);
-    layout.addSemanticAttribute(VertexAttributeSemantics::TexCoord);
-    const auto mesh = Mesh::loadFromFile(device, "../../assets/meshes/quad.dae", layout);
+    layout.addAttribute(VertexAttributeSemantics::Position);
+    layout.addAttribute(VertexAttributeSemantics::Normal);
+    layout.addAttribute(VertexAttributeSemantics::TexCoord);
+    const auto mesh = Mesh::fromFile(device, "../../assets/meshes/quad.dae", layout);
 
     // TODO move lua effect files elsewhere?
-    const auto effect = Effect::loadFromDescriptionFile(device, "../../assets/effects/skybox.lua");
+    const auto effect = Effect::fromDescriptionFile(device, "../../assets/effects/skybox.lua");
     const auto material = Material::create(device, effect);
     material->setDepthTest(true);
     material->setDepthWrite(false);
@@ -24,7 +24,7 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     renderer->setMesh(mesh);
     renderer->setMaterial(0, material);
 
-    const auto texture = CubeTexture::loadFromFaceFiles(device,
+    const auto texture = CubeTexture::fromFaceFiles(device,
         "../../assets/textures/skyboxes/deep-space/+x.png",
         "../../assets/textures/skyboxes/deep-space/-x.png",
         "../../assets/textures/skyboxes/deep-space/+y.png",

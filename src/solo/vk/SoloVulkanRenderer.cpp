@@ -225,7 +225,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
         const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
         currentRenderPass_ = &targetFrameBuffer->renderPass();
         currentFrameBuffer = targetFrameBuffer->handle();
-        dimensions = targetFrameBuffer->getDimensions();
+        dimensions = targetFrameBuffer->dimensions();
         clearAttachments.resize(targetFrameBuffer->colorAttachmentCount());
     }
 
@@ -249,7 +249,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
         clearRect.layerCount = 1;
         clearRect.rect.offset = {0, 0};
         clearRect.rect.extent = {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())};
-        auto clearColor = currentCamera_->getClearColor();
+        auto clearColor = currentCamera_->clearColor();
         for (u32 i = 0; i < clearAttachments.size(); ++i)
         {
             clearAttachments[i].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -260,7 +260,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
             vkCmdClearAttachments(currentCmdBuffer_, static_cast<u32>(clearAttachments.size()), clearAttachments.data(), 1, &clearRect);
     }
 
-    const auto viewport = currentCamera_->getViewport();
+    const auto viewport = currentCamera_->viewport();
     VkViewport vp{viewport.x(), viewport.y(), viewport.z(), viewport.w(), 0, 1};
     vkCmdSetViewport(currentCmdBuffer_, 0, 1, &vp);
 
@@ -287,9 +287,9 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     prepareAndBindMesh(material, transform, mesh);
 
-    if (vkMesh->getPartCount())
+    if (vkMesh->partCount())
     {
-        for (u32 part = 0; part < vkMesh->getPartCount(); part++)
+        for (u32 part = 0; part < vkMesh->partCount(); part++)
         {
             const auto indexBuffer = vkMesh->partBuffer(part);
             vkCmdBindIndexBuffer(currentCmdBuffer_, indexBuffer, 0, VK_INDEX_TYPE_UINT16);
@@ -312,7 +312,7 @@ void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
 auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
+    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
     const auto key = getPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
@@ -367,12 +367,12 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         {
             const auto &layout = vkMesh->vertexBufferLayout(binding);
             
-            pipelineConfig.withVertexBinding(binding, layout.getSize(), VK_VERTEX_INPUT_RATE_VERTEX);
+            pipelineConfig.withVertexBinding(binding, layout.size(), VK_VERTEX_INPUT_RATE_VERTEX);
 
             u32 offset = 0;
-            for (u32 attrIndex = 0; attrIndex < layout.getAttributeCount(); attrIndex++)
+            for (u32 attrIndex = 0; attrIndex < layout.attributeCount(); attrIndex++)
             {
-                const auto attr = layout.getAttribute(attrIndex);
+                const auto attr = layout.attribute(attrIndex);
                 auto format = getVertexAttributeFormat(attr);
                 
                 auto location = attr.location;
@@ -402,7 +402,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->getEffect().get());
+    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     const auto &uniformBufs = vkEffect->uniformBuffers();
     const auto &materialSamplers = vkMaterial->samplers();

@@ -41,11 +41,11 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 
     auto layout = BEGIN_CLASS(module, VertexBufferLayout);
     REG_CTOR(layout);
-    REG_METHOD(layout, VertexBufferLayout, addSemanticAttribute);
-    REG_METHOD(layout, VertexBufferLayout, getAttribute);
-    REG_METHOD(layout, VertexBufferLayout, getAttributeCount);
-    REG_METHOD(layout, VertexBufferLayout, getSize);
-    REG_METHOD(layout, VertexBufferLayout, getElementCount);
+    REG_METHOD_OVERLOADED(layout, VertexBufferLayout, addAttribute, "addAttribute", void, , VertexAttributeSemantics);
+    REG_METHOD(layout, VertexBufferLayout, attribute);
+    REG_METHOD(layout, VertexBufferLayout, attributeCount);
+    REG_METHOD(layout, VertexBufferLayout, size);
+    REG_METHOD(layout, VertexBufferLayout, elementCount);
     layout.endClass();
 }
 
@@ -53,16 +53,16 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
 {
     auto mesh = BEGIN_CLASS(module, Mesh);
     REG_STATIC_METHOD(mesh, Mesh, create);
-    REG_STATIC_METHOD(mesh, Mesh, loadFromFile);
-    REG_STATIC_METHOD(mesh, Mesh, loadFromFileAsync);
+    REG_STATIC_METHOD(mesh, Mesh, fromFile);
+    REG_STATIC_METHOD(mesh, Mesh, fromFileAsync);
     REG_FREE_FUNC_AS_METHOD(mesh, addVertexBuffer);
     REG_FREE_FUNC_AS_METHOD(mesh, addDynamicVertexBuffer);
     REG_FREE_FUNC_AS_METHOD(mesh, updateDynamicVertexBuffer);
     REG_METHOD(mesh, Mesh, removeVertexBuffer);
     REG_FREE_FUNC_AS_METHOD(mesh, addPart);
     REG_METHOD(mesh, Mesh, removePart);
-    REG_METHOD(mesh, Mesh, getPartCount);
-    REG_METHOD(mesh, Mesh, getPrimitiveType);
+    REG_METHOD(mesh, Mesh, partCount);
+    REG_METHOD(mesh, Mesh, primitiveType);
     REG_METHOD(mesh, Mesh, setPrimitiveType);
     mesh.endClass();
 }

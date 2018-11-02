@@ -93,19 +93,19 @@ namespace solo
 
         virtual void bindParameter(const str &name, ParameterBinding binding) = 0;
 
-        virtual auto getEffect() const -> sptr<Effect> = 0;
+        virtual auto effect() const -> sptr<Effect> = 0;
 
-        auto getPolygonMode() const -> PolygonMode { return polygonMode_; }
+        auto polygonMode() const -> PolygonMode { return polygonMode_; }
         void setPolygonMode(PolygonMode mode) { polygonMode_ = mode; }
 
-        bool getBlend() const { return blend_; }
+        bool hasBlend() const { return blend_; }
         void setBlend(bool enabled) { blend_ = enabled; }
 
-        auto getSrcBlendFactor() const -> BlendFactor { return srcBlendFactor_; }
-        auto getDstBlendFactor() const -> BlendFactor { return dstBlendFactor_; }
+        auto srcBlendFactor() const -> BlendFactor { return srcBlendFactor_; }
+        auto dstBlendFactor() const -> BlendFactor { return dstBlendFactor_; }
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        auto getFaceCull() const -> FaceCull { return faceCull_; }
+        auto faceCull() const -> FaceCull { return faceCull_; }
         void setFaceCull(FaceCull face) { faceCull_ = face; }
 
         bool hasDepthWrite() const { return depthWrite_; }
@@ -114,7 +114,7 @@ namespace solo
         bool hasDepthTest() const { return depthTest_; }
         void setDepthTest(bool enabled) { depthTest_ = enabled; }
 
-        auto getDepthFunction() const -> DepthFunction { return depthFunc_; }
+        auto depthFunction() const -> DepthFunction { return depthFunc_; }
         void setDepthFunction(DepthFunction func) { depthFunc_ = func; }
 
     protected:

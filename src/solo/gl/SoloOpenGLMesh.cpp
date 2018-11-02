@@ -61,7 +61,7 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
     {
         const auto &bufferHandle = vertexBuffers_.at(i);
         const auto &layout = layouts_.at(i);
-        const auto attrCount = layout.getAttributeCount();
+        const auto attrCount = layout.attributeCount();
         if (!attrCount)
             continue;
 
@@ -70,8 +70,8 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
         u32 offset = 0;
         for (u32 j = 0; j < attrCount; j++)
         {
-            const auto attr = layout.getAttribute(j);
-            const auto stride = layout.getSize();
+            const auto attr = layout.attribute(j);
+            const auto stride = layout.size();
             
             auto location = attr.location;
             auto found = true;
@@ -153,13 +153,13 @@ auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
     SL_DEBUG_PANIC(!handle, "Unable to create vertex buffer handle");
 
     glBindBuffer(GL_ARRAY_BUFFER, handle);
-    glBufferData(GL_ARRAY_BUFFER, layout.getSize() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, layout.size() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     vertexBuffers_.push_back(handle);
     layouts_.push_back(layout);
     vertexCounts_.push_back(vertexCount);
-    vertexSizes_.push_back(layout.getSize());
+    vertexSizes_.push_back(layout.size());
     
     updateMinVertexCount();
     resetVertexArrayCache();

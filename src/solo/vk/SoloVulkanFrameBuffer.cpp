@@ -26,7 +26,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     for (const auto &tex: attachments)
     {
         const auto vkTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
-        if (tex->getFormat() == TextureFormat::Depth24)
+        if (tex->format() == TextureFormat::Depth24)
             result->depthAttachment_ = vkTexture;
         else
         {
@@ -36,7 +36,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
         }
     }
 
-    result->dimensions_ = attachments[0]->getDimensions();
+    result->dimensions_ = attachments[0]->dimensions();
 
     if (!result->depthAttachment_)
     {

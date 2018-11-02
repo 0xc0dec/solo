@@ -37,10 +37,10 @@ void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments
     auto depthAttachmentCount = 0;
     for (const auto &attachment : attachments)
     {
-        if (attachment->getFormat() == TextureFormat::Depth24)
+        if (attachment->format() == TextureFormat::Depth24)
             SL_DEBUG_PANIC(++depthAttachmentCount > 1, "Frame buffer can only have one depth attachment");
 
-        const auto size = attachment->getDimensions();
+        const auto size = attachment->dimensions();
         if (width == (std::numeric_limits<u32>::max)())
         {
             width = static_cast<u32>(size.x());

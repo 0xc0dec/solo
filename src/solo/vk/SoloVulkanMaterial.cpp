@@ -204,7 +204,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (nodeTransform)
                 {
-                    auto value = nodeTransform->getWorldMatrix();
+                    auto value = nodeTransform->worldMatrix();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -217,7 +217,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (camera)
                 {
-                    auto value = camera->getViewMatrix();
+                    auto value = camera->viewMatrix();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -230,7 +230,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (camera)
                 {
-                    auto value = camera->getProjectionMatrix();
+                    auto value = camera->projectionMatrix();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -243,7 +243,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (camera && nodeTransform)
                 {
-                    auto value = nodeTransform->getWorldViewMatrix(camera);
+                    auto value = nodeTransform->worldViewMatrix(camera);
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -256,7 +256,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (camera)
                 {
-                    auto value = camera->getViewProjectionMatrix();
+                    auto value = camera->viewProjectionMatrix();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -269,7 +269,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (nodeTransform && camera)
                 {
-                    auto value = nodeTransform->getWorldViewProjMatrix(camera);
+                    auto value = nodeTransform->worldViewProjMatrix(camera);
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -282,7 +282,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (nodeTransform)
                 {
-                    auto value = nodeTransform->getInvTransposedWorldMatrix();
+                    auto value = nodeTransform->invTransposedWorldMatrix();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -295,7 +295,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (nodeTransform && camera)
                 {
-                    auto value = nodeTransform->getInvTransposedWorldViewMatrix(camera);
+                    auto value = nodeTransform->invTransposedWorldViewMatrix(camera);
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };
@@ -308,7 +308,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             {
                 if (camera)
                 {
-                    auto value = camera->getTransform()->getWorldPosition();
+                    auto value = camera->transform()->worldPosition();
                     buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
                 }
             };

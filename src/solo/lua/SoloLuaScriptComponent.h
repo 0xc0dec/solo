@@ -23,7 +23,7 @@ namespace solo
         void update() override final;
         void render() override final;
 
-        auto getTypeId() -> u32 override final { return typeId_; }
+        auto typeId() -> u32 override final { return typeId_; }
 
         auto getRef() const -> LuaRef { return ref_; }
 

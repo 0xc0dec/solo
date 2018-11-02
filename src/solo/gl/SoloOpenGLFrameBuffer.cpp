@@ -17,7 +17,7 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     auto colorAttachmentsCount = 0;
     for (const auto &attachment : attachments)
     {
-        const auto isDepthAttachment = attachment->getFormat() == TextureFormat::Depth24;
+        const auto isDepthAttachment = attachment->format() == TextureFormat::Depth24;
         colorAttachmentsCount += isDepthAttachment ? 0 : 1;
     }
 
@@ -34,7 +34,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
     for (const auto &tex : attachments)
     {
         const auto glTex = std::static_pointer_cast<OpenGLTexture2D>(tex);
-        if (tex->getFormat() == TextureFormat::Depth24)
+        if (tex->format() == TextureFormat::Depth24)
             result->depthAttachment_ = glTex;
         else
             result->colorAttachments_.push_back(glTex);
@@ -56,7 +56,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     glDrawBuffers(drawBuffers.size(), drawBuffers.data());
 
-    result->dimensions_ = attachments[0]->getDimensions();
+    result->dimensions_ = attachments[0]->dimensions();
 
     if (!result->depthAttachment_)
     {

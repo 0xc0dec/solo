@@ -29,7 +29,7 @@ namespace solo
         explicit OpenGLMaterial(sptr<Effect> effect);
         ~OpenGLMaterial() {}
 
-        auto getEffect() const -> sptr<Effect> override final { return effect_; }
+        auto effect() const -> sptr<Effect> override final { return effect_; }
 
         void setFloatParameter(const str &name, float value) override final;
         void setVector2Parameter(const str &name, const Vector2 &value) override final;

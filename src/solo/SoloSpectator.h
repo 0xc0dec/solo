@@ -20,13 +20,13 @@ namespace solo
         void init() override final;
         void update() override final;
 
-        auto getMovementSpeed() const -> float { return movementSpeed_; }
+        auto movementSpeed() const -> float { return movementSpeed_; }
         void setMovementSpeed(float speed) { movementSpeed_ = speed; }
 
-        auto getMouseSensitivity() const -> float { return mouseSensitivity_; }
+        auto mouseSensitivity() const -> float { return mouseSensitivity_; }
         void setMouseSensitivity(float sensitivity) { mouseSensitivity_ = sensitivity; }
 
-        auto getRotationAcceleration() const -> float { return rotationAcceleration_; }
+        auto rotationAcceleration() const -> float { return rotationAcceleration_; }
         void setRotationAcceleration(float acceleration) { rotationAcceleration_ = acceleration;  }
 
     private:

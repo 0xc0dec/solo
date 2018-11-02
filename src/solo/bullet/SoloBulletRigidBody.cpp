@@ -23,15 +23,15 @@ public:
 
     void getWorldTransform(btTransform &worldTransform) const override final
     {
-        const auto worldPos = transform->getWorldPosition();
-        const auto rotation = transform->getWorldRotation();
+        const auto worldPos = transform->worldPosition();
+        const auto rotation = transform->worldRotation();
         worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
     void setWorldTransform(const btTransform &worldTransform) override final
     {
-        SL_DEBUG_PANIC(transform->getParent(), "Rigid body transform must not have a parent");
+        SL_DEBUG_PANIC(transform->parent(), "Rigid body transform must not have a parent");
         transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
         transform->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }
@@ -45,7 +45,7 @@ BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionPa
     mass_(parameters.mass),
     shape_(nullptr)
 {
-    world_ = static_cast<BulletPhysics *>(node.getScene()->getDevice()->physics())->world();
+    world_ = static_cast<BulletPhysics *>(node.scene()->device()->physics())->world();
     transformCmp_ = node.findComponent<Transform>();
     motionState_ = std::make_unique<MotionState>(transformCmp_);
 
@@ -66,9 +66,9 @@ BulletRigidBody::~BulletRigidBody()
 
 void BulletRigidBody::update()
 {
-    if (lastTransformVersion_ != transformCmp_->getVersion())
+    if (lastTransformVersion_ != transformCmp_->version())
     {
-        lastTransformVersion_ = transformCmp_->getVersion();
+        lastTransformVersion_ = transformCmp_->version();
         if (shape_)
             syncScale();
     }
@@ -115,6 +115,6 @@ void BulletRigidBody::setKinematic(bool kinematic)
 
 void BulletRigidBody::syncScale()
 {
-    const auto scale = transformCmp_->getWorldScale();
+    const auto scale = transformCmp_->worldScale();
     shape_->setLocalScaling(SL_TOBTVEC3(scale));
 }

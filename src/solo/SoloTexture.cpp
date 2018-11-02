@@ -14,57 +14,57 @@ using namespace solo;
 
 void Texture::setWrap(TextureWrap wrap)
 {
-    horizontalWrap = wrap;
-    verticalWrap = wrap;
+    horizontalWrap_ = wrap;
+    verticalWrap_ = wrap;
     rebuild();
 }
 
 void Texture::setVerticalWrap(TextureWrap wrap)
 {
-    verticalWrap = wrap;
+    verticalWrap_ = wrap;
     rebuild();
 }
 
 void Texture::setHorizontalWrap(TextureWrap wrap)
 {
-    horizontalWrap = wrap;
+    horizontalWrap_ = wrap;
     rebuild();
 }
 
 void Texture::setFilter(TextureFilter minFiltering, TextureFilter magFiltering, TextureMipFilter mipFiltering)
 {
-    this->minFilter = minFiltering;
-    this->magFilter = magFiltering;
-    this->mipFilter = mipFiltering;
+    this->minFilter_ = minFiltering;
+    this->magFilter_ = magFiltering;
+    this->mipFilter_ = mipFiltering;
     rebuild();
 }
 
 void Texture::setAnisotropyLevel(float level)
 {
-    anisotropyLevel = level;
+    anisotropyLevel_ = level;
     rebuild();
 }
 
 Texture::Texture(TextureFormat format):
-    format(format)
+    format_(format)
 {
     rebuild(); // yes, virtual call
 }
 
-auto Texture2D::loadFromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
+auto Texture2D::fromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
 {
-    const auto data = Texture2DData::loadFromFile(device, path);
-    return createFromData(device, data, generateMipmaps);
+    const auto data = Texture2DData::fromFile(device, path);
+    return fromData(device, data, generateMipmaps);
 }
 
-auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>
+auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>
 {
     auto handle = std::make_shared<AsyncHandle<Texture2D>>();
 
-    auto producers = JobBase<Texture2DData>::Producers{[=]() { return Texture2DData::loadFromFile(device, path); }};
+    auto producers = JobBase<Texture2DData>::Producers{[=]() { return Texture2DData::fromFile(device, path); }};
     auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results)
     {
-        auto texture = createFromData(device, results[0], generateMipmaps);
+        auto texture = fromData(device, results[0], generateMipmaps);
         handle->resolve(texture);
     };
 
@@ -73,7 +73,7 @@ auto Texture2D::loadFromFileAsync(Device *device, const str &path, bool generate
     return handle;
 }
 
-auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>
+auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>
 {
     switch (device->mode())
     {
@@ -91,7 +91,7 @@ auto Texture2D::createEmpty(Device *device, u32 width, u32 height, TextureFormat
     }
 }
 
-auto Texture2D::createFromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
+auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
 {
     switch (device->mode())
     {
@@ -111,25 +111,25 @@ auto Texture2D::createFromData(Device *device, sptr<Texture2DData> data, bool ge
 
 Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
     Texture(format),
-    dimensions(dimensions)
+    dimensions_(dimensions)
 {
 }
 
-auto CubeTexture::loadFromFaceFiles(
+auto CubeTexture::fromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
 {
-    const auto data = CubeTextureData::loadFromFaceFiles(
+    const auto data = CubeTextureData::fromFaceFiles(
         device,
         positiveXPath, negativeXPath,
         positiveYPath, negativeYPath,
         positiveZPath, negativeZPath);
-    return createFromData(device, data);
+    return fromData(device, data);
 }
 
-auto CubeTexture::loadFromFaceFilesAsync(
+auto CubeTexture::fromFaceFilesAsync(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
     const str& positiveYPath, const str& negativeYPath,
@@ -140,7 +140,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     auto producers = JobBase<CubeTextureData>::Producers{[=]()
     {
         // TODO run each face loading in separate jobs
-        return CubeTextureData::loadFromFaceFiles(
+        return CubeTextureData::fromFaceFiles(
             device,
             positiveXPath, negativeXPath,
             positiveYPath, negativeYPath,
@@ -148,7 +148,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
-        auto texture = createFromData(device, results[0]);
+        auto texture = fromData(device, results[0]);
         handle->resolve(texture);
     };
 
@@ -157,7 +157,7 @@ auto CubeTexture::loadFromFaceFilesAsync(
     return handle;
 }
 
-auto CubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>
+auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>
 {
     switch (device->mode())
     {
@@ -177,22 +177,22 @@ auto CubeTexture::createFromData(Device *device, sptr<CubeTextureData> data) -> 
 
 CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
     Texture(format),
-    dimension(dimension)
+    dimension_(dimension)
 {
     rebuild();
 }
 
 void CubeTexture::setWrap(TextureWrap wrap)
 {
-    verticalWrap = wrap;
-    horizontalWrap = wrap;
-    depthWrap = wrap;
+    verticalWrap_ = wrap;
+    horizontalWrap_ = wrap;
+    depthWrap_ = wrap;
     rebuild();
 }
 
 void CubeTexture::setDepthWrap(TextureWrap wrap)
 {
-    this->depthWrap = wrap;
+    this->depthWrap_ = wrap;
     rebuild();
 }
 
