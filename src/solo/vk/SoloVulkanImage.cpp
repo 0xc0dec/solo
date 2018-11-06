@@ -72,7 +72,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage
+auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
     const auto isDepth = format == TextureFormat::Depth24;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -125,7 +125,7 @@ auto VulkanImage::createEmpty2D(VulkanRenderer *renderer, u32 width, u32 height,
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
+auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
@@ -178,7 +178,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     bufferCopyRegion.imageExtent.depth = 1;
     bufferCopyRegion.bufferOffset = 0;
 
-    auto srcBuf = VulkanBuffer::createStaging(renderer, data->size(), data->data());
+    auto srcBuf = VulkanBuffer::staging(renderer, data->size(), data->data());
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask_;
@@ -303,7 +303,7 @@ auto VulkanImage::create2D(VulkanRenderer *renderer, Texture2DData *data, bool g
     return image;
 }
 
-auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage
+auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage
 {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
@@ -354,7 +354,7 @@ auto VulkanImage::createCube(VulkanRenderer *renderer, CubeTextureData *data) ->
         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
         VK_PIPELINE_STAGE_TRANSFER_BIT);
 
-    auto srcBuffer = VulkanBuffer::createStaging(renderer, data->size());
+    auto srcBuffer = VulkanBuffer::staging(renderer, data->size());
 
     // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
     // Vulkan's Y axis is inverted, so we invert

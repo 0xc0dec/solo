@@ -18,10 +18,10 @@ namespace solo
     class VulkanBuffer
     {
     public:
-        static auto createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
-        static auto createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer;
-        static auto createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
-        static auto createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        static auto staging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
+        static auto uniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer;
+        static auto deviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        static auto hostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
 
         VulkanBuffer() = default;
         VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
@@ -42,7 +42,6 @@ namespace solo
 
     private:
         VkDevice device_ = nullptr;
-        VulkanRenderer *renderer_ = nullptr;
         VulkanResource<VkDeviceMemory> memory_;
         VulkanResource<VkBuffer> buffer_;
         VkDeviceSize size_ = 0;

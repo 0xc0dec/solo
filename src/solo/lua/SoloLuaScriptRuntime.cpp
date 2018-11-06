@@ -221,7 +221,7 @@ LuaScriptRuntime::~LuaScriptRuntime()
     lua_.close();
 }
 
-void LuaScriptRuntime::executeFile(const str& path)
+void LuaScriptRuntime::execFile(const str& path)
 {
     if (lua_.loadFile(path.c_str()))
     {
@@ -238,12 +238,12 @@ auto LuaScriptRuntime::eval(const str& code) -> str
     return lua_.eval<str>(code.c_str());
 }
 
-auto LuaScriptRuntime::getString(const str& name) -> str
+auto LuaScriptRuntime::fetchString(const str& name) -> str
 {
     return LuaRef(lua_, name.c_str()).toValue<str>();
 }
 
-auto LuaScriptRuntime::getDeviceSetup(const str &name) -> DeviceSetup
+auto LuaScriptRuntime::fetchDeviceSetup(const str &name) -> DeviceSetup
 {
     return LuaRef(lua_, name.c_str()).toValue<DeviceSetup>();
 }

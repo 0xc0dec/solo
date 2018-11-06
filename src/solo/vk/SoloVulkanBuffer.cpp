@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-auto VulkanBuffer::createStaging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
+auto VulkanBuffer::staging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -23,22 +23,22 @@ auto VulkanBuffer::createStaging(VulkanRenderer *renderer, VkDeviceSize size, co
     return buffer;
 }
 
-auto VulkanBuffer::createUniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
+auto VulkanBuffer::uniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
 {
     return VulkanBuffer(renderer, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::createDeviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::deviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
-    auto stagingBuffer = createStaging(renderer, size, data);
+    auto stagingBuffer = staging(renderer, size, data);
     auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer, renderer->queue(), renderer->commandPool());
     return buffer;
 }
 
-auto VulkanBuffer::createHostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::hostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(renderer, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
@@ -47,7 +47,6 @@ auto VulkanBuffer::createHostVisible(VulkanRenderer *renderer, VkDeviceSize size
 
 VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     device_(renderer->device()),
-    renderer_(renderer),
     size_(size)
 {
     VkBufferCreateInfo bufferInfo {};

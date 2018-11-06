@@ -20,7 +20,7 @@ namespace solo
     class OpenGLFrameBuffer final : public FrameBuffer
     {
     public:
-        static auto create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>;
+        static auto fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>;
 
         ~OpenGLFrameBuffer();
 

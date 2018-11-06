@@ -15,7 +15,7 @@ namespace solo
     public:
         virtual ~BulletCollider() = default;
 
-        virtual auto getShape() -> btCollisionShape* = 0;
+        virtual auto shape() -> btCollisionShape* = 0;
 
     protected:
         BulletCollider() = default;

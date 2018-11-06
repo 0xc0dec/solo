@@ -79,7 +79,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
     if (newCollider)
     {
         collider_ = newCollider; // store ownership
-        shape_ = std::dynamic_pointer_cast<BulletCollider>(collider_)->getShape();
+        shape_ = std::dynamic_pointer_cast<BulletCollider>(collider_)->shape();
 
         btVector3 inertia;
         shape_->calculateLocalInertia(mass_, inertia);

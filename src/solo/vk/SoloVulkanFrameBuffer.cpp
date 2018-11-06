@@ -40,7 +40,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
 
     if (!result->depthAttachment_)
     {
-        result->depthAttachment_ = VulkanTexture2D::createEmpty(device,
+        result->depthAttachment_ = VulkanTexture2D::empty(device,
             static_cast<u32>(result->dimensions_.x()), static_cast<u32>(result->dimensions_.y()), TextureFormat::Depth24);
     }
 

@@ -51,7 +51,7 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
     return result;
 }
 
-auto VulkanEffect::createFromSources(Device *device,
+auto VulkanEffect::fromSources(Device *device,
     const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
     const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
     -> sptr<VulkanEffect>
@@ -70,8 +70,8 @@ auto VulkanEffect::createFromSources(Device *device,
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
     renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
-    vertexShader_ = createShaderModule(renderer_->device(), vsSrc, vsSrcLen);
-    fragmentShader_ = createShaderModule(renderer_->device(), fsSrc, fsSrcLen);
+    vs_ = createShaderModule(renderer_->device(), vsSrc, vsSrcLen);
+    fs_ = createShaderModule(renderer_->device(), fsSrc, fsSrcLen);
     introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32), true);
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }

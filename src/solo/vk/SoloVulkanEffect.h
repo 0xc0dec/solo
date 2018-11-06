@@ -42,15 +42,15 @@ namespace solo
             u32 location;
         };
 
-        static auto createFromSources(Device *device,
+        static auto fromSources(Device *device,
             const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
             const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
 
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect() = default;
 
-        auto vertexShaderModule() const -> VkShaderModule { return vertexShader_; }
-        auto fragmentShaderModule() const -> VkShaderModule { return fragmentShader_; }
+        auto vsModule() const -> VkShaderModule { return vs_; }
+        auto fsModule() const -> VkShaderModule { return fs_; }
 
         auto uniformBuffer(const str &name) -> UniformBuffer;
         auto sampler(const str &name) -> Sampler;
@@ -61,8 +61,8 @@ namespace solo
 
     private:
         VulkanRenderer *renderer_ = nullptr;
-        VulkanResource<VkShaderModule> vertexShader_;
-        VulkanResource<VkShaderModule> fragmentShader_;
+        VulkanResource<VkShaderModule> vs_;
+        VulkanResource<VkShaderModule> fs_;
             
         umap<str, UniformBuffer> uniformBuffers_;
         umap<str, Sampler> samplers_;

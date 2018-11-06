@@ -56,7 +56,7 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanEffect::createFromSources(device, vsBytes, vsSize, "source", fsBytes, fsSize, "source");
+            return VulkanEffect::fromSources(device, vsBytes, vsSize, "source", fsBytes, fsSize, "source");
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
@@ -74,7 +74,7 @@ auto Effect::fromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, 
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanEffect::createFromSources(device, vsSrc, vsSrcLen, "vert-src", fsSrc, fsSrcLen, "frag-src");
+            return VulkanEffect::fromSources(device, vsSrc, vsSrcLen, "vert-src", fsSrc, fsSrcLen, "frag-src");
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");

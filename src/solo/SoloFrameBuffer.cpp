@@ -17,7 +17,7 @@ auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLFrameBuffer::create(attachments);
+            return OpenGLFrameBuffer::fromAttachments(attachments);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:

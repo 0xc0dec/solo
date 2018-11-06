@@ -41,7 +41,7 @@ STBTexture2DData::~STBTexture2DData()
         stbi_image_free(data_);
 }
 
-auto STBTexture2DData::loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
+auto STBTexture2DData::fromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
 {
     auto bytes = device->fileSystem()->readBytes(path);
     int width, height, channels;
@@ -74,19 +74,19 @@ bool STBCubeTextureData::canLoadFromFaceFiles(
         STBTexture2DData::canLoadFromFile(negativeZPath);
 }
 
-auto STBCubeTextureData::loadFromFaceFiles(
+auto STBCubeTextureData::fromFaceFiles(
     Device *device,
     const str& positiveXPath, const str& negativeXPath,
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<STBCubeTextureData>
 {
     vec<sptr<STBTexture2DData>> faces;
-    faces.push_back(STBTexture2DData::loadFromFile(device, positiveXPath));
-    faces.push_back(STBTexture2DData::loadFromFile(device, negativeXPath));
-    faces.push_back(STBTexture2DData::loadFromFile(device, positiveYPath));
-    faces.push_back(STBTexture2DData::loadFromFile(device, negativeYPath));
-    faces.push_back(STBTexture2DData::loadFromFile(device, positiveZPath));
-    faces.push_back(STBTexture2DData::loadFromFile(device, negativeZPath));
+    faces.push_back(STBTexture2DData::fromFile(device, positiveXPath));
+    faces.push_back(STBTexture2DData::fromFile(device, negativeXPath));
+    faces.push_back(STBTexture2DData::fromFile(device, positiveYPath));
+    faces.push_back(STBTexture2DData::fromFile(device, negativeYPath));
+    faces.push_back(STBTexture2DData::fromFile(device, positiveZPath));
+    faces.push_back(STBTexture2DData::fromFile(device, negativeZPath));
 
     SL_DEBUG_BLOCK(
     {
@@ -97,7 +97,7 @@ auto STBCubeTextureData::loadFromFaceFiles(
     });
 
     auto tex = std::make_shared<STBCubeTextureData>(faces[0]->format(), static_cast<u32>(faces[0]->dimensions().x()));
-    tex->faces = std::move(faces);
+    tex->faces_ = std::move(faces);
     return tex;
 }
 
@@ -108,20 +108,20 @@ STBCubeTextureData::STBCubeTextureData(TextureDataFormat format, u32 dimension):
 
 auto STBCubeTextureData::size() const -> u32
 {
-    return faces[0]->size() + 
-           faces[1]->size() + 
-           faces[2]->size() + 
-           faces[3]->size() + 
-           faces[4]->size() + 
-           faces[5]->size();
+    return faces_[0]->size() + 
+           faces_[1]->size() + 
+           faces_[2]->size() + 
+           faces_[3]->size() + 
+           faces_[4]->size() + 
+           faces_[5]->size();
 }
 
 auto STBCubeTextureData::faceSize(u32 face) const -> u32
 {
-    return faces[face]->size();
+    return faces_[face]->size();
 }
 
 auto STBCubeTextureData::faceData(u32 face) const -> const void*
 {
-    return faces[face]->data();
+    return faces_[face]->data();
 }

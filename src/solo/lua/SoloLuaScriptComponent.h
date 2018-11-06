@@ -25,7 +25,7 @@ namespace solo
 
         auto typeId() -> u32 override final { return typeId_; }
 
-        auto getRef() const -> LuaRef { return ref_; }
+        auto ref() const -> LuaRef { return ref_; }
 
     private:
         u32 typeId_;

@@ -328,7 +328,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         for (const auto &info : uniformBufs)
         {
             const auto bufferName = info.first;
-            context.uniformBuffers[bufferName] = VulkanBuffer::createUniformHostVisible(this, info.second.size);
+            context.uniformBuffers[bufferName] = VulkanBuffer::uniformHostVisible(this, info.second.size);
             builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
         }
 
@@ -354,8 +354,8 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 
     if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
     {
-        const auto vs = vkEffect->vertexShaderModule();
-        const auto fs = vkEffect->fragmentShaderModule();
+        const auto vs = vkEffect->vsModule();
+        const auto fs = vkEffect->fsModule();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
             .withDescriptorSetLayout(context.descSetLayout)
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)

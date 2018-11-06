@@ -24,7 +24,7 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     SL_DEBUG_PANIC(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
 }
 
-auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
+auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
     SL_DEBUG_BLOCK(::validateNewAttachments(attachments));
@@ -60,7 +60,7 @@ auto OpenGLFrameBuffer::create(const vec<sptr<Texture2D>> &attachments) -> sptr<
 
     if (!result->depthAttachment_)
     {
-        result->depthAttachment_ = OpenGLTexture2D::createEmpty(
+        result->depthAttachment_ = OpenGLTexture2D::empty(
             result->dimensions_.x(), result->dimensions_.y(), TextureFormat::Depth24);
     }
 

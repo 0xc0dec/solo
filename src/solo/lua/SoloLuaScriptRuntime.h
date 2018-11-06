@@ -17,11 +17,11 @@ namespace solo
         explicit LuaScriptRuntime(Device *device);
         ~LuaScriptRuntime();
 
-        void executeFile(const str& path) override final;
-
+        void execFile(const str& path) override final;
         auto eval(const str& code) -> str override;
-        auto getString(const str &name) -> str override final;
-        auto getDeviceSetup(const str &name) -> DeviceSetup override final;
+
+        auto fetchDeviceSetup(const str &name) -> DeviceSetup override final;
+        auto fetchString(const str &name) -> str override final;
 
     private:
         LuaState lua_;

@@ -79,11 +79,11 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLTexture2D::createEmpty(width, height, format);
+            return OpenGLTexture2D::empty(width, height, format);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanTexture2D::createEmpty(device, width, height, format);
+            return VulkanTexture2D::empty(device, width, height, format);
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
@@ -97,11 +97,11 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLTexture2D::createFromData(data, generateMipmaps);
+            return OpenGLTexture2D::fromData(data, generateMipmaps);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanTexture2D::createFromData(device, data, generateMipmaps);
+            return VulkanTexture2D::fromData(device, data, generateMipmaps);
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
@@ -163,11 +163,11 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            return OpenGLCubeTexture::createFromData(data);
+            return OpenGLCubeTexture::fromData(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanCubeTexture::createFromData(device, data);
+            return VulkanCubeTexture::fromData(device, data);
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");

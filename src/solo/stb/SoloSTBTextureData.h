@@ -17,7 +17,7 @@ namespace solo
     {
     public:
         static bool canLoadFromFile(const str &path);
-        static auto loadFromFile(Device *device, const str &path) -> sptr<STBTexture2DData>;
+        static auto fromFile(Device *device, const str &path) -> sptr<STBTexture2DData>;
 
         STBTexture2DData(TextureDataFormat format, Vector2 dimensions);
         ~STBTexture2DData();
@@ -37,7 +37,7 @@ namespace solo
             const str& positiveXPath, const str& negativeXPath,
             const str& positiveYPath, const str& negativeYPath,
             const str& positiveZPath, const str& negativeZPath);
-        static auto loadFromFaceFiles(
+        static auto fromFaceFiles(
             Device *device,
             const str& positiveXPath, const str& negativeXPath,
             const str& positiveYPath, const str& negativeYPath,
@@ -50,6 +50,6 @@ namespace solo
         auto faceData(u32 face) const -> const void* override final;
 
     private:
-        vec<sptr<STBTexture2DData>> faces;
+        vec<sptr<STBTexture2DData>> faces_;
     };
 }
