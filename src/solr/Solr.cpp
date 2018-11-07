@@ -1,6 +1,8 @@
 /*
-    Copyright (c) Aleksey Fedotov
-    MIT license
+ * Solr - Solo Runner, a standalone engine runner for script-only engine programs.
+ * 
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
 */
 
 #include <Solo.h>
@@ -15,7 +17,7 @@ int main(int argc, s8 *argv[])
     try
     {
         const auto entryScript = argv[1];
-        auto transientRuntime = ScriptRuntime::create();
+        auto transientRuntime = ScriptRuntime::empty();
         transientRuntime->execFile(entryScript);
 
         const auto setup = transientRuntime->fetchDeviceSetup("deviceSetup");

@@ -26,6 +26,8 @@ auto Effect::fromDescriptionFile(Device* device, const str& path) -> sptr<Effect
 
 auto Effect::fromDescription(Device* device, const str& description) -> sptr<Effect>
 {
+    // This doesn't seem to restrict us to Lua scripting only. It seems quite possible to 
+    // provide the same script method in other possible scripting languages in the future.
     const auto source = device->scriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
     return fromSource(device, source);
 }

@@ -57,7 +57,7 @@ void Device::initSubsystems(const DeviceSetup &setup)
     renderer_ = Renderer::create(this, token);
     physics_ = Physics::create(this, token);
     fs_ = FileSystem::create(this, token);
-    scriptRuntime_ = ScriptRuntime::create(this, token);
+    scriptRuntime_ = ScriptRuntime::withDevice(this, token);
     jobPool_ = std::make_shared<JobPool>();
 }
 
