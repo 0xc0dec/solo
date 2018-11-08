@@ -1,7 +1,7 @@
-/*
-    Copyright (c) Aleksey Fedotov
-    MIT license
-*/
+/* 
+ * Copyright (c) Aleksey Fedotov 
+ * MIT license 
+ */
 
 // NOTE This file, as well as other vulkan files in the engine, is a total hackfest and test playground currently.
 // Don't pay attention to the quality of code here.

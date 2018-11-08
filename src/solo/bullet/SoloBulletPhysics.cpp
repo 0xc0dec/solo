@@ -1,7 +1,7 @@
-/*
-    Copyright (c) Aleksey Fedotov
-    MIT license
-*/
+/* 
+ * Copyright (c) Aleksey Fedotov 
+ * MIT license 
+ */
 
 #include "SoloBulletPhysics.h"
 #include "SoloDevice.h"

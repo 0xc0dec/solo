@@ -1,7 +1,7 @@
-/*
-    Copyright (c) Aleksey Fedotov
-    MIT license
-*/
+/* 
+ * Copyright (c) Aleksey Fedotov 
+ * MIT license 
+ */
 
 #include "SoloBoxCollider.h"
 #include "bullet/SoloBulletBoxCollider.h"
