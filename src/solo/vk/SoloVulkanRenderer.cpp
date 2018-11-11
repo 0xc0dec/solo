@@ -21,7 +21,7 @@
 
 using namespace solo;
 
-static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
+static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat
 {
     switch (attr.elementCount)
     {
@@ -29,13 +29,13 @@ static auto getVertexAttributeFormat(const VertexAttribute &attr) -> VkFormat
         case 2: return VK_FORMAT_R32G32_SFLOAT;
         case 3: return VK_FORMAT_R32G32B32_SFLOAT;
         case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+        default:
+            SL_DEBUG_PANIC(true, "Unsupported vertex attribute element count");
+            return VK_FORMAT_UNDEFINED;
     }
-
-    SL_DEBUG_PANIC(true, "Unsupported vertex attribute element count");
-    return VK_FORMAT_UNDEFINED;
 }
 
-static auto getPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
+static auto genPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
 {
     size_t seed = 0;
     const std::hash<void*> hasher;
@@ -100,7 +100,7 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
     return result;
 }
 
-static auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
+static auto physicalDevice(VkInstance instance) -> VkPhysicalDevice
 {
     u32 gpuCount = 0;
     SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
@@ -111,7 +111,7 @@ static auto getPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
     return devices[0]; // Taking first one for simplicity
 }
 
-static auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
+static auto surfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
 {
     u32 count;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
@@ -124,7 +124,7 @@ static auto getSurfaceFormats(VkPhysicalDevice device, VkSurfaceKHR surface) -> 
     return {formats[0].format, formats[0].colorSpace};
 }
 
-static auto getQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
+static auto queueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
 {
     u32 count;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
@@ -161,7 +161,7 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
     return commandPool;
 }
 
-static auto getDepthFormat(VkPhysicalDevice device) -> VkFormat
+static auto depthFormat(VkPhysicalDevice device) -> VkFormat
 {
     vec<VkFormat> depthFormats =
     {
@@ -193,22 +193,24 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
 #ifdef SL_DEBUG
     debugCallback_ = createDebugCallback(instance, debugCallbackFunc);
 #endif
-    physicalDevice_ = ::getPhysicalDevice(instance);
+
+    physicalDevice_ = ::physicalDevice(instance);
     vkGetPhysicalDeviceProperties(physicalDevice_, &physicalProperties_);
     vkGetPhysicalDeviceFeatures(physicalDevice_, &physicalFeatures_);
     vkGetPhysicalDeviceMemoryProperties(physicalDevice_, &physicalMemoryFeatures_);
 
-    auto surfaceFormats = getSurfaceFormats(physicalDevice_, surface);
+    auto surfaceFormats = ::surfaceFormats(physicalDevice_, surface);
     colorFormat_ = std::get<0>(surfaceFormats);
     colorSpace_ = std::get<1>(surfaceFormats);
-    depthFormat_ = ::getDepthFormat(physicalDevice_);
+    depthFormat_ = ::depthFormat(physicalDevice_);
 
-    const auto queueIndex = getQueueIndex(physicalDevice_, surface);
+    const auto queueIndex = ::queueIndex(physicalDevice_, surface);
     device_ = createDevice(physicalDevice_, queueIndex);
     vkGetDeviceQueue(device_, queueIndex, 0, &queue_);
 
     commandPool_ = createCommandPool(device_, queueIndex);
-    swapchain_ = VulkanSwapchain(this, vulkanDevice, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()), engineDevice->isVsync());
+    swapchain_ = VulkanSwapchain(this, vulkanDevice, static_cast<u32>(
+        canvasSize.x()), static_cast<u32>(canvasSize.y()), engineDevice->isVsync());
 }
 
 void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
@@ -315,7 +317,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
-    const auto key = getPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
+    const auto key = genPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
     auto &context = pipelineContexts_[key];
 
     if (!context.descSet)
@@ -373,7 +375,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
             for (u32 attrIndex = 0; attrIndex < layout.attributeCount(); attrIndex++)
             {
                 const auto attr = layout.attribute(attrIndex);
-                auto format = getVertexAttributeFormat(attr);
+                const auto format = toVertexFormat(attr);
                 
                 auto location = attr.location;
                 auto found = true;

@@ -21,11 +21,11 @@ namespace solo
     class VulkanSwapchain final
     {
     public:
-        VulkanSwapchain() {}
+        VulkanSwapchain() = default;
         VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync);
         VulkanSwapchain(const VulkanSwapchain &other) = delete;
         VulkanSwapchain(VulkanSwapchain &&other) = default;
-        ~VulkanSwapchain() {}
+        ~VulkanSwapchain() = default;
 
         auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain& = delete;
         auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain& = default;
