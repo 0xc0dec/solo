@@ -30,7 +30,7 @@ namespace solo
 
         void flush();
 
-        void begin(bool oneTime); // TODO void oneTime param
+        void begin(bool oneTime); // TODO avoid oneTime param
         void end();
 
         void beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
