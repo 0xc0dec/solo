@@ -35,8 +35,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     layoutInfo.pushConstantRangeCount = 0;
     layoutInfo.pPushConstantRanges = nullptr;
 
-    VulkanResource<VkPipelineLayout> layout{device, vkDestroyPipelineLayout};
-    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout.cleanRef()));
+    layout_ = VulkanResource<VkPipelineLayout>{device, vkDestroyPipelineLayout};
+    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     VkPipelineMultisampleStateCreateInfo multisampleState{};
     multisampleState.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
@@ -115,17 +115,14 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     pipelineInfo.pDepthStencilState = &config.depthStencilStateInfo_;
     pipelineInfo.pColorBlendState = &colorBlendState;
     pipelineInfo.pDynamicState = &dynamicState;
-    pipelineInfo.layout = layout;
+    pipelineInfo.layout = layout_;
     pipelineInfo.renderPass = renderPass;
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineInfo.basePipelineIndex = -1;
 
-    VulkanResource<VkPipeline> pipeline{device, vkDestroyPipeline};
-    SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline.cleanRef()));
-
-    this->pipeline_ = std::move(pipeline);
-    this->layout_ = std::move(layout);
+    pipeline_ = VulkanResource<VkPipeline>{device, vkDestroyPipeline};
+    SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline_.cleanRef()));
 }
 
 VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):

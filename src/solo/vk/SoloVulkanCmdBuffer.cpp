@@ -20,10 +20,8 @@ VulkanCmdBuffer::VulkanCmdBuffer(VkDevice device, VkCommandPool commandPool)
     allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocateInfo.commandBufferCount = 1;
 
-    VulkanResource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
-
-    handle_ = std::move(buffer);
+    handle_ = VulkanResource<VkCommandBuffer>{device, commandPool, vkFreeCommandBuffers};
+    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &handle_));
 }
 
 void VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
