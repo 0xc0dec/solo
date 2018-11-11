@@ -16,8 +16,8 @@
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanDescriptorPool.h"
 #include "SoloVulkanBuffer.h"
+#include "SoloVulkanDescriptorSet.h"
 
 namespace solo
 {
@@ -72,10 +72,8 @@ namespace solo
         struct PipelineContext
         {
             umap<str, VulkanBuffer> uniformBuffers;
-            VulkanDescriptorPool descPool;
             VulkanPipeline pipeline;
-            VulkanResource<VkDescriptorSetLayout> descSetLayout;
-            VkDescriptorSet descSet = VK_NULL_HANDLE;
+            VulkanDescriptorSet descSet;
             size_t lastMaterialFlagsHash = 0;
             size_t lastMeshLayoutHash = 0;
             u32 frameOfLastUse = 0;

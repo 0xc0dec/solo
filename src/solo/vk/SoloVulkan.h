@@ -17,7 +17,7 @@
 #include <vulkan.h>
 
 #ifdef SL_DEBUG
-#   define SL_VK_CHECK_RESULT(vkCall) SL_DEBUG_PANIC(vkCall != VK_SUCCESS, "Unable to complete VK call")
+#   define SL_VK_CHECK_RESULT(vkCall) SL_DEBUG_PANIC(vkCall != VK_SUCCESS, "Vulkan API call failed")
 #else
 #   define SL_VK_CHECK_RESULT(vkCall) vkCall
 #endif

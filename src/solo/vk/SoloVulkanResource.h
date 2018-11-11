@@ -60,15 +60,8 @@ namespace solo
             return *this;
         }
 
-        auto operator&() const -> const T*
-        {
-            return &handle_;
-        }
-
-        auto operator&() -> T*
-        {
-            return &handle_;
-        }
+        auto operator&() const -> const T* { return &handle_; }
+        auto operator&() -> T* { return &handle_; }
 
         auto cleanRef() -> T*
         {
@@ -77,21 +70,11 @@ namespace solo
             return &handle_;
         }
 
-        operator T() const
-        {
-            return handle_;
-        }
-
-        operator bool() const
-        {
-            return handle_ != VK_NULL_HANDLE;
-        }
+        operator T() const { return handle_; }
+        operator bool() const { return handle_ != VK_NULL_HANDLE; }
 
         template<typename V>
-        bool operator==(V rhs)
-        {
-            return handle_ == T(rhs);
-        }
+        bool operator==(V rhs) { return handle_ == T(rhs); }
 
     private:
         T handle_ = VK_NULL_HANDLE;

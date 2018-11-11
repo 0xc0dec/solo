@@ -14,8 +14,6 @@
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 #include "SoloVulkanEffect.h"
-#include "SoloVulkanDescriptorSetLayoutBuilder.h"
-#include "SoloVulkanDescriptorSetUpdater.h"
 #include "SoloVulkanTexture.h"
 #include "SoloCamera.h"
 
@@ -325,28 +323,19 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         const auto &uniformBufs = vkEffect->uniformBuffers();
         const auto &effectSamplers = vkEffect->samplers();
 
-        auto builder = VulkanDescriptorSetLayoutBuilder(device_);
+        VulkanDescriptorSetConfig cfg;
 
-        for (const auto &info : uniformBufs)
+        for (const auto &pair : uniformBufs)
         {
-            const auto bufferName = info.first;
-            context.uniformBuffers[bufferName] = VulkanBuffer::uniformHostVisible(this, info.second.size);
-            builder.withBinding(info.second.binding, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_ALL_GRAPHICS);
+            const auto bufferName = pair.first;
+            context.uniformBuffers[bufferName] = VulkanBuffer::uniformHostVisible(this, pair.second.size);
+            cfg.addUniformBufferBinding(pair.second.binding);
         }
 
         for (auto &pair : effectSamplers)
-            builder.withBinding(pair.second.binding, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT);
+            cfg.addSamplerBinding(pair.second.binding);
 
-        context.descSetLayout = builder.build();
-
-        auto poolConfig = VulkanDescriptorPoolConfig();
-        if (!uniformBufs.empty())
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<u32>(uniformBufs.size()));
-        if (!effectSamplers.empty())
-            poolConfig.forDescriptors(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<u32>(effectSamplers.size()));
-
-        context.descPool = VulkanDescriptorPool(device_, 1, poolConfig);
-        context.descSet = context.descPool.allocateSet(context.descSetLayout);
+        context.descSet = VulkanDescriptorSet(device_, cfg);
     }
 
     const auto materialFlagsHash = vkMaterial->stateHash();
@@ -359,7 +348,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         const auto vs = vkEffect->vsModule();
         const auto fs = vkEffect->fsModule();
         auto pipelineConfig = VulkanPipelineConfig(vs, fs)
-            .withDescriptorSetLayout(context.descSetLayout)
+            .withDescriptorSetLayout(context.descSet.layout())
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
             .withColorBlendAttachmentCount(currentRenderPass_->colorAttachmentCount());
         vkMaterial->configurePipeline(pipelineConfig);
@@ -415,29 +404,23 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
     // Run the desc set updater
     // TODO Not so often - only when something really changes
     
-    VulkanDescriptorSetUpdater updater{device_};
-
     // TODO Not necessary (?), buffers don't change anyway, only their content
     for (auto &pair : context.uniformBuffers)
     {
         const auto& info = uniformBufs.at(pair.first);
         auto &buffer = pair.second;
-        updater.forUniformBuffer(info.binding, context.descSet, buffer, 0, info.size); // TODO use single large buffer?
+        context.descSet.updateUniformBuffer(info.binding, buffer, 0, info.size); // TODO use single large buffer?
     }
 
     for (auto &pair : materialSamplers)
     {
         auto &info = pair.second;
-        updater.forImageSampler(
+        context.descSet.updateSampler(
             info.binding,
-            context.descSet,
             info.texture->image().view(),
             info.texture->sampler(),
-            info.texture->image().layout()
-        );
+            info.texture->image().layout());
     }
-
-    updater.updateSets();
 
     // Update buffers content
 
