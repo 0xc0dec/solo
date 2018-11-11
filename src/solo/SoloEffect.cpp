@@ -58,7 +58,7 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanEffect::fromSources(device, vsBytes, vsSize, "source", fsBytes, fsSize, "source");
+            return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
@@ -66,20 +66,3 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
     }
 }
 
-auto Effect::fromShaderSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) -> sptr<Effect>
-{
-    switch (device->mode())
-    {
-#ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(vsSrc, vsSrcLen, fsSrc, fsSrcLen);
-#endif
-#ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanEffect::fromSources(device, vsSrc, vsSrcLen, "vert-src", fsSrc, fsSrcLen, "frag-src");
-#endif
-        default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
-    }
-}

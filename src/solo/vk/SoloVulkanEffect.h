@@ -42,9 +42,8 @@ namespace solo
             u32 location;
         };
 
-        static auto fromSources(Device *device,
-            const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
-            const void *fsSrc, u32 fsSrcLen, const str &fsFileName) -> sptr<VulkanEffect>;
+        static auto fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
+            -> sptr<VulkanEffect>;
 
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect() = default;

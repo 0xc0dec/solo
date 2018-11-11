@@ -51,13 +51,11 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
     return result;
 }
 
-auto VulkanEffect::fromSources(Device *device,
-    const void *vsSrc, u32 vsSrcLen, const str &vsFileName,
-    const void *fsSrc, u32 fsSrcLen, const str &fsFileName)
+auto VulkanEffect::fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
     -> sptr<VulkanEffect>
 {
-    const auto vsCompilationResult = compileToSpv(vsSrc, vsSrcLen, vsFileName, true);
-    const auto fsCompilationResult = compileToSpv(fsSrc, fsSrcLen, fsFileName, false);
+    const auto vsCompilationResult = compileToSpv(vsSrc, vsSrcLen, "<memory>", true);
+    const auto fsCompilationResult = compileToSpv(fsSrc, fsSrcLen, "<memory>", false);
     const auto vsSize = (vsCompilationResult.end() - vsCompilationResult.begin()) * sizeof(u32);
     const auto fsSize = (fsCompilationResult.end() - fsCompilationResult.begin()) * sizeof(u32);
     return std::make_shared<VulkanEffect>(
