@@ -18,6 +18,7 @@
 #include "SoloVulkan.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanDescriptorSet.h"
+#include "SoloVulkanCmdBuffer.h"
 
 namespace solo
 {
@@ -82,7 +83,7 @@ namespace solo
         struct RenderPassContext
         {
             VulkanResource<VkSemaphore> completeSemaphore;
-            VulkanResource<VkCommandBuffer> cmdBuffer;
+            VulkanCmdBuffer cmdBuf;
             VulkanRenderPass *renderPass = nullptr;
             u32 frameOfLastUse = 0;
         };
@@ -94,7 +95,7 @@ namespace solo
 
         Camera *currentCamera_ = nullptr;
         VulkanRenderPass *currentRenderPass_ = nullptr;
-        VkCommandBuffer currentCmdBuffer_ = nullptr;
+        VulkanCmdBuffer *currentCmdBuffer_ = nullptr;
         VkSemaphore prevSemaphore_ = nullptr;
 
         void prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh);

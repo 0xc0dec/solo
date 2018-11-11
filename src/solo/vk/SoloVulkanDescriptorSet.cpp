@@ -9,7 +9,7 @@
 
 using namespace solo;
 
-void VulkanDescriptorSetConfig::addUniformBufferBinding(u32 binding)
+void VulkanDescriptorSetConfig::addUniformBuffer(u32 binding)
 {
     VkDescriptorSetLayoutBinding b{};
     b.binding = binding;
@@ -21,7 +21,7 @@ void VulkanDescriptorSetConfig::addUniformBufferBinding(u32 binding)
     sizes_[VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER].descriptorCount++;
 }
 
-void VulkanDescriptorSetConfig::addSamplerBinding(u32 binding)
+void VulkanDescriptorSetConfig::addSampler(u32 binding)
 {
     VkDescriptorSetLayoutBinding b{};
     b.binding = binding;

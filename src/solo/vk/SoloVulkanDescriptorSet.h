@@ -18,8 +18,8 @@ namespace solo
     class VulkanDescriptorSetConfig
     {
     public:
-        void addUniformBufferBinding(u32 binding);
-        void addSamplerBinding(u32 binding);
+        void addUniformBuffer(u32 binding);
+        void addSampler(u32 binding);
 
     private:
         friend class VulkanDescriptorSet;
@@ -39,15 +39,14 @@ namespace solo
 
         auto layout() const -> VkDescriptorSetLayout { return layout_; }
 
+        void updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range);
+        void updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout);
+
         auto operator=(const VulkanDescriptorSet &other) -> VulkanDescriptorSet& = delete;
         auto operator=(VulkanDescriptorSet &&other) -> VulkanDescriptorSet& = default;
 
-        auto operator&() const -> const VkDescriptorSet* { return &set_; }
-
         operator bool() const { return set_ != VK_NULL_HANDLE; }
-
-        void updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range);
-        void updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout);
+        operator const VkDescriptorSet*() const { return &set_; }
 
     private:
         VkDevice device_ = VK_NULL_HANDLE;
