@@ -11,19 +11,19 @@ using namespace solo;
 
 VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config)
 {
-    const auto colorAttachments = config.colorAttachmentRefs.empty() ? nullptr : config.colorAttachmentRefs.data();
-    const auto depthAttachment = config.depthAttachmentRef.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef : nullptr;
-    clearValues_.resize(config.colorAttachmentRefs.size() + 1);
+    const auto colorAttachments = config.colorAttachmentRefs_.empty() ? nullptr : config.colorAttachmentRefs_.data();
+    const auto depthAttachment = config.depthAttachmentRef_.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef_ : nullptr;
+    clearValues_.resize(config.colorAttachmentRefs_.size() + 1);
     clearValues_.rbegin()->depthStencil = {1, 0};
 
-    colorAttachmentCount_ = config.colorAttachmentRefs.size();
+    colorAttachmentCount_ = config.colorAttachmentRefs_.size();
 
     VkSubpassDescription subpass{};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     subpass.flags = 0;
     subpass.inputAttachmentCount = 0;
     subpass.pInputAttachments = nullptr;
-    subpass.colorAttachmentCount = config.colorAttachmentRefs.size();
+    subpass.colorAttachmentCount = config.colorAttachmentRefs_.size();
     subpass.pColorAttachments = colorAttachments;
     subpass.pResolveAttachments = nullptr;
     subpass.pDepthStencilAttachment = depthAttachment;
@@ -54,8 +54,8 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     renderPassInfo.flags = 0;
     renderPassInfo.pNext = nullptr;
-    renderPassInfo.attachmentCount = config.attachments.size();
-    renderPassInfo.pAttachments = config.attachments.data();
+    renderPassInfo.attachmentCount = config.attachments_.size();
+    renderPassInfo.pAttachments = config.attachments_.data();
     renderPassInfo.subpassCount = 1;
     renderPassInfo.pSubpasses = &subpass;
     renderPassInfo.dependencyCount = dependencies.size();
@@ -90,7 +90,7 @@ void VulkanRenderPass::end(VkCommandBuffer cmdBuf)
 }
 
 VulkanRenderPassConfig::VulkanRenderPassConfig():
-    depthAttachmentRef{0, VK_IMAGE_LAYOUT_UNDEFINED}
+    depthAttachmentRef_{0, VK_IMAGE_LAYOUT_UNDEFINED}
 {
 }
 
@@ -107,12 +107,12 @@ auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLa
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
     desc.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     desc.finalLayout = finalLayout;
-    attachments.push_back(desc);
+    attachments_.push_back(desc);
 
     VkAttachmentReference reference{};
-    reference.attachment = attachments.size() - 1;
+    reference.attachment = attachments_.size() - 1;
     reference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    colorAttachmentRefs.push_back(reference);
+    colorAttachmentRefs_.push_back(reference);
 
     return *this;
 }
@@ -129,10 +129,10 @@ auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat) -> Vulkan
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
     desc.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     desc.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    attachments.push_back(desc);
+    attachments_.push_back(desc);
 
-    depthAttachmentRef.attachment = attachments.size() - 1;
-    depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    depthAttachmentRef_.attachment = attachments_.size() - 1;
+    depthAttachmentRef_.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
     return *this;
 }

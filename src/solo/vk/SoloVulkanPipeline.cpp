@@ -30,8 +30,8 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     layoutInfo.pNext = nullptr;
     layoutInfo.flags = 0;
-    layoutInfo.setLayoutCount = config.descSetLayouts.size();
-    layoutInfo.pSetLayouts = config.descSetLayouts.data();
+    layoutInfo.setLayoutCount = config.descSetLayouts_.size();
+    layoutInfo.pSetLayouts = config.descSetLayouts_.data();
     layoutInfo.pushConstantRangeCount = 0;
     layoutInfo.pPushConstantRanges = nullptr;
 
@@ -55,15 +55,15 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     colorBlendState.flags = 0;
     colorBlendState.logicOpEnable = VK_FALSE;
     colorBlendState.logicOp = VK_LOGIC_OP_COPY;
-    colorBlendState.attachmentCount = config.colorBlendAttachmentStates.size();
-    colorBlendState.pAttachments = config.colorBlendAttachmentStates.data();
+    colorBlendState.attachmentCount = config.colorBlendAttachmentStates_.size();
+    colorBlendState.pAttachments = config.colorBlendAttachmentStates_.data();
     colorBlendState.blendConstants[0] = 0;
     colorBlendState.blendConstants[1] = 0;
     colorBlendState.blendConstants[2] = 0;
     colorBlendState.blendConstants[3] = 0;
 
-    const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vertexShader, "main");
-    const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fragmentShader, "main");
+    const auto vertexShaderStageInfo = createShaderStageInfo(true, config.vs_, "main");
+    const auto fragmentShaderStageInfo = createShaderStageInfo(false, config.fs_, "main");
 
     vec<VkPipelineShaderStageCreateInfo> shaderStageStates{vertexShaderStageInfo, fragmentShaderStageInfo};
 
@@ -71,16 +71,16 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     vertexInputState.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputState.pNext = nullptr;
     vertexInputState.flags = 0;
-    vertexInputState.vertexBindingDescriptionCount = config.vertexBindings.size();
-    vertexInputState.pVertexBindingDescriptions = config.vertexBindings.data();
-    vertexInputState.vertexAttributeDescriptionCount = config.vertexAttrs.size();
-    vertexInputState.pVertexAttributeDescriptions = config.vertexAttrs.data();
+    vertexInputState.vertexBindingDescriptionCount = config.vertexBindings_.size();
+    vertexInputState.pVertexBindingDescriptions = config.vertexBindings_.data();
+    vertexInputState.vertexAttributeDescriptionCount = config.vertexAttrs_.size();
+    vertexInputState.pVertexAttributeDescriptions = config.vertexAttrs_.data();
 
     VkPipelineInputAssemblyStateCreateInfo inputAssemblyState{};
     inputAssemblyState.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
     inputAssemblyState.pNext = nullptr;
     inputAssemblyState.flags = 0;
-    inputAssemblyState.topology = config.topology;
+    inputAssemblyState.topology = config.topology_;
     inputAssemblyState.primitiveRestartEnable = VK_FALSE;
 
     VkPipelineViewportStateCreateInfo viewportState{};
@@ -110,9 +110,9 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     pipelineInfo.pInputAssemblyState = &inputAssemblyState;
     pipelineInfo.pTessellationState = nullptr;
     pipelineInfo.pViewportState = &viewportState;
-    pipelineInfo.pRasterizationState = &config.rasterStateInfo;
+    pipelineInfo.pRasterizationState = &config.rasterStateInfo_;
     pipelineInfo.pMultisampleState = &multisampleState;
-    pipelineInfo.pDepthStencilState = &config.depthStencilStateInfo;
+    pipelineInfo.pDepthStencilState = &config.depthStencilStateInfo_;
     pipelineInfo.pColorBlendState = &colorBlendState;
     pipelineInfo.pDynamicState = &dynamicState;
     pipelineInfo.layout = layout;
@@ -129,32 +129,32 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
 }
 
 VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):
-    vertexShader(vertexShader),
-    fragmentShader(fragmentShader),
-    rasterStateInfo{},
-    depthStencilStateInfo{}
+    vs_(vertexShader),
+    fs_(fragmentShader),
+    rasterStateInfo_{},
+    depthStencilStateInfo_{}
 {
-    rasterStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-    rasterStateInfo.pNext = nullptr;
-    rasterStateInfo.flags = 0;
-    rasterStateInfo.depthClampEnable = false;
-    rasterStateInfo.rasterizerDiscardEnable = false;
-    rasterStateInfo.polygonMode = VK_POLYGON_MODE_FILL;
-    rasterStateInfo.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterStateInfo.frontFace = VK_FRONT_FACE_CLOCKWISE;
-    rasterStateInfo.depthBiasEnable = false;
-    rasterStateInfo.depthBiasClamp = 0;
-    rasterStateInfo.depthBiasConstantFactor = 0;
-    rasterStateInfo.depthBiasSlopeFactor = 0;
-    rasterStateInfo.lineWidth = 1;
+    rasterStateInfo_.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+    rasterStateInfo_.pNext = nullptr;
+    rasterStateInfo_.flags = 0;
+    rasterStateInfo_.depthClampEnable = false;
+    rasterStateInfo_.rasterizerDiscardEnable = false;
+    rasterStateInfo_.polygonMode = VK_POLYGON_MODE_FILL;
+    rasterStateInfo_.cullMode = VK_CULL_MODE_BACK_BIT;
+    rasterStateInfo_.frontFace = VK_FRONT_FACE_CLOCKWISE;
+    rasterStateInfo_.depthBiasEnable = false;
+    rasterStateInfo_.depthBiasClamp = 0;
+    rasterStateInfo_.depthBiasConstantFactor = 0;
+    rasterStateInfo_.depthBiasSlopeFactor = 0;
+    rasterStateInfo_.lineWidth = 1;
 
-    depthStencilStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-    depthStencilStateInfo.flags = 0;
-    depthStencilStateInfo.depthTestEnable = true;
-    depthStencilStateInfo.depthWriteEnable = true;
-    depthStencilStateInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
-    depthStencilStateInfo.back.compareOp = VK_COMPARE_OP_ALWAYS;
-    depthStencilStateInfo.front = depthStencilStateInfo.back;
+    depthStencilStateInfo_.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    depthStencilStateInfo_.flags = 0;
+    depthStencilStateInfo_.depthTestEnable = true;
+    depthStencilStateInfo_.depthWriteEnable = true;
+    depthStencilStateInfo_.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
+    depthStencilStateInfo_.back.compareOp = VK_COMPARE_OP_ALWAYS;
+    depthStencilStateInfo_.front = depthStencilStateInfo_.back;
 }
 
 auto VulkanPipelineConfig::withColorBlendAttachmentCount(u32 count) -> VulkanPipelineConfig &
@@ -171,7 +171,7 @@ auto VulkanPipelineConfig::withColorBlendAttachmentCount(u32 count) -> VulkanPip
     tpl.alphaBlendOp = VK_BLEND_OP_ADD;
     tpl.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 
-    colorBlendAttachmentStates.assign(count, tpl);
+    colorBlendAttachmentStates_.assign(count, tpl);
 
     return *this;
 }
@@ -183,7 +183,7 @@ auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkForm
     desc.binding = binding;
     desc.format = format;
     desc.offset = offset;
-    vertexAttrs.push_back(desc);
+    vertexAttrs_.push_back(desc);
     return *this;
 }
 
@@ -193,14 +193,14 @@ auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexIn
     desc.binding = binding;
     desc.stride = stride;
     desc.inputRate = inputRate;
-    vertexBindings.push_back(desc);
+    vertexBindings_.push_back(desc);
     return *this;
 }
 
 auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelineConfig&
 {
-    depthStencilStateInfo.depthWriteEnable = write;
-    depthStencilStateInfo.depthTestEnable = test;
+    depthStencilStateInfo_.depthWriteEnable = write;
+    depthStencilStateInfo_.depthTestEnable = test;
     return *this;
 }
 
@@ -209,7 +209,7 @@ auto VulkanPipelineConfig::withBlend(bool enabled,
     VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&
 {
     // TODO Better
-    for (auto &state: colorBlendAttachmentStates)
+    for (auto &state: colorBlendAttachmentStates_)
     {
         state.blendEnable = enabled ? VK_TRUE : VK_FALSE;
         state.srcColorBlendFactor = srcColorFactor;

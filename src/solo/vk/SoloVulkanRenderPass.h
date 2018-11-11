@@ -24,9 +24,9 @@ namespace solo
     private:
         friend class VulkanRenderPass;
 
-        vec<VkAttachmentDescription> attachments;
-        vec<VkAttachmentReference> colorAttachmentRefs;
-        VkAttachmentReference depthAttachmentRef;
+        vec<VkAttachmentDescription> attachments_;
+        vec<VkAttachmentReference> colorAttachmentRefs_;
+        VkAttachmentReference depthAttachmentRef_;
     };
 
     class VulkanRenderPass

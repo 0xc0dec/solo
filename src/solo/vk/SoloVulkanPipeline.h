@@ -34,17 +34,17 @@ namespace solo
     private:
         friend class VulkanPipeline;
 
-        VkShaderModule vertexShader;
-        VkShaderModule fragmentShader;
-        VkPipelineRasterizationStateCreateInfo rasterStateInfo;
-        VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo;
-        vec<VkPipelineColorBlendAttachmentState> colorBlendAttachmentStates;
+        VkShaderModule vs_;
+        VkShaderModule fs_;
+        VkPipelineRasterizationStateCreateInfo rasterStateInfo_;
+        VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo_;
+        vec<VkPipelineColorBlendAttachmentState> colorBlendAttachmentStates_;
 
-        vec<VkVertexInputAttributeDescription> vertexAttrs;
-        vec<VkVertexInputBindingDescription> vertexBindings;
-        vec<VkDescriptorSetLayout> descSetLayouts;
+        vec<VkVertexInputAttributeDescription> vertexAttrs_;
+        vec<VkVertexInputBindingDescription> vertexBindings_;
+        vec<VkDescriptorSetLayout> descSetLayouts_;
 
-        VkPrimitiveTopology topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        VkPrimitiveTopology topology_ = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
     };
 
     class VulkanPipeline
@@ -71,31 +71,31 @@ namespace solo
 
     inline auto VulkanPipelineConfig::withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&
     {
-        this->topology = topology;
+        this->topology_ = topology;
         return *this;
     }
 
     inline auto VulkanPipelineConfig::withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&
     {
-        rasterStateInfo.polygonMode = mode;
+        rasterStateInfo_.polygonMode = mode;
         return *this;
     }
 
     inline auto VulkanPipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&
     {
-        descSetLayouts.push_back(layout);
+        descSetLayouts_.push_back(layout);
         return *this;
     }
 
     inline auto VulkanPipelineConfig::withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig&
     {
-        rasterStateInfo.frontFace = frontFace;
+        rasterStateInfo_.frontFace = frontFace;
         return *this;
     }
 
     inline auto VulkanPipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&
     {
-        rasterStateInfo.cullMode = cullFlags;
+        rasterStateInfo_.cullMode = cullFlags;
         return *this;
     }
 }

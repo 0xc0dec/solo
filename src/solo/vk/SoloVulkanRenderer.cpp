@@ -161,7 +161,7 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
     return commandPool;
 }
 
-static auto depthFormat(VkPhysicalDevice device) -> VkFormat
+static auto pickDepthFormat(VkPhysicalDevice device) -> VkFormat
 {
     vec<VkFormat> depthFormats =
     {
@@ -202,7 +202,7 @@ VulkanRenderer::VulkanRenderer(Device *engineDevice):
     auto surfaceFormats = ::surfaceFormats(physicalDevice_, surface);
     colorFormat_ = std::get<0>(surfaceFormats);
     colorSpace_ = std::get<1>(surfaceFormats);
-    depthFormat_ = ::depthFormat(physicalDevice_);
+    depthFormat_ = ::pickDepthFormat(physicalDevice_);
 
     const auto queueIndex = ::queueIndex(physicalDevice_, surface);
     device_ = createDevice(physicalDevice_, queueIndex);
