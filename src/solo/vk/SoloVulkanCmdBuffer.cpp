@@ -8,20 +8,22 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanRenderPass.h"
+#include "SoloVulkanRenderer.h"
 
 using namespace solo;
 
-VulkanCmdBuffer::VulkanCmdBuffer(VkDevice device, VkCommandPool commandPool)
+VulkanCmdBuffer::VulkanCmdBuffer(VulkanRenderer *renderer):
+    renderer_(renderer)
 {
     VkCommandBufferAllocateInfo allocateInfo{};
     allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocateInfo.pNext = nullptr;
-    allocateInfo.commandPool = commandPool;
+    allocateInfo.commandPool = renderer->commandPool();
     allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocateInfo.commandBufferCount = 1;
 
-    handle_ = VulkanResource<VkCommandBuffer>{device, commandPool, vkFreeCommandBuffers};
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &handle_));
+    handle_ = VulkanResource<VkCommandBuffer>{renderer->device(), renderer->commandPool(), vkFreeCommandBuffers};
+    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(renderer->device(), &allocateInfo, &handle_));
 }
 
 void VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
@@ -97,6 +99,20 @@ void VulkanCmdBuffer::clearColorAttachment(u32 attachment, const VkClearValue &c
     clear.colorAttachment = attachment;
     clear.clearValue = clearValue;
     vkCmdClearAttachments(handle_, 1, &clear, 1, &clearRect); // TODO in batch
+}
+
+void VulkanCmdBuffer::copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst)
+{
+    VkBufferCopy copyRegion{};
+    copyRegion.size = dst.size();
+    vkCmdCopyBuffer(handle_, src.handle(), dst.handle(), 1, &copyRegion);
+}
+
+void VulkanCmdBuffer::flush()
+{
+    end(); // TODO check if needed?
+    vk::queueSubmit(renderer_->queue(), 0, nullptr, 0, nullptr, 1, &handle_);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer_->queue()));
 }
 
 void VulkanCmdBuffer::begin(bool oneTime)

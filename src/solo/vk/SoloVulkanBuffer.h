@@ -35,13 +35,14 @@ namespace solo
         operator VkBuffer() { return buffer_; }
 
         auto handle() const -> VkBuffer { return buffer_; }
+        auto size() const -> VkDeviceSize { return size_; }
 
         void updateAll(const void *newData) const;
         void updatePart(const void *newData, u32 offset, u32 size);
-        void transferTo(const VulkanBuffer& other, VkQueue queue, VkCommandPool cmdPool) const;
+        void transferTo(const VulkanBuffer& dst) const;
 
     private:
-        VkDevice device_ = nullptr;
+        VulkanRenderer *renderer_ = nullptr;
         VulkanResource<VkDeviceMemory> memory_;
         VulkanResource<VkBuffer> buffer_;
         VkDeviceSize size_ = 0;

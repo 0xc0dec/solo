@@ -10,21 +10,25 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanDescriptorSet.h"
+#include "SoloVulkanBuffer.h"
 #include "SoloVulkan.h"
 #include "SoloVector4.h"
 
 namespace solo
 {
     class VulkanRenderPass;
+    class VulkanRenderer;
 
     class VulkanCmdBuffer
     {
     public:
         VulkanCmdBuffer() = default;
-        VulkanCmdBuffer(VkDevice device, VkCommandPool commandPool);
+        VulkanCmdBuffer(VulkanRenderer *renderer);
         VulkanCmdBuffer(const VulkanCmdBuffer &other) = delete;
         VulkanCmdBuffer(VulkanCmdBuffer &&other) = default;
         ~VulkanCmdBuffer() = default;
+
+        void flush();
 
         void begin(bool oneTime); // TODO void oneTime param
         void end();
@@ -45,6 +49,8 @@ namespace solo
 
         void clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect);
 
+        void copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst);
+
         auto operator=(const VulkanCmdBuffer &other) -> VulkanCmdBuffer& = delete;
         auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer& = default;
 
@@ -52,6 +58,7 @@ namespace solo
         operator const VkCommandBuffer*() { return &handle_; }
 
     private:
+        VulkanRenderer *renderer_ = nullptr;
         VulkanResource<VkCommandBuffer> handle_;
     };
 }

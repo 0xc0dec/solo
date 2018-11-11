@@ -229,7 +229,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
     if (!renderPassContexts_.count(currentRenderPass_))
     {
-        renderPassContexts_[currentRenderPass_].cmdBuf = VulkanCmdBuffer(device_, commandPool_);
+        renderPassContexts_[currentRenderPass_].cmdBuf = VulkanCmdBuffer(this);
         renderPassContexts_[currentRenderPass_].completeSemaphore = vk::createSemaphore(device_);
     }
 
