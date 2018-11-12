@@ -2,7 +2,6 @@ This is a list of notes and TODOs to keep me in context.
 
 # TODO
 
-* Continue moving all code to VulkanCmdBuffer usage
 * Static mesh collider (demo1 currently has no collision on backdrop mesh)
 * Deferred demo - add shadows
 * Use GENERAL image layout in Vulkan for now, for simplicity
