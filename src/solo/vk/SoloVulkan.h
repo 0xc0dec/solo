@@ -38,10 +38,6 @@ namespace solo
             VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>;
         auto createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
             VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>;
-        void setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
-            VkImageSubresourceRange subresourceRange,
-            VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-            VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
         auto makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout,
             VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier;
         bool isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features);
