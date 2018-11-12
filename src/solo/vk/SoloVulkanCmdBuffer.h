@@ -13,6 +13,7 @@
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkan.h"
 #include "SoloVector4.h"
+#include "SoloVulkanImage.h"
 
 namespace solo
 {
@@ -28,28 +29,39 @@ namespace solo
         VulkanCmdBuffer(VulkanCmdBuffer &&other) = default;
         ~VulkanCmdBuffer() = default;
 
-        void flush();
-
-        void begin(bool oneTime); // TODO avoid oneTime param
+        auto begin(bool oneTime) -> VulkanCmdBuffer&; // TODO avoid oneTime param
         void end();
+        void endAndFlush();
 
-        void beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
-        void endRenderPass();
+        auto beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
+            -> VulkanCmdBuffer&;
+        auto endRenderPass() -> VulkanCmdBuffer&;
 
-        void bindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType);
-        void bindVertexBuffer(u32 binding, VkBuffer buffer);
-        void drawIndexed(u32 indexCount, u32 instanceCount, u32 firstIndex, u32 vertexOffset, u32 firstInstance);
-        void draw(u32 vertexCount, u32 instanceCount, u32 firstVertex, u32 firstInstance);
+        auto bindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) -> VulkanCmdBuffer&;
+        auto bindVertexBuffer(u32 binding, VkBuffer buffer) -> VulkanCmdBuffer&;
+        auto drawIndexed(u32 indexCount, u32 instanceCount, u32 firstIndex, u32 vertexOffset, u32 firstInstance)
+            -> VulkanCmdBuffer&;
+        auto draw(u32 vertexCount, u32 instanceCount, u32 firstVertex, u32 firstInstance) -> VulkanCmdBuffer&;
 
-        void bindPipeline(VkPipeline pipeline);
-        void bindDescriptorSet(VkPipelineLayout pipelineLayout, const VulkanDescriptorSet &set);
+        auto bindPipeline(VkPipeline pipeline) -> VulkanCmdBuffer&;
+        auto bindDescriptorSet(VkPipelineLayout pipelineLayout, const VulkanDescriptorSet &set) -> VulkanCmdBuffer&;
 
-        void setViewport(const Vector4 &dimentions, float minDepth, float maxDepth);
-        void setScissor(const Vector4 &dimentions);
+        auto setViewport(const Vector4 &dimentions, float minDepth, float maxDepth) -> VulkanCmdBuffer&;
+        auto setScissor(const Vector4 &dimentions) -> VulkanCmdBuffer&;
 
-        void clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect);
+        auto putImagePipelineBarrier(VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask,
+            const VkImageMemoryBarrier &barrier) -> VulkanCmdBuffer&;
 
-        void copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst);
+        auto clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect)
+            -> VulkanCmdBuffer&;
+
+        auto copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst) -> VulkanCmdBuffer&;
+        auto copyBuffer(const VulkanBuffer &src, const VulkanImage &dst) -> VulkanCmdBuffer&;
+        auto copyBuffer(const VulkanBuffer &src, const VulkanImage &dst, 
+            const VkBufferImageCopy *regions, u32 regionCount) -> VulkanCmdBuffer&;
+
+        auto blit(VkImage src, VkImage dst, VkImageLayout srcLayout, VkImageLayout dstLayout,
+            const VkImageBlit &blit, VkFilter filter) -> VulkanCmdBuffer&;
 
         auto operator=(const VulkanCmdBuffer &other) -> VulkanCmdBuffer& = delete;
         auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer& = default;

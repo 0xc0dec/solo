@@ -39,6 +39,9 @@ namespace solo
         auto mipLevels() const -> u32 { return mipLevels_; }
         auto layout() const -> VkImageLayout { return layout_; }
         auto view() const -> VkImageView { return view_; }
+        auto handle() const -> VkImage { return image_; }
+        auto width() const -> u32 { return width_; }
+        auto height() const -> u32 { return height_; }
 
     private:
         VulkanResource<VkImage> image_;

@@ -93,10 +93,10 @@ void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 
 void VulkanBuffer::transferTo(const VulkanBuffer &dst) const
 {
-    auto cmdBuf = VulkanCmdBuffer(renderer_);
-    cmdBuf.begin(false);
-    cmdBuf.copyBuffer(*this, dst);
-    cmdBuf.flush();
+    VulkanCmdBuffer(renderer_)
+        .begin(true)
+        .copyBuffer(*this, dst)
+        .endAndFlush();
 }
 
 #endif

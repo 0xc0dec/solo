@@ -11,6 +11,7 @@
 #include "SoloTexture.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloTextureData.h"
+#include "SoloVulkanCmdBuffer.h"
 
 using namespace solo;
 
@@ -102,24 +103,26 @@ auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, Texture
         VK_IMAGE_VIEW_TYPE_2D,
         aspect);
 
-    const auto initCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
-
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask_;
     subresourceRange.baseMipLevel = 0;
     subresourceRange.levelCount = 1;
     subresourceRange.layerCount = 1;
 
-    vk::setImageLayout(
-        initCmdBuf,
+    const auto barrier = vk::makeImagePipelineBarrier(
         image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         targetLayout,
-        subresourceRange,
-        VK_PIPELINE_STAGE_ALL_COMMANDS_BIT, // TODO veeery unsure about this, but validator doesn't complain
-        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+        subresourceRange
+    );
 
-    vk::flushCommandBuffer(initCmdBuf, renderer->queue());
+    VulkanCmdBuffer(renderer)
+        .begin(true)
+        .putImagePipelineBarrier(
+            VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+            barrier)
+        .endAndFlush();
 
     return image;
 }
@@ -166,19 +169,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
 
-    const auto initCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
-
-    VkBufferImageCopy bufferCopyRegion{};
-    bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-    bufferCopyRegion.imageSubresource.mipLevel = 0;
-    bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
-    bufferCopyRegion.imageSubresource.layerCount = 1;
-    bufferCopyRegion.imageExtent.width = width;
-    bufferCopyRegion.imageExtent.height = height;
-    bufferCopyRegion.imageExtent.depth = 1;
-    bufferCopyRegion.bufferOffset = 0;
-
-    auto srcBuf = VulkanBuffer::staging(renderer, data->size(), data->data());
+    const auto srcBuf = VulkanBuffer::staging(renderer, data->size(), data->data());
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask_;
@@ -187,37 +178,39 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
     subresourceRange.levelCount = 1;
     subresourceRange.layerCount = 1;
 
-    vk::setImageLayout(
-        initCmdBuf,
+    const auto barrier = vk::makeImagePipelineBarrier(
         image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        subresourceRange,
-        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TRANSFER_BIT);
+        subresourceRange
+    );
 
-    vkCmdCopyBufferToImage(
-        initCmdBuf,
-        srcBuf,
-        image.image_,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        1,
-        &bufferCopyRegion);
+    auto initCmdBuf = VulkanCmdBuffer(renderer);
+    initCmdBuf.begin(true);
+    initCmdBuf.putImagePipelineBarrier(
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+        VK_PIPELINE_STAGE_TRANSFER_BIT,
+        barrier
+    );
+
+    initCmdBuf.copyBuffer(srcBuf, image);
 
     if (generateMipmaps)
     {
-        vk::setImageLayout(
-            initCmdBuf,
-            image.image_,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-            subresourceRange,
+        initCmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TRANSFER_BIT,
-            VK_PIPELINE_STAGE_TRANSFER_BIT);
+            VK_PIPELINE_STAGE_TRANSFER_BIT,
+            vk::makeImagePipelineBarrier(
+                image.image_,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                subresourceRange
+            )
+        );
+        initCmdBuf.endAndFlush();
 
-        vk::flushCommandBuffer(initCmdBuf, renderer->queue());
-
-        const auto blitCmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
+        auto blitCmdBuf = VulkanCmdBuffer(renderer);
+        blitCmdBuf.begin(true);
 
         for (u32 i = 1; i < mipLevels; i++)
         {
@@ -245,59 +238,66 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
             mipSubRange.levelCount = 1;
             mipSubRange.layerCount = 1;
 
-            vk::setImageLayout(
-                blitCmdBuf,
-                image.image_,
-                VK_IMAGE_LAYOUT_UNDEFINED,
-                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                mipSubRange,
+            blitCmdBuf.putImagePipelineBarrier(
                 VK_PIPELINE_STAGE_TRANSFER_BIT,
-                VK_PIPELINE_STAGE_TRANSFER_BIT);
+                VK_PIPELINE_STAGE_TRANSFER_BIT,
+                vk::makeImagePipelineBarrier(
+                    image.image_,
+                    VK_IMAGE_LAYOUT_UNDEFINED,
+                    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                    mipSubRange
+                )
+            );
 
-            vkCmdBlitImage(
-                blitCmdBuf,
+            blitCmdBuf.blit(
+                image.image_,
                 image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                1,
-                &imageBlit,
-                VK_FILTER_LINEAR);
+                imageBlit,
+                VK_FILTER_LINEAR
+            );
 
-            vk::setImageLayout(
-                blitCmdBuf,
-                image.image_,
-                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                mipSubRange,
+            blitCmdBuf.putImagePipelineBarrier(
                 VK_PIPELINE_STAGE_TRANSFER_BIT,
-                VK_PIPELINE_STAGE_TRANSFER_BIT);
+                VK_PIPELINE_STAGE_TRANSFER_BIT,
+                vk::makeImagePipelineBarrier(
+                    image.image_,
+                    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                    VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                    mipSubRange
+                )
+            );
         }
 
         subresourceRange.levelCount = static_cast<u32>(mipLevels);
-        vk::setImageLayout(
-            blitCmdBuf,
-            image.image_,
-            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-            targetLayout,
-            subresourceRange,
-            VK_PIPELINE_STAGE_TRANSFER_BIT,
-            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
 
-        vk::flushCommandBuffer(blitCmdBuf, renderer->queue());
+        blitCmdBuf.putImagePipelineBarrier(
+            VK_PIPELINE_STAGE_TRANSFER_BIT,
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+            vk::makeImagePipelineBarrier(
+                image.image_,
+                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                targetLayout,
+                subresourceRange
+            )
+        );
+
+        blitCmdBuf.endAndFlush();
     }
     else
     {
-        vk::setImageLayout(
-            initCmdBuf,
-            image.image_,
-            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            targetLayout,
-            subresourceRange,
+        initCmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TRANSFER_BIT,
-            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
-
-        vk::flushCommandBuffer(initCmdBuf, renderer->queue());
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+            vk::makeImagePipelineBarrier(
+                image.image_,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                targetLayout,
+                subresourceRange
+            )
+        );
+        initCmdBuf.endAndFlush();
     }
 
     return image;
@@ -342,66 +342,70 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
     subresourceRange.levelCount = mipLevels;
     subresourceRange.layerCount = layers;
 
-    const auto cmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool());
-    vk::beginCommandBuffer(cmdBuf, true);
+    auto cmdBuf = VulkanCmdBuffer(renderer);
+    cmdBuf.begin(true);
 
-    vk::setImageLayout(
-        cmdBuf,
-        image.image_,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        subresourceRange,
+    cmdBuf.putImagePipelineBarrier(
         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-        VK_PIPELINE_STAGE_TRANSFER_BIT);
+        VK_PIPELINE_STAGE_TRANSFER_BIT,
+        vk::makeImagePipelineBarrier(
+            image.image_,
+            VK_IMAGE_LAYOUT_UNDEFINED,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            subresourceRange
+        )
+    );
 
     auto srcBuffer = VulkanBuffer::staging(renderer, data->size());
 
     // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
     // Vulkan's Y axis is inverted, so we invert
-    static vec<u32> layerFaceMapping = {0, 1, 3, 2, 4, 5};
+    static u32 layerFaceMapping[] = {0, 1, 3, 2, 4, 5};
         
     u32 offset = 0;
-    vec<VkBufferImageCopy> copyRegions;
+    constexpr auto copyRegionCount = layers * mipLevels;
+    VkBufferImageCopy copyRegions[copyRegionCount];
     for (u32 layer = 0; layer < layers; layer++)
     {
         srcBuffer.updatePart(data->faceData(layerFaceMapping[layer]), offset, data->faceSize(layerFaceMapping[layer]));
 
         for (u32 level = 0; level < mipLevels; level++)
         {
-            VkBufferImageCopy bufferCopyRegion{};
-            bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            bufferCopyRegion.imageSubresource.mipLevel = level;
-            bufferCopyRegion.imageSubresource.baseArrayLayer = layer;
-            bufferCopyRegion.imageSubresource.layerCount = 1;
-            bufferCopyRegion.imageExtent.width = data->dimension();
-            bufferCopyRegion.imageExtent.height = data->dimension();
-            bufferCopyRegion.imageExtent.depth = 1;
-            bufferCopyRegion.bufferOffset = offset;
+            VkBufferImageCopy region{};
+            region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            region.imageSubresource.mipLevel = level;
+            region.imageSubresource.baseArrayLayer = layer;
+            region.imageSubresource.layerCount = 1;
+            region.imageExtent.width = data->dimension();
+            region.imageExtent.height = data->dimension();
+            region.imageExtent.depth = 1;
+            region.bufferOffset = offset;
 
-            copyRegions.push_back(bufferCopyRegion);
+            copyRegions[mipLevels * layer + level] = region;
 
             offset += data->faceSize(layer); // TODO use per-level size once TextureData supports mip levels
         }
     }
 
-    vkCmdCopyBufferToImage(
-        cmdBuf,
+    cmdBuf.copyBuffer(
         srcBuffer,
-        image.image_,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        static_cast<u32>(copyRegions.size()),
-        copyRegions.data());
+        image,
+        copyRegions,
+        copyRegionCount
+    );
 
-    vk::setImageLayout(
-        cmdBuf,
-        image.image_,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        targetLayout,
-        subresourceRange,
+    cmdBuf.putImagePipelineBarrier(
         VK_PIPELINE_STAGE_TRANSFER_BIT,
-        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+        vk::makeImagePipelineBarrier(
+            image.image_,
+            VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+            targetLayout,
+            subresourceRange
+        )
+    );
 
-    vk::flushCommandBuffer(cmdBuf, renderer->queue());
+    cmdBuf.endAndFlush();
 
     return image;
 }

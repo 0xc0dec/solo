@@ -26,7 +26,10 @@ VulkanCmdBuffer::VulkanCmdBuffer(VulkanRenderer *renderer):
     SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(renderer->device(), &allocateInfo, &handle_));
 }
 
-void VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
+auto VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth,
+                                      u32 canvasHeight)
+-> VulkanCmdBuffer&
+
 {
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -41,86 +44,173 @@ void VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffe
     info.framebuffer = framebuffer;
 
     vkCmdBeginRenderPass(handle_, &info, VK_SUBPASS_CONTENTS_INLINE);
+
+    return *this;
 }
 
-void VulkanCmdBuffer::endRenderPass()
+auto VulkanCmdBuffer::endRenderPass() -> VulkanCmdBuffer&
+
 {
     vkCmdEndRenderPass(handle_);
+    return *this;
 }
 
-void VulkanCmdBuffer::bindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType)
+auto VulkanCmdBuffer::bindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType)
+-> VulkanCmdBuffer&
+
 {
-    vkCmdBindIndexBuffer(handle_, buffer, 0, indexType);
+    vkCmdBindIndexBuffer(handle_, buffer, offset, indexType);
+    return *this;
 }
 
-void VulkanCmdBuffer::bindVertexBuffer(u32 binding, VkBuffer buffer)
+auto VulkanCmdBuffer::bindVertexBuffer(u32 binding, VkBuffer buffer) -> VulkanCmdBuffer&
+
 {
     VkDeviceSize offset = 0;
     vkCmdBindVertexBuffers(handle_, binding, 1, &buffer, &offset);
+    return *this;
 }
 
-void VulkanCmdBuffer::drawIndexed(u32 indexCount, u32 instanceCount, u32 firstIndex,
-    u32 vertexOffset, u32 firstInstance)
+auto VulkanCmdBuffer::drawIndexed(u32 indexCount, u32 instanceCount, u32 firstIndex,
+                                  u32 vertexOffset, u32 firstInstance) -> VulkanCmdBuffer&
+
 {
     vkCmdDrawIndexed(handle_, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+    return *this;
 }
 
-void VulkanCmdBuffer::draw(u32 vertexCount, u32 instanceCount, u32 firstVertex, u32 firstInstance)
+auto VulkanCmdBuffer::draw(u32 vertexCount, u32 instanceCount, u32 firstVertex, u32 firstInstance)
+-> VulkanCmdBuffer&
+
 {
     vkCmdDraw(handle_, vertexCount, instanceCount, firstVertex, firstInstance);
+    return *this;
 }
 
-void VulkanCmdBuffer::bindPipeline(VkPipeline pipeline)
+auto VulkanCmdBuffer::bindPipeline(VkPipeline pipeline) -> VulkanCmdBuffer&
+
 {
     vkCmdBindPipeline(handle_, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+    return *this;
 }
 
-void VulkanCmdBuffer::bindDescriptorSet(VkPipelineLayout pipelineLayout, const VulkanDescriptorSet &set)
+auto VulkanCmdBuffer::bindDescriptorSet(VkPipelineLayout pipelineLayout, const VulkanDescriptorSet &set)
+-> VulkanCmdBuffer&
+
 {
     vkCmdBindDescriptorSets(handle_, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, set, 0, nullptr);
+    return *this;
 }
 
-void VulkanCmdBuffer::setViewport(const Vector4 &dimentions, float minDepth, float maxDepth)
+auto VulkanCmdBuffer::setViewport(const Vector4 &dimentions, float minDepth, float maxDepth) -> VulkanCmdBuffer&
+
 {
     VkViewport vp{dimentions.x(), dimentions.y(), dimentions.z(), dimentions.w(), minDepth, maxDepth};
     vkCmdSetViewport(handle_, 0, 1, &vp);
+    return *this;
 }
 
-void VulkanCmdBuffer::setScissor(const Vector4 &dimentions)
+auto VulkanCmdBuffer::setScissor(const Vector4 &dimentions) -> VulkanCmdBuffer&
+
 {
-    VkRect2D scissor{{0, 0}, {static_cast<u32>(dimentions.z()), static_cast<u32>(dimentions.w())}}; // TODO proper values
+    VkRect2D scissor{{0, 0}, {static_cast<u32>(dimentions.z()), static_cast<u32>(dimentions.w())}};
+    // TODO proper values
     vkCmdSetScissor(handle_, 0, 1, &scissor);
+    return *this;
 }
 
-void VulkanCmdBuffer::clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect)
+auto VulkanCmdBuffer::putImagePipelineBarrier(VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask,
+                                              const VkImageMemoryBarrier &barrier) -> VulkanCmdBuffer&
+
+{
+    vkCmdPipelineBarrier(handle_, srcStageMask, dstStageMask, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+    return *this;
+}
+
+auto VulkanCmdBuffer::clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect)
+-> VulkanCmdBuffer&
+
 {
     VkClearAttachment clear;
     clear.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
     clear.colorAttachment = attachment;
     clear.clearValue = clearValue;
     vkCmdClearAttachments(handle_, 1, &clear, 1, &clearRect); // TODO in batch
+    return *this;
 }
 
-void VulkanCmdBuffer::copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst)
+auto VulkanCmdBuffer::copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst) -> VulkanCmdBuffer&
+
 {
     VkBufferCopy copyRegion{};
     copyRegion.size = dst.size();
     vkCmdCopyBuffer(handle_, src.handle(), dst.handle(), 1, &copyRegion);
+    return *this;
 }
 
-void VulkanCmdBuffer::flush()
+auto VulkanCmdBuffer::copyBuffer(const VulkanBuffer &src, const VulkanImage &dst) -> VulkanCmdBuffer&
+
 {
-    end(); // TODO check if needed?
+    VkBufferImageCopy bufferCopyRegion{};
+    bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    bufferCopyRegion.imageSubresource.mipLevel = 0;
+    bufferCopyRegion.imageSubresource.baseArrayLayer = 0;
+    bufferCopyRegion.imageSubresource.layerCount = 1;
+    bufferCopyRegion.imageExtent.width = dst.width();
+    bufferCopyRegion.imageExtent.height = dst.height();
+    bufferCopyRegion.imageExtent.depth = 1;
+    bufferCopyRegion.bufferOffset = 0;
+
+    vkCmdCopyBufferToImage(
+        handle_,
+        src.handle(),
+        dst.handle(),
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        1,
+        &bufferCopyRegion);
+
+    return *this;
+}
+
+auto VulkanCmdBuffer::copyBuffer(const VulkanBuffer &src, const VulkanImage &dst, const VkBufferImageCopy *regions,
+    u32 regionCount) -> VulkanCmdBuffer&
+{
+    vkCmdCopyBufferToImage(
+        handle_,
+        src.handle(),
+        dst.handle(),
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        regionCount,
+        regions);
+    return *this;
+}
+
+auto VulkanCmdBuffer::blit(VkImage src, VkImage dst, VkImageLayout srcLayout, VkImageLayout dstLayout,
+    const VkImageBlit &blit, VkFilter filter) -> VulkanCmdBuffer&
+{
+    vkCmdBlitImage(handle_,
+        src, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+        dst, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        1, &blit,
+        filter);
+    return *this;
+}
+
+void VulkanCmdBuffer::endAndFlush()
+{
+    end();
     vk::queueSubmit(renderer_->queue(), 0, nullptr, 0, nullptr, 1, &handle_);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer_->queue()));
 }
 
-void VulkanCmdBuffer::begin(bool oneTime)
+auto VulkanCmdBuffer::begin(bool oneTime) -> VulkanCmdBuffer&
+
 {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = oneTime ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
     SL_VK_CHECK_RESULT(vkBeginCommandBuffer(handle_, &beginInfo));
+    return *this;
 }
 
 void VulkanCmdBuffer::end()

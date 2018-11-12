@@ -121,7 +121,8 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
 
     auto images = getSwapchainImages(this->device_, swapchain_);
 
-    const auto cmdBuf = vk::createCommandBuffer(renderer->device(), renderer->commandPool(), true);
+    auto cmdBuf = VulkanCmdBuffer(renderer);
+    cmdBuf.begin(true);
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -138,15 +139,19 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
         steps_[i].image = images[i];
         steps_[i].imageView = std::move(view);
 
-        vk::setImageLayout(
-            cmdBuf,
-            images[i],
-            VK_IMAGE_LAYOUT_UNDEFINED,
-            VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-            subresourceRange);
+        cmdBuf.putImagePipelineBarrier(
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+            vk::makeImagePipelineBarrier(
+                images[i],
+                VK_IMAGE_LAYOUT_UNDEFINED,
+                VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+                subresourceRange
+            )
+        );
     }
 
-    vk::flushCommandBuffer(cmdBuf, renderer->queue());
+    cmdBuf.endAndFlush();
 
     presentCompleteSem_ = vk::createSemaphore(this->device_);
 }

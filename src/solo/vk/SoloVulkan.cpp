@@ -22,39 +22,6 @@ auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
     return semaphore;
 }
 
-auto vk::createCommandBuffer(VkDevice device, VkCommandPool commandPool, bool begin) -> VulkanResource<VkCommandBuffer>
-{
-    VkCommandBufferAllocateInfo allocateInfo{};
-    allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    allocateInfo.pNext = nullptr;
-    allocateInfo.commandPool = commandPool;
-    allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocateInfo.commandBufferCount = 1;
-
-    VulkanResource<VkCommandBuffer> buffer{device, commandPool, vkFreeCommandBuffers};
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(device, &allocateInfo, &buffer));
-
-    if (begin)
-        vk::beginCommandBuffer(buffer, true);
-
-    return buffer;
-}
-
-void vk::beginCommandBuffer(VkCommandBuffer buffer, bool oneTime)
-{
-    VkCommandBufferBeginInfo beginInfo{};
-    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    beginInfo.flags = oneTime ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
-    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(buffer, &beginInfo));
-}
-
-void vk::flushCommandBuffer(VkCommandBuffer buffer, VkQueue queue)
-{
-    SL_VK_CHECK_RESULT(vkEndCommandBuffer(buffer));
-    queueSubmit(queue, 0, nullptr, 0, nullptr, 1, &buffer);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(queue));
-}
-
 void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
     u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
     u32 commandBufferCount, const VkCommandBuffer *commandBuffers)
@@ -204,6 +171,82 @@ void vk::setImageLayout(VkCommandBuffer cmdbuffer, VkImage image, VkImageLayout 
     }
 
     vkCmdPipelineBarrier(cmdbuffer, srcStageMask, dstStageMask, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
+}
+
+auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
+    VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier
+{
+    VkImageMemoryBarrier barrier{};
+    barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+    barrier.oldLayout = oldImageLayout;
+    barrier.newLayout = newImageLayout;
+    barrier.image = image;
+    barrier.subresourceRange = subresourceRange;
+
+    switch (oldImageLayout)
+    {
+        case VK_IMAGE_LAYOUT_UNDEFINED:
+            barrier.srcAccessMask = 0;
+            break;
+
+        case VK_IMAGE_LAYOUT_PREINITIALIZED:
+            barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            break;
+        default:
+            break;
+    }
+
+    switch (newImageLayout)
+    {
+        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+            barrier.dstAccessMask = barrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            break;
+
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+            if (barrier.srcAccessMask == 0)
+                barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+            barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            break;
+
+        default:
+            break;
+    }
+
+    return barrier;
 }
 
 static void detectFormatSupport(VkPhysicalDevice device, VkFormat format, umap<VkFormat, VkFormatFeatureFlags> &supportedFormats)

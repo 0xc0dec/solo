@@ -29,9 +29,6 @@ namespace solo
     namespace vk
     {
         auto createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>;
-        auto createCommandBuffer(VkDevice device, VkCommandPool commandPool, bool begin = false) -> VulkanResource<VkCommandBuffer>;
-        void beginCommandBuffer(VkCommandBuffer buffer, bool oneTime);
-        void flushCommandBuffer(VkCommandBuffer buffer, VkQueue queue);
         void queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
             u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
             u32 commandBufferCount, const VkCommandBuffer *commandBuffers);
@@ -45,6 +42,8 @@ namespace solo
             VkImageSubresourceRange subresourceRange,
             VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
             VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT);
+        auto makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout,
+            VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier;
         bool isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features);
     }
 }
