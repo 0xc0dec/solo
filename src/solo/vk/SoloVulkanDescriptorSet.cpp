@@ -18,6 +18,8 @@ void VulkanDescriptorSetConfig::addUniformBuffer(u32 binding)
     b.stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS; // TODO make configurable
     b.pImmutableSamplers = nullptr;
     bindings_.push_back(b);
+    // TODO More elegant
+    sizes_[VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     sizes_[VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER].descriptorCount++;
 }
 
@@ -30,6 +32,8 @@ void VulkanDescriptorSetConfig::addSampler(u32 binding)
     b.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT; // TODO make configurable
     b.pImmutableSamplers = nullptr;
     bindings_.push_back(b);
+    // TODO More elegant
+    sizes_[VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     sizes_[VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER].descriptorCount++;
 }
 

@@ -17,6 +17,7 @@ namespace solo
     class Texture2DData;
     class CubeTextureData;
     class VulkanRenderer;
+    enum class TextureFormat;
 
     class VulkanImage
     {
