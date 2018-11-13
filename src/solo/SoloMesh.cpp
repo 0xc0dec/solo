@@ -122,7 +122,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 

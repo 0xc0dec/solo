@@ -24,7 +24,7 @@ auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Rende
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 
