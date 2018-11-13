@@ -38,6 +38,7 @@
 #include "SoloScriptRuntime.h"
 #include "SoloSpectator.h"
 #include "SoloSpinLock.h"
+#include "SoloStaticMeshCollider.h"
 #include "SoloStringUtils.h"
 #include "SoloTexture.h"
 #include "SoloTextureData.h"
