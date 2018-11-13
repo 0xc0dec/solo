@@ -26,7 +26,6 @@
 #include "SoloMath.h"
 #include "SoloMatrix.h"
 #include "SoloMesh.h"
-#include "SoloMeshLoader.h"
 #include "SoloMeshRenderer.h"
 #include "SoloNode.h"
 #include "SoloPhysics.h"
