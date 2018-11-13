@@ -41,7 +41,7 @@ namespace solo
 
     private:
         VulkanResource<VkDevice> handle_;
-        VkSurfaceKHR surface_;
+        VkSurfaceKHR surface_ = nullptr;
         VulkanResource<VkCommandPool> commandPool_;
         VkPhysicalDevice physical_ = nullptr;
         VkPhysicalDeviceFeatures physicalFeatures_{};
