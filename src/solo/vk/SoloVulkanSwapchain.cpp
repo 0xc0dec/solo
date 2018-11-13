@@ -8,7 +8,6 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanSDLDevice.h"
 
 using namespace solo;
 
@@ -24,13 +23,13 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
     return images;
 }
 
-static auto getPresentMode(VulkanRenderer *renderer, VulkanSDLDevice *device, bool vsync) -> VkPresentModeKHR
+static auto selectPresentMode(const VulkanDevice &dev, bool vsync) -> VkPresentModeKHR
 {
     u32 presentModeCount;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->physicalDevice(), device->surface(), &presentModeCount, nullptr));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, nullptr));
 
     vec<VkPresentModeKHR> presentModes(presentModeCount);
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(renderer->physicalDevice(), device->surface(), &presentModeCount, presentModes.data()));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, presentModes.data()));
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
@@ -51,12 +50,12 @@ static auto getPresentMode(VulkanRenderer *renderer, VulkanSDLDevice *device, bo
     return presentMode;
 }
 
-static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
+static auto createSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(renderer->physicalDevice(), device->surface(), &capabilities));
+    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev.physical(), dev.surface(), &capabilities));
 
-    if (capabilities.currentExtent.width != static_cast<u32>(-1))
+    if (capabilities.currentExtent.width != std::numeric_limits<u32>::max())
     {
         width = capabilities.currentExtent.width;
         height = capabilities.currentExtent.height;
@@ -72,15 +71,15 @@ static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u
     if (capabilities.maxImageCount > 0 && requestedImageCount > capabilities.maxImageCount)
         requestedImageCount = capabilities.maxImageCount;
 
-    const auto presentMode = getPresentMode(renderer, device, vsync);
+    const auto presentMode = selectPresentMode(dev, vsync);
 
     VkSwapchainCreateInfoKHR swapchainInfo{};
     swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     swapchainInfo.pNext = nullptr;
-    swapchainInfo.surface = device->surface();
+    swapchainInfo.surface = dev.surface();
     swapchainInfo.minImageCount = requestedImageCount;
-    swapchainInfo.imageFormat = renderer->colorFormat();
-    swapchainInfo.imageColorSpace = renderer->colorSpace();
+    swapchainInfo.imageFormat = dev.colorFormat();
+    swapchainInfo.imageColorSpace = dev.colorSpace();
     swapchainInfo.imageExtent = {width, height};
     swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     swapchainInfo.preTransform = static_cast<VkSurfaceTransformFlagBitsKHR>(transformFlags);
@@ -93,26 +92,26 @@ static auto createSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u
     swapchainInfo.clipped = VK_TRUE;
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
-    VulkanResource<VkSwapchainKHR> swapchain{renderer->device(), vkDestroySwapchainKHR};
-    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(renderer->device(), &swapchainInfo, nullptr, swapchain.cleanRef()));
+    VulkanResource<VkSwapchainKHR> swapchain{dev.handle(), vkDestroySwapchainKHR};
+    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(dev.handle(), &swapchainInfo, nullptr, swapchain.cleanRef()));
 
     return swapchain;
 }
 
-VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *device, u32 width, u32 height, bool vsync):
-    device_(renderer->device())
+VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync):
+    device_(dev.handle())
 {
-    const auto colorFormat = renderer->colorFormat();
-    const auto depthFormat = renderer->depthFormat();
+    const auto colorFormat = dev.colorFormat();
+    const auto depthFormat = dev.depthFormat();
 
-    swapchain_ = createSwapchain(renderer, device, width, height, vsync);
+    swapchain_ = createSwapchain(dev, width, height, vsync);
 
     renderPass_ = VulkanRenderPass(this->device_, VulkanRenderPassConfig()
         .withColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
         .withDepthAttachment(depthFormat));
     
     // TODO Replace with factory method?
-    depthStencil_ = VulkanImage(renderer, width, height, 1, 1, depthFormat,
+    depthStencil_ = VulkanImage(dev, width, height, 1, 1, depthFormat,
         VK_IMAGE_LAYOUT_UNDEFINED,
         0,
         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
@@ -121,7 +120,7 @@ VulkanSwapchain::VulkanSwapchain(VulkanRenderer *renderer, VulkanSDLDevice *devi
 
     auto images = getSwapchainImages(this->device_, swapchain_);
 
-    auto cmdBuf = VulkanCmdBuffer(renderer);
+    auto cmdBuf = VulkanCmdBuffer(dev);
     cmdBuf.begin(true);
 
     VkImageSubresourceRange subresourceRange{};

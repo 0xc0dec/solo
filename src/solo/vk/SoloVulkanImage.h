@@ -16,18 +16,18 @@ namespace solo
 {
     class Texture2DData;
     class CubeTextureData;
-    class VulkanRenderer;
+    class VulkanDevice;
     enum class TextureFormat;
 
     class VulkanImage
     {
     public:
-        static auto empty(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage;
-        static auto fromData(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
-        static auto fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage;
+        static auto empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage;
+        static auto fromData(const VulkanDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
+        static auto fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage;
 
         VulkanImage() = default;
-        VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
+        VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
             VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
         VulkanImage(const VulkanImage &other) = delete;
         VulkanImage(VulkanImage &&other) = default;

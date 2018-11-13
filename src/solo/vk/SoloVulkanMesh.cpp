@@ -21,13 +21,13 @@ VulkanMesh::VulkanMesh(Device *device)
 
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::deviceLocal(renderer_, layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+    auto buf = VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
     return addVertexBuffer(buf, layout, vertexCount);
 }
 
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::hostVisible(renderer_, layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
+    auto buf = VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
     return addVertexBuffer(buf, layout, vertexCount);
 }
 
@@ -59,7 +59,7 @@ void VulkanMesh::removeVertexBuffer(u32 index)
 auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount) -> u32
 {
     const auto size = sizeof(u16) * indexElementCount;
-    auto buf = VulkanBuffer::deviceLocal(renderer_, size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
+    auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers_.push_back(std::move(buf));
     indexElementCounts_.push_back(indexElementCount);
     return static_cast<u32>(indexElementCounts_.size() - 1);

@@ -73,7 +73,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, TextureFormat format) -> VulkanImage
+auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
     const auto isDepth = format == TextureFormat::Depth24;
     const auto targetLayout = isDepth ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -85,7 +85,7 @@ auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, Texture
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
     SL_DEBUG_PANIC(
         !vk::isFormatSupported(
-            renderer->physicalDevice(),
+            dev.physical(),
             format_,
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT | (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)
         ),
@@ -93,7 +93,7 @@ auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, Texture
     );
 
     auto image = VulkanImage(
-        renderer,
+        dev,
         width, height,
         1, 1,
         format_,
@@ -116,7 +116,7 @@ auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, Texture
         subresourceRange
     );
 
-    VulkanCmdBuffer(renderer)
+    VulkanCmdBuffer(dev)
         .begin(true)
         .putImagePipelineBarrier(
             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
@@ -128,7 +128,7 @@ auto VulkanImage::empty(VulkanRenderer *renderer, u32 width, u32 height, Texture
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool generateMipmaps) -> VulkanImage
+auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
@@ -140,7 +140,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
     SL_DEBUG_PANIC(
-        !vk::isFormatSupported(renderer->physicalDevice(), format,
+        !vk::isFormatSupported(dev.physical(), format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
             VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
@@ -151,7 +151,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
     if (generateMipmaps)
     {
         SL_DEBUG_PANIC(
-            !vk::isFormatSupported(renderer->physicalDevice(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
+            !vk::isFormatSupported(dev.physical(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
             "Image format/features not supported"
         );
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
@@ -159,7 +159,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
     }
 
     auto image = VulkanImage(
-        renderer,
+        dev,
         width, height,
         mipLevels, 1,
         format,
@@ -169,7 +169,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
         VK_IMAGE_VIEW_TYPE_2D,
         VK_IMAGE_ASPECT_COLOR_BIT);
 
-    const auto srcBuf = VulkanBuffer::staging(renderer, data->size(), data->data());
+    const auto srcBuf = VulkanBuffer::staging(dev, data->size(), data->data());
 
     VkImageSubresourceRange subresourceRange{};
     subresourceRange.aspectMask = image.aspectMask_;
@@ -185,7 +185,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
         subresourceRange
     );
 
-    auto initCmdBuf = VulkanCmdBuffer(renderer);
+    auto initCmdBuf = VulkanCmdBuffer(dev);
     initCmdBuf.begin(true);
     initCmdBuf.putImagePipelineBarrier(
         VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
@@ -209,7 +209,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
         );
         initCmdBuf.endAndFlush();
 
-        auto blitCmdBuf = VulkanCmdBuffer(renderer);
+        auto blitCmdBuf = VulkanCmdBuffer(dev);
         blitCmdBuf.begin(true);
 
         for (u32 i = 1; i < mipLevels; i++)
@@ -303,7 +303,7 @@ auto VulkanImage::fromData(VulkanRenderer *renderer, Texture2DData *data, bool g
     return image;
 }
 
-auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) -> VulkanImage
+auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage
 {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
@@ -317,7 +317,7 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
     SL_DEBUG_PANIC(
-        !vk::isFormatSupported(renderer->physicalDevice(), format,
+        !vk::isFormatSupported(dev.physical(), format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
             VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
@@ -325,7 +325,7 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
         );
 
     auto image = VulkanImage(
-        renderer,
+        dev,
         width, height, mipLevels, layers,
         format,
         targetLayout,
@@ -342,7 +342,7 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
     subresourceRange.levelCount = mipLevels;
     subresourceRange.layerCount = layers;
 
-    auto cmdBuf = VulkanCmdBuffer(renderer);
+    auto cmdBuf = VulkanCmdBuffer(dev);
     cmdBuf.begin(true);
 
     cmdBuf.putImagePipelineBarrier(
@@ -356,7 +356,7 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
         )
     );
 
-    auto srcBuffer = VulkanBuffer::staging(renderer, data->size());
+    auto srcBuffer = VulkanBuffer::staging(dev, data->size());
 
     // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
     // Vulkan's Y axis is inverted, so we invert
@@ -410,7 +410,7 @@ auto VulkanImage::fromDataCube(VulkanRenderer *renderer, CubeTextureData *data) 
     return image;
 }
 
-VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
+VulkanImage::VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     layout_(layout),
     format_(format),
@@ -419,9 +419,9 @@ VulkanImage::VulkanImage(VulkanRenderer *renderer, u32 width, u32 height, u32 mi
     height_(height),
     aspectMask_(aspectMask)
 {
-    const auto device = renderer->device();
+    const auto device = dev.handle();
     auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
-    auto memory = allocateImageMemory(device, renderer->physicalMemoryFeatures(), image);
+    auto memory = allocateImageMemory(device, dev.physicalMemoryFeatures(), image);
     auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
     this->image_ = std::move(image);
     this->memory_ = std::move(memory);

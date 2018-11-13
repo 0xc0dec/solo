@@ -12,9 +12,9 @@
 
 using namespace solo;
 
-auto VulkanBuffer::staging(VulkanRenderer *renderer, VkDeviceSize size, const void *initialData) -> VulkanBuffer
+auto VulkanBuffer::staging(const VulkanDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
-    auto buffer = VulkanBuffer(renderer, size,
+    auto buffer = VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -24,30 +24,30 @@ auto VulkanBuffer::staging(VulkanRenderer *renderer, VkDeviceSize size, const vo
     return buffer;
 }
 
-auto VulkanBuffer::uniformHostVisible(VulkanRenderer *renderer, VkDeviceSize size) -> VulkanBuffer
+auto VulkanBuffer::uniformHostVisible(const VulkanDevice &dev, VkDeviceSize size) -> VulkanBuffer
 {
-    return VulkanBuffer(renderer, size,
+    return VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::deviceLocal(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
-    auto stagingBuffer = staging(renderer, size, data);
-    auto buffer = VulkanBuffer(renderer, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    auto stagingBuffer = staging(dev, size, data);
+    auto buffer = VulkanBuffer(dev, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer);
     return buffer;
 }
 
-auto VulkanBuffer::hostVisible(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::hostVisible(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
-    auto buffer = VulkanBuffer(renderer, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+    auto buffer = VulkanBuffer(dev, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
     return buffer;
 }
 
-VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
-    renderer_(renderer),
+VulkanBuffer::VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+    device_(&dev),
     size_(size)
 {
     VkBufferCreateInfo bufferInfo {};
@@ -59,41 +59,41 @@ VulkanBuffer::VulkanBuffer(VulkanRenderer *renderer, VkDeviceSize size, VkBuffer
     bufferInfo.queueFamilyIndexCount = 0;
     bufferInfo.pQueueFamilyIndices = nullptr;
 
-    buffer_ = VulkanResource<VkBuffer>{renderer_->device(), vkDestroyBuffer};
-    SL_VK_CHECK_RESULT(vkCreateBuffer(renderer_->device(), &bufferInfo, nullptr, buffer_.cleanRef()));
+    buffer_ = VulkanResource<VkBuffer>{dev.handle(), vkDestroyBuffer};
+    SL_VK_CHECK_RESULT(vkCreateBuffer(dev.handle(), &bufferInfo, nullptr, buffer_.cleanRef()));
 
     VkMemoryRequirements memReqs;
-    vkGetBufferMemoryRequirements(renderer_->device(), buffer_, &memReqs);
+    vkGetBufferMemoryRequirements(dev.handle(), buffer_, &memReqs);
 
     VkMemoryAllocateInfo allocInfo {};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memReqs.size;
-    allocInfo.memoryTypeIndex = vk::findMemoryType(renderer->physicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
+    allocInfo.memoryTypeIndex = vk::findMemoryType(dev.physicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
-    memory_ = VulkanResource<VkDeviceMemory>{renderer_->device(), vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(renderer_->device(), &allocInfo, nullptr, memory_.cleanRef()));
-    SL_VK_CHECK_RESULT(vkBindBufferMemory(renderer_->device(), buffer_, memory_, 0));
+    memory_ = VulkanResource<VkDeviceMemory>{dev.handle(), vkFreeMemory};
+    SL_VK_CHECK_RESULT(vkAllocateMemory(dev.handle(), &allocInfo, nullptr, memory_.cleanRef()));
+    SL_VK_CHECK_RESULT(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
 }
 
 void VulkanBuffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(renderer_->device(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
+    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size_);
-    vkUnmapMemory(renderer_->device(), memory_);
+    vkUnmapMemory(device_->handle(), memory_);
 }
 
 void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(renderer_->device(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
+    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size);
-    vkUnmapMemory(renderer_->device(), memory_);
+    vkUnmapMemory(device_->handle(), memory_);
 }
 
 void VulkanBuffer::transferTo(const VulkanBuffer &dst) const
 {
-    VulkanCmdBuffer(renderer_)
+    VulkanCmdBuffer(*device_)
         .begin(true)
         .copyBuffer(*this, dst)
         .endAndFlush();

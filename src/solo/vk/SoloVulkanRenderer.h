@@ -19,6 +19,7 @@
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanDescriptorSet.h"
 #include "SoloVulkanCmdBuffer.h"
+#include "SoloVulkanDevice.h"
 
 namespace solo
 {
@@ -38,17 +39,7 @@ namespace solo
         void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
         void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 
-        // TODO avoid these?
-        auto device() const -> VkDevice { return device_; }
-        auto physicalDevice() const -> VkPhysicalDevice { return physicalDevice_; }
-        auto physicalFeatures() const -> VkPhysicalDeviceFeatures { return physicalFeatures_; }
-        auto physicalProperties() const -> VkPhysicalDeviceProperties { return physicalProperties_; }
-        auto physicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties { return physicalMemoryFeatures_; }
-        auto colorFormat() const -> VkFormat { return colorFormat_; }
-        auto depthFormat() const -> VkFormat { return depthFormat_; }
-        auto colorSpace() const -> VkColorSpaceKHR { return colorSpace_; }
-        auto commandPool() const -> VkCommandPool { return commandPool_; }
-        auto queue() const -> VkQueue { return queue_; }
+        auto device() const -> const VulkanDevice& { return device_; }
 
     protected:
         void beginFrame() override final;
@@ -57,17 +48,7 @@ namespace solo
     private:
         Device *engineDevice_ = nullptr;
 
-        VulkanResource<VkDevice> device_;
-        VulkanResource<VkCommandPool> commandPool_;
-        VkPhysicalDevice physicalDevice_ = nullptr;
-        VkPhysicalDeviceFeatures physicalFeatures_{};
-        VkPhysicalDeviceProperties physicalProperties_{};
-        VkPhysicalDeviceMemoryProperties physicalMemoryFeatures_{};
-        VkFormat colorFormat_ = VK_FORMAT_UNDEFINED;
-        VkFormat depthFormat_ = VK_FORMAT_UNDEFINED;
-        VkColorSpaceKHR colorSpace_ = VK_COLOR_SPACE_MAX_ENUM_KHR;
-        VkQueue queue_ = nullptr;
-        VulkanResource<VkDebugReportCallbackEXT> debugCallback_;
+        VulkanDevice device_;
         VulkanSwapchain swapchain_;
 
         struct PipelineContext

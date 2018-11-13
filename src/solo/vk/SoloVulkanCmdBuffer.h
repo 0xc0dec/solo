@@ -18,13 +18,12 @@
 namespace solo
 {
     class VulkanRenderPass;
-    class VulkanRenderer;
 
     class VulkanCmdBuffer
     {
     public:
         VulkanCmdBuffer() = default;
-        VulkanCmdBuffer(VulkanRenderer *renderer);
+        VulkanCmdBuffer(const VulkanDevice &dev);
         VulkanCmdBuffer(const VulkanCmdBuffer &other) = delete;
         VulkanCmdBuffer(VulkanCmdBuffer &&other) = default;
         ~VulkanCmdBuffer() = default;
@@ -70,7 +69,7 @@ namespace solo
         operator const VkCommandBuffer*() { return &handle_; }
 
     private:
-        VulkanRenderer *renderer_ = nullptr;
+        const VulkanDevice *device_ = nullptr;
         VulkanResource<VkCommandBuffer> handle_;
     };
 }

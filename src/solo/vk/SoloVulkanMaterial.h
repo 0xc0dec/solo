@@ -19,7 +19,6 @@ namespace solo
     class Device;
     class Effect;
     class Camera;
-    class VulkanRenderer;
     class VulkanTexture;
     class VulkanPipelineConfig;
 

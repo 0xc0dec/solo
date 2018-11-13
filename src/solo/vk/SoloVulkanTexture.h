@@ -15,6 +15,7 @@
 namespace solo
 {
     class Device;
+    class VulkanRenderer;
 
     class VulkanTexture
     {
