@@ -52,7 +52,7 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 static void registerMesh(CppBindModule<LuaBinding> &module)
 {
     auto mesh = BEGIN_CLASS(module, Mesh);
-    REG_STATIC_METHOD(mesh, Mesh, create);
+    REG_STATIC_METHOD(mesh, Mesh, empty);
     REG_STATIC_METHOD(mesh, Mesh, fromFile);
     REG_STATIC_METHOD(mesh, Mesh, fromFileAsync);
     REG_FREE_FUNC_AS_METHOD(mesh, addVertexBuffer);

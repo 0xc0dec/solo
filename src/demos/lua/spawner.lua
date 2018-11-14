@@ -6,12 +6,12 @@
 return function(assetCache)
     local effect = assetCache.getEffect("color")
 
-    local material = sl.Material.create(sl.device, effect)
+    local material = sl.Material.fromEffect(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     material:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
 
-    local highlightMaterial = sl.Material.create(sl.device, effect)
+    local highlightMaterial = sl.Material.fromEffect(sl.device, effect)
     highlightMaterial:setFaceCull(sl.FaceCull.None)
     highlightMaterial:setPolygonMode(sl.PolygonMode.Wireframe)
     highlightMaterial:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)

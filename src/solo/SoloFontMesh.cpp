@@ -9,7 +9,7 @@
 
 using namespace solo;
 
-auto FontMesh::create(Device *device, sptr<Font> font) -> sptr<FontMesh>
+auto FontMesh::fromFont(Device *device, sptr<Font> font) -> sptr<FontMesh>
 {
     return sptr<FontMesh>(new FontMesh(device, font));
 }
@@ -72,7 +72,7 @@ void FontMesh::rebuildMesh()
         lastIndex += 4;
     }
 
-    mesh_ = Mesh::create(device_);
+    mesh_ = Mesh::empty(device_);
 
     VertexBufferLayout positionsLayout;
     positionsLayout.addAttribute(VertexAttributeSemantics::Position);

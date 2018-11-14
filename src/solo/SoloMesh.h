@@ -25,7 +25,7 @@ namespace solo
     class Mesh: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device) -> sptr<Mesh>;
+        static auto empty(Device *device) -> sptr<Mesh>;
         static auto fromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
         static auto fromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
 

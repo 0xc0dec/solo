@@ -108,7 +108,7 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
     return std::make_shared<MeshData>(std::move(data));
 }
 
-auto Mesh::create(Device *device) -> sptr<Mesh>
+auto Mesh::empty(Device *device) -> sptr<Mesh>
 {
     switch (device->mode())
     {
@@ -129,7 +129,7 @@ auto Mesh::create(Device *device) -> sptr<Mesh>
 auto Mesh::fromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>
 {
     auto data = loadMeshData(device, path, bufferLayout);
-    auto mesh = create(device);
+    auto mesh = empty(device);
     
     mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.elementCount());
     
@@ -147,7 +147,7 @@ auto Mesh::fromFileAsync(Device *device, const str &path, const VertexBufferLayo
     auto consumer = [handle, device, bufferLayout](const vec<sptr<MeshData>> &results)
     {
         auto data = results[0];
-        auto mesh = create(device);
+        auto mesh = empty(device);
     
         mesh->addVertexBuffer(bufferLayout, data->vertexData.data(), data->vertexData.size() / bufferLayout.elementCount());
     

@@ -35,13 +35,13 @@ return function(scene, assetCache)
     layout:addAttribute(sl.VertexAttributeSemantics.Position)
     layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
 
-    local mesh = sl.Mesh.create(sl.device)
+    local mesh = sl.Mesh.empty(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)
     mesh:addPart(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
     local effect = assetCache.getEffect("texture")
-    local material = sl.Material.create(sl.device, effect)
+    local material = sl.Material.fromEffect(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     

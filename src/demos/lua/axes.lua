@@ -11,7 +11,7 @@ return function(assetCache)
     local effect = assetCache.getEffect("color")
 
     local createColorMaterial = function(color)
-        local mat = sl.Material.create(sl.device, effect)
+        local mat = sl.Material.fromEffect(sl.device, effect)
         mat:setFaceCull(sl.FaceCull.None)
         mat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         mat:setVector4Parameter("variables:color", color)

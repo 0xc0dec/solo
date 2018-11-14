@@ -80,7 +80,7 @@ namespace solo
     class Material: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device, sptr<Effect> effect) -> sptr<Material>;
+        static auto fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
         virtual ~Material() = default;
 

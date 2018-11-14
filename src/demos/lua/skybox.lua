@@ -16,7 +16,7 @@ return function(scene, assetCache)
     local node = scene:createNode()
 
     local effect = assetCache.getEffect("skybox")
-    local material = sl.Material.create(sl.device, effect)
+    local material = sl.Material.fromEffect(sl.device, effect)
     material:setDepthTest(true)
     material:setDepthWrite(false)
     material:setFaceCull(sl.FaceCull.None)

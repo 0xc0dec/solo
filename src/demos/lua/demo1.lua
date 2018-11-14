@@ -11,7 +11,7 @@ function demo()
     local dev = sl.device
     local fs = dev:fileSystem()
     local physics = dev:physics()
-    local scene = sl.Scene.create(dev)
+    local scene = sl.Scene.empty(dev)
 
     local tags = require "tags"
     local createRotator = require "rotator"
@@ -96,7 +96,7 @@ function demo()
     local lightCam = createLightCamera()
 
     local colorPassEffect = assetCache.getEffect("shadowed")
-    local colorPassMaterial = sl.Material.create(dev, colorPassEffect)
+    local colorPassMaterial = sl.Material.fromEffect(dev, colorPassEffect)
     colorPassMaterial:setFaceCull(sl.FaceCull.None)
     colorPassMaterial:bindParameter("uniforms:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     colorPassMaterial:bindParameter("uniforms:model", sl.ParameterBinding.WorldMatrix)
@@ -104,7 +104,7 @@ function demo()
     colorPassMaterial:setTextureParameter("shadowMap", lightCam.depthTex)
 
     local shadowDepthEffect = assetCache.getEffect("shadow-depth")
-    local depthPassMaterial = sl.Material.create(dev, shadowDepthEffect)
+    local depthPassMaterial = sl.Material.fromEffect(dev, shadowDepthEffect)
     depthPassMaterial:setFaceCull(sl.FaceCull.None)
     depthPassMaterial:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
 

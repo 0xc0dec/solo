@@ -11,7 +11,7 @@ function demo()
     local dev = sl.device
     local physics = dev:physics()
     local fs = dev:fileSystem()
-    local scene = sl.Scene.create(dev)
+    local scene = sl.Scene.empty(dev)
 
     local tags = require "tags"
     local createRotator = require "rotator"
@@ -192,7 +192,7 @@ function demo()
     local mrtFrameBuffer = sl.FrameBuffer.create(dev, { albedoTex, positionTex, normalTex, tangentTex })
     local mrtEffectDesc = sl.generateEffectSource(mrtEffectDesc)
     local mrtEffect = sl.Effect.fromSource(dev, mrtEffectDesc)
-    local mrtMaterial = sl.Material.create(dev, mrtEffect)
+    local mrtMaterial = sl.Material.fromEffect(dev, mrtEffect)
     mrtMaterial:setFaceCull(sl.FaceCull.Back)
     mrtMaterial:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     mrtMaterial:bindParameter("matrices:world", sl.ParameterBinding.WorldMatrix)
@@ -201,7 +201,7 @@ function demo()
 
     local deferEffectSrc = sl.generateEffectSource(deferEffectDesc)
     local deferEffect = sl.Effect.fromSource(dev, deferEffectSrc)
-    local deferMaterial = sl.Material.create(dev, deferEffect)
+    local deferMaterial = sl.Material.fromEffect(dev, deferEffect)
     deferMaterial:setFaceCull(sl.FaceCull.None)
     deferMaterial:setTextureParameter("albedoMap", albedoTex)
     deferMaterial:setTextureParameter("positionMap", positionTex)

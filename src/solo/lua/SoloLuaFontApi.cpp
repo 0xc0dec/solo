@@ -29,7 +29,7 @@ static void registerFont(CppBindModule<LuaBinding> &module)
 static void registerFontMesh(CppBindModule<LuaBinding> &module)
 {
     auto fm = BEGIN_CLASS(module, FontMesh);
-    REG_STATIC_METHOD(fm, FontMesh, create);
+    REG_STATIC_METHOD(fm, FontMesh, fromFont);
     REG_METHOD(fm, FontMesh, setText);
     REG_METHOD(fm, FontMesh, mesh);
     fm.endClass();

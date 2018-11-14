@@ -12,7 +12,7 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
 
     // TODO move lua effect files elsewhere?
     const auto effect = Effect::fromDescriptionFile(device, "../../assets/effects/skybox.lua");
-    const auto material = Material::create(device, effect);
+    const auto material = Material::fromEffect(device, effect);
     material->setDepthTest(true);
     material->setDepthWrite(false);
     material->setFaceCull(FaceCull::None);

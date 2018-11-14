@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-auto Material::create(Device *device, sptr<Effect> effect) -> sptr<Material>
+auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
 {
     switch (device->mode())
     {

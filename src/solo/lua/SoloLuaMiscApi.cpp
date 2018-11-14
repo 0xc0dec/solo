@@ -27,7 +27,7 @@ static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 static void registerScene(CppBindModule<LuaBinding> &module)
 {
     auto scene = BEGIN_CLASS(module, Scene);
-    REG_STATIC_METHOD(scene, Scene, create);
+    REG_STATIC_METHOD(scene, Scene, empty);
     REG_METHOD(scene, Scene, device);
     REG_METHOD(scene, Scene, createNode);
     REG_METHOD(scene, Scene, removeNode);

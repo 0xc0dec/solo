@@ -18,7 +18,7 @@ namespace solo
     class FontMesh
     {
     public:
-        static auto create(Device *device, sptr<Font> font) -> sptr<FontMesh>;
+        static auto fromFont(Device *device, sptr<Font> font) -> sptr<FontMesh>;
 
         void setText(const str &text);
         auto mesh() const -> sptr<Mesh> { return mesh_; }

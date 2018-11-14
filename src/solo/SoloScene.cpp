@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-auto Scene::create(Device *device) -> sptr<Scene>
+auto Scene::empty(Device *device) -> sptr<Scene>
 {
     return sptr<Scene>(new Scene(device));
 }

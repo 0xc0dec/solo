@@ -18,7 +18,7 @@ namespace solo
     class Scene final: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device) -> sptr<Scene>;
+        static auto empty(Device *device) -> sptr<Scene>;
 
         ~Scene() = default;
 
