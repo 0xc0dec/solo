@@ -1,3 +1,8 @@
+--
+-- Copyright (c) Aleksey Fedotov
+-- MIT license
+-- 
+
 local tags = {
     skybox = 1 << 1,
     transparent = 1 << 2,

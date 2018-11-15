@@ -10,7 +10,7 @@ return function(assetCache, mainCameraNode, postProcessor)
 
     local effect = assetCache.getEffect("color")
 
-    function createMaterial(color)
+    function createColorMaterial(color)
         local m = sl.Material.fromEffect(sl.device, effect)
         m:setFaceCull(sl.FaceCull.None)
         m:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
@@ -77,8 +77,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         }))
     end
 
-    local baseMat = createMaterial(vec4(0, 1, 1, 1))
-    local btnMat = createMaterial(vec4(0, 1, 0, 1))
+    local btnMat = createColorMaterial(vec4(0, 1, 0, 1))
 
     local root = scene:createNode()
     local rootTransform = root:findComponent("Transform")

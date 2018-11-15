@@ -26,6 +26,7 @@ function demo()
     local createDynamicQuad = require "dynamic-quad"
     local attachAxes = (require "axes")(assetCache)
     local createLookAt = require "look-at"
+    local createHighlighter = require "highlighter"
 
     ---
 
@@ -113,6 +114,7 @@ function demo()
     mainCameraNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createTracer(physics))
     mainCameraNode:addScriptComponent(createSpawner(assetCache))
+    mainCameraNode:addScriptComponent(createHighlighter(assetCache, physics))
 
     local postProcessor = createPostProcessor(assetCache, mainCamera)
     local postProcessorControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
