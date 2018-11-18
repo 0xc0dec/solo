@@ -55,22 +55,22 @@ static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
     const auto cmp = node->scene()->findComponent(node->id(), typeId + LuaScriptComponent::MinTypeId);
     if (cmp)
     {
-        const auto scriptComponent = dynamic_cast<LuaScriptComponent*>(cmp);
-        return scriptComponent->ref();
+        const auto scriptCmp = dynamic_cast<LuaScriptComponent*>(cmp);
+        return scriptCmp->ref();
     }
     return {};
 }
 
-static auto addScriptComponent(Node *node, LuaRef scriptComponent) -> sptr<Component>
+static auto addScriptComponent(Node *node, LuaRef ref) -> sptr<Component>
 {
-    const auto actualComponent = std::make_shared<LuaScriptComponent>(*node, scriptComponent);
-    node->scene()->addComponent(node->id(), actualComponent);
-    return actualComponent;
+    const auto cmp = std::make_shared<LuaScriptComponent>(*node, ref);
+    node->scene()->addComponent(node->id(), cmp);
+    return cmp;
 }
 
-static void removeScriptComponent(Node *node, const LuaRef& scriptComponent)
+static void removeScriptComponent(Node *node, const LuaRef& ref)
 {
-    const auto typeId = scriptComponent.get<u32>("typeId") + LuaScriptComponent::MinTypeId;
+    const auto typeId = ref.get<u32>("typeId") + LuaScriptComponent::MinTypeId;
     node->scene()->removeComponent(node->id(), typeId);
 }
 
@@ -88,16 +88,18 @@ static void registerComponent(CppBindModule<LuaBinding> &module)
 
 static void registerNode(CppBindModule<LuaBinding> &module)
 {
-    auto node = BEGIN_CLASS(module, Node);
-    REG_METHOD(node, Node, id);
-    REG_METHOD(node, Node, scene);
-    REG_FREE_FUNC_AS_METHOD(node, findScriptComponent);
-    REG_FREE_FUNC_AS_METHOD(node, addScriptComponent);
-    REG_FREE_FUNC_AS_METHOD(node, removeScriptComponent);
-    REG_FREE_FUNC_AS_METHOD(node, findComponent);
-    REG_FREE_FUNC_AS_METHOD(node, addComponent);
-    REG_FREE_FUNC_AS_METHOD(node, removeComponent);
-    node.endClass();
+    auto binding = BEGIN_CLASS(module, Node);
+    REG_METHOD(binding, Node, id);
+    REG_METHOD(binding, Node, scene);
+    REG_FREE_FUNC_AS_METHOD(binding, findScriptComponent);
+    REG_FREE_FUNC_AS_METHOD(binding, addScriptComponent);
+    REG_FREE_FUNC_AS_METHOD(binding, removeScriptComponent);
+    REG_FREE_FUNC_AS_METHOD(binding, findComponent);
+    REG_FREE_FUNC_AS_METHOD(binding, addComponent);
+    REG_FREE_FUNC_AS_METHOD(binding, removeComponent);
+    binding.addMetaFunction("__eq", [](const Node &first, const Node &second)
+        { return first.id() == second.id(); });
+    binding.endClass();
 }
 
 void registerNodeAndComponentApi(CppBindModule<LuaBinding> &module)
