@@ -40,20 +40,20 @@ private:
     Transform *transform;
 };
 
-BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters):
+BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyParams &params):
     RigidBody(node),
-    mass_(parameters.mass),
+    mass_(params.mass),
     shape_(nullptr)
 {
     world_ = static_cast<BulletPhysics *>(node.scene()->device()->physics())->world();
     transformCmp_ = node.findComponent<Transform>();
     motionState_ = std::make_unique<MotionState>(transformCmp_);
 
-    btRigidBody::btRigidBodyConstructionInfo info(parameters.mass, motionState_.get(), nullptr);
-    info.m_friction = parameters.friction;
-    info.m_restitution = parameters.restitution;
-    info.m_linearDamping = parameters.linearDamping;
-    info.m_angularDamping = parameters.angularDamping;
+    btRigidBody::btRigidBodyConstructionInfo info(params.mass, motionState_.get(), nullptr);
+    info.m_friction = params.friction;
+    info.m_restitution = params.restitution;
+    info.m_linearDamping = params.linearDamping;
+    info.m_angularDamping = params.angularDamping;
 
     body_ = std::make_unique<btRigidBody>(info);
     body_->setUserPointer(this);

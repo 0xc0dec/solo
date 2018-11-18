@@ -27,6 +27,8 @@ using namespace LuaIntf;
 #define REG_FIELD(binding, klass, name) binding.addVariable(#name, &klass::name, true)
 
 #define REG_META_METHOD(binding, name, func) binding.addMetaFunction(name, func)
+#define REG_PTR_EQUALITY(binding, klass) \
+        binding.addMetaFunction("__eq", [](klass *first, klass *second) { return first == second; })
 #define REG_METHOD(binding, klass, name) binding.addFunction(#name, &klass::name)
 #define REG_METHOD_OVERLOADED(binding, klass, name, nameStr, resultType, modifier, ...) \
         binding.addFunction(nameStr, static_cast<resultType(klass::*)(__VA_ARGS__)modifier>(&klass::name))

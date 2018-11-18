@@ -13,30 +13,31 @@ using namespace solo;
 
 static void registerDevice(CppBindModule<LuaBinding> &module)
 {
-    auto device = BEGIN_CLASS(module, Device);
-    REG_METHOD(device, Device, windowTitle);
-    REG_METHOD(device, Device, setWindowTitle);
-    REG_METHOD(device, Device, canvasSize);
-    REG_METHOD(device, Device, dpiIndependentCanvasSize);
-    REG_METHOD(device, Device, isVsync);
-    REG_METHOD(device, Device, mode);
-    REG_METHOD(device, Device, saveScreenshot);
-    REG_METHOD(device, Device, setCursorCaptured);
-    REG_METHOD(device, Device, lifetime);
-    REG_METHOD(device, Device, timeDelta);
-    REG_METHOD(device, Device, isWindowCloseRequested);
-    REG_METHOD(device, Device, isQuitRequested);
-    REG_METHOD(device, Device, isKeyPressed);
-    REG_METHOD(device, Device, isKeyReleased);
-    REG_METHOD(device, Device, mouseMotion);
-    REG_METHOD(device, Device, mousePosition);
-    REG_METHOD(device, Device, isMouseButtonDown);
-    REG_METHOD(device, Device, isMouseButtonReleased);
-    REG_METHOD(device, Device, update);
-    REG_METHOD(device, Device, hasActiveBackgroundJobs);
-    REG_METHOD(device, Device, fileSystem);
-    REG_METHOD(device, Device, physics);
-    device.endClass();
+    auto binding = BEGIN_CLASS(module, Device);
+    REG_METHOD(binding, Device, windowTitle);
+    REG_METHOD(binding, Device, setWindowTitle);
+    REG_METHOD(binding, Device, canvasSize);
+    REG_METHOD(binding, Device, dpiIndependentCanvasSize);
+    REG_METHOD(binding, Device, isVsync);
+    REG_METHOD(binding, Device, mode);
+    REG_METHOD(binding, Device, saveScreenshot);
+    REG_METHOD(binding, Device, setCursorCaptured);
+    REG_METHOD(binding, Device, lifetime);
+    REG_METHOD(binding, Device, timeDelta);
+    REG_METHOD(binding, Device, isWindowCloseRequested);
+    REG_METHOD(binding, Device, isQuitRequested);
+    REG_METHOD(binding, Device, isKeyPressed);
+    REG_METHOD(binding, Device, isKeyReleased);
+    REG_METHOD(binding, Device, mouseMotion);
+    REG_METHOD(binding, Device, mousePosition);
+    REG_METHOD(binding, Device, isMouseButtonDown);
+    REG_METHOD(binding, Device, isMouseButtonReleased);
+    REG_METHOD(binding, Device, update);
+    REG_METHOD(binding, Device, hasActiveBackgroundJobs);
+    REG_METHOD(binding, Device, fileSystem);
+    REG_METHOD(binding, Device, physics);
+    REG_PTR_EQUALITY(binding, Device);
+    binding.endClass();
 }
 
 void registerDeviceSetup(CppBindModule<LuaBinding> &module)

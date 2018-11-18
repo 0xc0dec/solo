@@ -18,67 +18,73 @@ using namespace solo;
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
-    auto fb = BEGIN_CLASS(module, FrameBuffer);
-    REG_STATIC_METHOD(fb, FrameBuffer, create);
-    REG_METHOD(fb, FrameBuffer, dimensions);
-    fb.endClass();
+    auto binding = BEGIN_CLASS(module, FrameBuffer);
+    REG_STATIC_METHOD(binding, FrameBuffer, create);
+    REG_METHOD(binding, FrameBuffer, dimensions);
+    REG_PTR_EQUALITY(binding, FrameBuffer);
+    binding.endClass();
 }
 
 static void registerScene(CppBindModule<LuaBinding> &module)
 {
-    auto scene = BEGIN_CLASS(module, Scene);
-    REG_STATIC_METHOD(scene, Scene, empty);
-    REG_METHOD(scene, Scene, device);
-    REG_METHOD(scene, Scene, createNode);
-    REG_METHOD(scene, Scene, removeNode);
-    REG_METHOD(scene, Scene, removeNodeById);
-    REG_METHOD(scene, Scene, visit);
-    REG_METHOD(scene, Scene, visitByTags);
-    scene.endClass();
+    auto binding = BEGIN_CLASS(module, Scene);
+    REG_STATIC_METHOD(binding, Scene, empty);
+    REG_METHOD(binding, Scene, device);
+    REG_METHOD(binding, Scene, createNode);
+    REG_METHOD(binding, Scene, removeNode);
+    REG_METHOD(binding, Scene, removeNodeById);
+    REG_METHOD(binding, Scene, visit);
+    REG_METHOD(binding, Scene, visitByTags);
+    REG_PTR_EQUALITY(binding, Scene);
+    binding.endClass();
 }
 
 static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
 {
-    auto renderer = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
-    REG_METHOD(renderer, MeshRenderer, render);
-    REG_METHOD(renderer, MeshRenderer, mesh);
-    REG_METHOD_NULLABLE_1ST_ARG(renderer, MeshRenderer, setMesh, sptr<Mesh>);
-    REG_METHOD(renderer, MeshRenderer, material);
-    REG_METHOD_NULLABLE_2ND_ARG(renderer, MeshRenderer, setMaterial, u32, sptr<Material>);
-    REG_METHOD(renderer, MeshRenderer, materialCount);
-    renderer.endClass();
+    auto binding = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
+    REG_METHOD(binding, MeshRenderer, render);
+    REG_METHOD(binding, MeshRenderer, mesh);
+    REG_METHOD_NULLABLE_1ST_ARG(binding, MeshRenderer, setMesh, sptr<Mesh>);
+    REG_METHOD(binding, MeshRenderer, material);
+    REG_METHOD_NULLABLE_2ND_ARG(binding, MeshRenderer, setMaterial, u32, sptr<Material>);
+    REG_METHOD(binding, MeshRenderer, materialCount);
+    REG_PTR_EQUALITY(binding, MeshRenderer);
+    binding.endClass();
 }
 
 static void registerSpectator(CppBindModule<LuaBinding> &module)
 {
-    auto spec = BEGIN_CLASS_EXTEND(module, Spectator, Component);
-    REG_METHOD(spec, Spectator, movementSpeed);
-    REG_METHOD(spec, Spectator, setMovementSpeed);
-    REG_METHOD(spec, Spectator, mouseSensitivity);
-    REG_METHOD(spec, Spectator, setMouseSensitivity);
-    REG_METHOD(spec, Spectator, rotationAcceleration);
-    REG_METHOD(spec, Spectator, setRotationAcceleration);
+    auto binding = BEGIN_CLASS_EXTEND(module, Spectator, Component);
+    REG_METHOD(binding, Spectator, movementSpeed);
+    REG_METHOD(binding, Spectator, setMovementSpeed);
+    REG_METHOD(binding, Spectator, mouseSensitivity);
+    REG_METHOD(binding, Spectator, setMouseSensitivity);
+    REG_METHOD(binding, Spectator, rotationAcceleration);
+    REG_METHOD(binding, Spectator, setRotationAcceleration);
+    REG_PTR_EQUALITY(binding, Spectator);
 }
 
 static void registerEffect(CppBindModule<LuaBinding> &module)
 {
-    auto eff = BEGIN_CLASS(module, Effect);
-    REG_STATIC_METHOD(eff, Effect, fromSourceFile);
-    REG_STATIC_METHOD(eff, Effect, fromDescriptionFile);
-    REG_STATIC_METHOD(eff, Effect, fromSource);
-    eff.endClass();
+    auto binding = BEGIN_CLASS(module, Effect);
+    REG_STATIC_METHOD(binding, Effect, fromSourceFile);
+    REG_STATIC_METHOD(binding, Effect, fromDescriptionFile);
+    REG_STATIC_METHOD(binding, Effect, fromSource);
+    REG_PTR_EQUALITY(binding, Effect);
+    binding.endClass();
 }
 
 static void registerFileSystem(CppBindModule<LuaBinding> &module)
 {
-    auto fs = BEGIN_CLASS(module, FileSystem);
-    REG_METHOD(fs, FileSystem, readBytes);
-    REG_METHOD(fs, FileSystem, writeBytes);
-    REG_METHOD(fs, FileSystem, readText);
-    REG_METHOD(fs, FileSystem, readLines);
-    REG_METHOD(fs, FileSystem, writeLines);
-    REG_METHOD(fs, FileSystem, iterateLines);
-    fs.endClass();
+    auto binding = BEGIN_CLASS(module, FileSystem);
+    REG_METHOD(binding, FileSystem, readBytes);
+    REG_METHOD(binding, FileSystem, writeBytes);
+    REG_METHOD(binding, FileSystem, readText);
+    REG_METHOD(binding, FileSystem, readLines);
+    REG_METHOD(binding, FileSystem, writeLines);
+    REG_METHOD(binding, FileSystem, iterateLines);
+    REG_PTR_EQUALITY(binding, FileSystem);
+    binding.endClass();
 }
 
 static void registerAsyncHandles(CppBindModule<LuaBinding> &module)

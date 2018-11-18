@@ -8,9 +8,9 @@
 
 using namespace solo;
 
-auto RigidBody::create(const Node &node, const RigidBodyConstructionParameters &parameters) -> sptr<RigidBody>
+auto RigidBody::create(const Node &node, const RigidBodyParams &params) -> sptr<RigidBody>
 {
-    return std::make_shared<BulletRigidBody>(node, parameters);
+    return std::make_shared<BulletRigidBody>(node, params);
 }
 
 RigidBody::RigidBody(const Node &node):

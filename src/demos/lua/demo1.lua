@@ -73,8 +73,7 @@ function demo()
         layout:addAttribute(sl.VertexAttributeSemantics.Position)
         layout:addAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.fromFileAsync(dev, getAssetPath(meshPath), layout)
-            :done(function(mesh) renderer:setMesh(mesh) end)
+        sl.Mesh.fromFileAsync(dev, getAssetPath(meshPath), layout):done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
             node = node,
@@ -117,10 +116,11 @@ function demo()
     mainCameraNode:addScriptComponent(createHighlighter(assetCache, physics))
 
     local postProcessor = createPostProcessor(assetCache, mainCamera)
-    local postProcessorControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
-    postProcessorControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
-    postProcessorControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
-    mainCameraNode:addScriptComponent(postProcessorControlPanel.cmp)
+    local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCameraNode, postProcessor)
+    ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
+    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0),
+        sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
+    mainCameraNode:addScriptComponent(ppControlPanel.cmp)
 
     local skybox = createSkybox(scene, assetCache)
     local backdrop = createMesh("meshes/backdrop.obj", colorPassMaterial)

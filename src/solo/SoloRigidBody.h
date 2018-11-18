@@ -15,7 +15,7 @@ namespace solo
     class Collider;
 
     // class because lua binding doesn't like structs :(
-    class RigidBodyConstructionParameters
+    class RigidBodyParams
     {
     public:
         float mass = 0;
@@ -33,7 +33,7 @@ namespace solo
     class RigidBody: public ComponentBase<RigidBody>
     {
     public:
-        static auto create(const Node &node, const RigidBodyConstructionParameters &parameters) -> sptr<RigidBody>;
+        static auto create(const Node &node, const RigidBodyParams &params) -> sptr<RigidBody>;
 
         virtual void setCollider(sptr<Collider> collider) = 0;
 

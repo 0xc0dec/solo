@@ -59,7 +59,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         transform:setLocalPosition(localPos)
         transform:setLocalScale(localScale)
 
-        local params = sl.RigidBodyConstructionParameters()
+        local params = sl.RigidBodyParams()
         params.mass = 1 -- non-zero otherwise being kinematic doesn't trigger transform sync for the body
         params.friction = 0.5
         local body = node:addComponent("RigidBody", params)

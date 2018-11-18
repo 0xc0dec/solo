@@ -38,7 +38,7 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
     if (name == "Spectator")
         return node->addComponent<Spectator>();
     if (name == "RigidBody")
-        return node->addComponent<RigidBody>(arg.toValue<RigidBodyConstructionParameters>());
+        return node->addComponent<RigidBody>(arg.toValue<RigidBodyParams>());
 
     SL_DEBUG_PANIC(true, "Unknown built-in component ", name);
     return nullptr;

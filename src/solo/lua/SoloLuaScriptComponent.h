@@ -11,6 +11,7 @@
 
 namespace solo
 {
+    // TODO register in Lua
     class LuaScriptComponent final : public ComponentBase<LuaScriptComponent>
     {
     public:

@@ -53,5 +53,6 @@ void registerTransformApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(transform, Transform, invTransposedWorldViewMatrix);
     REG_METHOD(transform, Transform, transformPoint);
     REG_METHOD(transform, Transform, transformDirection);
+    REG_PTR_EQUALITY(transform, Transform);
     transform.endClass();
 }

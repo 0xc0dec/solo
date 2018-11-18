@@ -17,7 +17,7 @@ namespace solo
     class BulletRigidBody final : public RigidBody
     {
     public:
-        BulletRigidBody(const Node &node, const RigidBodyConstructionParameters &parameters);
+        BulletRigidBody(const Node &node, const RigidBodyParams &params);
         virtual ~BulletRigidBody();
 
         void update() override final;

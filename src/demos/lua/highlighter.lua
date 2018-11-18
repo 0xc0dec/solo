@@ -23,7 +23,7 @@ return function(assetCache, physics)
             local hitNode = self.tracer.hitNode
 
             if self.lastNode then
-                if not hitNode or hitNode:id() ~= self.lastNode:id() then
+                if not hitNode or hitNode ~= self.lastNode then
                     self.lastRenderer:setMaterial(0, self.lastMaterial)
                     self.lastRenderer = nil
                     self.lastNode = nil
