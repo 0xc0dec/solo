@@ -143,7 +143,7 @@ static void registerRadians(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Radians, toRawDegrees);
     REG_METHOD(binding, Radians, toRawRadians);
     REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](const Degrees &d) { return Radians(d); }, "fromDegrees");
-    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](float rawDegree) { return Radians(Degrees(rawDegree)); }, "fromRawDegrees");
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](float d) { return Radians(Degrees(d)); }, "fromRawDegrees");
     REG_META_METHOD(binding, "__unm", [](const Radians &r) { return -r; });
     REG_META_METHOD(binding, "__add", [](const Radians &r1, const Radians &r2) { return r1 + r2; });
     REG_META_METHOD(binding, "__sub", [](const Radians &r1, const Radians &r2) { return r1 - r2; });
@@ -158,6 +158,8 @@ static void registerDegrees(CppBindModule<LuaBinding> &module)
     REG_CTOR(binding, float);
     REG_METHOD(binding, Degrees, toRawDegrees);
     REG_METHOD(binding, Degrees, toRawRadians);
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](const Radians &d) { return Degrees(d); }, "fromRadians");
+    REG_FREE_FUNC_AS_STATIC_FUNC_RENAMED(binding, [](float r) { return Degrees(Radians(r)); }, "fromRawRadians");
     REG_META_METHOD(binding, "__unm", [](const Degrees &d) { return -d; });
     REG_META_METHOD(binding, "__add", [](const Degrees &d1, const Degrees &d2) { return d1 + d2; });
     REG_META_METHOD(binding, "__sub", [](const Degrees &d1, const Degrees &d2) { return d1 - d2; });
