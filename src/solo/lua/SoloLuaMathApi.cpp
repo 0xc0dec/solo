@@ -170,40 +170,40 @@ static void registerDegrees(CppBindModule<LuaBinding> &module)
 
 static void registerMatrix(CppBindModule<LuaBinding> &module)
 {
-    auto bindinb = BEGIN_CLASS(module, Matrix);
-    REG_CTOR(bindinb);
-    REG_STATIC_METHOD(bindinb, Matrix, identity);
-    REG_METHOD(bindinb, Matrix, isIdentity);
-    REG_METHOD(bindinb, Matrix, getDeterminant);
-    REG_METHOD(bindinb, Matrix, invert);
-    REG_METHOD(bindinb, Matrix, transpose);
-    REG_STATIC_METHOD(bindinb, Matrix, createLookAt);
-    REG_STATIC_METHOD(bindinb, Matrix, createPerspective);
-    REG_STATIC_METHOD(bindinb, Matrix, createOrthographic);
-    REG_STATIC_METHOD(bindinb, Matrix, createScale);
-    REG_STATIC_METHOD(bindinb, Matrix, createRotationFromQuaternion);
-    REG_STATIC_METHOD(bindinb, Matrix, createRotationFromAxisAngle);
-    REG_STATIC_METHOD(bindinb, Matrix, createTranslation);
-    REG_METHOD(bindinb, Matrix, scale);
-    REG_METHOD(bindinb, Matrix, translation);
-    REG_METHOD(bindinb, Matrix, rotation);
-    REG_METHOD(bindinb, Matrix, upVector);
-    REG_METHOD(bindinb, Matrix, downVector);
-    REG_METHOD(bindinb, Matrix, leftVector);
-    REG_METHOD(bindinb, Matrix, rightVector);
-    REG_METHOD(bindinb, Matrix, forwardVector);
-    REG_METHOD(bindinb, Matrix, backVector);
-    REG_METHOD(bindinb, Matrix, rotateByQuaternion);
-    REG_METHOD(bindinb, Matrix, rotateByAxisAngle);
-    REG_METHOD(bindinb, Matrix, scaleByScalar);
-    REG_METHOD(bindinb, Matrix, scaleByVector);
-    REG_METHOD(bindinb, Matrix, translate);
-    REG_METHOD(bindinb, Matrix, transformPoint);
-    REG_METHOD(bindinb, Matrix, transformDirection);
-    REG_METHOD(bindinb, Matrix, transformRay);
-    REG_METHOD(bindinb, Matrix, decompose);
-    REG_META_METHOD(bindinb, "__mul", [](const Matrix &m1, const Matrix &m2) { return m1 * m2; });
-    bindinb.endClass();
+    auto binding = BEGIN_CLASS(module, Matrix);
+    REG_CTOR(binding);
+    REG_STATIC_METHOD(binding, Matrix, identity);
+    REG_METHOD(binding, Matrix, isIdentity);
+    REG_METHOD(binding, Matrix, getDeterminant);
+    REG_METHOD(binding, Matrix, invert);
+    REG_METHOD(binding, Matrix, transpose);
+    REG_STATIC_METHOD(binding, Matrix, createLookAt);
+    REG_STATIC_METHOD(binding, Matrix, createPerspective);
+    REG_STATIC_METHOD(binding, Matrix, createOrthographic);
+    REG_STATIC_METHOD(binding, Matrix, createScale);
+    REG_STATIC_METHOD(binding, Matrix, createRotationFromQuaternion);
+    REG_STATIC_METHOD(binding, Matrix, createRotationFromAxisAngle);
+    REG_STATIC_METHOD(binding, Matrix, createTranslation);
+    REG_METHOD(binding, Matrix, scale);
+    REG_METHOD(binding, Matrix, translation);
+    REG_METHOD(binding, Matrix, rotation);
+    REG_METHOD(binding, Matrix, upVector);
+    REG_METHOD(binding, Matrix, downVector);
+    REG_METHOD(binding, Matrix, leftVector);
+    REG_METHOD(binding, Matrix, rightVector);
+    REG_METHOD(binding, Matrix, forwardVector);
+    REG_METHOD(binding, Matrix, backVector);
+    REG_METHOD(binding, Matrix, rotateByQuaternion);
+    REG_METHOD(binding, Matrix, rotateByAxisAngle);
+    REG_METHOD(binding, Matrix, scaleByScalar);
+    REG_METHOD(binding, Matrix, scaleByVector);
+    REG_METHOD(binding, Matrix, translate);
+    REG_METHOD(binding, Matrix, transformPoint);
+    REG_METHOD(binding, Matrix, transformDirection);
+    REG_METHOD(binding, Matrix, transformRay);
+    REG_METHOD(binding, Matrix, decompose);
+    REG_META_METHOD(binding, "__mul", [](const Matrix &m1, const Matrix &m2) { return m1 * m2; });
+    binding.endClass();
 }
 
 static void registerRay(CppBindModule<LuaBinding> &module)
