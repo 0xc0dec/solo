@@ -82,7 +82,8 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         shape_ = std::dynamic_pointer_cast<BulletCollider>(collider_)->shape();
 
         btVector3 inertia;
-        shape_->calculateLocalInertia(mass_, inertia);
+        if (!shape_->isNonMoving())
+            shape_->calculateLocalInertia(mass_, inertia);
         syncScale();
 
         body_->setCollisionShape(shape_);
@@ -100,16 +101,23 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
 
 bool BulletRigidBody::isKinematic()
 {
-    return (body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT) == btCollisionObject::CF_KINEMATIC_OBJECT;
+    return (body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT)
+        == btCollisionObject::CF_KINEMATIC_OBJECT;
 }
 
 void BulletRigidBody::setKinematic(bool kinematic)
 {
     auto flags = body_->getCollisionFlags();
     if (kinematic)
+    {
         flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
+        body_->setActivationState(DISABLE_DEACTIVATION);
+    }
     else
+    {
         flags &= ~btCollisionObject::CF_KINEMATIC_OBJECT;
+        body_->setActivationState(WANTS_DEACTIVATION); // TODO not sure the right flag
+    }
     body_->setCollisionFlags(flags);
 }
 

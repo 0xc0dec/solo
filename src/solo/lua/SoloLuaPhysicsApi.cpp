@@ -7,10 +7,11 @@
 #include "SoloRigidBody.h"
 #include "SoloPhysics.h"
 #include "SoloBoxCollider.h"
+#include "SoloStaticMeshCollider.h"
 
 using namespace solo;
 
-static void registerRigidBodyConstructionParams(CppBindModule<LuaBinding> &module)
+static void registerRigidBodyParams(CppBindModule<LuaBinding> &module)
 {
     auto params = BEGIN_CLASS(module, RigidBodyParams);
     REG_CTOR(params);
@@ -56,18 +57,29 @@ static void registerPhysics(CppBindModule<LuaBinding> &module)
 
 static void registerColliders(CppBindModule<LuaBinding> &module)
 {
-    auto coll = BEGIN_CLASS(module, Collider);
-    coll.endClass();
+    {
+        auto binding = BEGIN_CLASS(module, Collider);
+        binding.endClass();
+    }
 
-    auto binding = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
-    REG_STATIC_METHOD(binding, BoxCollider, create);
-    REG_PTR_EQUALITY(binding, BoxCollider);
-    binding.endClass();
+    {
+        auto binding = module.beginExtendClass<BoxCollider, Collider>("BoxCollider");
+        REG_STATIC_METHOD(binding, BoxCollider, create);
+        REG_PTR_EQUALITY(binding, BoxCollider);
+        binding.endClass();
+    }
+
+    {
+        auto binding = module.beginExtendClass<StaticMeshCollider, Collider>("StaticMeshCollider");
+        REG_STATIC_METHOD(binding, StaticMeshCollider, create);
+        REG_PTR_EQUALITY(binding, StaticMeshCollider);
+        binding.endClass();
+    }
 }
 
 void registerPhysicsApi(CppBindModule<LuaBinding> &module)
 {
-    registerRigidBodyConstructionParams(module);
+    registerRigidBodyParams(module);
     registerRigidBody(module);
     registerRayTestResult(module);
     registerPhysics(module);

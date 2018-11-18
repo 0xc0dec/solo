@@ -60,7 +60,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         transform:setLocalScale(localScale)
 
         local params = sl.RigidBodyParams()
-        params.mass = 1 -- non-zero otherwise being kinematic doesn't trigger transform sync for the body
+        params.mass = 0
         params.friction = 0.5
         local body = node:addComponent("RigidBody", params)
         body:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))

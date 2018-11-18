@@ -127,6 +127,13 @@ function demo()
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
+    local params = sl.RigidBodyParams()
+    params.mass = 0
+    params.friction = 0.5
+    local body = backdrop.node:addComponent("RigidBody", params)
+    body:setCollider(sl.StaticMeshCollider.create(sl.device))
+    body:setKinematic(true)
+
     local teapot = createMesh("meshes/teapot.obj", colorPassMaterial)
     teapot.transform:setLocalPosition(vec3(3, 0, -3))
     local checkerBox = createCheckerBox(scene, assetCache)
