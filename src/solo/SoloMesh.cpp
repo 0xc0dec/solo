@@ -34,7 +34,6 @@ static auto loadMeshData(Device *device, const str &path, const VertexBufferLayo
     SL_DEBUG_PANIC(!scene, "Unable to parse file ", path);
 
     MeshData data;
-    vec<vec<u16>> parts;
     u16 indexBase = 0;
 
     // TODO resize vertices beforehand
