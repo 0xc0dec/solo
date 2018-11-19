@@ -2,7 +2,7 @@ This is a list of notes and TODOs to keep me in context.
 
 # TODO
 
-* Static mesh collider (demo1 currently has no collision on backdrop mesh)
+* Fix colliders not corresponding spawned cubes
 * Deferred demo - add shadows
 * Use GENERAL image layout in Vulkan for now, for simplicity
 * findScriptComponent to operate on component names
