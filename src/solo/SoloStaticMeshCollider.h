@@ -15,7 +15,7 @@ namespace solo
     class StaticMeshCollider: public Collider
     {
     public:
-        static auto create(Device *device) -> sptr<StaticMeshCollider>;
+        static auto fromFile(Device *device, const str &path) -> sptr<StaticMeshCollider>;
         static auto fromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<StaticMeshCollider>>;
 
     protected:

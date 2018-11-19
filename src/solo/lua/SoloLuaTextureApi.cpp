@@ -30,24 +30,38 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
 
 static void registerTexture2D(CppBindModule<LuaBinding> &module)
 {
-    auto binding = BEGIN_CLASS_EXTEND(module, Texture2D, Texture);
-    REG_STATIC_METHOD(binding, Texture2D, fromFile);
-    REG_STATIC_METHOD(binding, Texture2D, fromFileAsync);
-    REG_STATIC_METHOD(binding, Texture2D, empty);
-    REG_METHOD(binding, Texture2D, dimensions);
-    REG_PTR_EQUALITY(binding, Texture2D);
-    binding.endClass();
+    {
+        auto binding = BEGIN_CLASS_EXTEND(module, Texture2D, Texture);
+        REG_STATIC_METHOD(binding, Texture2D, fromFile);
+        REG_STATIC_METHOD(binding, Texture2D, fromFileAsync);
+        REG_STATIC_METHOD(binding, Texture2D, empty);
+        REG_METHOD(binding, Texture2D, dimensions);
+        REG_PTR_EQUALITY(binding, Texture2D);
+        binding.endClass();
+    }
+    {
+        auto binding = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2D>, "Texture2DAsyncHandle");
+        REG_METHOD(binding, AsyncHandle<Texture2D>, done);
+        binding.endClass();
+    }
 }
 
 static void registerCubeTexture(CppBindModule<LuaBinding> &module)
 {
-    auto binding = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
-    REG_STATIC_METHOD(binding, CubeTexture, fromFaceFiles);
-    REG_STATIC_METHOD(binding, CubeTexture, fromFaceFilesAsync);
-    REG_METHOD(binding, CubeTexture, depthWrap);
-    REG_METHOD(binding, CubeTexture, setDepthWrap);
-    REG_PTR_EQUALITY(binding, CubeTexture);
-    binding.endClass();
+    {
+        auto binding = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
+        REG_STATIC_METHOD(binding, CubeTexture, fromFaceFiles);
+        REG_STATIC_METHOD(binding, CubeTexture, fromFaceFilesAsync);
+        REG_METHOD(binding, CubeTexture, depthWrap);
+        REG_METHOD(binding, CubeTexture, setDepthWrap);
+        REG_PTR_EQUALITY(binding, CubeTexture);
+        binding.endClass();
+    }
+    {
+        auto binding = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");
+        REG_METHOD(binding, AsyncHandle<CubeTexture>, done);
+        binding.endClass();
+    }
 }
 
 void registerTextureApi(CppBindModule<LuaBinding> &module)

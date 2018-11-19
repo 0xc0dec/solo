@@ -73,7 +73,8 @@ function demo()
         layout:addAttribute(sl.VertexAttributeSemantics.Position)
         layout:addAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.fromFileAsync(dev, getAssetPath(meshPath), layout):done(function(mesh) renderer:setMesh(mesh) end)
+        sl.Mesh.fromFileAsync(dev, getAssetPath(meshPath), layout)
+            :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
             node = node,
@@ -89,6 +90,18 @@ function demo()
         transform:setLocalPosition(pos)
         node:addScriptComponent(createLookAt(target))
         attachAxes(node)
+    end
+
+    function createBackdrop(material)
+        local backdrop = createMesh("meshes/backdrop.obj", material)
+        local params = sl.RigidBodyParams()
+        params.mass = 0
+        params.friction = 0.5
+        local body = backdrop.node:addComponent("RigidBody", params)
+        body:setKinematic(true)
+        sl.StaticMeshCollider.fromFileAsync(dev, getAssetPath("meshes/backdrop.obj"))
+            :done(function(col) body:setCollider(col) end)
+        return backdrop
     end
 
     ---
@@ -123,16 +136,9 @@ function demo()
     mainCameraNode:addScriptComponent(ppControlPanel.cmp)
 
     local skybox = createSkybox(scene, assetCache)
-    local backdrop = createMesh("meshes/backdrop.obj", colorPassMaterial)
+    local backdrop = createBackdrop(colorPassMaterial)
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
-
-    local params = sl.RigidBodyParams()
-    params.mass = 0
-    params.friction = 0.5
-    local body = backdrop.node:addComponent("RigidBody", params)
-    body:setCollider(sl.StaticMeshCollider.create(sl.device))
-    body:setKinematic(true)
 
     local teapot = createMesh("meshes/teapot.obj", colorPassMaterial)
     teapot.transform:setLocalPosition(vec3(3, 0, -3))

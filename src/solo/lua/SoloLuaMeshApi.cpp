@@ -51,21 +51,28 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 
 static void registerMesh(CppBindModule<LuaBinding> &module)
 {
-    auto binding = BEGIN_CLASS(module, Mesh);
-    REG_STATIC_METHOD(binding, Mesh, empty);
-    REG_STATIC_METHOD(binding, Mesh, fromFile);
-    REG_STATIC_METHOD(binding, Mesh, fromFileAsync);
-    REG_FREE_FUNC_AS_METHOD(binding, addVertexBuffer);
-    REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
-    REG_FREE_FUNC_AS_METHOD(binding, updateDynamicVertexBuffer);
-    REG_METHOD(binding, Mesh, removeVertexBuffer);
-    REG_FREE_FUNC_AS_METHOD(binding, addPart);
-    REG_METHOD(binding, Mesh, removePart);
-    REG_METHOD(binding, Mesh, partCount);
-    REG_METHOD(binding, Mesh, primitiveType);
-    REG_METHOD(binding, Mesh, setPrimitiveType);
-    REG_PTR_EQUALITY(binding, Mesh);
-    binding.endClass();
+    {
+        auto binding = BEGIN_CLASS(module, Mesh);
+        REG_STATIC_METHOD(binding, Mesh, empty);
+        REG_STATIC_METHOD(binding, Mesh, fromFile);
+        REG_STATIC_METHOD(binding, Mesh, fromFileAsync);
+        REG_FREE_FUNC_AS_METHOD(binding, addVertexBuffer);
+        REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
+        REG_FREE_FUNC_AS_METHOD(binding, updateDynamicVertexBuffer);
+        REG_METHOD(binding, Mesh, removeVertexBuffer);
+        REG_FREE_FUNC_AS_METHOD(binding, addPart);
+        REG_METHOD(binding, Mesh, removePart);
+        REG_METHOD(binding, Mesh, partCount);
+        REG_METHOD(binding, Mesh, primitiveType);
+        REG_METHOD(binding, Mesh, setPrimitiveType);
+        REG_PTR_EQUALITY(binding, Mesh);
+        binding.endClass();
+    }
+    {
+        auto binding = BEGIN_CLASS_RENAMED(module, AsyncHandle<Mesh>, "MeshAsyncHandle");
+        REG_METHOD(binding, AsyncHandle<Mesh>, done);
+        binding.endClass();
+    }
 }
 
 void registerMeshApi(CppBindModule<LuaBinding> &module)

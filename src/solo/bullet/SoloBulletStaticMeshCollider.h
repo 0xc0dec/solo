@@ -11,28 +11,19 @@
 
 namespace solo
 {
-    class Device;
+    class MeshData;
 
     class BulletStaticMeshCollider final: public BulletCollider, public StaticMeshCollider
     {
     public:
-        static auto fromFileAsync(Device *device, const str &path) -> sptr<BulletStaticMeshCollider>;
+        BulletStaticMeshCollider(sptr<MeshData> data);
 
         auto shape() -> btCollisionShape* override final { return shape_.get(); }
 
     private:
-        struct MeshData
-        {
-            vec<float> vertexData;
-            u32 vertexCount = 0;
-            vec<vec<u16>> indexData;
-        };
-
-        uptr<MeshData> data_;
+        sptr<MeshData> data_;
         uptr<btIndexedMesh> mesh_;
         uptr<btTriangleIndexVertexArray> arr_;
         uptr<btBvhTriangleMeshShape> shape_;
-
-        auto loadMeshData(Device *device, const str &path) -> uptr<MeshData>;
     };
 }

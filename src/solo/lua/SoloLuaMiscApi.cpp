@@ -9,10 +9,7 @@
 #include "SoloMeshRenderer.h"
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
-#include "SoloMesh.h"
 #include "SoloSpectator.h"
-#include "SoloAsyncHandle.h"
-#include "SoloTexture.h"
 
 using namespace solo;
 
@@ -87,21 +84,6 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-static void registerAsyncHandles(CppBindModule<LuaBinding> &module)
-{
-    auto h1 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Texture2D>, "Texture2DAsyncHandle");
-    REG_METHOD(h1, AsyncHandle<Texture2D>, done);
-    h1.endClass();
-
-    auto h2 = BEGIN_CLASS_RENAMED(module, AsyncHandle<CubeTexture>, "CubeTextureAsyncHandle");
-    REG_METHOD(h2, AsyncHandle<CubeTexture>, done);
-    h2.endClass();
-
-    auto h3 = BEGIN_CLASS_RENAMED(module, AsyncHandle<Mesh>, "MeshAsyncHandle");
-    REG_METHOD(h3, AsyncHandle<Mesh>, done);
-    h3.endClass();
-}
-
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerFileSystem(module);
@@ -110,5 +92,4 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerScene(module);
     registerFrameBuffer(module);
     registerSpectator(module);
-    registerAsyncHandles(module);
 }
