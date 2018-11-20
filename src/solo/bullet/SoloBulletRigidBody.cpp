@@ -17,27 +17,27 @@ using namespace solo;
 class MotionState final: public btMotionState
 {
 public:
-    explicit MotionState(Transform *transform): transform(transform)
+    explicit MotionState(Transform *transform): transform_(transform)
     {
     }
 
     void getWorldTransform(btTransform &worldTransform) const override final
     {
-        const auto worldPos = transform->worldPosition();
-        const auto rotation = transform->worldRotation();
+        const auto worldPos = transform_->worldPosition();
+        const auto rotation = transform_->worldRotation();
         worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
     void setWorldTransform(const btTransform &worldTransform) override final
     {
-        SL_DEBUG_PANIC(transform->parent(), "Rigid body transform must not have a parent");
-        transform->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
-        transform->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
+        SL_DEBUG_PANIC(transform_->parent(), "Rigid body transform must not have a parent");
+        transform_->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
+        transform_->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }
 
 private:
-    Transform *transform;
+    Transform *transform_;
 };
 
 BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyParams &params):

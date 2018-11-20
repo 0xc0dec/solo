@@ -2,6 +2,7 @@ This is a list of notes and TODOs to keep me in context.
 
 # TODO
 
+* Add center of mass offset
 * Fix colliders not corresponding spawned cubes
 * Deferred demo - add shadows
 * Use GENERAL image layout in Vulkan for now, for simplicity
