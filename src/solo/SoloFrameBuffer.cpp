@@ -25,7 +25,7 @@ auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 

@@ -25,7 +25,7 @@ auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 

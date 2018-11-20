@@ -87,7 +87,7 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 
@@ -105,7 +105,7 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 
@@ -171,7 +171,7 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");
-            break;
+            return nullptr;
     }
 }
 
