@@ -3,13 +3,8 @@
 -- MIT license
 -- 
 
-return function(assetCache)
+return function(assetCache, material)
     local effect = assetCache.getEffect("color")
-
-    local material = sl.Material.fromEffect(sl.device, effect)
-    material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
-    material:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
 
     return sl.createComponent("Spawner", {
         init = function(self)
@@ -35,7 +30,6 @@ return function(assetCache)
             renderer:setMaterial(0, material)
 
             local size = 0.1 + math.random()
-    
             local transform = node:findComponent("Transform")
             transform:setLocalScale(vec3(size, size, size))
             transform:setLocalPosition(initialPos)

@@ -125,7 +125,7 @@ function demo()
     mainCameraNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
     mainCameraNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
     mainCameraNode:addScriptComponent(createTracer(dev, scene, physics, assetCache))
-    mainCameraNode:addScriptComponent(createSpawner(assetCache))
+    mainCameraNode:addScriptComponent(createSpawner(assetCache, colorPassMaterial))
     mainCameraNode:addScriptComponent(createHighlighter(assetCache, physics))
 
     local postProcessor = createPostProcessor(assetCache, mainCamera)
