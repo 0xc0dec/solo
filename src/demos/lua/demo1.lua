@@ -94,14 +94,33 @@ function demo()
 
     function createBackdrop(material)
         local backdrop = createMesh("meshes/backdrop.obj", material)
+        
         local params = sl.RigidBodyParams()
         params.mass = 0
         params.friction = 0.5
         local body = backdrop.node:addComponent("RigidBody", params)
         body:setKinematic(true)
+        
         sl.StaticMeshCollider.fromFileAsync(dev, getAssetPath("meshes/backdrop.obj"))
             :done(function(col) body:setCollider(col) end)
+
         return backdrop
+    end
+
+    function createTeapot(mat)
+        local teapot = createMesh("meshes/teapot.obj", mat)
+        teapot.transform:setLocalPosition(vec3(3, 0, -3))
+
+        local params = sl.RigidBodyParams()
+        params.mass = 0
+        params.friction = 0.5
+        local body = teapot.node:addComponent("RigidBody", params)
+        body:setKinematic(true)
+
+        sl.StaticMeshCollider.fromFileAsync(dev, getAssetPath("meshes/teapot.obj"))
+            :done(function(col) body:setCollider(col) end)
+
+        return teapot
     end
 
     ---
@@ -140,8 +159,8 @@ function demo()
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
-    local teapot = createMesh("meshes/teapot.obj", colorPassMaterial)
-    teapot.transform:setLocalPosition(vec3(3, 0, -3))
+    local teapot = createTeapot(colorPassMaterial)
+
     local checkerBox = createCheckerBox(scene, assetCache)
     checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
 
