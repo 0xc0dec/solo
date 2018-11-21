@@ -46,7 +46,7 @@ void FontMesh::rebuildMesh()
     uvs_.clear();
     indexes_.clear();
 
-    u16 lastIndex = 0;
+    u32 lastIndex = 0;
     float offsetX = 0, offsetY = 0;
     for (auto c : text_)
     {

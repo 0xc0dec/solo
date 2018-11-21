@@ -58,7 +58,7 @@ void VulkanMesh::removeVertexBuffer(u32 index)
 
 auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount) -> u32
 {
-    const auto size = sizeof(u16) * indexElementCount;
+    const auto size = sizeof(u32) * indexElementCount; // TODO 16-bit index support?
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers_.push_back(std::move(buf));
     indexElementCounts_.push_back(indexElementCount);

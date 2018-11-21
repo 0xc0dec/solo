@@ -29,7 +29,7 @@ namespace solo
         sptr<Mesh> mesh_;
         vec<Vector3> vertices_;
         vec<Vector2> uvs_;
-        vec<u16> indexes_;
+        vec<u32> indexes_;
         str text_;
 
         explicit FontMesh(Device *device, sptr<Font> font);

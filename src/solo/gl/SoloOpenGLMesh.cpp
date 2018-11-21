@@ -196,7 +196,7 @@ auto OpenGLMesh::addPart(const void *data, u32 elementCount) -> u32
     SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * elementCount, data, GL_STATIC_DRAW); // 2 because we currently support only UNSIGNED_SHORT indexes
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * elementCount, data, GL_STATIC_DRAW); // TODO support for 16-bit indices?
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     indexBuffers_.push_back(handle);
@@ -238,7 +238,7 @@ void OpenGLMesh::drawPart(u32 part, OpenGLEffect *effect)
 
     glBindVertexArray(va);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
-    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), GL_UNSIGNED_INT, nullptr); // TODO support for 16-bit indices?
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

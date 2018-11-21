@@ -25,7 +25,7 @@ auto MeshData::fromFile(Device *device, const str &path, const VertexBufferLayou
     SL_DEBUG_PANIC(!scene, "Unable to parse file ", path);
 
     auto data = std::make_shared<MeshData>();
-    u16 indexBase = 0;
+    u32 indexBase = 0;
 
     // TODO resize vertices beforehand
     for (u32 i = 0; i < scene->mNumMeshes; i++)
@@ -77,7 +77,7 @@ auto MeshData::fromFile(Device *device, const str &path, const VertexBufferLayou
             }
 		}
 
-        vec<u16> part;
+        vec<u32> part;
         part.resize(mesh->mNumFaces * 3);
 		for (u32 j = 0; j < mesh->mNumFaces; j++)
 		{

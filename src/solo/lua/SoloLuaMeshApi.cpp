@@ -23,7 +23,7 @@ static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, c
     mesh->updateDynamicVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
-static auto addPart(Mesh *mesh, const vec<uint16_t> &indexData, u32 indexElementCount) -> u32
+static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32 // TODO 16-bit index support?
 {
     return mesh->addPart(indexData.data(), indexElementCount);
 }

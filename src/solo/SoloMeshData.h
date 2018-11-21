@@ -21,11 +21,11 @@ namespace solo
 
         auto vertexData() const -> const vec<float>& { return vertexData_; }
         auto vertexCount() const -> u32 { return vertexCount_; }
-        auto indexData() const -> const vec<vec<u16>>& { return indexData_; }
+        auto indexData() const -> const vec<vec<u32>>& { return indexData_; }
 
     private:
         vec<float> vertexData_;
         u32 vertexCount_ = 0;
-        vec<vec<u16>> indexData_;
+        vec<vec<u32>> indexData_;
     };
 }

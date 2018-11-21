@@ -129,7 +129,7 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
         for (u32 part = 0; part < vkMesh->partCount(); part++)
         {
             const auto indexBuffer = vkMesh->partBuffer(part);
-            currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+            currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
             currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
         }
     }
@@ -142,7 +142,7 @@ void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
     prepareAndBindMesh(material, transform, mesh);
     const auto indexBuffer = vkMesh->partBuffer(part);
-    currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+    currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
     currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
 }
 
