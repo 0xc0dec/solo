@@ -178,15 +178,11 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
         const auto fb = static_cast<OpenGLFrameBuffer*>(renderTarget)->handle();
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
-        
-    const auto viewport = camera->viewport();
-    const auto hasClearColor = camera->hasColorClearing();
-    const auto clearColor = camera->clearColor();
 
-    setViewport(viewport);
+    setViewport(camera->viewport());
     setDepthWrite(true);
     setDepthTest(true);
-    clear(hasClearColor, clearColor);
+    clear(camera->hasColorClearing(), camera->clearColor());
 
     currentCamera_ = camera;
 }
@@ -200,53 +196,16 @@ void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
-    const auto faceCull = material->faceCull();
-    const auto polygonMode = material->polygonMode();
-    const auto depthTest = material->hasDepthTest();
-    const auto depthWrite = material->hasDepthWrite();
-    const auto depthFunc = material->depthFunction();
-    const auto blend = material->hasBlend();
-    const auto srcBlendFactor = material->srcBlendFactor();
-    const auto dstBlendFactor = material->dstBlendFactor();
+    applyMaterial(material);
     const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
-    const auto program = effect->handle();
-
-    glUseProgram(program);
-    setFaceCull(faceCull);
-    setPolygonMode(polygonMode);
-    setDepthTest(depthTest);
-    setDepthWrite(depthWrite);
-    setDepthFunction(depthFunc);
-    setBlend(blend);
-    setBlendFactor(srcBlendFactor, dstBlendFactor);
-
     static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
     static_cast<OpenGLMesh*>(mesh)->draw(effect);
 }
 
 void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
-    // TODO Remove copy-paste
-    const auto faceCull = material->faceCull();
-    const auto polygonMode = material->polygonMode();
-    const auto depthTest = material->hasDepthTest();
-    const auto depthWrite = material->hasDepthWrite();
-    const auto depthFunc = material->depthFunction();
-    const auto blend = material->hasBlend();
-    const auto srcBlendFactor = material->srcBlendFactor();
-    const auto dstBlendFactor = material->dstBlendFactor();
+    applyMaterial(material);
     const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
-    const auto program = effect->handle();
-
-    glUseProgram(program);
-    setFaceCull(faceCull);
-    setPolygonMode(polygonMode);
-    setDepthTest(depthTest);
-    setDepthWrite(depthWrite);
-    setDepthFunction(depthFunc);
-    setBlend(blend);
-    setBlendFactor(srcBlendFactor, dstBlendFactor);
-
     static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
     static_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
 }
@@ -258,6 +217,19 @@ void OpenGLRenderer::beginFrame()
 
 void OpenGLRenderer::endFrame()
 {
+}
+
+void OpenGLRenderer::applyMaterial(Material *material)
+{
+    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
+    glUseProgram(static_cast<const GLuint>(effect->handle()));
+    setFaceCull(material->faceCull());
+    setPolygonMode(material->polygonMode());
+    setDepthTest(material->hasDepthTest());
+    setDepthWrite(material->hasDepthWrite());
+    setDepthFunction(material->depthFunction());
+    setBlend(material->hasBlend());
+    setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
 }
 
 #endif

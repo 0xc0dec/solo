@@ -32,6 +32,8 @@ namespace solo
 
     private:
         Camera *currentCamera_ = nullptr;
+
+        void applyMaterial(Material *material);
     };
 }
 
