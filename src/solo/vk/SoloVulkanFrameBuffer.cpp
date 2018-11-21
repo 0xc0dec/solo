@@ -23,16 +23,16 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     vec<VkImageView> views;
     VulkanRenderPassConfig config;
 
-    for (const auto &tex: attachments)
+    for (const auto &attachment: attachments)
     {
-        const auto vkTexture = std::static_pointer_cast<VulkanTexture2D>(tex);
-        if (tex->format() == TextureFormat::Depth24)
-            result->depthAttachment_ = vkTexture;
+        const auto texture = std::static_pointer_cast<VulkanTexture2D>(attachment);
+        if (attachment->format() == TextureFormat::Depth24)
+            result->depthAttachment_ = texture;
         else
         {
-            result->colorAttachments_.push_back(vkTexture);
-            config.withColorAttachment(vkTexture->image().format(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
-            views.push_back(vkTexture->image().view());
+            result->colorAttachments_.push_back(texture);
+            config.addColorAttachment(texture->image().format(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
+            views.push_back(texture->image().view());
         }
     }
 
@@ -45,7 +45,7 @@ auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attac
     }
 
     views.push_back(result->depthAttachment_->image().view());
-    config.withDepthAttachment(result->depthAttachment_->image().format());
+    config.setDepthAttachment(result->depthAttachment_->image().format());
 
     result->renderPass_ = VulkanRenderPass(renderer->device(), config);
     result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions_.x(), result->dimensions_.y());

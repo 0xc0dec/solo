@@ -92,11 +92,11 @@ VulkanRenderPassConfig::VulkanRenderPassConfig():
 {
 }
 
-auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout)
+auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout finalLayout)
     -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
-    desc.format = colorFormat;
+    desc.format = format;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
     desc.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -115,10 +115,10 @@ auto VulkanRenderPassConfig::withColorAttachment(VkFormat colorFormat, VkImageLa
     return *this;
 }
 
-auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat) -> VulkanRenderPassConfig&
+auto VulkanRenderPassConfig::setDepthAttachment(VkFormat format) -> VulkanRenderPassConfig&
 {
     VkAttachmentDescription desc{};
-    desc.format = depthFormat;
+    desc.format = format;
     desc.flags = 0;
     desc.samples = VK_SAMPLE_COUNT_1_BIT;
     desc.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -126,7 +126,7 @@ auto VulkanRenderPassConfig::withDepthAttachment(VkFormat depthFormat) -> Vulkan
     desc.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
     desc.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    desc.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    desc.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL;
     attachments_.push_back(desc);
 
     depthAttachmentRef_.attachment = attachments_.size() - 1;

@@ -18,8 +18,8 @@ namespace solo
     public:
         VulkanRenderPassConfig();
 
-        auto withColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout) -> VulkanRenderPassConfig&;
-        auto withDepthAttachment(VkFormat depthFormat) -> VulkanRenderPassConfig&;
+        auto addColorAttachment(VkFormat colorFormat, VkImageLayout finalLayout) -> VulkanRenderPassConfig&;
+        auto setDepthAttachment(VkFormat depthFormat) -> VulkanRenderPassConfig&;
 
     private:
         friend class VulkanRenderPass;

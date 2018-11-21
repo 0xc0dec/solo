@@ -107,8 +107,8 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height,
     swapchain_ = createSwapchain(dev, width, height, vsync);
 
     renderPass_ = VulkanRenderPass(this->device_, VulkanRenderPassConfig()
-        .withColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-        .withDepthAttachment(depthFormat));
+        .addColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+        .setDepthAttachment(depthFormat));
     
     // TODO Replace with factory method?
     depthStencil_ = VulkanImage(dev, width, height, 1, 1, depthFormat,

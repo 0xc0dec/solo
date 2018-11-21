@@ -76,8 +76,8 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
     const auto isDepth = format == TextureFormat::Depth24;
-    const auto targetLayout = isDepth
-        ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
+    const auto layout = isDepth
+        ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
         : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     const auto usage = VK_IMAGE_USAGE_SAMPLED_BIT |
         (isDepth
@@ -98,7 +98,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
         "Image format/features not supported"
     );
 
-    auto image = VulkanImage(dev, width, height, 1, 1, fmt, targetLayout, 0, usage, VK_IMAGE_VIEW_TYPE_2D, aspect);
+    auto image = VulkanImage(dev, width, height, 1, 1, fmt, layout, 0, usage, VK_IMAGE_VIEW_TYPE_2D, aspect);
 
     VkImageSubresourceRange range{};
     range.aspectMask = image.aspectMask_;
@@ -109,7 +109,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
     const auto barrier = vk::makeImagePipelineBarrier(
         image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
-        targetLayout,
+        layout,
         range
     );
 
@@ -130,7 +130,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
     const auto format = toVulkanFormat(data->textureFormat());
-    const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
         VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -155,21 +155,21 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
         usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
     }
 
-    auto image = VulkanImage(dev, width, height, mipLevels, 1, format, targetLayout, 0, usage,
+    auto image = VulkanImage(dev, width, height, mipLevels, 1, format, layout, 0, usage,
         VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT);
 
-    VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = image.aspectMask_;
-    subresourceRange.baseArrayLayer = 0;
-    subresourceRange.baseMipLevel = 0;
-    subresourceRange.levelCount = 1;
-    subresourceRange.layerCount = 1;
+    VkImageSubresourceRange range{};
+    range.aspectMask = image.aspectMask_;
+    range.baseArrayLayer = 0;
+    range.baseMipLevel = 0;
+    range.levelCount = 1;
+    range.layerCount = 1;
 
     const auto barrier = vk::makeImagePipelineBarrier(
         image.image_,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        subresourceRange
+        range
     );
 
     const auto srcBuf = VulkanBuffer::staging(dev, data->size(), data->data());
@@ -193,7 +193,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
                 image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                subresourceRange
+                range
             )
         );
         initCmdBuf.endAndFlush();
@@ -259,7 +259,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
             );
         }
 
-        subresourceRange.levelCount = static_cast<u32>(mipLevels);
+        range.levelCount = static_cast<u32>(mipLevels);
 
         blitCmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TRANSFER_BIT,
@@ -267,8 +267,8 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
             vk::makeImagePipelineBarrier(
                 image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                targetLayout,
-                subresourceRange
+                layout,
+                range
             )
         );
 
@@ -282,8 +282,8 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
             vk::makeImagePipelineBarrier(
                 image.image_,
                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                targetLayout,
-                subresourceRange
+                layout,
+                range
             )
         );
         initCmdBuf.endAndFlush();
@@ -299,7 +299,7 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
     const auto width = data->dimension();
     const auto height = width;
     const auto format = toVulkanFormat(data->textureFormat());
-    const auto targetLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
     const auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
         VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -313,15 +313,15 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
             "Image format/features not supported"
         );
 
-    auto image = VulkanImage(dev, width, height, mipLevels, layers, format, targetLayout,
+    auto image = VulkanImage(dev, width, height, mipLevels, layers, format, layout,
         VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT, usage, VK_IMAGE_VIEW_TYPE_CUBE, VK_IMAGE_ASPECT_COLOR_BIT);
 
-    VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = image.aspectMask_;
-    subresourceRange.baseArrayLayer = 0;
-    subresourceRange.baseMipLevel = 0;
-    subresourceRange.levelCount = mipLevels;
-    subresourceRange.layerCount = layers;
+    VkImageSubresourceRange range{};
+    range.aspectMask = image.aspectMask_;
+    range.baseArrayLayer = 0;
+    range.baseMipLevel = 0;
+    range.levelCount = mipLevels;
+    range.layerCount = layers;
 
     auto cmdBuf = VulkanCmdBuffer(dev);
     cmdBuf.begin(true);
@@ -333,7 +333,7 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
             image.image_,
             VK_IMAGE_LAYOUT_UNDEFINED,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            subresourceRange
+            range
         )
     );
 
@@ -381,8 +381,8 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
         vk::makeImagePipelineBarrier(
             image.image_,
             VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-            targetLayout,
-            subresourceRange
+            layout,
+            range
         )
     );
 
@@ -400,13 +400,9 @@ VulkanImage::VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mip
     height_(height),
     aspectMask_(aspectMask)
 {
-    const auto device = dev.handle();
-    auto image = createImage(device, format, width, height, mipLevels, layers, createFlags, usageFlags);
-    auto memory = allocateImageMemory(device, dev.physicalMemoryFeatures(), image);
-    auto view = vk::createImageView(device, format, viewType, mipLevels, layers, image, aspectMask);
-    this->image_ = std::move(image);
-    this->memory_ = std::move(memory);
-    this->view_ = std::move(view);
+    image_ = createImage(dev.handle(), format, width, height, mipLevels, layers, createFlags, usageFlags);
+    memory_ = allocateImageMemory(dev.handle(), dev.physicalMemoryFeatures(), image_);
+    view_ = vk::createImageView(dev.handle(), format, viewType, mipLevels, layers, image_, aspectMask);
 }
 
 #endif
