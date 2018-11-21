@@ -45,7 +45,6 @@ namespace solo
         vec<GLuint> indexBuffers_;
         vec<u32> indexElementCounts_;
         vec<u32> vertexCounts_;
-        vec<u32> vertexSizes_; // TODO use layouts and don't store these
         u32 minVertexCount_ = 0;
             
         struct VertexArrayCacheEntry
