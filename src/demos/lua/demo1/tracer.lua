@@ -48,11 +48,13 @@ return function(dev, scene, physics, assetCache)
             self.scene = self.node:scene()
             self.camera = self.node:findComponent("Camera")
             self.target = createTargetMesh()
+            self.target.hide()
         end,
 
         update = function(self)
             if sl.device:isMouseButtonDown(sl.MouseButton.Right, false) then
                 self.hitNode = nil
+                self.target.hide()
                 return
             end
 
