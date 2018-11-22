@@ -22,6 +22,8 @@ namespace solo
         VulkanDevice(const VulkanDevice &other) = delete;
         ~VulkanDevice() = default;
 
+        bool isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const;
+
         auto operator=(const VulkanDevice &other) -> VulkanDevice& = delete;
         auto operator=(VulkanDevice &&other) -> VulkanDevice& = default;
 
@@ -52,6 +54,10 @@ namespace solo
         VkColorSpaceKHR colorSpace_ = VK_COLOR_SPACE_MAX_ENUM_KHR;
         VkQueue queue_ = nullptr;
         VulkanResource<VkDebugReportCallbackEXT> debugCallback_;
+        umap<VkFormat, VkFormatFeatureFlags> supportedFormats_;
+
+        void detectFormatSupport(VkFormat format);
+        auto selectDepthFormat() -> VkFormat;
     };
 }
 

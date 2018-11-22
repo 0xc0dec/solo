@@ -89,8 +89,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
 
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
     SL_DEBUG_PANIC(
-        !vk::isFormatSupported(
-            dev.physical(),
+        !dev.isFormatSupported(
             fmt,
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
                 (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)
@@ -137,7 +136,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
     SL_DEBUG_PANIC(
-        !vk::isFormatSupported(dev.physical(), format,
+        !dev.isFormatSupported(format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
             VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
@@ -148,7 +147,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     if (generateMipmaps)
     {
         SL_DEBUG_PANIC(
-            !vk::isFormatSupported(dev.physical(), format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
+            !dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
             "Image format/features not supported"
         );
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
@@ -306,7 +305,7 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
     SL_DEBUG_PANIC(
-        !vk::isFormatSupported(dev.physical(), format,
+        !dev.isFormatSupported(format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
             VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),

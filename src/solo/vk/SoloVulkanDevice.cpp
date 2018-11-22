@@ -59,27 +59,6 @@ static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -
     return {formats[0].format, formats[0].colorSpace};
 }
 
-static auto selectDepthFormat(VkPhysicalDevice device) -> VkFormat
-{
-    vec<VkFormat> depthFormats =
-    {
-        VK_FORMAT_D32_SFLOAT_S8_UINT,
-        VK_FORMAT_D32_SFLOAT,
-        VK_FORMAT_D24_UNORM_S8_UINT,
-        VK_FORMAT_D16_UNORM_S8_UINT,
-        VK_FORMAT_D16_UNORM
-    };
-
-    for (auto &format : depthFormats)
-    {
-        if (vk::isFormatSupported(device, format, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT))
-            return format;
-    }
-
-    SL_DEBUG_PANIC(true, "Unable to pick depth format");
-    return VK_FORMAT_UNDEFINED;
-}
-
 static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
 {
     u32 count;
@@ -157,16 +136,60 @@ VulkanDevice::VulkanDevice(VkInstance instance, VkSurfaceKHR surface):
     vkGetPhysicalDeviceFeatures(physical_, &physicalFeatures_);
     vkGetPhysicalDeviceMemoryProperties(physical_, &physicalMemoryFeatures_);
 
+    detectFormatSupport(VK_FORMAT_R8_UNORM);
+    detectFormatSupport(VK_FORMAT_R8G8B8A8_UNORM);
+    detectFormatSupport(VK_FORMAT_R16G16B16A16_SFLOAT);
+    detectFormatSupport(VK_FORMAT_D32_SFLOAT);
+    detectFormatSupport(VK_FORMAT_D32_SFLOAT_S8_UINT);
+    detectFormatSupport(VK_FORMAT_D24_UNORM_S8_UINT);
+    detectFormatSupport(VK_FORMAT_D16_UNORM_S8_UINT);
+    detectFormatSupport(VK_FORMAT_D16_UNORM);
+
     auto surfaceFormats = ::selectSurfaceFormat(physical_, surface);
     colorFormat_ = std::get<0>(surfaceFormats);
     colorSpace_ = std::get<1>(surfaceFormats);
-    depthFormat_ = selectDepthFormat(physical_);
+    depthFormat_ = selectDepthFormat();
 
     const auto queueIndex = selectQueueIndex(physical_, surface);
     handle_ = createDevice(physical_, queueIndex);
     vkGetDeviceQueue(handle_, queueIndex, 0, &queue_);
 
     commandPool_ = createCommandPool(handle_, queueIndex);
+}
+
+bool VulkanDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const
+{
+    return supportedFormats_.count(format) && (supportedFormats_.at(format) & features) == features;
+}
+
+void VulkanDevice::detectFormatSupport(VkFormat format)
+{
+    // TODO Check for linear tiling as well
+    VkFormatProperties formatProps;
+    vkGetPhysicalDeviceFormatProperties(physical_, format, &formatProps);
+    if (formatProps.optimalTilingFeatures)
+        supportedFormats_[format] = formatProps.optimalTilingFeatures;
+}
+
+auto VulkanDevice::selectDepthFormat() -> VkFormat
+{
+    vec<VkFormat> depthFormats =
+    {
+        VK_FORMAT_D32_SFLOAT_S8_UINT,
+        VK_FORMAT_D32_SFLOAT,
+        VK_FORMAT_D24_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM_S8_UINT,
+        VK_FORMAT_D16_UNORM
+    };
+
+    for (auto &format : depthFormats)
+    {
+        if (isFormatSupported(format, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT))
+            return format;
+    }
+
+    SL_DEBUG_PANIC(true, "Unable to pick depth format");
+    return VK_FORMAT_UNDEFINED;
 }
 
 #endif

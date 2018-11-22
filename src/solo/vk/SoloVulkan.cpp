@@ -172,34 +172,4 @@ auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, V
     return barrier;
 }
 
-static void detectFormatSupport(VkPhysicalDevice device, VkFormat format, umap<VkFormat, VkFormatFeatureFlags> &supportedFormats)
-{
-    // TODO Check for linear tiling as well
-    VkFormatProperties formatProps;
-    vkGetPhysicalDeviceFormatProperties(device, format, &formatProps);
-    if (formatProps.optimalTilingFeatures)
-        supportedFormats[format] = formatProps.optimalTilingFeatures;
-}
-
-bool vk::isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features)
-{
-    static umap<VkFormat, VkFormatFeatureFlags> supportedFormats;
-    static auto initialized = false;
-    
-    if (!initialized)
-    {
-        detectFormatSupport(device, VK_FORMAT_R8_UNORM, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_R8G8B8A8_UNORM, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_R16G16B16A16_SFLOAT, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_D32_SFLOAT, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_D32_SFLOAT_S8_UINT, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_D24_UNORM_S8_UINT, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_D16_UNORM_S8_UINT, supportedFormats);
-        detectFormatSupport(device, VK_FORMAT_D16_UNORM, supportedFormats);
-        initialized = true;
-    }
-
-    return supportedFormats.count(format) && (supportedFormats.at(format) & features) == features;
-}
-
 #endif

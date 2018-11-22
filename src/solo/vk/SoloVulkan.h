@@ -38,7 +38,6 @@ namespace solo
             VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>;
         auto makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout,
             VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier;
-        bool isFormatSupported(VkPhysicalDevice device, VkFormat format, VkFormatFeatureFlags features);
     }
 }
 
