@@ -3,7 +3,8 @@
 -- MIT license
 -- 
 
-package.path = "../../src/demos/lua/?.lua;" .. package.path
+sl.includeDir("../../src/demos/lua/common")
+sl.includeDir("../../src/demos/lua/demo2")
 
 require "common"
 

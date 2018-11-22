@@ -3,15 +3,15 @@
 -- MIT license
 -- 
 
-package.path = "../../src/demos/lua/?.lua;" .. package.path
+sl.includeDir("../../src/demos/lua/demo1")
+sl.includeDir("../../src/demos/lua/common")
 
 require "common"
 
 function demo()
-    local dev = sl.device
-    local fs = dev:fileSystem()
-    local physics = dev:physics()
-    local scene = sl.Scene.empty(dev)
+    local fs = sl.device:fileSystem()
+    local physics = sl.device:physics()
+    local scene = sl.Scene.empty(sl.device)
 
     local tags = require "tags"
     local createRotator = require "rotator"
@@ -42,7 +42,7 @@ function demo()
         local depthTex = sl.Texture2D.empty(sl.device, 2048, 2048, sl.TextureFormat.Depth24)
         depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
 
-        local fb = sl.FrameBuffer.create(dev, { depthTex })
+        local fb = sl.FrameBuffer.create(sl.device, { depthTex })
         cam:setRenderTarget(fb)
     
         local transform = node:findComponent("Transform")
@@ -73,7 +73,7 @@ function demo()
         layout:addAttribute(sl.VertexAttributeSemantics.Position)
         layout:addAttribute(sl.VertexAttributeSemantics.Normal)
         layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
-        sl.Mesh.fromFileAsync(dev, getAssetPath(meshPath), layout)
+        sl.Mesh.fromFileAsync(sl.device, getAssetPath(meshPath), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
@@ -101,7 +101,7 @@ function demo()
         local body = backdrop.node:addComponent("RigidBody", params)
         body:setKinematic(true)
         
-        sl.StaticMeshCollider.fromFileAsync(dev, getAssetPath("meshes/backdrop.obj"))
+        sl.StaticMeshCollider.fromFileAsync(sl.device, getAssetPath("meshes/backdrop.obj"))
             :done(function(col) body:setCollider(col) end)
 
         return backdrop
@@ -117,7 +117,7 @@ function demo()
         local body = teapot.node:addComponent("RigidBody", params)
         body:setKinematic(true)
 
-        sl.StaticMeshCollider.fromFileAsync(dev, getAssetPath("meshes/teapot.obj"))
+        sl.StaticMeshCollider.fromFileAsync(sl.device, getAssetPath("meshes/teapot.obj"))
             :done(function(col) body:setCollider(col) end)
 
         return teapot
@@ -128,7 +128,7 @@ function demo()
     local lightCam = createLightCamera()
 
     local colorPassEffect = assetCache.getEffect("shadowed")
-    local colorPassMaterial = sl.Material.fromEffect(dev, colorPassEffect)
+    local colorPassMaterial = sl.Material.fromEffect(sl.device, colorPassEffect)
     colorPassMaterial:setFaceCull(sl.FaceCull.None)
     colorPassMaterial:bindParameter("uniforms:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     colorPassMaterial:bindParameter("uniforms:model", sl.ParameterBinding.WorldMatrix)
@@ -136,14 +136,14 @@ function demo()
     colorPassMaterial:setTextureParameter("shadowMap", lightCam.depthTex)
 
     local shadowDepthEffect = assetCache.getEffect("shadow-depth")
-    local depthPassMaterial = sl.Material.fromEffect(dev, shadowDepthEffect)
+    local depthPassMaterial = sl.Material.fromEffect(sl.device, shadowDepthEffect)
     depthPassMaterial:setFaceCull(sl.FaceCull.None)
     depthPassMaterial:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
 
     local mainCamera, mainCameraNode = createMainCamera(scene)
     mainCameraNode:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
     mainCameraNode:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-    mainCameraNode:addScriptComponent(createTracer(dev, scene, physics, assetCache))
+    mainCameraNode:addScriptComponent(createTracer(sl.device, scene, physics, assetCache))
     mainCameraNode:addScriptComponent(createSpawner(assetCache, colorPassMaterial))
     mainCameraNode:addScriptComponent(createHighlighter(assetCache, physics))
 
@@ -176,9 +176,9 @@ function demo()
     ---
 
     function shouldStop()
-        return dev:isQuitRequested() or
-               dev:isWindowCloseRequested() or
-               dev:isKeyPressed(sl.KeyCode.Escape, true)
+        return sl.device:isQuitRequested() or
+               sl.device:isWindowCloseRequested() or
+               sl.device:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
     function renderCmp(cmp)
@@ -212,7 +212,7 @@ function demo()
 
     function run()
         while not shouldStop() do
-            dev:update(update)
+            sl.device:update(update)
             collectgarbage("collect")
         end
     end
