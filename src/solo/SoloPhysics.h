@@ -29,7 +29,7 @@ namespace solo
     class Physics: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>;
+        static auto fromDevice(Device *device) -> sptr<Physics>;
 
         virtual ~Physics() = default;
 
@@ -43,6 +43,6 @@ namespace solo
     protected:
         Device *device_ = nullptr;
       
-        Physics(Device *device, const FriendToken<Device> &);
+        Physics(Device *device);
     };
 }

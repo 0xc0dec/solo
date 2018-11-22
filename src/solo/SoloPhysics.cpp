@@ -8,12 +8,12 @@
 
 using namespace solo;
 
-auto Physics::create(Device *device, const FriendToken<Device> &deviceToken) -> sptr<Physics>
+auto Physics::fromDevice(Device *device) -> sptr<Physics>
 {
-    return std::make_shared<BulletPhysics>(device, deviceToken);
+    return std::make_shared<BulletPhysics>(device);
 }
 
-Physics::Physics(Device *device, const FriendToken<Device> &):
+Physics::Physics(Device *device):
     device_(device)
 {
 }

@@ -10,7 +10,7 @@
 
 using namespace solo;
 
-auto Renderer::create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>
+auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
 {
     switch (device->mode())
     {

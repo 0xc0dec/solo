@@ -9,8 +9,8 @@
 
 using namespace solo;
 
-BulletPhysics::BulletPhysics(Device *device, const FriendToken<Device> &deviceToken) :
-    Physics(device, deviceToken)
+BulletPhysics::BulletPhysics(Device *device):
+    Physics(device)
 {
     broadPhase_ = std::make_unique<btDbvtBroadphase>();
     collisionConfig_ = std::make_unique<btDefaultCollisionConfiguration>();

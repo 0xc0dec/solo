@@ -17,7 +17,7 @@ namespace solo
     {
     public:
         static auto empty() -> sptr<ScriptRuntime>;
-        static auto withDevice(Device *device, const FriendToken<Device> &) -> sptr<ScriptRuntime>;
+        static auto fromDevice(Device *device) -> sptr<ScriptRuntime>;
 
         ScriptRuntime() = default;
         virtual ~ScriptRuntime() = default;

@@ -82,13 +82,6 @@ namespace solo
         auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
     };
 
-    template <class T>
-    class FriendToken
-    {
-        friend T;
-        FriendToken() = default;
-    };
-
     class Device;
 
     class Logger: public NoCopyAndMove
@@ -96,8 +89,6 @@ namespace solo
     public:
         static auto global() -> Logger&;
 
-        static auto create(const FriendToken<Device> &) -> sptr<Logger>;
-        
         virtual ~Logger() = default;
 
         virtual void setOutputFile(const str &path) = 0;

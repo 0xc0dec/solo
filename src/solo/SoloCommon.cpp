@@ -77,8 +77,3 @@ auto Logger::global() -> Logger&
     static LoggerImpl instance;
     return instance;
 }
-
-auto Logger::create(const FriendToken<Device>&) -> sptr<Logger>
-{
-    return std::make_unique<LoggerImpl>();
-}

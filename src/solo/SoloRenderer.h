@@ -20,7 +20,7 @@ namespace solo
     class Renderer: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device, const FriendToken<Device> &) -> sptr<Renderer>;
+        static auto fromDevice(Device *device) -> sptr<Renderer>;
 
         virtual ~Renderer() = default;
 

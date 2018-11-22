@@ -14,7 +14,7 @@ auto ScriptRuntime::empty() -> sptr<ScriptRuntime>
     return std::make_shared<LuaScriptRuntime>();
 }
 
-auto ScriptRuntime::withDevice(Device *device, const FriendToken<Device>&) -> sptr<ScriptRuntime>
+auto ScriptRuntime::fromDevice(Device *device) -> sptr<ScriptRuntime>
 {
     return std::make_shared<LuaScriptRuntime>(device);
 }

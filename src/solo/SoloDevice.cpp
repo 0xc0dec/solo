@@ -49,15 +49,13 @@ Device::Device(const DeviceSetup &setup):
 
 void Device::initSubsystems(const DeviceSetup &setup)
 {
-    const FriendToken<Device> token;
-
     if (!setup.logFilePath.empty())
         Logger::global().setOutputFile(setup.logFilePath);
 
-    renderer_ = Renderer::create(this, token);
-    physics_ = Physics::create(this, token);
-    fs_ = FileSystem::create(this, token);
-    scriptRuntime_ = ScriptRuntime::withDevice(this, token);
+    renderer_ = Renderer::fromDevice(this);
+    physics_ = Physics::fromDevice(this);
+    fs_ = FileSystem::fromDevice(this);
+    scriptRuntime_ = ScriptRuntime::fromDevice(this);
     jobPool_ = std::make_shared<JobPool>();
 }
 

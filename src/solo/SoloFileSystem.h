@@ -15,7 +15,7 @@ namespace solo
     class FileSystem: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>;
+        static auto fromDevice(Device *device) -> sptr<FileSystem>;
 
         virtual ~FileSystem() = default;
 

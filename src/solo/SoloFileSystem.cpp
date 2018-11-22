@@ -9,7 +9,7 @@
 
 using namespace solo;
 
-auto FileSystem::create(Device *device, const FriendToken<Device> &) -> sptr<FileSystem>
+auto FileSystem::fromDevice(Device *device) -> sptr<FileSystem>
 {
     return std::unique_ptr<FileSystem>(new FileSystem());
 }
