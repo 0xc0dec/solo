@@ -170,7 +170,7 @@ function demo()
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
         layout:addAttribute(sl.VertexAttributeUsage.Tangent)
-        sl.Mesh.fromFileAsync(dev, getAssetPath("meshes/Teapot.obj"), layout):done(
+        sl.Mesh.fromFileAsync(dev, assetPath("meshes/Teapot.obj"), layout):done(
             function(mesh)
                 renderer:setMesh(mesh)
             end)
@@ -180,10 +180,10 @@ function demo()
 
     local canvasSize = dev:canvasSize()
 
-    local bricksTex = sl.Texture2D.fromFile(sl.device, getAssetPath("textures/rock_color.jpg"), true)
+    local bricksTex = sl.Texture2D.fromFile(sl.device, assetPath("textures/rock_color.jpg"), true)
     bricksTex:setAnisotropyLevel(16)
 
-    local bricksNormalTex = sl.Texture2D.fromFile(sl.device, getAssetPath("textures/rock_normal.jpg"), true)
+    local bricksNormalTex = sl.Texture2D.fromFile(sl.device, assetPath("textures/rock_normal.jpg"), true)
     bricksNormalTex:setAnisotropyLevel(16)
     
     local positionTex = sl.Texture2D.empty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGBA16F)

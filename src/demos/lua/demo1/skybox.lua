@@ -6,7 +6,7 @@
 local tags = require "tags"
 
 local getImagePath = function(fileName)
-    return getAssetPath("textures/skyboxes/deep-space/") .. fileName
+    return assetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
 return function(scene, assetCache)

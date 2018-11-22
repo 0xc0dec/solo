@@ -45,7 +45,7 @@ return function(scene, assetCache)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
     
-    local texHandle = sl.Texture2D.fromFileAsync(sl.device, getAssetPath("textures/rock_color.jpg"), true)
+    local texHandle = sl.Texture2D.fromFileAsync(sl.device, assetPath("textures/rock_color.jpg"), true)
     texHandle:done(function(tex)
         tex:setAnisotropyLevel(16)
         material:setTextureParameter("mainTex", tex)

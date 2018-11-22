@@ -73,7 +73,7 @@ function demo()
         layout:addAttribute(sl.VertexAttributeUsage.Position)
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
-        sl.Mesh.fromFileAsync(sl.device, getAssetPath(meshPath), layout)
+        sl.Mesh.fromFileAsync(sl.device, assetPath(meshPath), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
@@ -101,7 +101,7 @@ function demo()
         local body = backdrop.node:addComponent("RigidBody", params)
         body:setKinematic(true)
         
-        sl.StaticMeshCollider.fromFileAsync(sl.device, getAssetPath("meshes/backdrop.obj"))
+        sl.StaticMeshCollider.fromFileAsync(sl.device, assetPath("meshes/backdrop.obj"))
             :done(function(col) body:setCollider(col) end)
 
         return backdrop
@@ -117,7 +117,7 @@ function demo()
         local body = teapot.node:addComponent("RigidBody", params)
         body:setKinematic(true)
 
-        sl.StaticMeshCollider.fromFileAsync(sl.device, getAssetPath("meshes/teapot.obj"))
+        sl.StaticMeshCollider.fromFileAsync(sl.device, assetPath("meshes/teapot.obj"))
             :done(function(col) body:setCollider(col) end)
 
         return teapot

@@ -6,7 +6,7 @@
 return function(assetCache)
     local layout = sl.VertexBufferLayout()
     layout:addAttribute(sl.VertexAttributeUsage.Position)
-    local mesh = sl.Mesh.fromFile(sl.device, getAssetPath("meshes/Axes.obj"), layout)
+    local mesh = sl.Mesh.fromFile(sl.device, assetPath("meshes/Axes.obj"), layout)
     
     local effect = assetCache.getEffect("color")
 

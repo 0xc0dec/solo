@@ -24,7 +24,7 @@ return function(dev, scene, physics, assetCache)
         layout:addAttribute(sl.VertexAttributeUsage.Position)
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
-        sl.Mesh.fromFileAsync(dev, getAssetPath("meshes/box.dae"), layout)
+        sl.Mesh.fromFileAsync(dev, assetPath("meshes/box.dae"), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {

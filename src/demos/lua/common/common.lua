@@ -7,7 +7,7 @@ vec2 = sl.Vector2
 vec3 = sl.Vector3
 vec4 = sl.Vector4
 
-function getAssetPath(fileName)
+function assetPath(fileName)
     return "../../assets/" .. fileName
 end
 

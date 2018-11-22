@@ -24,7 +24,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         local lineHeight = 60
         local firstChar = string.byte(" ")
         local charCount = string.byte("~") - string.byte(" ")
-        local path = getAssetPath("fonts/aller.ttf")
+        local path = assetPath("fonts/aller.ttf")
         local font = sl.Font.loadFromFile(sl.device, path, lineHeight, textureWidth, textureHeight, firstChar, charCount, 2, 2)
 
         local mesh = sl.FontMesh.fromFont(sl.device, font)
@@ -49,7 +49,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         local node = scene:createNode()
         
         local renderer = node:addComponent("MeshRenderer")
-        renderer:setMesh(assetCache.meshes.getBox())
+        renderer:setMesh(assetCache.meshes.box())
         renderer:setMaterial(0, material)
 
         local transform = node:findComponent("Transform")

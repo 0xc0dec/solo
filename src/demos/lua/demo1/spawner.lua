@@ -26,7 +26,7 @@ return function(assetCache, material)
             local node = self.scene:createNode()
             
             local renderer = node:addComponent("MeshRenderer")
-            renderer:setMesh(assetCache.meshes.getBox())
+            renderer:setMesh(assetCache.meshes.box())
             renderer:setMaterial(0, material)
 
             local size = 0.1 + math.random()

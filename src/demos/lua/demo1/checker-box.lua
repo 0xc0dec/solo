@@ -15,7 +15,7 @@ return function(scene, assetCache)
     local node = scene:createNode()
     
     local renderer = node:addComponent("MeshRenderer")
-    renderer:setMesh(assetCache.meshes.getBox())
+    renderer:setMesh(assetCache.meshes.box())
     renderer:setMaterial(0, material)
 
     node:addScriptComponent(createRotator("world", vec3(0, 1, 0), 2))
