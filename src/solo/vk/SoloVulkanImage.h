@@ -25,7 +25,7 @@ namespace solo
         static auto empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage;
         static auto fromData(const VulkanDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
         static auto fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage;
-        static auto swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage; // TODO more generic
+        static auto swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage; // TODO more generic?
 
         VulkanImage() = default;
         VulkanImage(const VulkanImage &other) = delete;

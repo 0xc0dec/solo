@@ -129,7 +129,6 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height,
         // TODO Use FrameBuffer class here?
         steps_[i].imageView = vk::createImageView(this->device_, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
         steps_[i].framebuffer = vk::createFrameBuffer(this->device_, {steps_[i].imageView, depthStencil_.view()}, renderPass_, width, height);
-        steps_[i].image = images[i];
 
         cmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,

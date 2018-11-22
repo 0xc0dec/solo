@@ -41,10 +41,8 @@ namespace solo
     private:
         struct Step
         {
-            VkImage image = nullptr;
             VulkanResource<VkImageView> imageView;
             VulkanResource<VkFramebuffer> framebuffer;
-            VulkanResource<VkCommandBuffer> cmdBuffer;
         };
 
         VkDevice device_ = nullptr;
