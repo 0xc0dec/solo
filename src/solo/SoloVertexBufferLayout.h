@@ -9,7 +9,7 @@
 
 namespace solo
 {
-    enum class VertexAttributeSemantics
+    enum class VertexAttributeUsage
     {
         Unknown,
         Position,
@@ -27,13 +27,13 @@ namespace solo
         u32 size;
         u32 location;
         u32 offset;
-        VertexAttributeSemantics semantics;
+        VertexAttributeUsage usage;
     };
 
     class VertexBufferLayout final
     {
     public:
-        void addAttribute(VertexAttributeSemantics semantics);
+        void addAttribute(VertexAttributeUsage usage);
 
         auto attributeCount() const -> u32 { return static_cast<u32>(attrs_.size()); }
         auto attribute(u32 index) const -> VertexAttribute { return attrs_.at(index); }
@@ -46,6 +46,6 @@ namespace solo
         u32 size_ = 0; // in bytes
         u32 elementCount_ = 0; // number of floats
 
-        void addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics);
+        void addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage);
     };
 }

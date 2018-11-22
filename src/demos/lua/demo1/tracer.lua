@@ -21,9 +21,9 @@ return function(dev, scene, physics, assetCache)
         transform:setLocalScale(vec3(0.05, 0.05, 0.05))
     
         local layout = sl.VertexBufferLayout()
-        layout:addAttribute(sl.VertexAttributeSemantics.Position)
-        layout:addAttribute(sl.VertexAttributeSemantics.Normal)
-        layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
+        layout:addAttribute(sl.VertexAttributeUsage.Position)
+        layout:addAttribute(sl.VertexAttributeUsage.Normal)
+        layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
         sl.Mesh.fromFileAsync(dev, getAssetPath("meshes/box.dae"), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 

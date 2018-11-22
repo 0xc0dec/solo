@@ -7,35 +7,35 @@
 
 using namespace solo;
 
-void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeSemantics semantics)
+void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage)
 {
     const auto size = static_cast<u32>(sizeof(float) * elementCount);
     const auto offset = attrs_.empty() ? 0 : attrs_.crbegin()->offset + attrs_.crbegin()->size;
-    attrs_.push_back(VertexAttribute{name, elementCount, size, 0, offset, semantics});
+    attrs_.push_back(VertexAttribute{name, elementCount, size, 0, offset, usage});
     this->elementCount_ += elementCount;
     this->size_ += size;
 }
 
-void VertexBufferLayout::addAttribute(VertexAttributeSemantics semantics)
+void VertexBufferLayout::addAttribute(VertexAttributeUsage usage)
 {
-    switch (semantics)
+    switch (usage)
     {
-        case VertexAttributeSemantics::Position:
-            addAttribute(3, "sl_Position", VertexAttributeSemantics::Position);
+        case VertexAttributeUsage::Position:
+            addAttribute(3, "sl_Position", VertexAttributeUsage::Position);
             break;
-        case VertexAttributeSemantics::Normal:
-            addAttribute(3, "sl_Normal", VertexAttributeSemantics::Normal);
+        case VertexAttributeUsage::Normal:
+            addAttribute(3, "sl_Normal", VertexAttributeUsage::Normal);
             break;
-        case VertexAttributeSemantics::TexCoord:
-            addAttribute(2, "sl_TexCoord", VertexAttributeSemantics::TexCoord);
+        case VertexAttributeUsage::TexCoord:
+            addAttribute(2, "sl_TexCoord", VertexAttributeUsage::TexCoord);
             break;
-        case VertexAttributeSemantics::Tangent:
-            addAttribute(3, "sl_Tangent", VertexAttributeSemantics::Tangent);
+        case VertexAttributeUsage::Tangent:
+            addAttribute(3, "sl_Tangent", VertexAttributeUsage::Tangent);
             break;
-        case VertexAttributeSemantics::Binormal:
-            addAttribute(3, "sl_Binormal", VertexAttributeSemantics::Binormal);
+        case VertexAttributeUsage::Binormal:
+            addAttribute(3, "sl_Binormal", VertexAttributeUsage::Binormal);
             break;
         default:
-            SL_DEBUG_PANIC(true, "Unsupported vertex attribute semantics");
+            SL_DEBUG_PANIC(true, "Unsupported vertex attribute usage");
     }
 }

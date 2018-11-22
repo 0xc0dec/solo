@@ -46,28 +46,28 @@ auto MeshData::fromFile(Device *device, const str &path, const VertexBufferLayou
             for (u32 k = 0; k < bufferLayout.attributeCount(); k++)
             {
                 const auto attr = bufferLayout.attribute(k);
-                switch (attr.semantics)
+                switch (attr.usage)
                 {
-                    case VertexAttributeSemantics::Position:
+                    case VertexAttributeUsage::Position:
                         data->vertexData_.push_back(pos->x);
 			            data->vertexData_.push_back(pos->y);
 			            data->vertexData_.push_back(pos->z);
                         break;
-                    case VertexAttributeSemantics::Normal:
+                    case VertexAttributeUsage::Normal:
                         data->vertexData_.push_back(normal->x);
 			            data->vertexData_.push_back(normal->y);
 			            data->vertexData_.push_back(normal->z);
                         break;
-                    case VertexAttributeSemantics::TexCoord:
+                    case VertexAttributeUsage::TexCoord:
                         data->vertexData_.push_back(texCoord->x);
                         data->vertexData_.push_back(texCoord->y);
                         break;
-                    case VertexAttributeSemantics::Tangent:
+                    case VertexAttributeUsage::Tangent:
                         data->vertexData_.push_back(tangent->x);
 			            data->vertexData_.push_back(tangent->y);
 			            data->vertexData_.push_back(tangent->z);
                         break;
-                    case VertexAttributeSemantics::Binormal:
+                    case VertexAttributeUsage::Binormal:
                         data->vertexData_.push_back(biTangent->x);
 			            data->vertexData_.push_back(biTangent->y);
 			            data->vertexData_.push_back(biTangent->z);

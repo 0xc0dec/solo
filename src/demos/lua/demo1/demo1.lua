@@ -70,9 +70,9 @@ function demo()
         local transform = node:findComponent("Transform")
     
         local layout = sl.VertexBufferLayout()
-        layout:addAttribute(sl.VertexAttributeSemantics.Position)
-        layout:addAttribute(sl.VertexAttributeSemantics.Normal)
-        layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
+        layout:addAttribute(sl.VertexAttributeUsage.Position)
+        layout:addAttribute(sl.VertexAttributeUsage.Normal)
+        layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
         sl.Mesh.fromFileAsync(sl.device, getAssetPath(meshPath), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 

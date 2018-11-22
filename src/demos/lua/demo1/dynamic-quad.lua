@@ -32,8 +32,8 @@ return function(scene, assetCache)
     }
 
     local layout = sl.VertexBufferLayout()
-    layout:addAttribute(sl.VertexAttributeSemantics.Position)
-    layout:addAttribute(sl.VertexAttributeSemantics.TexCoord)
+    layout:addAttribute(sl.VertexAttributeUsage.Position)
+    layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
 
     local mesh = sl.Mesh.empty(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)

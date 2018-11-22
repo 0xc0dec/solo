@@ -38,7 +38,7 @@ namespace solo
         void setMatrixParameter(const str &name, const Matrix &value) override final;
         void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
 
-        void bindParameter(const str &name, ParameterBinding semantics) override final;
+        void bindParameter(const str &name, ParameterBinding binding) override final;
 
         void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 

@@ -198,12 +198,12 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-        auto m = module.beginModule("VertexAttributeSemantics");
-        REG_MODULE_CONSTANT(m, VertexAttributeSemantics, Position);
-        REG_MODULE_CONSTANT(m, VertexAttributeSemantics, Normal);
-        REG_MODULE_CONSTANT(m, VertexAttributeSemantics, TexCoord);
-        REG_MODULE_CONSTANT(m, VertexAttributeSemantics, Tangent);
-        REG_MODULE_CONSTANT(m, VertexAttributeSemantics, Binormal);
+        auto m = module.beginModule("VertexAttributeUsage");
+        REG_MODULE_CONSTANT(m, VertexAttributeUsage, Position);
+        REG_MODULE_CONSTANT(m, VertexAttributeUsage, Normal);
+        REG_MODULE_CONSTANT(m, VertexAttributeUsage, TexCoord);
+        REG_MODULE_CONSTANT(m, VertexAttributeUsage, Tangent);
+        REG_MODULE_CONSTANT(m, VertexAttributeUsage, Binormal);
         m.endModule();
     }
 }

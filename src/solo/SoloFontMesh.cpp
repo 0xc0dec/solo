@@ -75,11 +75,11 @@ void FontMesh::rebuildMesh()
     mesh_ = Mesh::empty(device_);
 
     VertexBufferLayout positionsLayout;
-    positionsLayout.addAttribute(VertexAttributeSemantics::Position);
+    positionsLayout.addAttribute(VertexAttributeUsage::Position);
     mesh_->addDynamicVertexBuffer(positionsLayout, vertices_.data(), static_cast<u32>(vertices_.size()));
 
     VertexBufferLayout uvsLayout;
-    uvsLayout.addAttribute(VertexAttributeSemantics::TexCoord);
+    uvsLayout.addAttribute(VertexAttributeUsage::TexCoord);
     mesh_->addDynamicVertexBuffer(uvsLayout, uvs_.data(), static_cast<u32>(uvs_.size()));
 
     mesh_->addPart(reinterpret_cast<const void *>(indexes_.data()), static_cast<u32>(indexes_.size()));

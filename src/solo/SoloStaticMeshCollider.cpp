@@ -14,7 +14,7 @@ using namespace solo;
 auto StaticMeshCollider::fromFile(Device *device, const str &path) -> sptr<StaticMeshCollider>
 {
     VertexBufferLayout layout;
-    layout.addAttribute(VertexAttributeSemantics::Position);
+    layout.addAttribute(VertexAttributeUsage::Position);
     const auto data = MeshData::fromFile(device, path, layout);
     return std::make_shared<BulletStaticMeshCollider>(data);
 }
@@ -24,7 +24,7 @@ auto StaticMeshCollider::fromFileAsync(Device *device, const str &path) -> sptr<
     auto handle = std::make_shared<AsyncHandle<StaticMeshCollider>>();
 
     VertexBufferLayout layout;
-    layout.addAttribute(VertexAttributeSemantics::Position);
+    layout.addAttribute(VertexAttributeUsage::Position);
     MeshData::fromFileAsync(device, path, layout)->done(
         [handle](sptr<MeshData> data)
         {

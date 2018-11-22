@@ -5,9 +5,9 @@ using namespace solo;
 auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
 {
     auto layout = VertexBufferLayout();
-    layout.addAttribute(VertexAttributeSemantics::Position);
-    layout.addAttribute(VertexAttributeSemantics::Normal);
-    layout.addAttribute(VertexAttributeSemantics::TexCoord);
+    layout.addAttribute(VertexAttributeUsage::Position);
+    layout.addAttribute(VertexAttributeUsage::Normal);
+    layout.addAttribute(VertexAttributeUsage::TexCoord);
     const auto mesh = Mesh::fromFile(device, "../../assets/meshes/quad.dae", layout);
 
     // TODO move lua effect files elsewhere?
