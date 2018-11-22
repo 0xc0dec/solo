@@ -41,6 +41,10 @@ static void registerApi(CppBindModule<LuaBinding> &module)
 static void registerLibrary(LuaState &state)
 {
     state.doString(R"(
+        sl.includeDir = function(path)
+            package.path = path .. "/?.lua;" .. package.path
+        end
+
         sl.getCmpId = function(name)
             sl.__nextCmpId = sl.__nextCmpId and sl.__nextCmpId or 1
             sl.__cmpIds = sl.__cmpIds and sl.__cmpIds or {}
