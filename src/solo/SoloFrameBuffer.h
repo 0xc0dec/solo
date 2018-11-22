@@ -16,7 +16,7 @@ namespace solo
     class FrameBuffer: public NoCopyAndMove
     {
     public:
-        static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>;
+        static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>;
 
         virtual ~FrameBuffer() = default;
 

@@ -17,7 +17,7 @@ return function(scene)
     local depthTex = sl.Texture2D.empty(sl.device, 2048, 2048, sl.TextureFormat.Depth24)
     depthTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.Nearest)
 
-    local fb = sl.FrameBuffer.create(sl.device, { depthTex })
+    local fb = sl.FrameBuffer.fromAttachments(sl.device, { depthTex })
     cam:setRenderTarget(fb)
 
     local transform = node:findComponent("Transform")

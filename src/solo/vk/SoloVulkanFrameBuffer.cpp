@@ -13,7 +13,7 @@
 
 using namespace solo;
 
-auto VulkanFrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
+auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
 {
     SL_DEBUG_BLOCK(validateNewAttachments(attachments));
 

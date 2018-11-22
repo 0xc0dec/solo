@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>
+auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>
 {
     switch (device->mode())
     {
@@ -21,7 +21,7 @@ auto FrameBuffer::create(Device *device, const vec<sptr<Texture2D>> &attachments
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return VulkanFrameBuffer::create(device, attachments);
+            return VulkanFrameBuffer::fromAttachments(device, attachments);
 #endif
         default:
             SL_DEBUG_PANIC(true, "Unknown device mode");

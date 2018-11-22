@@ -20,7 +20,7 @@ namespace solo
     class VulkanFrameBuffer final: public FrameBuffer
     {
     public:
-        static auto create(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
+        static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
         
         ~VulkanFrameBuffer() = default;
 

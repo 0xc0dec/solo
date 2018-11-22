@@ -38,7 +38,7 @@ local function init1(camera, assetCache)
         tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
         
-        local frameBuffer = sl.FrameBuffer.create(sl.device, { tex })
+        local frameBuffer = sl.FrameBuffer.fromAttachments(sl.device, { tex })
 
         return tex, frameBuffer
     end
@@ -127,7 +127,7 @@ local function init2(camera, assetCache)
     local fbTex = sl.Texture2D.empty(sl.device, offscreenRes.x, offscreenRes.y, sl.TextureFormat.RGB8)
     fbTex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
     fbTex:setWrap(sl.TextureWrap.ClampToEdge)
-    local target = sl.FrameBuffer.create(sl.device, { fbTex })
+    local target = sl.FrameBuffer.fromAttachments(sl.device, { fbTex })
 
     local material = sl.Material.fromEffect(sl.device, assetCache.getEffect("stitches"))
     material:setFaceCull(sl.FaceCull.None)

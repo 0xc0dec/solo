@@ -11,13 +11,13 @@ using namespace solo;
 
 auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
 {
-    VkSemaphoreCreateInfo semaphoreCreateInfo{};
-    semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    semaphoreCreateInfo.pNext = nullptr;
-    semaphoreCreateInfo.flags = 0;
+    VkSemaphoreCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
 
     VulkanResource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &semaphoreCreateInfo, nullptr, semaphore.cleanRef()));
+    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &info, nullptr, semaphore.cleanRef()));
 
     return semaphore;
 }
@@ -28,16 +28,16 @@ void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *w
 {
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
-    VkSubmitInfo submitInfo{};
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submitInfo.pWaitDstStageMask = &submitPipelineStages;
-    submitInfo.waitSemaphoreCount = waitSemaphoreCount;
-    submitInfo.pWaitSemaphores = waitSemaphores;
-    submitInfo.signalSemaphoreCount = signalSemaphoreCount;
-    submitInfo.pSignalSemaphores = signalSemaphores;
-    submitInfo.commandBufferCount = commandBufferCount;
-    submitInfo.pCommandBuffers = commandBuffers;
-    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &submitInfo, VK_NULL_HANDLE));
+    VkSubmitInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    info.pWaitDstStageMask = &submitPipelineStages;
+    info.waitSemaphoreCount = waitSemaphoreCount;
+    info.pWaitSemaphores = waitSemaphores;
+    info.signalSemaphoreCount = signalSemaphoreCount;
+    info.pSignalSemaphores = signalSemaphores;
+    info.commandBufferCount = commandBufferCount;
+    info.pCommandBuffers = commandBuffers;
+    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &info, VK_NULL_HANDLE));
 }
 
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
@@ -58,18 +58,18 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
 auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
     VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>
 {
-    VkFramebufferCreateInfo createInfo{};
-    createInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-    createInfo.pNext = nullptr;
-    createInfo.renderPass = renderPass;
-    createInfo.attachmentCount = attachments.size();
-    createInfo.pAttachments = attachments.data();
-    createInfo.width = width;
-    createInfo.height = height;
-    createInfo.layers = 1;
+    VkFramebufferCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    info.pNext = nullptr;
+    info.renderPass = renderPass;
+    info.attachmentCount = attachments.size();
+    info.pAttachments = attachments.data();
+    info.width = width;
+    info.height = height;
+    info.layers = 1;
 
     VulkanResource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
-    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &createInfo, nullptr, frameBuffer.cleanRef()));
+    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &info, nullptr, frameBuffer.cleanRef()));
 
     return frameBuffer;
 }

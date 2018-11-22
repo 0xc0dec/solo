@@ -110,33 +110,26 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height,
         .addColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
         .setDepthAttachment(depthFormat));
     
-    // TODO Replace with factory method?
-    depthStencil_ = VulkanImage(dev, width, height, 1, 1, depthFormat,
-        VK_IMAGE_LAYOUT_UNDEFINED,
-        0,
-        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
-        VK_IMAGE_VIEW_TYPE_2D,
-        VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
-
-    auto images = getSwapchainImages(this->device_, swapchain_);
+    depthStencil_ = VulkanImage::swapchainDepthStencil(dev, width, height, depthFormat);
 
     auto cmdBuf = VulkanCmdBuffer(dev);
     cmdBuf.begin(true);
 
-    VkImageSubresourceRange subresourceRange{};
-    subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-    subresourceRange.baseMipLevel = 0;
-    subresourceRange.levelCount = 1;
-    subresourceRange.layerCount = 1;
-    
+    VkImageSubresourceRange range{};
+    range.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    range.baseMipLevel = 0;
+    range.levelCount = 1;
+    range.layerCount = 1;
+
+    auto images = getSwapchainImages(this->device_, swapchain_);
     steps_.resize(images.size());
+
     for (u32 i = 0; i < images.size(); i++)
     {
         // TODO Use FrameBuffer class here?
-        auto view = vk::createImageView(this->device_, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
-        steps_[i].framebuffer = vk::createFrameBuffer(this->device_, {view, depthStencil_.view()}, renderPass_, width, height);
+        steps_[i].imageView = vk::createImageView(this->device_, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
+        steps_[i].framebuffer = vk::createFrameBuffer(this->device_, {steps_[i].imageView, depthStencil_.view()}, renderPass_, width, height);
         steps_[i].image = images[i];
-        steps_[i].imageView = std::move(view);
 
         cmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
@@ -145,7 +138,7 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height,
                 images[i],
                 VK_IMAGE_LAYOUT_UNDEFINED,
                 VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-                subresourceRange
+                range
             )
         );
     }

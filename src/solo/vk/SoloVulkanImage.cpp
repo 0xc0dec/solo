@@ -390,6 +390,16 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
     return image;
 }
 
+auto VulkanImage::swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage
+{
+    return VulkanImage(dev, width, height, 1, 1, format,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        0,
+        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+        VK_IMAGE_VIEW_TYPE_2D,
+        VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
+}
+
 VulkanImage::VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     layout_(layout),
