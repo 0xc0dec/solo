@@ -3,12 +3,12 @@
 -- MIT license
 -- 
 
-deviceSetup = sl.DeviceSetup()
-deviceSetup.mode = sl.DeviceMode.OpenGL
-deviceSetup.canvasWidth = 1600
-deviceSetup.canvasHeight = 900
-deviceSetup.fullScreen = false
-deviceSetup.vsync = true
-deviceSetup.windowTitle = "Demo 2 (OpenGL)"
+setup = sl.DeviceSetup()
+setup.mode = sl.DeviceMode.OpenGL
+setup.canvasWidth = 1600
+setup.canvasHeight = 900
+setup.fullScreen = false
+setup.vsync = true
+setup.windowTitle = "Demo 2 (OpenGL)"
 
-runScript = "../../src/demos/lua/demo2/demo2.lua"
+entry = "../../src/demos/lua/demo2/demo2.lua"

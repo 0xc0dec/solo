@@ -3,12 +3,12 @@
 -- MIT license
 -- 
 
-deviceSetup = sl.DeviceSetup()
-deviceSetup.mode = sl.DeviceMode.Vulkan
-deviceSetup.canvasWidth = 1600
-deviceSetup.canvasHeight = 900
-deviceSetup.fullScreen = false
-deviceSetup.vsync = true
-deviceSetup.windowTitle = "Demo 2 (Vulkan)"
+setup = sl.DeviceSetup()
+setup.mode = sl.DeviceMode.Vulkan
+setup.canvasWidth = 1600
+setup.canvasHeight = 900
+setup.fullScreen = false
+setup.vsync = true
+setup.windowTitle = "Demo 2 (Vulkan)"
 
-runScript = "../../src/demos/lua/demo2/demo2.lua"
+entry = "../../src/demos/lua/demo2/demo2.lua"

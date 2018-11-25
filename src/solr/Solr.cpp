@@ -16,12 +16,12 @@ int main(int argc, s8 *argv[])
 
     try
     {
-        const auto entryScript = argv[1];
+        const auto cfgScript = argv[1];
         auto transientRuntime = ScriptRuntime::empty();
-        transientRuntime->execFile(entryScript);
+        transientRuntime->execFile(cfgScript);
 
-        const auto setup = transientRuntime->fetchDeviceSetup("deviceSetup");
-        const auto runScript = transientRuntime->fetchString("runScript");
+        const auto setup = transientRuntime->fetchDeviceSetup("setup");
+        const auto runScript = transientRuntime->fetchString("entry");
 
         const auto device = Device::create(setup);
         device->scriptRuntime()->execFile(runScript);
