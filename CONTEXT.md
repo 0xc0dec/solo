@@ -1,5 +1,6 @@
 # TODO
 
+* Fix Vulkan error messages that show in debug.
 * Add center of mass offset
 * Deferred demo - add shadows
 * Refactor Vulkan code. In particular, make image layout handling more robust/clear
