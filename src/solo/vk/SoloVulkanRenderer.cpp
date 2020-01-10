@@ -238,8 +238,7 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
     auto &context = ensurePipelineContext(transform, vkMaterial, vkMesh);
     context.frameOfLastUse = frame_;
 
-    // Run the desc set updater
-    // TODO Not so often - only when something really changes
+    // TODO Run set updater not so often - only when something really changes
     
     // TODO Not necessary (?), buffers don't change anyway, only their content
     for (auto &pair : context.uniformBuffers)

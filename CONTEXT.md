@@ -1,5 +1,3 @@
-This is a list of notes and TODOs to keep me in context.
-
 # TODO
 
 * Add center of mass offset

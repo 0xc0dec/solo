@@ -130,7 +130,7 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
             }
             else
             {
-                pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end(); // first time?
+                pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end();
                 releasedKeys_.erase(code);
             }
             break;
