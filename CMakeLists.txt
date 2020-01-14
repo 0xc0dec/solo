@@ -27,6 +27,17 @@ option(SKIP_SPIRV_TOOLS_INSTALL "" ON)
 option(ENABLE_GLSLANG_BINARIES "" OFF)
 option(DISABLE_RTTI "" ON)
 
+set(CMAKE_SUPPRESS_REGENERATION true)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Config types" FORCE)
+
+if (MSVC)
+    add_compile_options(/std:c++14)
+    add_compile_options("$<$<CONFIG:DEBUG>:/MTd>")
+    add_compile_options("$<$<CONFIG:RELEASE>:/MT>")
+else()
+    add_compile_options(-std=c++14)
+endif()
+
 function(set_default_compile_defs TARGET)
     target_compile_definitions(${TARGET} PRIVATE
         HAVE_LIBC
@@ -40,16 +51,6 @@ add_subdirectory("vendor/assimp/4.1.0")
 
 if (WIN32)
     add_subdirectory("vendor/shaderc")
-endif()
-
-set(CMAKE_SUPPRESS_REGENERATION true)
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Config types" FORCE)
-
-add_compile_options(-std=c++14)
-
-if (MSVC)
-    add_compile_options("$<$<CONFIG:DEBUG>:/MTd>")
-    add_compile_options("$<$<CONFIG:RELEASE>:/MT>")
 endif()
 
 include("Solo.cmake.txt")
