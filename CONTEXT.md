@@ -1,9 +1,9 @@
 # TODO
 
-* Fix Vulkan error messages that show in debug.
+* Use proper image layouts in Vulkan.
 * Add center of mass offset
 * Deferred demo - add shadows
-* Refactor Vulkan code. In particular, make image layout handling more robust/clear
+* Refactor Vulkan code.
 * findScriptComponent to operate on component names
 * More error checks
 * Allow validation checks in release, configure validation levels or smth
