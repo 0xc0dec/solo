@@ -76,9 +76,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
     const auto isDepth = format == TextureFormat::Depth24;
-    const auto layout = isDepth
-        ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
-        : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto layout = VK_IMAGE_LAYOUT_GENERAL; // TODO better
     const auto usage = VK_IMAGE_USAGE_SAMPLED_BIT |
         (isDepth
             ? VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
