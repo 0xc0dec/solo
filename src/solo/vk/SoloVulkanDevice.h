@@ -23,6 +23,7 @@ namespace solo
         ~VulkanDevice() = default;
 
         bool isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const;
+        auto gpuName() const -> const char *{ return physicalProperties_.deviceName; }
 
         auto operator=(const VulkanDevice &other) -> VulkanDevice& = delete;
         auto operator=(VulkanDevice &&other) -> VulkanDevice& = default;

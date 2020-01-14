@@ -10,6 +10,7 @@
 #include "SoloEffect.h"
 #include "SoloFileSystem.h"
 #include "SoloSpectator.h"
+#include "SoloRenderer.h"
 
 using namespace solo;
 
@@ -84,12 +85,21 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
+static void registerRenderer(CppBindModule<LuaBinding> &module)
+{
+    auto binding = BEGIN_CLASS(module, Renderer);
+    REG_METHOD(binding, Renderer, gpuName);
+    REG_PTR_EQUALITY(binding, Renderer);
+    binding.endClass();
+}
+
 void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
     registerFileSystem(module);
     registerEffect(module);
     registerMeshRenderer(module);
     registerScene(module);
+    registerRenderer(module);
     registerFrameBuffer(module);
     registerSpectator(module);
 }

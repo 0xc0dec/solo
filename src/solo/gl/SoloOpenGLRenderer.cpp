@@ -168,7 +168,12 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     SL_DEBUG_PANIC(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", major, ".", minor);
-    Logger::global().logInfo(SL_FMT("Running in OpenGL ", major, ".", minor, " mode"));
+    Logger::global().logInfo(SL_FMT("Using OpenGL ", major, ".", minor));
+}
+
+auto OpenGLRenderer::gpuName() const -> const char*
+{
+    return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }
 
 void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)

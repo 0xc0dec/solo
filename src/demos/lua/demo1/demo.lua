@@ -11,6 +11,7 @@ require "common"
 function demo()
     local fs = sl.device:fileSystem()
     local physics = sl.device:physics()
+    local renderer = sl.device:renderer()
     local scene = sl.Scene.empty(sl.device)
 
     local tags = require "tags"

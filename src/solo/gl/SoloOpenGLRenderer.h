@@ -26,6 +26,8 @@ namespace solo
         void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
         void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 
+        auto gpuName() const -> const char* override final;
+
     protected:
         void beginFrame() override final;
         void endFrame() override final;
