@@ -127,7 +127,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
     const auto format = toVulkanFormat(data->textureFormat());
-    const auto layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto layout = VK_IMAGE_LAYOUT_GENERAL;
     auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
         VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -296,7 +296,7 @@ auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -
     const auto width = data->dimension();
     const auto height = width;
     const auto format = toVulkanFormat(data->textureFormat());
-    const auto layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    const auto layout = VK_IMAGE_LAYOUT_GENERAL;
     const auto usage =
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
         VK_IMAGE_USAGE_SAMPLED_BIT |

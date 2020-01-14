@@ -31,7 +31,7 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
         else
         {
             result->colorAttachments_.push_back(texture);
-            config.addColorAttachment(texture->image().format(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL); // TODO Proper layout
+            config.addColorAttachment(texture->image().format(), VK_IMAGE_LAYOUT_GENERAL); // TODO better layout
             views.push_back(texture->image().view());
         }
     }

@@ -109,7 +109,7 @@ auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout f
 
     VkAttachmentReference reference{};
     reference.attachment = attachments_.size() - 1;
-    reference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    reference.layout = VK_IMAGE_LAYOUT_GENERAL; // TODO better
     colorAttachmentRefs_.push_back(reference);
 
     return *this;
