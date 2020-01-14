@@ -133,7 +133,7 @@ void VulkanTexture2D::rebuildSampler()
 auto VulkanCubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture>
 {
     auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->textureFormat(), data->dimension()));
-    result->image_ = VulkanImage::fromDataCube(result->renderer_->device(), data.get());
+    result->image_ = VulkanImage::fromCubeData(result->renderer_->device(), data.get());
     result->rebuildSampler();
     return result;
 }

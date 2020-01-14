@@ -289,7 +289,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     return image;
 }
 
-auto VulkanImage::fromDataCube(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage
+auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage
 {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
