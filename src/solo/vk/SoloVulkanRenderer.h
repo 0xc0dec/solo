@@ -36,6 +36,7 @@ namespace solo
         void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
         void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
 
+        auto name() const -> const char* override final { return "Vulkan"; }
         auto gpuName() const -> const char* override final { return device_.gpuName(); }
 
         auto device() const -> const VulkanDevice& { return device_; }

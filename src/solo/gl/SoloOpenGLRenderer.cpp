@@ -162,13 +162,19 @@ static void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
     glBlendFunc(toBlendFactor(srcFactor), toBlendFactor(dstFactor));
 }
 
-OpenGLRenderer::OpenGLRenderer(Device *device)
+static auto version() -> std::pair<GLint, GLint>
 {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
-    SL_DEBUG_PANIC(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", major, ".", minor);
-    Logger::global().logInfo(SL_FMT("Using OpenGL ", major, ".", minor));
+    return {major, minor};
+}
+
+OpenGLRenderer::OpenGLRenderer(Device *device)
+{
+    auto ver = version();
+    name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
+    SL_DEBUG_PANIC(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
 }
 
 auto OpenGLRenderer::gpuName() const -> const char*

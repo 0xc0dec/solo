@@ -19,15 +19,9 @@ function callSafe(f)
 end
 
 function setWindowTitle()
-    local title = 'Demo'
-
-    if sl.device:mode() == sl.DeviceMode.OpenGL then
-        title = title .. ' [OpenGL]'
-    elseif sl.device:mode() == sl.DeviceMode.Vulkan then
-        title = title .. ' [Vulkan]'
-    end
-
-    sl.device:setWindowTitle(title .. ' [' .. sl.device:renderer():gpuName() .. ']')
+    print(sl.device:renderer():name())
+    local title = 'Demo [' .. sl.device:renderer():name() .. '] [' .. sl.device:renderer():gpuName() .. ']'
+    sl.device:setWindowTitle(title)
 end
 
 setWindowTitle()

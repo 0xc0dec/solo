@@ -88,6 +88,7 @@ static void registerFileSystem(CppBindModule<LuaBinding> &module)
 static void registerRenderer(CppBindModule<LuaBinding> &module)
 {
     auto binding = BEGIN_CLASS(module, Renderer);
+    REG_METHOD(binding, Renderer, name);
     REG_METHOD(binding, Renderer, gpuName);
     REG_PTR_EQUALITY(binding, Renderer);
     binding.endClass();
