@@ -35,17 +35,6 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     return result;
 }
 
-static auto selectPhysicalDevice(VkInstance instance) -> VkPhysicalDevice
-{
-    u32 gpuCount = 0;
-    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
-
-    vec<VkPhysicalDevice> devices(gpuCount);
-    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
-
-    return devices[0]; // Taking first one for simplicity
-}
-
 static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
 {
     u32 count;
@@ -131,10 +120,7 @@ VulkanDevice::VulkanDevice(VkInstance instance, VkSurfaceKHR surface):
     debugCallback_ = createDebugCallback(instance, debugCallbackFunc);
 #endif
 
-    physical_ = selectPhysicalDevice(instance);
-    vkGetPhysicalDeviceProperties(physical_, &physicalProperties_);
-    vkGetPhysicalDeviceFeatures(physical_, &physicalFeatures_);
-    vkGetPhysicalDeviceMemoryProperties(physical_, &physicalMemoryFeatures_);
+    selectPhysicalDevice(instance);
 
     detectFormatSupport(VK_FORMAT_R8_UNORM);
     detectFormatSupport(VK_FORMAT_R8G8B8A8_UNORM);
@@ -190,6 +176,28 @@ auto VulkanDevice::selectDepthFormat() -> VkFormat
 
     SL_DEBUG_PANIC(true, "Unable to pick depth format");
     return VK_FORMAT_UNDEFINED;
+}
+
+void VulkanDevice::selectPhysicalDevice(VkInstance instance)
+{
+    u32 gpuCount = 0;
+    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
+
+    vec<VkPhysicalDevice> devices(gpuCount);
+    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
+
+    for (const auto &device: devices)
+    {
+        vkGetPhysicalDeviceProperties(device, &physicalProperties_);
+        vkGetPhysicalDeviceFeatures(device, &physicalFeatures_);
+        vkGetPhysicalDeviceMemoryProperties(device, &physicalMemoryFeatures_);
+
+        physical_ = device;
+
+        // Select discrete GPU if present, otherwise any other
+        if (physicalProperties_.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+            return;
+    }
 }
 
 #endif

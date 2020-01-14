@@ -56,6 +56,7 @@ namespace solo
         VulkanResource<VkDebugReportCallbackEXT> debugCallback_;
         umap<VkFormat, VkFormatFeatureFlags> supportedFormats_;
 
+        void selectPhysicalDevice(VkInstance instance);
         void detectFormatSupport(VkFormat format);
         auto selectDepthFormat() -> VkFormat;
     };
