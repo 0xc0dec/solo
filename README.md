@@ -7,7 +7,7 @@ A playground for my graphics/gamedev experiments.
 * TTF fonts
 * Bullet physics
 * Vulkan/OpenGL rendering
-* Fully scriptable in Lua
+* Exposes API for both Lua and C++
 
 ## Building
 * Install Python2 (3 not tested).
