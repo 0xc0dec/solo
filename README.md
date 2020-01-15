@@ -13,8 +13,7 @@
 * Install Python2 (3 not tested).
 * `mkdir build && cd build`.
 * `cmake -G "Visual Studio 16 2019 Win64" ..` (or other generator depending on the OS/IDE).
-* In Visual Studio build solution `build/Solo.sln`. In Clion build the project from CMakeLists file.
-* During development: once built, remove from the solution all projects except Solo and use it for development.
+* Build the generated project.
 
 ## Running Lua demos
 * `cd build/<Debug|Release>`
