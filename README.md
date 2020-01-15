@@ -16,10 +16,9 @@
 * In Visual Studio build solution `build/Solo.sln`. In Clion build the project from CMakeLists file.
 * During development: once built, remove from the solution all projects except Solo and use it for development.
 
-## Running
-* `cd build/<Debug or Release>`
-* For Lua demos: `Solr.exe ../../src/demos/lua/demo<N>/demo<N>_<API>.lua` where `N` is the demo number, `API` is either `gl`
-or `vk`
+## Running Lua demos
+* `cd build/<Debug|Release>`
+* `Solr.exe ../../src/demos/lua/demo<N>/demo_<gl|vk>.lua` where `N` is the demo number
 
 ## Screenshots
 
