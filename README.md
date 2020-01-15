@@ -1,5 +1,5 @@
 ## About
-A playground for my graphics/gamedev experiments.
+"I have no idea how to write game engines"-style game engine. A playground for my gamedev experiments.
 
 ## Features
 * Unity-inspired component system
