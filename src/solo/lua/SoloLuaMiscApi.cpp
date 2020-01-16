@@ -45,6 +45,7 @@ static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
     REG_METHOD_NULLABLE_1ST_ARG(binding, MeshRenderer, setMesh, sptr<Mesh>);
     REG_METHOD(binding, MeshRenderer, material);
     REG_METHOD_NULLABLE_2ND_ARG(binding, MeshRenderer, setMaterial, u32, sptr<Material>);
+    REG_METHOD_NULLABLE_1ST_ARG(binding, MeshRenderer, setDefaultMaterial, sptr<Material>);
     REG_METHOD(binding, MeshRenderer, materialCount);
     REG_PTR_EQUALITY(binding, MeshRenderer);
     binding.endClass();

@@ -18,9 +18,15 @@ MeshRenderer::MeshRenderer(const Node &node):
     transform_ = node.findComponent<Transform>();
 }
 
+auto MeshRenderer::material(u32 index) const -> sptr<Material>
+{
+    auto mat = index < materials_.size() ? materials_[index] : nullptr;
+    return mat ? mat : defaultMaterial_;
+}
+
 void MeshRenderer::render()
 {
-    if (!mesh_ || materials_.empty())
+    if (!mesh_)
         return;
 
     const auto partCount = mesh_->partCount();
@@ -43,8 +49,20 @@ void MeshRenderer::render()
 
 void MeshRenderer::setMaterial(u32 index, sptr<Material> material)
 {
-    if (material)
-        materials_[index] = material;
-    else
-        materials_.erase(index);
+    if (index >= materials_.size())
+        materials_.resize(index + 1);
+
+    if (materials_[index] && !material)
+        materialCount_--;
+    else if (!materials_[index] && material)
+        materialCount_++;
+
+    materials_[index] = material;
+
+    // TODO compaction when tail elements are all null
+}
+
+void MeshRenderer::setDefaultMaterial(sptr<Material> material)
+{
+    defaultMaterial_ = material;
 }

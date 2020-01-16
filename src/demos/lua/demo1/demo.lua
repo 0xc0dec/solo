@@ -36,7 +36,7 @@ function demo()
         local node = scene:createNode()
     
         local renderer = node:addComponent("MeshRenderer")
-        renderer:setMaterial(0, material)
+        renderer:setDefaultMaterial(material)
     
         local transform = node:findComponent("Transform")
     
@@ -91,6 +91,11 @@ function demo()
         sl.StaticMeshCollider.fromFileAsync(sl.device, assetPath("meshes/teapot.obj"))
             :done(function(col) body:setCollider(col) end)
 
+        return teapot
+    end
+
+    function createSponza(mat)
+        local mesh = createMesh("meshes/sponza.dae", mat)
         return teapot
     end
 
@@ -151,6 +156,7 @@ function demo()
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
     local teapot = createTeapot(shadowedMat)
+    createSponza(shadowedMat)
 
     local checkerBox = createCheckerBox(scene, assetCache)
     checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
