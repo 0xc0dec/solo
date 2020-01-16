@@ -1,5 +1,6 @@
 # TODO
 
+* Mesh collider creation from already loaded mesh.
 * Use proper image layouts in Vulkan.
 * Add center of mass offset.
 * Deferred demo - add shadows.

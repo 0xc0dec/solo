@@ -1,5 +1,5 @@
 /*
- * Solr - Solo Runner, a standalone engine runner for script-only engine programs.
+ * Solr - Solo Runner, a standalone runner for Lua engine programs.
  * 
  * Copyright (c) Aleksey Fedotov
  * MIT license
