@@ -71,7 +71,6 @@ function demo()
     local mainCamera = createSpectatorCamera()
     local skybox = createSkybox(scene, assetCache)
 
-    -- createMesh("meshes/teapot.obj", colorMat)
     createMesh("meshes/sponza.dae", colorMat)
 
     ----------------------
@@ -90,18 +89,14 @@ function demo()
         cmp:update()
     end
 
-    function renderLightCamFrame()
-        scene:visitByTags(~skybox.tag, renderCmp)
-    end
-
-    function renderMainCamFrame()
+    function renderMainCam()
         scene:visitByTags(skybox.tag, renderCmp)
         scene:visitByTags(~skybox.tag, renderCmp)
     end
 
     function update()
         scene:visit(updateCmp)
-        mainCamera.camera:renderFrame(renderMainCamFrame)
+        mainCamera.camera:renderFrame(renderMainCam)
     end
 
     function run()
