@@ -45,7 +45,7 @@ static void registerLibrary(LuaState &state)
             package.path = path .. "/?.lua;" .. package.path
         end
 
-        sl.getCmpId = function(name)
+        sl.cmpNameToId = function(name)
             sl.__nextCmpId = sl.__nextCmpId and sl.__nextCmpId or 1
             sl.__cmpIds = sl.__cmpIds and sl.__cmpIds or {}
     
@@ -60,7 +60,7 @@ static void registerLibrary(LuaState &state)
         end
 
         sl.createComponent = function(id, shape)
-            shape.typeId = sl.getCmpId(id)
+            shape.typeId = sl.cmpNameToId(id)
             return shape
         end
 
