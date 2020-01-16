@@ -83,18 +83,8 @@ bool Matrix::isIdentity() const
 
 auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
 {
-    // TODO via glm
-    const auto zaxis = (eye - target).normalized();
-    const auto xaxis = up.normalized().cross(zaxis).normalized();
-    const auto yaxis = zaxis.cross(xaxis).normalized();
-
-    // Matrix is built already transposed
-    return Matrix(
-        xaxis.x(), yaxis.x(), zaxis.x(), 0,
-        xaxis.y(), yaxis.y(), zaxis.y(), 0,
-        xaxis.z(), yaxis.z(), zaxis.z(), 0,
-        -xaxis.dot(eye), -yaxis.dot(eye), -zaxis.dot(eye), 1
-    );
+    const auto m = glm::lookAt(glm::vec3{eye}, glm::vec3{target}, glm::vec3{up});
+    return Matrix(glm::transpose(m));
 }
 
 auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
