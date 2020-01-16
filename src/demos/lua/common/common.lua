@@ -19,7 +19,6 @@ function callSafe(f)
 end
 
 function setWindowTitle()
-    print(sl.device:renderer():name())
     local title = 'Demo [' .. sl.device:renderer():name() .. '] [' .. sl.device:renderer():gpuName() .. ']'
     sl.device:setWindowTitle(title)
 end
