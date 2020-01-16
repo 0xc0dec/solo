@@ -32,6 +32,7 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Config types" FORCE)
 
 if (MSVC)
     add_compile_options(/std:c++14)
+    add_compile_options(/MP)
     add_compile_options("$<$<CONFIG:DEBUG>:/MTd>")
     add_compile_options("$<$<CONFIG:RELEASE>:/MT>")
 else()
