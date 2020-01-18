@@ -122,7 +122,7 @@ void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    prepareAndBindMesh(material, transform, mesh);
+    bindPipelineAndMesh(material, transform, mesh);
 
     if (vkMesh->partCount())
     {
@@ -140,7 +140,7 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
 void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-    prepareAndBindMesh(material, transform, mesh);
+    bindPipelineAndMesh(material, transform, mesh);
     const auto indexBuffer = vkMesh->partBuffer(part);
     currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
     currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
@@ -154,6 +154,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 
     const auto key = genPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
     auto &context = pipelineContexts_[key];
+    context.key = key;
 
     if (!context.descSet)
     {
@@ -227,7 +228,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
     return context;
 }
 
-void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh)
+void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
     const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
@@ -238,41 +239,46 @@ void VulkanRenderer::prepareAndBindMesh(Material *material, Transform *transform
     auto &context = ensurePipelineContext(transform, vkMaterial, vkMesh);
     context.frameOfLastUse = frame_;
 
-    // TODO Run set updater not so often - only when something really changes
-    
-    // TODO Not necessary (?), buffers don't change anyway, only their content
-    for (auto &pair : context.uniformBuffers)
+    if (currentPipelineContextKey_ != context.key)
     {
-        const auto& info = uniformBufs.at(pair.first);
-        auto &buffer = pair.second;
-        context.descSet.updateUniformBuffer(info.binding, buffer, 0, info.size); // TODO use single large buffer?
+        // TODO Run set updater not so often - only when something really changes
+
+        // TODO Not necessary (?), buffers don't change anyway, only their content
+        for (auto &pair : context.uniformBuffers)
+        {
+            const auto &info = uniformBufs.at(pair.first);
+            auto &buffer = pair.second;
+            context.descSet.updateUniformBuffer(info.binding, buffer, 0, info.size); // TODO use single large buffer?
+        }
+
+        for (auto &pair : materialSamplers)
+        {
+            auto &info = pair.second;
+            context.descSet.updateSampler(
+                info.binding,
+                info.texture->image().view(),
+                info.texture->sampler(),
+                info.texture->image().layout());
+        }
+
+        // Update buffers content
+        // TODO This could probably be done outside of this big "if ()" as it should not count as DescriptorSet change?
+
+        auto &bufferItems = vkMaterial->bufferItems();
+        for (auto &p : bufferItems)
+        {
+            auto &buffer = context.uniformBuffers[p.first];
+            for (auto &pp : p.second)
+                pp.second.write(buffer, currentCamera_, transform);
+        }
+
+        currentCmdBuffer_->bindPipeline(context.pipeline);
+        currentCmdBuffer_->bindDescriptorSet(context.pipeline.layout(), context.descSet);
+
+        currentPipelineContextKey_ = context.key;
     }
 
-    for (auto &pair : materialSamplers)
-    {
-        auto &info = pair.second;
-        context.descSet.updateSampler(
-            info.binding,
-            info.texture->image().view(),
-            info.texture->sampler(),
-            info.texture->image().layout());
-    }
-
-    // Update buffers content
-
-    auto &bufferItems = vkMaterial->bufferItems();
-    for (auto &p: bufferItems)
-    {
-        auto &buffer = context.uniformBuffers[p.first];
-        for (auto &pp: p.second)
-            pp.second.write(buffer, currentCamera_, transform);
-    }
-
-    // Issue commands
-
-    currentCmdBuffer_->bindPipeline(context.pipeline);
-    currentCmdBuffer_->bindDescriptorSet(context.pipeline.layout(), context.descSet);
-
+    // TODO don't rebind an already bound mesh (for instance when we draw mesh parts)
     for (u32 i = 0; i < vkMesh->vertexBufferCount(); i++)
         currentCmdBuffer_->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
 }
@@ -283,6 +289,7 @@ void VulkanRenderer::beginFrame()
     currentCamera_ = nullptr;
     currentRenderPass_ = nullptr;
     currentCmdBuffer_ = nullptr;
+    currentPipelineContextKey_ = 0;
     prevSemaphore_ = swapchain_.moveNext();
 }
 

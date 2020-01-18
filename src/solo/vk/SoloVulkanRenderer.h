@@ -58,6 +58,7 @@ namespace solo
             VulkanDescriptorSet descSet;
             size_t lastMaterialFlagsHash = 0;
             size_t lastMeshLayoutHash = 0;
+            size_t key = 0;
             u32 frameOfLastUse = 0;
         };
 
@@ -78,8 +79,9 @@ namespace solo
         VulkanRenderPass *currentRenderPass_ = nullptr;
         VulkanCmdBuffer *currentCmdBuffer_ = nullptr;
         VkSemaphore prevSemaphore_ = nullptr;
+        size_t currentPipelineContextKey_ = 0;
 
-        void prepareAndBindMesh(Material *material, Transform *transform, Mesh *mesh);
+        void bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh);
         auto ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&;
         void cleanupUnusedRenderPassContexts();
         void cleanupUnusedPipelineContexts();
