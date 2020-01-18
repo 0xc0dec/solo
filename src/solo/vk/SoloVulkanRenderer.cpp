@@ -183,9 +183,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 
     if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
     {
-        const auto vs = vkEffect->vsModule();
-        const auto fs = vkEffect->fsModule();
-        auto pipelineConfig = VulkanPipelineConfig(vs, fs)
+        auto pipelineConfig = VulkanPipelineConfig(vkEffect->vsModule(), vkEffect->fsModule())
             .withDescriptorSetLayout(context.descSet.layout())
             .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
             .withColorBlendAttachmentCount(currentRenderPass_->colorAttachmentCount());
