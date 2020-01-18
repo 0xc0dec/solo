@@ -16,6 +16,8 @@
 namespace solo
 {
     class VulkanRenderer;
+    class VulkanPipelineConfig;
+    class VulkanEffect;
 
     class VulkanMesh final: public Mesh
     {
@@ -41,6 +43,8 @@ namespace solo
         auto partBuffer(u32 index) const -> VkBuffer { return indexBuffers_.at(index).handle(); }
         auto partIndexElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }
         auto minVertexCount() const -> u32 { return minVertexCount_; }
+
+        void configurePipeline(VulkanPipelineConfig &cfg, VulkanEffect *effect);
 
         auto layoutHash() const -> size_t;
 

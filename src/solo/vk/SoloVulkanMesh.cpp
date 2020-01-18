@@ -10,9 +10,24 @@
 #include "SoloDevice.h"
 #include "SoloHash.h"
 #include "SoloVulkanRenderer.h"
+#include "SoloVulkanEffect.h"
 #include <algorithm>
 
 using namespace solo;
+
+static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat
+{
+    switch (attr.elementCount)
+    {
+        case 1: return VK_FORMAT_R32_SFLOAT;
+        case 2: return VK_FORMAT_R32G32_SFLOAT;
+        case 3: return VK_FORMAT_R32G32B32_SFLOAT;
+        case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+        default:
+            SL_DEBUG_PANIC(true, "Unsupported vertex attribute element count");
+            return VK_FORMAT_UNDEFINED;
+    }
+}
 
 VulkanMesh::VulkanMesh(Device *device)
 {
@@ -119,6 +134,39 @@ void VulkanMesh::updateMinVertexCount()
 
     if (minVertexCount_ == max)
         minVertexCount_ = 0;
+}
+
+void VulkanMesh::configurePipeline(VulkanPipelineConfig &cfg, VulkanEffect *effect)
+{
+    const auto &effectVertexAttrs = effect->vertexAttributes();
+
+    for (u32 binding = 0; binding < vertexBufferCount(); binding++)
+    {
+        const auto &layout = vertexBufferLayout(binding);
+        
+        cfg.withVertexBinding(binding, layout.size(), VK_VERTEX_INPUT_RATE_VERTEX);
+
+        u32 offset = 0;
+        for (u32 attrIndex = 0; attrIndex < layout.attributeCount(); attrIndex++)
+        {
+            const auto attr = layout.attribute(attrIndex);
+            const auto format = toVertexFormat(attr);
+            
+            auto location = attr.location;
+            auto found = true;
+            if (!attr.name.empty())
+            {
+                if (effectVertexAttrs.count(attr.name))
+                    location = effectVertexAttrs.at(attr.name).location;
+                else
+                    found = false;
+            }
+            if (found)
+                cfg.withVertexAttribute(location, binding, format, offset);
+
+            offset += attr.size;
+        }
+    }
 }
 
 #endif
