@@ -298,7 +298,7 @@ void VulkanRenderer::endFrame()
     swapchain_.present(device_.queue(), 1, &prevSemaphore_);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
 
-    // Naive cleanup TODO better
+    // TODO Naive cleanup, need better
     if (frame_ % 100 == 0)
     {
         cleanupUnusedPipelineContexts();
@@ -316,8 +316,7 @@ void VulkanRenderer::cleanupUnusedRenderPassContexts()
         for (const auto &p: renderPassContexts_)
         {
             const auto frameOfLastUse = p.second.frameOfLastUse;
-            if ((frame_ > frameOfLastUse && frame_ - frameOfLastUse >= 100) ||
-                (frame_ < frameOfLastUse && frameOfLastUse - frame_ >= 100))
+            if (frame_ - frameOfLastUse >= 100)
             {
                 key = p.first;
                 removed = true;
@@ -339,8 +338,7 @@ void VulkanRenderer::cleanupUnusedPipelineContexts()
         for (const auto &p: pipelineContexts_)
         {
             const auto frameOfLastUse = p.second.frameOfLastUse;
-            if ((frame_ > frameOfLastUse && frame_ - frameOfLastUse >= 100) ||
-                (frame_ < frameOfLastUse && frameOfLastUse - frame_ >= 100))
+            if (frame_ - frameOfLastUse >= 100)
             {
                 key = p.first;
                 removed = true;
