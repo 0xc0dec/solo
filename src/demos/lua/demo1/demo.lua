@@ -94,11 +94,6 @@ function demo()
         return teapot
     end
 
-    function createSponza(mat)
-        local mesh = createMesh("meshes/sponza.dae", mat)
-        return teapot
-    end
-
     function createShadowedMaterial(depthTex)
         local eff = assetCache.getEffect("shadowed")
         local mat = sl.Material.fromEffect(sl.device, eff)
@@ -156,7 +151,6 @@ function demo()
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
     local teapot = createTeapot(shadowedMat)
-    createSponza(shadowedMat)
 
     local checkerBox = createCheckerBox(scene, assetCache)
     checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
