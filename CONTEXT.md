@@ -1,5 +1,7 @@
 # TODO
 
+* Window resize.
+* Rendering into cube map, add glass material to demo.
 * Less umap usages.
 * Mesh collider creation from already loaded mesh.
 * Use proper image layouts in Vulkan.

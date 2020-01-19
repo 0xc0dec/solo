@@ -19,15 +19,15 @@ using namespace solo;
 
 static auto createShaderModule(VkDevice device, const void *data, u32 size) -> VulkanResource<VkShaderModule>
 {
-    VkShaderModuleCreateInfo shaderModuleInfo{};
-    shaderModuleInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-    shaderModuleInfo.pNext = nullptr;
-    shaderModuleInfo.flags = 0;
-    shaderModuleInfo.codeSize = size;
-    shaderModuleInfo.pCode = reinterpret_cast<const u32*>(data);
+    VkShaderModuleCreateInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    info.pNext = nullptr;
+    info.flags = 0;
+    info.codeSize = size;
+    info.pCode = reinterpret_cast<const u32*>(data);
 
     VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &shaderModuleInfo, nullptr, module.cleanRef()));
+    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &info, nullptr, module.cleanRef()));
 
     return module;
 }
