@@ -59,7 +59,7 @@ namespace solo
         auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
         auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
 
-        operator VkPipeline() { return pipeline_; }
+        operator VkPipeline() const { return pipeline_; }
 
         auto handle() const -> VkPipeline { return pipeline_; }
         auto layout() const -> VkPipelineLayout { return layout_; }

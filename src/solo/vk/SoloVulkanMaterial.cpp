@@ -71,7 +71,7 @@ auto VulkanMaterial::stateHash() const -> size_t
     return seed;
 }
 
-void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg)
+void VulkanMaterial::configurePipeline(VulkanPipelineConfig &cfg) const
 {
     switch (polygonMode_)
     {

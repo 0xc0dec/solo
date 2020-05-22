@@ -56,7 +56,7 @@ namespace solo
             umap<str, VulkanBuffer> uniformBuffers;
             VulkanPipeline pipeline;
             VulkanDescriptorSet descSet;
-            size_t lastMaterialFlagsHash = 0;
+            size_t lastMaterialStateHash = 0;
             size_t lastMeshLayoutHash = 0;
             size_t key = 0;
             u32 frameOfLastUse = 0;

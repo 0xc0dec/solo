@@ -162,12 +162,10 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         context.descSet = VulkanDescriptorSet(device_, cfg);
     }
 
-    const auto materialFlagsHash = vkMaterial->stateHash();
+    const auto materialStateHash = vkMaterial->stateHash();
     const auto meshLayoutHash = vkMesh->layoutHash();
-    const auto materialFlagsChanged = materialFlagsHash != context.lastMaterialFlagsHash;
-    const auto meshLayoutChanged = meshLayoutHash != context.lastMeshLayoutHash;
 
-    if (!context.pipeline || materialFlagsChanged || meshLayoutChanged)
+    if (!context.pipeline || materialStateHash != context.lastMaterialStateHash || meshLayoutHash != context.lastMeshLayoutHash)
     {
         auto pipelineConfig = VulkanPipelineConfig(vkEffect->vsModule(), vkEffect->fsModule())
             .withDescriptorSetLayout(context.descSet.layout())
@@ -178,7 +176,7 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
         vkMesh->configurePipeline(pipelineConfig, vkEffect);
 
         context.pipeline = VulkanPipeline{device_, *currentRenderPass_, pipelineConfig};
-        context.lastMaterialFlagsHash = materialFlagsHash;
+        context.lastMaterialStateHash = materialStateHash;
         context.lastMeshLayoutHash = meshLayoutHash;
     }
 

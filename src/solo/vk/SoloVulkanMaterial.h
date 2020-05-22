@@ -54,7 +54,7 @@ namespace solo
         auto bufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems_; } // TODO rename
         auto stateHash() const -> size_t;
 
-        void configurePipeline(VulkanPipelineConfig &cfg);
+        void configurePipeline(VulkanPipelineConfig &cfg) const;
 
     private:
         using ParameterWriteFunc = std::function<void(VulkanBuffer &, u32, u32, const Camera *, const Transform *)>;
