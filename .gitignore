@@ -8,9 +8,8 @@
 *.ilk
 *.idb
 *.vs
-build/
-build/**
-!build/*.cmd
+/build/**/*
+!/build/*.cmd
 *DS_Store*
 *DotSettings.user
 .idea*

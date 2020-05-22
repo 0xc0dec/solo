@@ -10,12 +10,17 @@
 * Same API for both Lua and C++
 
 ## Building
-* Install Python2 (3 not tested).
+* Install Python2 (3 not tested). Needed for building some dependencies.
 * `mkdir build && cd build`.
-* `cmake -G "Visual Studio 16 2019 Win64" ..` (or other generator depending on the OS/IDE).
+* `cmake -G "Visual Studio 16 2019" ..` (or other generator depending on the OS/IDE).
 * Build the generated project.
 
 ## Running Lua demos
+* `cd build`
+* `run-lua-demo1-debug-gl.cmd` or other similar script.
+
+OR
+
 * `cd build/<Debug|Release>`
 * `Solr.exe ../../src/demos/lua/demo<N>/demo_<gl|vk>.lua` where `N` is the demo number
 
