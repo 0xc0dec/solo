@@ -7,7 +7,7 @@
 * TTF fonts
 * Bullet physics
 * Vulkan/OpenGL rendering
-* Exposes API for both Lua and C++
+* Same API for both Lua and C++
 
 ## Building
 * Install Python2 (3 not tested).
