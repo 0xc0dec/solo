@@ -53,7 +53,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
 
     if (renderTarget)
     {
-        const auto targetFrameBuffer = static_cast<VulkanFrameBuffer*>(renderTarget);
+        const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer*>(renderTarget);
         currentRenderPass_ = &targetFrameBuffer->renderPass();
         currentFrameBuffer = targetFrameBuffer->handle();
         dimensions = targetFrameBuffer->dimensions();
@@ -80,7 +80,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
         auto clearColor = currentCamera_->clearColor();
         const VkClearValue clearValue{{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         const auto clearCount = renderTarget
-            ? static_cast<VulkanFrameBuffer*>(renderTarget)->colorAttachmentCount()
+            ? dynamic_cast<VulkanFrameBuffer*>(renderTarget)->colorAttachmentCount()
             : 1;
         for (u32 i = 0; i < clearCount; i++)
             currentCmdBuffer_->clearColorAttachment(i, clearValue, clearRect);
@@ -107,7 +107,7 @@ void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 
 void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
 
     if (vkMesh->partCount())
@@ -125,7 +125,7 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
 
 void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
     const auto indexBuffer = vkMesh->partBuffer(part);
     currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
@@ -135,7 +135,7 @@ void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
 auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&
 {
     const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
+    const auto vkEffect = dynamic_cast<VulkanEffect*>(vkMaterial->effect().get());
     const auto vkMesh = static_cast<VulkanMesh*>(mesh);
 
     const auto key = genPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
@@ -187,9 +187,9 @@ auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial 
 
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
 {
-    const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = static_cast<VulkanEffect*>(vkMaterial->effect().get());
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
+    const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
+    const auto vkEffect = dynamic_cast<VulkanEffect*>(vkMaterial->effect().get());
+    const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     const auto &uniformBufs = vkEffect->uniformBuffers();
     const auto &materialSamplers = vkMaterial->samplers();
     
