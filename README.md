@@ -11,7 +11,7 @@
 
 ## Building
 * Install Python2 (3 not tested). Needed for building some dependencies.
-* `mkdir build && cd build`.
+* `cd build`.
 * `cmake -G "Visual Studio 16 2019" ..` (or other generator depending on the OS/IDE).
 * Build the generated project.
 
