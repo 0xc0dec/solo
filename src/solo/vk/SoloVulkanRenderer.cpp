@@ -188,8 +188,7 @@ void VulkanRenderer::cleanupUnusedRenderPassContexts()
         VulkanRenderPass* key = nullptr;
         for (const auto &p: renderPassContexts_)
         {
-            const auto frameOfLastUse = p.second.frameOfLastUse;
-            if (frame_ - frameOfLastUse >= 100)
+	        if (frame_ - p.second.frameOfLastUse >= 100)
             {
                 key = p.first;
                 removed = true;
@@ -210,8 +209,7 @@ void VulkanRenderer::cleanupUnusedPipelineContexts()
         size_t key = 0;
         for (const auto &p: pipelineContexts_)
         {
-            const auto frameOfLastUse = p.second.frameOfLastUse();
-            if (frame_ - frameOfLastUse >= 100)
+	        if (frame_ - p.second.frameOfLastUse() >= 100)
             {
                 key = p.first;
                 removed = true;

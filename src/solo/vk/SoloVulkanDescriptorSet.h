@@ -39,8 +39,8 @@ namespace solo
 
         auto layout() const -> VkDescriptorSetLayout { return layout_; }
 
-        void updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range);
-        void updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout);
+        void updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range) const;
+        void updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout) const;
 
         auto operator=(const VulkanDescriptorSet &other) -> VulkanDescriptorSet& = delete;
         auto operator=(VulkanDescriptorSet &&other) -> VulkanDescriptorSet& = default;

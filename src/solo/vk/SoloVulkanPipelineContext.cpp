@@ -198,8 +198,7 @@ void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, V
 	for (auto &pair: uniformBuffers_)
 	{
 		const auto &info = effect->uniformBuffers().at(pair.first);
-		auto &buffer = pair.second;
-		descSet_.updateUniformBuffer(info.binding, buffer, 0, info.size); // TODO use single large buffer?
+		descSet_.updateUniformBuffer(info.binding, pair.second, 0, info.size); // TODO use single large buffer?
 	}
 
 	for (const auto &pair: material->samplers())

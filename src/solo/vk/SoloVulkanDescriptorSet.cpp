@@ -78,7 +78,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
 }
 
 // TODO do updates in batch using single vkUpdateDescriptorSets call
-void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range)
+void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range) const
 {
     VkDescriptorBufferInfo bufferInfo = {buffer, offset, range};
 
@@ -97,7 +97,7 @@ void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDe
 }
 
 // TODO do updates in batch using single vkUpdateDescriptorSets call
-void VulkanDescriptorSet::updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout)
+void VulkanDescriptorSet::updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout) const
 {
     VkDescriptorImageInfo imageInfo = {sampler, view, layout};
 
