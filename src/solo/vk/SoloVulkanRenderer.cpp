@@ -29,17 +29,17 @@ static auto pipelineContextKey(Transform *transform, Camera *camera, VulkanMater
     return seed;
 }
 
-VulkanRenderer::VulkanRenderer(Device *engineDevice):
-    engineDevice_(engineDevice)
+VulkanRenderer::VulkanRenderer(Device *device):
+    engineDevice_(device)
 {
-    const auto vulkanDevice = dynamic_cast<VulkanSDLDevice*>(engineDevice);
-    const auto instance = vulkanDevice->instance();
-    const auto surface = vulkanDevice->surface();
-    const auto canvasSize = engineDevice->canvasSize();
+    const auto vkDevice = dynamic_cast<VulkanSDLDevice*>(device);
+    const auto instance = vkDevice->instance();
+    const auto surface = vkDevice->surface();
+    const auto canvasSize = device->canvasSize();
 
     device_ = VulkanDevice(instance, surface);
-    swapchain_ = VulkanSwapchain(device_, static_cast<u32>(
-        canvasSize.x()), static_cast<u32>(canvasSize.y()), engineDevice->isVsync());
+    swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
+		device->isVsync());
 }
 
 void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)

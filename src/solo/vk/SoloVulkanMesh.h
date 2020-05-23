@@ -44,8 +44,6 @@ namespace solo
         auto partIndexElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }
         auto minVertexCount() const -> u32 { return minVertexCount_; }
 
-        void configurePipeline(VulkanPipelineConfig &cfg, VulkanEffect *effect);
-
         auto layoutHash() const -> size_t;
 
     private:
