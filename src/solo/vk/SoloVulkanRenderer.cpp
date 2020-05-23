@@ -13,13 +13,12 @@
 #include "SoloVulkanSDLDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
-#include "SoloVulkanEffect.h"
-#include "SoloVulkanTexture.h"
 #include "SoloCamera.h"
+#include "SoloVulkanPipelineContext.h"
 
 using namespace solo;
 
-static auto genPipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
+static auto pipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
 {
     size_t seed = 0;
     const std::hash<void*> hasher;
@@ -132,105 +131,24 @@ void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Ma
     currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
 }
 
-auto VulkanRenderer::ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&
-{
-    const auto vkMaterial = static_cast<VulkanMaterial*>(material);
-    const auto vkEffect = dynamic_cast<VulkanEffect*>(vkMaterial->effect().get());
-    const auto vkMesh = static_cast<VulkanMesh*>(mesh);
-
-    const auto key = genPipelineContextKey(transform, currentCamera_, material, *currentRenderPass_);
-    auto &context = pipelineContexts_[key];
-    context.key = key;
-
-    if (!context.descSet)
-    {
-        const auto &uniformBufs = vkEffect->uniformBuffers();
-        const auto &effectSamplers = vkEffect->samplers();
-
-        VulkanDescriptorSetConfig cfg;
-
-        for (const auto &pair : uniformBufs)
-        {
-            const auto bufferName = pair.first;
-            context.uniformBuffers[bufferName] = VulkanBuffer::uniformHostVisible(device_, pair.second.size);
-            cfg.addUniformBuffer(pair.second.binding);
-        }
-
-        for (auto &pair : effectSamplers)
-            cfg.addSampler(pair.second.binding);
-
-        context.descSet = VulkanDescriptorSet(device_, cfg);
-    }
-
-    const auto materialStateHash = vkMaterial->stateHash();
-    const auto meshLayoutHash = vkMesh->layoutHash();
-
-    if (!context.pipeline || materialStateHash != context.lastMaterialStateHash || meshLayoutHash != context.lastMeshLayoutHash)
-    {
-        auto pipelineConfig = VulkanPipelineConfig(vkEffect->vsModule(), vkEffect->fsModule())
-            .withDescriptorSetLayout(context.descSet.layout())
-            .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
-            .withColorBlendAttachmentCount(currentRenderPass_->colorAttachmentCount());
-        
-        vkMaterial->configurePipeline(pipelineConfig);
-        vkMesh->configurePipeline(pipelineConfig, vkEffect);
-
-        context.pipeline = VulkanPipeline{device_, *currentRenderPass_, pipelineConfig};
-        context.lastMaterialStateHash = materialStateHash;
-        context.lastMeshLayoutHash = meshLayoutHash;
-    }
-
-    return context;
-}
-
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
-    const auto vkEffect = dynamic_cast<VulkanEffect*>(vkMaterial->effect().get());
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
-    const auto &uniformBufs = vkEffect->uniformBuffers();
-    const auto &materialSamplers = vkMaterial->samplers();
+
+	const auto key = pipelineContextKey(transform, currentCamera_, vkMaterial, *currentRenderPass_);
+	if (!pipelineContexts_.count(key))
+		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&device_, key)));
+
+	auto &context = pipelineContexts_.at(key);
+	context.setFrameOfLastUse(frame_);
     
-    auto &context = ensurePipelineContext(transform, vkMaterial, vkMesh);
-    context.frameOfLastUse = frame_;
-
-    if (currentPipelineContextKey_ != context.key)
+    if (currentPipelineContextKey_ != context.key())
     {
-        // TODO Run set updater not so often - only when something really changes
-
-        // TODO Not necessary (?), buffers don't change anyway, only their content
-        for (auto &pair : context.uniformBuffers)
-        {
-            const auto &info = uniformBufs.at(pair.first);
-            auto &buffer = pair.second;
-            context.descSet.updateUniformBuffer(info.binding, buffer, 0, info.size); // TODO use single large buffer?
-        }
-
-        for (auto &pair : materialSamplers)
-        {
-            auto &info = pair.second;
-            context.descSet.updateSampler(
-                info.binding,
-                info.texture->image().view(),
-                info.texture->sampler(),
-                info.texture->image().layout());
-        }
-
-        // Update buffers content
-        // TODO This could probably be done outside of this big "if ()" as it should not count as DescriptorSet change?
-
-        auto &bufferItems = vkMaterial->bufferItems();
-        for (auto &p : bufferItems)
-        {
-            auto &buffer = context.uniformBuffers[p.first];
-            for (auto &pp : p.second)
-                pp.second.write(buffer, currentCamera_, transform);
-        }
-
-        currentCmdBuffer_->bindPipeline(context.pipeline);
-        currentCmdBuffer_->bindDescriptorSet(context.pipeline.layout(), context.descSet);
-
-        currentPipelineContextKey_ = context.key;
+    	context.update(vkMaterial, vkMesh, currentRenderPass_, currentCamera_, transform);
+        currentCmdBuffer_->bindPipeline(context.pipeline());
+        currentCmdBuffer_->bindDescriptorSet(context.pipeline().layout(), context.descriptorSet());
+        currentPipelineContextKey_ = context.key();
     }
 
     // TODO don't rebind an already bound mesh (for instance when we draw mesh parts)
@@ -292,7 +210,7 @@ void VulkanRenderer::cleanupUnusedPipelineContexts()
         size_t key = 0;
         for (const auto &p: pipelineContexts_)
         {
-            const auto frameOfLastUse = p.second.frameOfLastUse;
+            const auto frameOfLastUse = p.second.frameOfLastUse();
             if (frame_ - frameOfLastUse >= 100)
             {
                 key = p.first;

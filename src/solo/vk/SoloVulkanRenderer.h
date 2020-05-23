@@ -11,12 +11,10 @@
 
 #include "SoloRenderer.h"
 #include "SoloVulkanSwapchain.h"
-#include "SoloVulkanPipeline.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanBuffer.h"
-#include "SoloVulkanDescriptorSet.h"
 #include "SoloVulkanCmdBuffer.h"
 #include "SoloVulkanDevice.h"
+#include "SoloVulkanPipelineContext.h"
 
 namespace solo
 {
@@ -51,17 +49,6 @@ namespace solo
         VulkanDevice device_;
         VulkanSwapchain swapchain_;
 
-        struct PipelineContext
-        {
-            umap<str, VulkanBuffer> uniformBuffers;
-            VulkanPipeline pipeline;
-            VulkanDescriptorSet descSet;
-            size_t lastMaterialStateHash = 0;
-            size_t lastMeshLayoutHash = 0;
-            size_t key = 0;
-            u32 frameOfLastUse = 0;
-        };
-
         struct RenderPassContext
         {
             VulkanResource<VkSemaphore> completeSemaphore;
@@ -73,7 +60,7 @@ namespace solo
         u32 frame_ = 0;
 
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
-        umap<size_t, PipelineContext> pipelineContexts_;
+    	umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
         Camera *currentCamera_ = nullptr;
         VulkanRenderPass *currentRenderPass_ = nullptr;
@@ -82,7 +69,6 @@ namespace solo
         size_t currentPipelineContextKey_ = 0;
 
         void bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh);
-        auto ensurePipelineContext(Transform *transform, VulkanMaterial *material, VulkanMesh *mesh) -> PipelineContext&;
         void cleanupUnusedRenderPassContexts();
         void cleanupUnusedPipelineContexts();
     };
