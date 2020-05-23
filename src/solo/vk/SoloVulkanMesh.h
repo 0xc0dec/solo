@@ -25,17 +25,17 @@ namespace solo
         explicit VulkanMesh(Device *device);
         ~VulkanMesh() = default;
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
-        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
-        void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override final;
-        void removeVertexBuffer(u32 index) override final;
+        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
+        void removeVertexBuffer(u32 index) override;
 
-        auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
-        void removePart(u32 index) override final;
-        auto partCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
+        auto addPart(const void *indexData, u32 indexElementCount) -> u32 override;
+        void removePart(u32 index) override;
+        auto partCount() const -> u32 override { return static_cast<u32>(indexBuffers_.size()); }
 
-        auto primitiveType() const -> PrimitiveType override final;
-        void setPrimitiveType(PrimitiveType type) override final;
+        auto primitiveType() const -> PrimitiveType override;
+        void setPrimitiveType(PrimitiveType type) override;
 
         auto vertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers_.size()); }
         auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }

@@ -33,7 +33,7 @@ auto VulkanBuffer::uniformHostVisible(const VulkanDevice &dev, VkDeviceSize size
 
 auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
-    auto stagingBuffer = staging(dev, size, data);
+	const auto stagingBuffer = staging(dev, size, data);
     auto buffer = VulkanBuffer(dev, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer);
     return buffer;
@@ -83,7 +83,7 @@ void VulkanBuffer::updateAll(const void *newData) const
     vkUnmapMemory(device_->handle(), memory_);
 }
 
-void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size)
+void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size) const
 {
     void *ptr = nullptr;
     SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));

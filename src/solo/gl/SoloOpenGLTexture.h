@@ -34,7 +34,7 @@ namespace solo
         static auto empty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>;
         static auto fromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>;
 
-        void bind() override final;
+        void bind() override;
 
     private:
         OpenGLTexture2D(TextureFormat format, Vector2 dimensions);
@@ -45,7 +45,7 @@ namespace solo
     public:
         static auto fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>;
 
-        void bind() override final;
+        void bind() override;
 
     private:
         OpenGLCubeTexture(TextureFormat format, u32 dimension);

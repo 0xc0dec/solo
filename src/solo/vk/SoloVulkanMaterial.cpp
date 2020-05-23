@@ -87,9 +87,9 @@ void VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
 
 void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFunc &write)
 {
-    auto parsedName = parseName(name);
-    auto bufferName = std::get<0>(parsedName);
-    auto fieldName = std::get<1>(parsedName);
+    const auto parsedName = parseName(name);
+    const auto &bufferName = std::get<0>(parsedName);
+    const auto &fieldName = std::get<1>(parsedName);
     SL_DEBUG_PANIC(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
     auto bufferInfo = effect_->uniformBuffer(bufferName);
@@ -113,9 +113,9 @@ void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 
 void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
-    auto parsedName = parseName(name);
-    auto bufferName = std::get<0>(parsedName);
-    auto fieldName = std::get<1>(parsedName);
+    const auto parsedName = parseName(name);
+    const auto &bufferName = std::get<0>(parsedName);
+    const auto &fieldName = std::get<1>(parsedName);
     SL_DEBUG_PANIC(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
     auto bufferInfo = effect_->uniformBuffer(bufferName);

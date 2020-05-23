@@ -10,7 +10,6 @@
 #include "SoloDevice.h"
 #include "SoloHash.h"
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanEffect.h"
 #include <algorithm>
 
 using namespace solo;

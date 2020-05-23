@@ -188,17 +188,17 @@ void VulkanCmdBuffer::endAndFlush()
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_->queue()));
 }
 
-auto VulkanCmdBuffer::begin(bool oneTime) -> VulkanCmdBuffer&
+auto VulkanCmdBuffer::begin(bool transient) -> VulkanCmdBuffer&
 
 {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    beginInfo.flags = oneTime ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
+    beginInfo.flags = transient ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
     SL_VK_CHECK_RESULT(vkBeginCommandBuffer(handle_, &beginInfo));
     return *this;
 }
 
-void VulkanCmdBuffer::end()
+void VulkanCmdBuffer::end() const
 {
     SL_VK_CHECK_RESULT(vkEndCommandBuffer(handle_));
 }

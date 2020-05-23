@@ -220,7 +220,7 @@ void OpenGLRenderer::endCamera(Camera *camera)
     currentCamera_ = nullptr;
 }
 
-void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
+void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
 {
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
@@ -228,7 +228,7 @@ void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
     dynamic_cast<OpenGLMesh*>(mesh)->draw(effect);
 }
 
-void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
+void OpenGLRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());

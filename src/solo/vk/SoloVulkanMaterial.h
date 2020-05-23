@@ -27,7 +27,7 @@ namespace solo
     public:
         struct UniformBufferItem
         {
-            std::function<void(VulkanBuffer &, const Camera *, const Transform *)> write;
+            std::function<void(VulkanBuffer&, const Camera*, const Transform*)> write;
         };
 
         struct Sampler
@@ -55,7 +55,7 @@ namespace solo
         auto stateHash() const -> size_t;
 
     private:
-        using ParameterWriteFunc = std::function<void(VulkanBuffer &, u32, u32, const Camera *, const Transform *)>;
+        using ParameterWriteFunc = std::function<void(VulkanBuffer&, u32, u32, const Camera*, const Transform*)>;
 
         sptr<VulkanEffect> effect_;
         umap<str, umap<str, UniformBufferItem>> bufferItems_;

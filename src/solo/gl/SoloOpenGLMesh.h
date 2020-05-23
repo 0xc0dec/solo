@@ -23,17 +23,17 @@ namespace solo
         OpenGLMesh() = default;
         ~OpenGLMesh();
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
-        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override final;
-        void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override final;
-        void removeVertexBuffer(u32 index) override final;
+        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
+        void removeVertexBuffer(u32 index) override;
 
-        auto addPart(const void *indexData, u32 indexElementCount) -> u32 override final;
-        void removePart(u32 index) override final;
-        auto partCount() const -> u32 override final { return static_cast<u32>(indexBuffers_.size()); }
+        auto addPart(const void *indexData, u32 indexElementCount) -> u32 override;
+        void removePart(u32 part) override;
+        auto partCount() const -> u32 override { return static_cast<u32>(indexBuffers_.size()); }
 
-        auto primitiveType() const -> PrimitiveType override final { return primitiveType_; }
-        void setPrimitiveType(PrimitiveType type) override final { primitiveType_ = type; }
+        auto primitiveType() const -> PrimitiveType override { return primitiveType_; }
+        void setPrimitiveType(PrimitiveType type) override { primitiveType_ = type; }
 
         void draw(OpenGLEffect *effect);
         void drawPart(u32 part, OpenGLEffect *effect);
@@ -53,7 +53,7 @@ namespace solo
             u32 age;
         };
 
-        umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache_; // TODO clean!
+        umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache_;
 
         auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32;
 

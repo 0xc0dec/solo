@@ -16,7 +16,7 @@ using namespace solo;
 
 auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 {
-    uptr<Device> device = nullptr;
+    uptr<Device> device;
     
     switch (setup.mode)
     {
@@ -100,7 +100,7 @@ void Device::update(const std::function<void()> &update)
     beginUpdate();
     jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics_->update();
-    renderer_->renderFrame([&]() { update(); });
+    renderer_->renderFrame(update);
     endUpdate();
 }
 

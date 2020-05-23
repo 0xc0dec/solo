@@ -19,12 +19,12 @@ namespace solo
         explicit OpenGLSDLDevice(const DeviceSetup &setup);
         virtual ~OpenGLSDLDevice();
 
-        void saveScreenshot(const str &path) override final;
+        void saveScreenshot(const str &path) override;
 
     private:
         SDL_GLContext context_ = nullptr;
 
-        void endUpdate() override final;
+        void endUpdate() override;
 
         void cleanup();
     };

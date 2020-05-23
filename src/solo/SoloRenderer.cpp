@@ -28,7 +28,7 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
     }
 }
 
-void Renderer::renderFrame(std::function<void()> render)
+void Renderer::renderFrame(const std::function<void()> &render)
 {
     beginFrame();
     render();

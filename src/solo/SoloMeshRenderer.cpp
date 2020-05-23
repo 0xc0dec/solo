@@ -34,7 +34,7 @@ void MeshRenderer::render()
     {
         const auto mat = material(0);
         if (mat)
-            renderer_->drawMesh(mesh_.get(), transform_, mat.get());
+            renderer_->renderMesh(mesh_.get(), transform_, mat.get());
     }
     else
     {
@@ -42,7 +42,7 @@ void MeshRenderer::render()
         {
             const auto mat = material(part);
             if (mat)
-                renderer_->drawMeshPart(mesh_.get(), part, transform_, mat.get());
+                renderer_->renderMeshPart(mesh_.get(), part, transform_, mat.get());
         }
     }
 }

@@ -25,13 +25,13 @@ namespace solo
 
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;
-        virtual void drawMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
-        virtual void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) = 0;
+        virtual void renderMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
+        virtual void renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) = 0;
 
         virtual auto name() const -> const char* = 0;
         virtual auto gpuName() const -> const char* = 0;
 
-        void renderFrame(std::function<void()> render);
+        void renderFrame(const std::function<void()> &render);
 
     protected:
         Renderer() = default;

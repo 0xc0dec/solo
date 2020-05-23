@@ -44,21 +44,14 @@ VulkanRenderer::VulkanRenderer(Device *device):
 
 void VulkanRenderer::beginCamera(Camera *camera)
 {
-    currentCamera_ = camera;
-    currentRenderPass_ = &swapchain_.renderPass();
-    
-    auto currentFrameBuffer = swapchain_.currentFrameBuffer();
-    auto dimensions = engineDevice_->canvasSize();
-
 	const auto renderTarget = camera->renderTarget().get();
-    if (renderTarget)
-    {
-        const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer*>(renderTarget);
-        currentRenderPass_ = &targetFrameBuffer->renderPass();
-        currentFrameBuffer = targetFrameBuffer->handle();
-        dimensions = targetFrameBuffer->dimensions();
-    }
+	const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer*>(renderTarget);
+    const auto currentFrameBuffer = targetFrameBuffer ? targetFrameBuffer->handle() : swapchain_.currentFrameBuffer();
+    const auto dimensions = targetFrameBuffer ? targetFrameBuffer->dimensions() : engineDevice_->canvasSize();
 
+	currentCamera_ = camera;
+	currentRenderPass_ = targetFrameBuffer ? &targetFrameBuffer->renderPass() : &swapchain_.renderPass();
+	
     if (!renderPassContexts_.count(currentRenderPass_))
     {
         renderPassContexts_[currentRenderPass_].cmdBuf = VulkanCmdBuffer(device_);
@@ -105,7 +98,7 @@ void VulkanRenderer::endCamera(Camera *camera)
     currentCamera_ = nullptr;
 }
 
-void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
+void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
 {
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
@@ -123,7 +116,7 @@ void VulkanRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *materi
         currentCmdBuffer_->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
-void VulkanRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
+void VulkanRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);

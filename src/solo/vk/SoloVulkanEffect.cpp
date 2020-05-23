@@ -24,7 +24,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
     info.pNext = nullptr;
     info.flags = 0;
     info.codeSize = size;
-    info.pCode = reinterpret_cast<const u32*>(data);
+    info.pCode = static_cast<const u32*>(data);
 
     VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
     SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &info, nullptr, module.cleanRef()));
@@ -34,7 +34,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
 
 static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> shaderc::SpvCompilationResult
 {
-    shaderc::Compiler compiler{};
+	const shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
     auto result = compiler.CompileGlslToSpv(
         static_cast<const s8*>(src),
@@ -88,7 +88,7 @@ auto VulkanEffect::sampler(const str &name) -> Sampler
 
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
 {
-    spirv_cross::CompilerGLSL compiler{src, len};
+	const spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();
 
     for (auto &buffer: resources.uniform_buffers)

@@ -28,8 +28,8 @@ namespace solo
         VulkanCmdBuffer(VulkanCmdBuffer &&other) = default;
         ~VulkanCmdBuffer() = default;
 
-        auto begin(bool oneTime) -> VulkanCmdBuffer&; // TODO avoid oneTime param
-        void end();
+        auto begin(bool transient) -> VulkanCmdBuffer&; // TODO better understanding of the `transient` param
+        void end() const;
         void endAndFlush();
 
         auto beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)

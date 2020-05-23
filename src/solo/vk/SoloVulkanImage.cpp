@@ -334,7 +334,7 @@ auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -
         )
     );
 
-    auto srcBuf = VulkanBuffer::staging(dev, data->size());
+    const auto srcBuf = VulkanBuffer::staging(dev, data->size());
 
     // Engine provides faces in order +X, -X, +Y, -Y, +Z, -Z
     // Vulkan's Y axis is inverted, so we invert

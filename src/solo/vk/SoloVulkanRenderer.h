@@ -31,8 +31,8 @@ namespace solo
 
         void beginCamera(Camera *camera) override;
         void endCamera(Camera *camera) override;
-        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override;
-        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override;
+        void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
+        void renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override;
 
         auto name() const -> const char* override { return "Vulkan"; }
         auto gpuName() const -> const char* override { return device_.gpuName(); }
