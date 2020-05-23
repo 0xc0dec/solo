@@ -12,7 +12,6 @@ namespace solo
 {
     class Device;
     class Camera;
-    class FrameBuffer;
     class Mesh;
     class Transform;
     class Material;
@@ -24,8 +23,8 @@ namespace solo
 
         virtual ~Renderer() = default;
 
-        virtual void beginCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
-        virtual void endCamera(Camera *camera, FrameBuffer *renderTarget) = 0;
+        virtual void beginCamera(Camera *camera) = 0;
+        virtual void endCamera(Camera *camera) = 0;
         virtual void drawMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
         virtual void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) = 0;
 

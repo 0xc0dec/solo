@@ -29,19 +29,19 @@ namespace solo
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer() = default;
 
-        void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
-        void endCamera(Camera *camera, FrameBuffer *renderTarget) override final;
-        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
-        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
+        void beginCamera(Camera *camera) override;
+        void endCamera(Camera *camera) override;
+        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override;
+        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override;
 
-        auto name() const -> const char* override final { return "Vulkan"; }
-        auto gpuName() const -> const char* override final { return device_.gpuName(); }
+        auto name() const -> const char* override { return "Vulkan"; }
+        auto gpuName() const -> const char* override { return device_.gpuName(); }
 
         auto device() const -> const VulkanDevice& { return device_; }
 
     protected:
-        void beginFrame() override final;
-        void endFrame() override final;
+        void beginFrame() override;
+        void endFrame() override;
 
     private:
         Device *engineDevice_ = nullptr;

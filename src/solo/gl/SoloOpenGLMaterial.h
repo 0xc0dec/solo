@@ -27,25 +27,25 @@ namespace solo
     {
     public:
         explicit OpenGLMaterial(sptr<Effect> effect);
-        ~OpenGLMaterial() {}
+        virtual ~OpenGLMaterial() = default;
 
-        auto effect() const -> sptr<Effect> override final { return effect_; }
+        auto effect() const -> sptr<Effect> override { return effect_; }
 
-        void setFloatParameter(const str &name, float value) override final;
-        void setVector2Parameter(const str &name, const Vector2 &value) override final;
-        void setVector3Parameter(const str &name, const Vector3 &value) override final;
-        void setVector4Parameter(const str &name, const Vector4 &value) override final;
-        void setMatrixParameter(const str &name, const Matrix &value) override final;
-        void setTextureParameter(const str &name, sptr<solo::Texture> value) override final;
+        void setFloatParameter(const str &name, float value) override;
+        void setVector2Parameter(const str &name, const Vector2 &value) override;
+        void setVector3Parameter(const str &name, const Vector3 &value) override;
+        void setVector4Parameter(const str &name, const Vector4 &value) override;
+        void setMatrixParameter(const str &name, const Matrix &value) override;
+        void setTextureParameter(const str &name, sptr<Texture> value) override;
 
-        void bindParameter(const str &name, ParameterBinding binding) override final;
+        void bindParameter(const str &name, ParameterBinding binding) override;
 
         void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
     protected:
         using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
 
-        sptr<OpenGLEffect> effect_ = nullptr;
+        sptr<OpenGLEffect> effect_;
 
         // Maybe not the fastest, but convenient and good enough for now
         umap<str, ParameterApplier> appliers_;

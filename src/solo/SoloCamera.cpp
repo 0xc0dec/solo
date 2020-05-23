@@ -141,9 +141,9 @@ auto Camera::invViewProjectionMatrix() const -> Matrix
 
 void Camera::renderFrame(const std::function<void()> &render)
 {
-    renderer_->beginCamera(this, renderTarget_.get());
+    renderer_->beginCamera(this);
     render();
-    renderer_->endCamera(this, renderTarget_.get());
+    renderer_->endCamera(this);
 }
 
 auto Camera::windowPointToWorldRay(const Vector2 &pt) const -> Ray

@@ -170,9 +170,22 @@ static auto version() -> std::pair<GLint, GLint>
     return {major, minor};
 }
 
+void applyMaterial(Material *material)
+{
+    const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
+    glUseProgram(static_cast<const GLuint>(effect->handle()));
+    setFaceCull(material->faceCull());
+    setPolygonMode(material->polygonMode());
+    setDepthTest(material->hasDepthTest());
+    setDepthWrite(material->hasDepthWrite());
+    setDepthFunction(material->depthFunction());
+    setBlend(material->hasBlend());
+    setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
+}
+
 OpenGLRenderer::OpenGLRenderer(Device *device)
 {
-    auto ver = version();
+	const auto ver = version();
     name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
     SL_DEBUG_PANIC(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
 }
@@ -182,11 +195,12 @@ auto OpenGLRenderer::gpuName() const -> const char*
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }
 
-void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
+void OpenGLRenderer::beginCamera(Camera *camera)
 {
+	const auto renderTarget = camera->renderTarget();
     if (renderTarget)
     {
-        const auto fb = static_cast<OpenGLFrameBuffer*>(renderTarget)->handle();
+        const auto fb = dynamic_cast<OpenGLFrameBuffer*>(renderTarget.get())->handle();
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
 
@@ -198,8 +212,9 @@ void OpenGLRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     currentCamera_ = camera;
 }
 
-void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
+void OpenGLRenderer::endCamera(Camera *camera)
 {
+	const auto renderTarget = camera->renderTarget();
     if (renderTarget)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     currentCamera_ = nullptr;
@@ -208,17 +223,17 @@ void OpenGLRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
 void OpenGLRenderer::drawMesh(Mesh *mesh, Transform *transform, Material *material)
 {
     applyMaterial(material);
-    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
-    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
-    static_cast<OpenGLMesh*>(mesh)->draw(effect);
+    const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
+    dynamic_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
+    dynamic_cast<OpenGLMesh*>(mesh)->draw(effect);
 }
 
 void OpenGLRenderer::drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
 {
     applyMaterial(material);
-    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
-    static_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
-    static_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
+    const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
+    dynamic_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
+    dynamic_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
 }
 
 void OpenGLRenderer::beginFrame()
@@ -228,19 +243,6 @@ void OpenGLRenderer::beginFrame()
 
 void OpenGLRenderer::endFrame()
 {
-}
-
-void OpenGLRenderer::applyMaterial(Material *material)
-{
-    const auto effect = static_cast<OpenGLEffect*>(material->effect().get());
-    glUseProgram(static_cast<const GLuint>(effect->handle()));
-    setFaceCull(material->faceCull());
-    setPolygonMode(material->polygonMode());
-    setDepthTest(material->hasDepthTest());
-    setDepthWrite(material->hasDepthWrite());
-    setDepthFunction(material->depthFunction());
-    setBlend(material->hasBlend());
-    setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
 }
 
 #endif

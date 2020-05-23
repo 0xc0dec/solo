@@ -21,23 +21,21 @@ namespace solo
         explicit OpenGLRenderer(Device *device);
         ~OpenGLRenderer() = default;
 
-        void beginCamera(Camera *camera, FrameBuffer *renderTarget) override final;
-        void endCamera(Camera *camera, FrameBuffer *renderTarget) override final;
-        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override final;
-        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override final;
+        void beginCamera(Camera *camera) override;
+        void endCamera(Camera *camera) override;
+        void drawMesh(Mesh *mesh, Transform *transform, Material *material) override;
+        void drawMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material) override;
 
-        auto name() const -> const char* override final { return name_.c_str(); }
-        auto gpuName() const -> const char* override final;
+        auto name() const -> const char* override { return name_.c_str(); }
+        auto gpuName() const -> const char* override;
 
     protected:
-        void beginFrame() override final;
-        void endFrame() override final;
+        void beginFrame() override;
+        void endFrame() override;
 
     private:
         str name_;
         Camera *currentCamera_ = nullptr;
-
-        void applyMaterial(Material *material);
     };
 }
 

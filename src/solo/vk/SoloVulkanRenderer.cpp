@@ -42,7 +42,7 @@ VulkanRenderer::VulkanRenderer(Device *device):
 		device->isVsync());
 }
 
-void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
+void VulkanRenderer::beginCamera(Camera *camera)
 {
     currentCamera_ = camera;
     currentRenderPass_ = &swapchain_.renderPass();
@@ -50,6 +50,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     auto currentFrameBuffer = swapchain_.currentFrameBuffer();
     auto dimensions = engineDevice_->canvasSize();
 
+	const auto renderTarget = camera->renderTarget().get();
     if (renderTarget)
     {
         const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer*>(renderTarget);
@@ -90,7 +91,7 @@ void VulkanRenderer::beginCamera(Camera *camera, FrameBuffer *renderTarget)
     currentCmdBuffer_->setScissor(viewport);
 }
 
-void VulkanRenderer::endCamera(Camera *camera, FrameBuffer *renderTarget)
+void VulkanRenderer::endCamera(Camera *camera)
 {
     auto &ctx = renderPassContexts_.at(currentRenderPass_);
     ctx.cmdBuf.endRenderPass();
