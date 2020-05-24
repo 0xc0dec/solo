@@ -18,9 +18,9 @@ static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout,
     return mesh->addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
-static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount)
+static void updateVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount)
 {
-    mesh->updateDynamicVertexBuffer(index, vertexOffset, data.data(), vertexCount);
+    mesh->updateVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
 static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32
@@ -59,7 +59,7 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
         REG_STATIC_METHOD(binding, Mesh, fromFileAsync);
         REG_FREE_FUNC_AS_METHOD(binding, addVertexBuffer);
         REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
-        REG_FREE_FUNC_AS_METHOD(binding, updateDynamicVertexBuffer);
+        REG_FREE_FUNC_AS_METHOD(binding, updateVertexBuffer);
         REG_METHOD(binding, Mesh, removeVertexBuffer);
     	REG_METHOD(binding, Mesh, vertexBufferCount);
     	REG_METHOD(binding, Mesh, vertexBufferVertexCount);

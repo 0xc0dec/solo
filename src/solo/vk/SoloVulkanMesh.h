@@ -27,7 +27,7 @@ namespace solo
 
         auto addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
         auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
-        void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
+        void updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
         void removeVertexBuffer(u32 index) override;
 
         auto addPart(const vec<u32> &data, u32 indexElementCount) -> u32 override;

@@ -14,7 +14,7 @@ return function(scene, assetCache)
                 data[8] = 0.5 * math.sin(time + 2)
                 data[13] = 0.5 * math.sin(time + 3)
                 data[18] = 0.5 * math.sin(time + 4)
-                mesh:updateDynamicVertexBuffer(0, 0, data, 4)
+                mesh:updateVertexBuffer(0, 0, data, 4)
             end
         })
     end

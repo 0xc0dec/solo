@@ -161,13 +161,13 @@ void OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
     resetVertexArrayCache();
 }
 
-void OpenGLMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
+void OpenGLMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
 	const auto vertexSize = layouts_.at(index).size();
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers_.at(index));
 	glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	Mesh::updateDynamicVertexBuffer(index, vertexOffset, data, vertexCount);
+	Mesh::updateVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
 void OpenGLMesh::removeVertexBuffer(u32 index)

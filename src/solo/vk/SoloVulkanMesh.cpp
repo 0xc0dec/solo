@@ -31,11 +31,11 @@ auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const 
     return Mesh::addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
-void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
+void VulkanMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
     const auto vertexSize = layouts_[index].size();
     vertexBuffers_[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
-	Mesh::updateDynamicVertexBuffer(index, vertexOffset, data, vertexCount);
+	Mesh::updateVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
 void VulkanMesh::removeVertexBuffer(u32 index)

@@ -209,7 +209,7 @@ auto Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<fl
 	return static_cast<u32>(vertexCounts_.size() - 1);
 }
 
-void Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
+void Mesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
 	// TODO
 }

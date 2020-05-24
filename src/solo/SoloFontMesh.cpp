@@ -132,6 +132,6 @@ void FontMesh::updateMesh()
     	uvs_.push_back(glyphInfo.uvs[3].y());
     }
 
-    mesh_->updateDynamicVertexBuffer(0, 0, reinterpret_cast<const float *>(vertices_.data()), static_cast<u32>(vertices_.size()));
-    mesh_->updateDynamicVertexBuffer(1, 0, reinterpret_cast<const float *>(uvs_.data()), static_cast<u32>(uvs_.size()));
+    mesh_->updateVertexBuffer(0, 0, reinterpret_cast<const float *>(vertices_.data()), static_cast<u32>(vertices_.size()));
+    mesh_->updateVertexBuffer(1, 0, reinterpret_cast<const float *>(uvs_.data()), static_cast<u32>(uvs_.size()));
 }
