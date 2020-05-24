@@ -23,9 +23,9 @@ static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, c
     mesh->updateDynamicVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
-static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32 // TODO 16-bit index support?
+static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32
 {
-    return mesh->addPart(indexData.data(), indexElementCount);
+    return mesh->addPart(indexData.data(), indexElementCount, IndexElementSize::Bits32); // TODO 16-bit support?
 }
 
 static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)

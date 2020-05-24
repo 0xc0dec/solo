@@ -34,6 +34,18 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
     return 0;
 }
 
+static auto toIndexType(IndexElementSize elementSize) -> GLenum
+{
+	switch (elementSize)
+	{
+		case IndexElementSize::Bits16: return GL_UNSIGNED_SHORT;
+		case IndexElementSize::Bits32: return GL_UNSIGNED_INT;
+	}
+
+	SL_DEBUG_PANIC(true, "Unsupported index element size");
+    return 0;
+}
+
 OpenGLMesh::~OpenGLMesh()
 {
     resetVertexArrayCache();
@@ -187,18 +199,19 @@ void OpenGLMesh::removeVertexBuffer(u32 index)
     resetVertexArrayCache();
 }
 
-auto OpenGLMesh::addPart(const void *data, u32 elementCount) -> u32
+auto OpenGLMesh::addPart(const void *data, u32 elementCount, IndexElementSize elementSize) -> u32
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
     SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * elementCount, data, GL_STATIC_DRAW); // TODO support for 16-bit indices?
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elementSize) * elementCount, data, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     indexBuffers_.push_back(handle);
     indexElementCounts_.push_back(elementCount);
+	indexElementSizes_.push_back(elementSize);
 
     return static_cast<u32>(indexBuffers_.size() - 1);
 }
@@ -209,6 +222,7 @@ void OpenGLMesh::removePart(u32 part)
     glDeleteBuffers(1, &handle);
     indexBuffers_.erase(indexBuffers_.begin() + part);
     indexElementCounts_.erase(indexElementCounts_.begin() + part);
+	indexElementSizes_.erase(indexElementSizes_.begin() + part);
 }
 
 void OpenGLMesh::draw(OpenGLEffect *effect)
@@ -236,7 +250,7 @@ void OpenGLMesh::drawPart(u32 part, OpenGLEffect *effect)
 
     glBindVertexArray(va);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
-    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), GL_UNSIGNED_INT, nullptr); // TODO support for 16-bit indices?
+    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(indexElementSizes_.at(part)), nullptr);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

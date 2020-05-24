@@ -38,8 +38,8 @@ static auto fromData(Device *device, sptr<MeshData> data, const VertexBufferLayo
     mesh->addVertexBuffer(bufferLayout, data->vertexData().data(),
         data->vertexData().size() / bufferLayout.elementCount());
 
-    for (auto &part : data->indexData())
-        mesh->addPart(part.data(), part.size());
+	for (auto part = 0; part < data->partsCount(); part++)
+		mesh->addPart(data->indexData(part), data->indexElementCount(part), data->indexElementSize());
 
     return mesh;
 }

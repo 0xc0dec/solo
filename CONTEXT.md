@@ -1,5 +1,7 @@
 # TODO
 
+* Rework Mesh/MeshData relationship. Remove MeshData, remake meshes. Rename "mesh parts" to "indices".
+* Move enums to a separate header.
 * Rendering into cube map, add glass material to demo.
 * Less umap usages.
 * Mesh collider creation from already loaded mesh.

@@ -12,6 +12,7 @@ namespace solo
 {
     class Device;
     class VertexBufferLayout;
+	enum class IndexElementSize;
 
     class MeshData
     {
@@ -21,7 +22,10 @@ namespace solo
 
         auto vertexData() const -> const vec<float>& { return vertexData_; }
         auto vertexCount() const -> u32 { return vertexCount_; }
-        auto indexData() const -> const vec<vec<u32>>& { return indexData_; }
+    	auto partsCount() const -> u32 { return indexData_.size(); }
+    	auto indexData(u32 part) const -> const void* { return indexData_.at(part).data(); }
+    	auto indexElementCount(u32 part) const -> u32 { return indexData_.at(part).size(); }
+    	auto indexElementSize() const -> IndexElementSize;
 
     private:
         vec<float> vertexData_;

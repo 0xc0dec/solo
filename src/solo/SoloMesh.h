@@ -20,6 +20,12 @@ namespace solo
         Points
     };
 
+	enum class IndexElementSize
+	{
+		Bits16 = sizeof(u16),
+		Bits32 = sizeof(u32)
+	};
+
     class Device;
 
     class Mesh: public NoCopyAndMove
@@ -36,9 +42,11 @@ namespace solo
         virtual void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) = 0;
         virtual void removeVertexBuffer(u32 index) = 0;
 
-        virtual auto addPart(const void *indexData, u32 indexElementCount) -> u32 = 0;
+    	// TODO Forbid setting different element size for different parts?
+        virtual auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 = 0;
         virtual void removePart(u32 index) = 0;
         virtual auto partCount() const -> u32 = 0;
+    	virtual auto partElementSize(u32 index) -> IndexElementSize = 0;
 
         virtual auto primitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;

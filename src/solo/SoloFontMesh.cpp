@@ -82,7 +82,7 @@ void FontMesh::rebuildMesh()
     uvsLayout.addAttribute(VertexAttributeUsage::TexCoord);
     mesh_->addDynamicVertexBuffer(uvsLayout, uvs_.data(), static_cast<u32>(uvs_.size()));
 
-    mesh_->addPart(reinterpret_cast<const void *>(indexes_.data()), static_cast<u32>(indexes_.size()));
+    mesh_->addPart(reinterpret_cast<const void *>(indexes_.data()), static_cast<u32>(indexes_.size()), IndexElementSize::Bits32);
     mesh_->setPrimitiveType(PrimitiveType::Triangles);
 }
 

@@ -56,12 +56,13 @@ void VulkanMesh::removeVertexBuffer(u32 index)
     updateMinVertexCount();
 }
 
-auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount) -> u32
+auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32
 {
-    const auto size = sizeof(u32) * indexElementCount; // TODO 16-bit index support?
+    const auto size = static_cast<VkDeviceSize>(elementSize) * indexElementCount;
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers_.push_back(std::move(buf));
     indexElementCounts_.push_back(indexElementCount);
+	indexElementSizes_.push_back(elementSize);
     return static_cast<u32>(indexElementCounts_.size() - 1);
 }
 
@@ -69,6 +70,7 @@ void VulkanMesh::removePart(u32 index)
 {
     indexBuffers_.erase(indexBuffers_.begin() + index);
     indexElementCounts_.erase(indexElementCounts_.begin() + index);
+	indexElementSizes_.erase(indexElementSizes_.begin() + index);
 }
 
 auto VulkanMesh::primitiveType() const -> PrimitiveType

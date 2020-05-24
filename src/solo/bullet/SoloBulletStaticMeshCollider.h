@@ -18,7 +18,7 @@ namespace solo
     public:
         BulletStaticMeshCollider(sptr<MeshData> data);
 
-        auto shape() -> btCollisionShape* override final { return shape_.get(); }
+        auto shape() -> btCollisionShape* override { return shape_.get(); }
 
     private:
         sptr<MeshData> data_;

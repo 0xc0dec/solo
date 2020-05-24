@@ -7,10 +7,11 @@
 #include "SoloDevice.h"
 #include "SoloJobPool.h"
 #include "SoloFileSystem.h"
+#include "SoloMesh.h"
+#include "SoloVertexBufferLayout.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "SoloVertexBufferLayout.h"
 
 using namespace solo;
 
@@ -107,4 +108,9 @@ auto MeshData::fromFileAsync(Device *device, const str &path, const VertexBuffer
     device->jobPool()->addJob(std::make_shared<JobBase<MeshData>>(producers, consumer));
 
     return handle;
+}
+
+auto MeshData::indexElementSize() const -> IndexElementSize
+{
+	return IndexElementSize::Bits32; // TODO 16-bit support
 }
