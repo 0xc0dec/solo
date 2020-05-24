@@ -230,17 +230,9 @@ void OpenGLMesh::render(OpenGLEffect *effect)
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();
 
-    if (indexBuffers_.empty())
-    {
-        glBindVertexArray(va);
-        glDrawArrays(toPrimitiveType(primitiveType_), 0, minVertexCount_);
-        glBindVertexArray(0);
-    }
-    else
-    {
-        for (auto i = 0; i < indexBuffers_.size(); i++)
-            renderPart(i, effect);
-    }
+    glBindVertexArray(va);
+    glDrawArrays(toPrimitiveType(primitiveType_), 0, minVertexCount_);
+    glBindVertexArray(0);
 }
 
 void OpenGLMesh::renderPart(u32 part, OpenGLEffect *effect)

@@ -102,18 +102,7 @@ void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
 {
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
-
-    if (vkMesh->partCount())
-    {
-        for (u32 part = 0; part < vkMesh->partCount(); part++)
-        {
-            const auto indexBuffer = vkMesh->partBuffer(part);
-            currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
-            currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
-        }
-    }
-    else
-        currentCmdBuffer_->draw(vkMesh->minVertexCount(), 1, 0, 0);
+    currentCmdBuffer_->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
