@@ -1,6 +1,9 @@
 # TODO
 
 * Move enums to a separate header.
+* Character controller.
+* Camera not moving through walls.
+* Better selected object shader.
 * Bring back Lua tests.
 * Rendering into cube map, add glass material to demo.
 * Less umap usages.
