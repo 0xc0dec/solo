@@ -37,10 +37,13 @@ namespace solo
 
         virtual ~Mesh() = default;
 
+    	// TODO rename to addVertexBuffer and add a 'dynamic' flag
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32;
         virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32;
+    	// TODO rename to updateVertexBuffer
         virtual void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount);
         virtual void removeVertexBuffer(u32 index);
+    	auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }
 
     	// TODO Forbid setting different element size for different parts?
         virtual auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32;
@@ -53,7 +56,6 @@ namespace solo
 
     protected:
 		vec<VertexBufferLayout> layouts_;
-    	vec<u32> vertexCounts_;
     	vec<u32> indexElementCounts_;
     	vec<IndexElementSize> indexElementSizes_;
     	u32 minVertexCount_ = 0;
@@ -61,6 +63,8 @@ namespace solo
         Mesh() = default;
 
     private:
+    	vec<u32> vertexCounts_;
+    	
     	void updateMinVertexCount();
     };
 }

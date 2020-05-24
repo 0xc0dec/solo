@@ -37,7 +37,6 @@ namespace solo
         void setPrimitiveType(PrimitiveType type) override;
 
         auto vertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers_.size()); }
-        auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }
         auto vertexBuffer(u32 index) const -> VkBuffer { return vertexBuffers_.at(index).handle(); }
         auto partBuffer(u32 index) const -> VkBuffer { return indexBuffers_.at(index).handle(); }
         auto partIndexElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }
