@@ -29,6 +29,18 @@ static auto pipelineContextKey(Transform *transform, Camera *camera, VulkanMater
     return seed;
 }
 
+static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
+{
+	switch (elementSize)
+	{
+		case IndexElementSize::Bits16: return VK_INDEX_TYPE_UINT16;
+		case IndexElementSize::Bits32: return VK_INDEX_TYPE_UINT32;
+	}
+
+	SL_DEBUG_PANIC(true, "Unknown index element size");
+	return VK_INDEX_TYPE_MAX_ENUM;
+}
+
 VulkanRenderer::VulkanRenderer(Device *device):
     engineDevice_(device)
 {
@@ -110,7 +122,8 @@ void VulkanRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, 
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
     const auto indexBuffer = vkMesh->partBuffer(part);
-    currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, VK_INDEX_TYPE_UINT32); // TODO 16-bit index support?
+	const auto indexType = toIndexType(mesh->partElementSize(part));
+    currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, indexType);
     currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
 }
 
