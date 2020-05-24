@@ -32,6 +32,8 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
     REG_METHOD_NULLABLE_1ST_ARG(binding, RigidBody, setCollider, sptr<Collider>);
     REG_METHOD(binding, RigidBody, isKinematic);
     REG_METHOD(binding, RigidBody, setKinematic);
+	REG_METHOD(binding, RigidBody, isStatic);
+    REG_METHOD(binding, RigidBody, setStatic);
     REG_PTR_EQUALITY(binding, RigidBody);
     binding.endClass();
 }

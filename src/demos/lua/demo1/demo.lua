@@ -80,7 +80,7 @@ function demo()
         params.friction = 0.5
         
         body = context.node:addComponent("RigidBody", params)
-        body:setKinematic(true)
+        body:setStatic(true)
         
         return context
     end

@@ -21,7 +21,7 @@ public:
     {
     }
 
-    void getWorldTransform(btTransform &worldTransform) const override final
+    void getWorldTransform(btTransform &worldTransform) const override
     {
         const auto worldPos = transform_->worldPosition();
         const auto rotation = transform_->worldRotation();
@@ -29,7 +29,7 @@ public:
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
-    void setWorldTransform(const btTransform &worldTransform) override final
+    void setWorldTransform(const btTransform &worldTransform) override
     {
         SL_DEBUG_PANIC(transform_->parent(), "Rigid body transform must not have a parent");
         transform_->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
@@ -45,7 +45,7 @@ BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyParams &params
     mass_(params.mass),
     shape_(nullptr)
 {
-    world_ = static_cast<BulletPhysics *>(node.scene()->device()->physics())->world();
+    world_ = dynamic_cast<BulletPhysics *>(node.scene()->device()->physics())->world();
     transformCmp_ = node.findComponent<Transform>();
     motionState_ = std::make_unique<MotionState>(transformCmp_);
 
@@ -69,6 +69,8 @@ void BulletRigidBody::update()
     if (lastTransformVersion_ != transformCmp_->version())
     {
         lastTransformVersion_ = transformCmp_->version();
+    	if (isStatic())
+			syncPosition();
         if (shape_)
             syncScale();
     }
@@ -84,6 +86,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         btVector3 inertia;
         if (!shape_->isNonMoving())
             shape_->calculateLocalInertia(mass_, inertia);
+    	
         syncScale();
 
         body_->setCollisionShape(shape_);
@@ -94,15 +97,14 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
     else
     {
         world_->removeRigidBody(body_.get());
-        collider_ = nullptr;
+        collider_.reset();
         shape_ = nullptr;
     }
 }
 
 bool BulletRigidBody::isKinematic()
 {
-    return (body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT)
-        == btCollisionObject::CF_KINEMATIC_OBJECT;
+    return body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT;
 }
 
 void BulletRigidBody::setKinematic(bool kinematic)
@@ -121,8 +123,31 @@ void BulletRigidBody::setKinematic(bool kinematic)
     body_->setCollisionFlags(flags);
 }
 
-void BulletRigidBody::syncScale()
+bool BulletRigidBody::isStatic()
+{
+	return body_->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT;
+}
+
+void BulletRigidBody::setStatic(bool isStatic)
+{
+	auto flags = body_->getCollisionFlags();
+    if (isStatic)
+        flags |= btCollisionObject::CF_STATIC_OBJECT;
+    else
+        flags &= ~btCollisionObject::CF_STATIC_OBJECT;
+    body_->setCollisionFlags(flags);
+}
+
+void BulletRigidBody::syncScale() const
 {
     const auto scale = transformCmp_->worldScale();
     shape_->setLocalScaling(SL_TOBTVEC3(scale));
+}
+
+void BulletRigidBody::syncPosition() const
+{
+	const auto pos = transformCmp_->worldPosition();
+	const auto rot = transformCmp_->worldRotation();
+	const auto transform = btTransform(SL_TOBTQTRN(rot), SL_TOBTVEC3(pos));
+	body_->setWorldTransform(transform);
 }

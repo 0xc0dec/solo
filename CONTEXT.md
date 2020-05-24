@@ -1,12 +1,9 @@
 # TODO
 
-* Rename "mesh parts" to "indices".
-* Continue with Mesh TODOs/refactoring.
 * Move enums to a separate header.
 * Bring back Lua tests.
 * Rendering into cube map, add glass material to demo.
 * Less umap usages.
-* Mesh collider creation from already loaded mesh.
 * Use proper image layouts in Vulkan.
 * Add center of mass offset.
 * Deferred demo - add shadows.

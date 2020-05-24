@@ -40,6 +40,9 @@ namespace solo
         virtual bool isKinematic() = 0;
         virtual void setKinematic(bool kinematic) = 0;
 
+    	virtual bool isStatic() = 0;
+    	virtual void setStatic(bool isStatic) = 0;
+
     protected:
         explicit RigidBody(const Node &node);
     };

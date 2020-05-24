@@ -20,13 +20,16 @@ namespace solo
         BulletRigidBody(const Node &node, const RigidBodyParams &params);
         virtual ~BulletRigidBody();
 
-        void update() override final;
+        void update() override;
 
-        void setCollider(sptr<Collider> collider) override final;
+        void setCollider(sptr<Collider> collider) override;
 
-        bool isKinematic() override final;
-        void setKinematic(bool kinematic) override final;
+        bool isKinematic() override;
+        void setKinematic(bool kinematic) override;
 
+        bool isStatic() override;
+        void setStatic(bool isStatic) override;
+    	
     private:
         float mass_ = 0;
         sptr<Collider> collider_;
@@ -37,6 +40,7 @@ namespace solo
         uptr<btRigidBody> body_;
         u32 lastTransformVersion_ = ~0;
 
-        void syncScale();
+        void syncScale() const;
+    	void syncPosition() const;
     };
 }
