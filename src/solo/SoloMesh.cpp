@@ -35,8 +35,7 @@ static auto fromData(Device *device, sptr<MeshData> data, const VertexBufferLayo
 {
     auto mesh = Mesh::empty(device);
 
-    mesh->addVertexBuffer(bufferLayout, data->vertexData().data(),
-        data->vertexData().size() / bufferLayout.elementCount());
+    mesh->addVertexBuffer(bufferLayout, data->vertexData().data(), data->vertexData().size() / bufferLayout.elementCount());
 
 	for (auto part = 0; part < data->partsCount(); part++)
 		mesh->addPart(data->indexData(part), data->indexElementCount(part), data->indexElementSize());
@@ -62,4 +61,59 @@ auto Mesh::fromFileAsync(Device *device, const str &path, const VertexBufferLayo
         });
 
     return handle;
+}
+
+void Mesh::updateMinVertexCount()
+{
+    constexpr auto max = (std::numeric_limits<u32>::max)();
+
+    minVertexCount_ = max;
+
+    for (const auto &count : vertexCounts_)
+        minVertexCount_ = (std::min)(count, minVertexCount_);
+
+    if (minVertexCount_ == max)
+        minVertexCount_ = 0;
+}
+
+auto Mesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+{
+	layouts_.push_back(layout);
+    vertexCounts_.push_back(vertexCount);
+	updateMinVertexCount();
+	return static_cast<u32>(vertexCounts_.size() - 1);
+}
+
+auto Mesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+{
+	// TODO No copy-paste
+	layouts_.push_back(layout);
+    vertexCounts_.push_back(vertexCount);
+	updateMinVertexCount();
+	return static_cast<u32>(vertexCounts_.size() - 1);
+}
+
+void Mesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
+{
+	// TODO
+}
+
+void Mesh::removeVertexBuffer(u32 index)
+{
+    vertexCounts_.erase(vertexCounts_.begin() + index);
+    layouts_.erase(layouts_.begin() + index);
+	updateMinVertexCount();
+}
+
+auto Mesh::addPart(const void *indexData, u32 elementCount, IndexElementSize elementSize) -> u32
+{
+	indexElementCounts_.push_back(elementCount);
+	indexElementSizes_.push_back(elementSize);
+    return static_cast<u32>(indexElementCounts_.size() - 1);
+}
+
+void Mesh::removePart(u32 part)
+{
+	indexElementCounts_.erase(indexElementCounts_.begin() + part);
+	indexElementSizes_.erase(indexElementSizes_.begin() + part);
 }

@@ -10,7 +10,6 @@
 #include "SoloOpenGLMesh.h"
 #include "SoloDevice.h"
 #include "SoloOpenGLEffect.h"
-#include <algorithm>
 
 using namespace solo;
 
@@ -135,30 +134,19 @@ void OpenGLMesh::flushVertexArrayCache()
         vertexArrayCache_.erase(key);
 }
 
-void OpenGLMesh::updateMinVertexCount()
-{
-    constexpr auto max = (std::numeric_limits<u32>::max)();
-
-    minVertexCount_ = max;
-
-    for (const auto &count : vertexCounts_)
-        minVertexCount_ = (std::min)(count, minVertexCount_);
-
-    if (minVertexCount_ == max)
-        minVertexCount_ = 0;
-}
-
 auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    return addVertexBuffer(layout, data, vertexCount, false);
+	addVertexBuffer(layout, data, vertexCount, false);
+	return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
 auto OpenGLMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    return addVertexBuffer(layout, data, vertexCount, true);
+	addVertexBuffer(layout, data, vertexCount, true);
+	return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
-auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32
+void OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic)
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
@@ -169,82 +157,69 @@ auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     vertexBuffers_.push_back(handle);
-    layouts_.push_back(layout);
-    vertexCounts_.push_back(vertexCount);
     
-    updateMinVertexCount();
     resetVertexArrayCache();
-
-    return static_cast<u32>(vertexBuffers_.size() - 1);
 }
 
 void OpenGLMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
 {
-    const auto vertexSize = layouts_.at(index).size();
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers_.at(index));
-    glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+	const auto vertexSize = layouts_.at(index).size();
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffers_.at(index));
+	glBufferSubData(GL_ARRAY_BUFFER, vertexOffset * vertexSize, vertexCount * vertexSize, data);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	Mesh::updateDynamicVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
 void OpenGLMesh::removeVertexBuffer(u32 index)
 {
-    auto handle = vertexBuffers_.at(index);
-    glDeleteBuffers(1, &handle);
-
-    vertexBuffers_.erase(vertexBuffers_.begin() + index);
-    vertexCounts_.erase(vertexCounts_.begin() + index);
-    layouts_.erase(layouts_.begin() + index);
-
-    updateMinVertexCount();
-    resetVertexArrayCache();
+	auto handle = vertexBuffers_.at(index);
+	glDeleteBuffers(1, &handle);
+	vertexBuffers_.erase(vertexBuffers_.begin() + index);
+	resetVertexArrayCache();
+	Mesh::removeVertexBuffer(index);
 }
 
 auto OpenGLMesh::addPart(const void *data, u32 elementCount, IndexElementSize elementSize) -> u32
 {
-    GLuint handle = 0;
-    glGenBuffers(1, &handle);
-    SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
+	GLuint handle = 0;
+	glGenBuffers(1, &handle);
+	SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elementSize) * elementCount, data, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elementSize) * elementCount, data, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    indexBuffers_.push_back(handle);
-    indexElementCounts_.push_back(elementCount);
-	indexElementSizes_.push_back(elementSize);
+	indexBuffers_.push_back(handle);
 
-    return static_cast<u32>(indexBuffers_.size() - 1);
+	return Mesh::addPart(data, elementCount, elementSize);
 }
 
 void OpenGLMesh::removePart(u32 part)
 {
-    auto handle = indexBuffers_.at(part);
-    glDeleteBuffers(1, &handle);
-    indexBuffers_.erase(indexBuffers_.begin() + part);
-    indexElementCounts_.erase(indexElementCounts_.begin() + part);
-	indexElementSizes_.erase(indexElementSizes_.begin() + part);
+	auto handle = indexBuffers_.at(part);
+	glDeleteBuffers(1, &handle);
+	indexBuffers_.erase(indexBuffers_.begin() + part);
+	Mesh::removePart(part);
 }
 
 void OpenGLMesh::render(OpenGLEffect *effect)
 {
-    const auto va = getOrCreateVertexArray(effect);
-    flushVertexArrayCache();
-
-    glBindVertexArray(va);
-    glDrawArrays(toPrimitiveType(primitiveType_), 0, minVertexCount_);
-    glBindVertexArray(0);
+	const auto va = getOrCreateVertexArray(effect);
+	flushVertexArrayCache();
+	glBindVertexArray(va);
+	glDrawArrays(toPrimitiveType(primitiveType_), 0, minVertexCount_);
+	glBindVertexArray(0);
 }
 
 void OpenGLMesh::renderPart(u32 part, OpenGLEffect *effect)
 {
-    const auto va = getOrCreateVertexArray(effect);
-    flushVertexArrayCache();
-
-    glBindVertexArray(va);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
-    glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(indexElementSizes_.at(part)), nullptr);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+	const auto va = getOrCreateVertexArray(effect);
+	flushVertexArrayCache();
+	glBindVertexArray(va);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
+	glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(indexElementSizes_.at(part)), nullptr);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 #endif

@@ -21,25 +21,14 @@ VulkanMesh::VulkanMesh(Device *device)
 
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
-    return addVertexBuffer(buf, layout, vertexCount);
+	vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data));
+    return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
 {
-    auto buf = VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data);
-    return addVertexBuffer(buf, layout, vertexCount);
-}
-
-auto VulkanMesh::addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout &layout, u32 vertexCount) -> s32
-{
-    vertexBuffers_.push_back(std::move(buffer));
-    layouts_.push_back(layout);
-    vertexCounts_.push_back(vertexCount);
-
-    updateMinVertexCount();
-
-    return static_cast<u32>(vertexBuffers_.size() - 1);
+	vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data));
+    return Mesh::addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
 void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
@@ -51,9 +40,7 @@ void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const vo
 void VulkanMesh::removeVertexBuffer(u32 index)
 {
     vertexBuffers_.erase(vertexBuffers_.begin() + index);
-    layouts_.erase(layouts_.begin() + index);
-    vertexCounts_.erase(vertexCounts_.begin() + index);
-    updateMinVertexCount();
+    Mesh::removeVertexBuffer(index);
 }
 
 auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32
@@ -61,16 +48,13 @@ auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount, IndexElem
     const auto size = static_cast<VkDeviceSize>(elementSize) * indexElementCount;
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
     indexBuffers_.push_back(std::move(buf));
-    indexElementCounts_.push_back(indexElementCount);
-	indexElementSizes_.push_back(elementSize);
-    return static_cast<u32>(indexElementCounts_.size() - 1);
+	return Mesh::addPart(indexData, indexElementCount, elementSize);
 }
 
 void VulkanMesh::removePart(u32 index)
 {
     indexBuffers_.erase(indexBuffers_.begin() + index);
-    indexElementCounts_.erase(indexElementCounts_.begin() + index);
-	indexElementSizes_.erase(indexElementSizes_.begin() + index);
+	Mesh::removePart(index);
 }
 
 auto VulkanMesh::primitiveType() const -> PrimitiveType
@@ -108,19 +92,6 @@ auto VulkanMesh::layoutHash() const -> size_t
     }
 
     return seed;
-}
-
-void VulkanMesh::updateMinVertexCount()
-{
-    constexpr auto max = (std::numeric_limits<u32>::max)();
-
-    minVertexCount_ = max;
-
-    for (const auto &count : vertexCounts_)
-        minVertexCount_ = (std::min)(count, minVertexCount_);
-
-    if (minVertexCount_ == max)
-        minVertexCount_ = 0;
 }
 
 #endif

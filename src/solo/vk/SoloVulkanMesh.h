@@ -32,8 +32,6 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 override;
         void removePart(u32 index) override;
-        auto partCount() const -> u32 override { return static_cast<u32>(indexBuffers_.size()); }
-    	auto partElementSize(u32 part) -> IndexElementSize override { return indexElementSizes_.at(part); }
 
         auto primitiveType() const -> PrimitiveType override;
         void setPrimitiveType(PrimitiveType type) override;
@@ -52,15 +50,6 @@ namespace solo
 
         vec<VulkanBuffer> vertexBuffers_;
         vec<VulkanBuffer> indexBuffers_;
-        vec<VertexBufferLayout> layouts_;
-    	// TODO These are also repeated in OpenGLMesh. Move to parent Mesh class?
-        vec<u32> vertexCounts_;
-        vec<u32> indexElementCounts_;
-    	vec<IndexElementSize> indexElementSizes_;
-        u32 minVertexCount_ = 0;
-
-        void updateMinVertexCount();
-        auto addVertexBuffer(VulkanBuffer &buffer, const VertexBufferLayout &layout, u32 vertexCount) -> s32;
     };
 }
 

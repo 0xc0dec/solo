@@ -37,21 +37,30 @@ namespace solo
 
         virtual ~Mesh() = default;
 
-        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
-        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 = 0;
-        virtual void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) = 0;
-        virtual void removeVertexBuffer(u32 index) = 0;
+        virtual auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32;
+        virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32;
+        virtual void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount);
+        virtual void removeVertexBuffer(u32 index);
 
     	// TODO Forbid setting different element size for different parts?
-        virtual auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 = 0;
-        virtual void removePart(u32 index) = 0;
-        virtual auto partCount() const -> u32 = 0;
-    	virtual auto partElementSize(u32 index) -> IndexElementSize = 0;
+        virtual auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32;
+        virtual void removePart(u32 part);
+        auto partCount() const -> u32 { return static_cast<u32>(indexElementCounts_.size()); }
+    	auto partElementSize(u32 part) -> IndexElementSize { return indexElementSizes_.at(part); }
 
         virtual auto primitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;
 
     protected:
+		vec<VertexBufferLayout> layouts_;
+    	vec<u32> vertexCounts_;
+    	vec<u32> indexElementCounts_;
+    	vec<IndexElementSize> indexElementSizes_;
+    	u32 minVertexCount_ = 0;
+    	
         Mesh() = default;
+
+    private:
+    	void updateMinVertexCount();
     };
 }

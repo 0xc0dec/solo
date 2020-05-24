@@ -30,8 +30,6 @@ namespace solo
 
         auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 override;
         void removePart(u32 part) override;
-        auto partCount() const -> u32 override { return static_cast<u32>(indexBuffers_.size()); }
-    	auto partElementSize(u32 part) -> IndexElementSize override { return indexElementSizes_.at(part); }
 
         auto primitiveType() const -> PrimitiveType override { return primitiveType_; }
         void setPrimitiveType(PrimitiveType type) override { primitiveType_ = type; }
@@ -42,12 +40,7 @@ namespace solo
     private:
         PrimitiveType primitiveType_ = PrimitiveType::Triangles;
         vec<GLuint> vertexBuffers_;
-        vec<VertexBufferLayout> layouts_;
         vec<GLuint> indexBuffers_;
-        vec<u32> indexElementCounts_;
-    	vec<IndexElementSize> indexElementSizes_;
-        vec<u32> vertexCounts_;
-        u32 minVertexCount_ = 0;
             
         struct VertexArrayCacheEntry
         {
@@ -57,12 +50,11 @@ namespace solo
 
         umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache_;
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic) -> u32;
+        void addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic);
 
         auto getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint;
         void resetVertexArrayCache();
         void flushVertexArrayCache();
-        void updateMinVertexCount();
     };
 }
 
