@@ -35,6 +35,7 @@ void VulkanMesh::updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const vo
 {
     const auto vertexSize = layouts_[index].size();
     vertexBuffers_[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
+	Mesh::updateDynamicVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
 void VulkanMesh::removeVertexBuffer(u32 index)
