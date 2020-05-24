@@ -47,12 +47,12 @@ namespace solo
     	auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }
     	auto vertexBufferData(u32 index) const -> const vec<float>& { return vertexData_.at(index); }
 
-        virtual auto addIndexBuffer(const vec<u32> &data, u32 indexElementCount) -> u32;
-        virtual void removePart(u32 part);
-        auto partCount() const -> u32 { return static_cast<u32>(indexElementCounts_.size()); }
-    	auto partElementCount(u32 part) const -> u32 { return indexElementCounts_.at(part); }
-    	auto partElementSize(u32 part) const -> IndexElementSize { return IndexElementSize::Bits32; } // TODO 16-bit support?
-    	auto partData(u32 part) const -> const vec<u32>& { return partData_.at(part); }
+        virtual auto addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32;
+        virtual void removeIndexBuffer(u32 index);
+        auto indexBufferCount() const -> u32 { return static_cast<u32>(indexElementCounts_.size()); }
+    	auto indexBufferElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }
+    	auto indexBufferElementSize(u32 index) const -> IndexElementSize { return IndexElementSize::Bits32; } // TODO 16-bit support?
+    	auto indexData(u32 index) const -> const vec<u32>& { return indexData_.at(index); }
 
         virtual auto primitiveType() const -> PrimitiveType = 0;
         virtual void setPrimitiveType(PrimitiveType type) = 0;
@@ -66,7 +66,7 @@ namespace solo
 
     private:
     	vec<vec<float>> vertexData_;
-    	vec<vec<u32>> partData_;
+    	vec<vec<u32>> indexData_;
     	vec<u32> vertexCounts_;
     	
     	void updateMinVertexCount();

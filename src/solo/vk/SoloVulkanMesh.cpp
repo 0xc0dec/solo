@@ -44,18 +44,18 @@ void VulkanMesh::removeVertexBuffer(u32 index)
     Mesh::removeVertexBuffer(index);
 }
 
-auto VulkanMesh::addIndexBuffer(const vec<u32> &data, u32 indexElementCount) -> u32
+auto VulkanMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 {
-    const auto size = static_cast<VkDeviceSize>(IndexElementSize::Bits32) * indexElementCount; // TODO 16-bit support?
+    const auto size = static_cast<VkDeviceSize>(IndexElementSize::Bits32) * elementCount; // TODO 16-bit support?
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data.data());
     indexBuffers_.push_back(std::move(buf));
-	return Mesh::addIndexBuffer(data, indexElementCount);
+	return Mesh::addIndexBuffer(data, elementCount);
 }
 
-void VulkanMesh::removePart(u32 index)
+void VulkanMesh::removeIndexBuffer(u32 index)
 {
     indexBuffers_.erase(indexBuffers_.begin() + index);
-	Mesh::removePart(index);
+	Mesh::removeIndexBuffer(index);
 }
 
 auto VulkanMesh::primitiveType() const -> PrimitiveType

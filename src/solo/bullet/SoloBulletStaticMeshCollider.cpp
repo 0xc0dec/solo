@@ -28,7 +28,7 @@ BulletStaticMeshCollider::BulletStaticMeshCollider(sptr<Mesh> mesh):
 	inputMesh_(mesh)
 {
 	SL_DEBUG_PANIC(mesh->vertexBufferCount() > 1, "Only single-buffer meshes are supported for now");
-	SL_DEBUG_PANIC(mesh->partCount() > 1, "Only single-part meshes are supported for now");
+	SL_DEBUG_PANIC(mesh->indexBufferCount() > 1, "Only single-index meshes are supported for now");
 	
 	mesh_ = std::make_unique<btIndexedMesh>();
 
@@ -43,12 +43,12 @@ BulletStaticMeshCollider::BulletStaticMeshCollider(sptr<Mesh> mesh):
 	mesh_->m_vertexBase = reinterpret_cast<const u8*>(mesh->vertexBufferData(0).data()) + posAttr.offset; // TODO verify
     mesh_->m_vertexStride = layout.size();
 
-	const auto indexType = toIndexType(mesh->partElementSize(0));
+	const auto indexType = toIndexType(mesh->indexBufferElementSize(0));
 
 	mesh_->m_indexType = indexType;
-    mesh_->m_numTriangles = mesh->partElementCount(0) / 3;
-    mesh_->m_triangleIndexBase = reinterpret_cast<const u8*>(mesh->partData(0).data());
-    mesh_->m_triangleIndexStride = 3 * static_cast<s32>(mesh->partElementSize(0));
+    mesh_->m_numTriangles = mesh->indexBufferElementCount(0) / 3;
+    mesh_->m_triangleIndexBase = reinterpret_cast<const u8*>(mesh->indexData(0).data());
+    mesh_->m_triangleIndexStride = 3 * static_cast<s32>(mesh->indexBufferElementSize(0));
 
 	indexVertexArray_ = std::make_unique<btTriangleIndexVertexArray>();
     indexVertexArray_->addIndexedMesh(*mesh_, indexType);

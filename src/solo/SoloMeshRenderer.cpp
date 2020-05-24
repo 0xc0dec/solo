@@ -29,8 +29,8 @@ void MeshRenderer::render()
     if (!mesh_)
         return;
 
-    const auto partCount = mesh_->partCount();
-    if (partCount == 0)
+    const auto indexCount = mesh_->indexBufferCount();
+    if (!indexCount)
     {
         const auto mat = material(0);
         if (mat)
@@ -38,11 +38,11 @@ void MeshRenderer::render()
     }
     else
     {
-        for (u32 part = 0; part < partCount; ++part)
+        for (u32 index = 0; index < indexCount; ++index)
         {
-            const auto mat = material(part);
+            const auto mat = material(index);
             if (mat)
-                renderer_->renderMeshPart(mesh_.get(), part, transform_, mat.get());
+                renderer_->renderMeshIndex(mesh_.get(), index, transform_, mat.get());
         }
     }
 }

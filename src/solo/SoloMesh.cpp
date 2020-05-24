@@ -117,9 +117,9 @@ public:
 
     auto vertexData() const -> const vec<float>& { return vertexData_; }
     auto vertexCount() const -> u32 { return vertexCount_; }
-    auto partsCount() const -> u32 { return indexData_.size(); }
-    auto indexData(u32 part) const -> const vec<u32>& { return indexData_.at(part); }
-    auto indexElementCount(u32 part) const -> u32 { return indexData_.at(part).size(); }
+    auto indexesCount() const -> u32 { return indexData_.size(); }
+    auto indexData(u32 index) const -> const vec<u32>& { return indexData_.at(index); }
+    auto indexElementCount(u32 index) const -> u32 { return indexData_.at(index).size(); }
 
 private:
     vec<float> vertexData_;
@@ -151,7 +151,7 @@ static auto fromData(Device *device, sptr<MeshData> data, const VertexBufferLayo
 
     mesh->addVertexBuffer(bufferLayout, data->vertexData(), data->vertexData().size() / bufferLayout.elementCount());
 
-	for (auto part = 0; part < data->partsCount(); part++)
+	for (auto part = 0; part < data->indexesCount(); part++)
 		mesh->addIndexBuffer(data->indexData(part), data->indexElementCount(part));
 
     return mesh;
@@ -225,12 +225,12 @@ void Mesh::removeVertexBuffer(u32 index)
 auto Mesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 {
 	indexElementCounts_.push_back(elementCount);
-	partData_.push_back(data);
+	indexData_.push_back(data);
     return static_cast<u32>(indexElementCounts_.size() - 1);
 }
 
-void Mesh::removePart(u32 part)
+void Mesh::removeIndexBuffer(u32 index)
 {
-	indexElementCounts_.erase(indexElementCounts_.begin() + part);
-	partData_.erase(partData_.begin() + part);
+	indexElementCounts_.erase(indexElementCounts_.begin() + index);
+	indexData_.erase(indexData_.begin() + index);
 }

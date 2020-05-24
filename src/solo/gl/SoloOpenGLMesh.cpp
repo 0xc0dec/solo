@@ -51,7 +51,7 @@ OpenGLMesh::~OpenGLMesh()
     while (!vertexBuffers_.empty())
         removeVertexBuffer(0);
     while (!indexBuffers_.empty())
-        removePart(0);
+        removeIndexBuffer(0);
 }
 
 auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
@@ -194,12 +194,12 @@ auto OpenGLMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 	return Mesh::addIndexBuffer(data, elementCount);
 }
 
-void OpenGLMesh::removePart(u32 part)
+void OpenGLMesh::removeIndexBuffer(u32 index)
 {
-	auto handle = indexBuffers_.at(part);
+	auto handle = indexBuffers_.at(index);
 	glDeleteBuffers(1, &handle);
-	indexBuffers_.erase(indexBuffers_.begin() + part);
-	Mesh::removePart(part);
+	indexBuffers_.erase(indexBuffers_.begin() + index);
+	Mesh::removeIndexBuffer(index);
 }
 
 void OpenGLMesh::render(OpenGLEffect *effect)
@@ -211,13 +211,13 @@ void OpenGLMesh::render(OpenGLEffect *effect)
 	glBindVertexArray(0);
 }
 
-void OpenGLMesh::renderPart(u32 part, OpenGLEffect *effect)
+void OpenGLMesh::renderIndex(u32 index, OpenGLEffect *effect)
 {
 	const auto va = getOrCreateVertexArray(effect);
 	flushVertexArrayCache();
 	glBindVertexArray(va);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
-	glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(IndexElementSize::Bits32), nullptr); // TODO 16-bit support?
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(index));
+	glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(index), toIndexType(IndexElementSize::Bits32), nullptr); // TODO 16-bit support?
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

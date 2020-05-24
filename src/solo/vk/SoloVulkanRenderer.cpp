@@ -117,14 +117,14 @@ void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
     currentCmdBuffer_->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
-void VulkanRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
+void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material)
 {
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
-    const auto indexBuffer = vkMesh->partBuffer(part);
-	const auto indexType = toIndexType(mesh->partElementSize(part));
+    const auto indexBuffer = vkMesh->indexBuffer(index);
+	const auto indexType = toIndexType(mesh->indexBufferElementSize(index));
     currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, indexType);
-    currentCmdBuffer_->drawIndexed(vkMesh->partIndexElementCount(part), 1, 0, 0, 0);
+    currentCmdBuffer_->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
 }
 
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
@@ -147,7 +147,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
         currentPipelineContextKey_ = context.key();
     }
 
-    // TODO don't rebind an already bound mesh (for instance when we render mesh parts)
+    // TODO don't rebind an already bound mesh (for instance when we render mesh indexes)
     for (u32 i = 0; i < vkMesh->vertexBufferCount(); i++)
         currentCmdBuffer_->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
 }

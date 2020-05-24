@@ -61,11 +61,11 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     	REG_METHOD(binding, Mesh, vertexBufferLayout);
     	REG_METHOD(binding, Mesh, vertexBufferData);
     	REG_METHOD(binding, Mesh, addIndexBuffer);
-        REG_METHOD(binding, Mesh, removePart);
-        REG_METHOD(binding, Mesh, partCount);
-    	REG_METHOD(binding, Mesh, partElementCount);
-    	REG_METHOD(binding, Mesh, partElementSize);
-    	REG_METHOD(binding, Mesh, partData);
+        REG_METHOD(binding, Mesh, removeIndexBuffer);
+        REG_METHOD(binding, Mesh, indexBufferCount);
+    	REG_METHOD(binding, Mesh, indexBufferElementCount);
+    	REG_METHOD(binding, Mesh, indexBufferElementSize);
+    	REG_METHOD(binding, Mesh, indexData);
         REG_METHOD(binding, Mesh, primitiveType);
         REG_METHOD(binding, Mesh, setPrimitiveType);
         REG_PTR_EQUALITY(binding, Mesh);
