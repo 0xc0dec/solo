@@ -60,9 +60,11 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
         REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
         REG_FREE_FUNC_AS_METHOD(binding, updateDynamicVertexBuffer);
         REG_METHOD(binding, Mesh, removeVertexBuffer);
+    	REG_METHOD(binding, Mesh, vertexBufferLayout);
         REG_FREE_FUNC_AS_METHOD(binding, addPart);
         REG_METHOD(binding, Mesh, removePart);
         REG_METHOD(binding, Mesh, partCount);
+    	REG_METHOD(binding, Mesh, partElementSize);
         REG_METHOD(binding, Mesh, primitiveType);
         REG_METHOD(binding, Mesh, setPrimitiveType);
         REG_PTR_EQUALITY(binding, Mesh);

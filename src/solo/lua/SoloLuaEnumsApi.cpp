@@ -206,4 +206,11 @@ void registerEnums(CppBindModule<LuaBinding> &module)
         REG_MODULE_CONSTANT(m, VertexAttributeUsage, Binormal);
         m.endModule();
     }
+
+    {
+	    auto m = module.beginModule("IndexElementSize");
+    	REG_MODULE_CONSTANT(m, IndexElementSize, Bits16);
+    	REG_MODULE_CONSTANT(m, IndexElementSize, Bits32);
+    	m.endModule();
+    }
 }
