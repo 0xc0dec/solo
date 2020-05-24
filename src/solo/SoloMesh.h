@@ -28,6 +28,7 @@ namespace solo
 
     class Device;
 
+	// TODO Support for "non-GPU" meshes
     class Mesh: public NoCopyAndMove
     {
     public:

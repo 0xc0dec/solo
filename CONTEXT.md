@@ -1,7 +1,7 @@
 # TODO
 
-* Rework Mesh/MeshData relationship. Remove MeshData, remake meshes. Rename "mesh parts" to "indices".
-    * Add new APIs to scripts.
+* Rename "mesh parts" to "indices".
+* Continue with Mesh TODOs/refactoring.
 * Move enums to a separate header.
 * Bring back Lua tests.
 * Rendering into cube map, add glass material to demo.
