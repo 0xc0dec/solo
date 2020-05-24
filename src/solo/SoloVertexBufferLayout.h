@@ -35,16 +35,17 @@ namespace solo
     public:
         void addAttribute(VertexAttributeUsage usage);
 
-        auto attributeCount() const -> u32 { return static_cast<u32>(attrs_.size()); }
-        auto attribute(u32 index) const -> VertexAttribute { return attrs_.at(index); }
+        auto attributeCount() const -> u32 { return static_cast<u32>(attributes_.size()); }
+        auto attribute(u32 index) const -> VertexAttribute { return attributes_.at(index); }
+    	auto attributeIndex(VertexAttributeUsage usage) const -> s32;
 
         auto size() const -> u32 { return size_; }
         auto elementCount() const -> u32 { return elementCount_; }
 
     private:
-        vec<VertexAttribute> attrs_;
+        vec<VertexAttribute> attributes_;
         u32 size_ = 0; // in bytes
-        u32 elementCount_ = 0; // number of floats
+        u32 elementCount_ = 0; // number of "elements" (floats)
 
         void addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage);
     };

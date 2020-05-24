@@ -10,8 +10,8 @@ using namespace solo;
 void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage)
 {
     const auto size = static_cast<u32>(sizeof(float) * elementCount);
-    const auto offset = attrs_.empty() ? 0 : attrs_.crbegin()->offset + attrs_.crbegin()->size;
-    attrs_.push_back(VertexAttribute{name, elementCount, size, 0, offset, usage});
+    const auto offset = attributes_.empty() ? 0 : attributes_.crbegin()->offset + attributes_.crbegin()->size;
+    attributes_.push_back(VertexAttribute{name, elementCount, size, 0, offset, usage});
     this->elementCount_ += elementCount;
     this->size_ += size;
 }
@@ -38,4 +38,14 @@ void VertexBufferLayout::addAttribute(VertexAttributeUsage usage)
         default:
             SL_DEBUG_PANIC(true, "Unsupported vertex attribute usage");
     }
+}
+
+auto VertexBufferLayout::attributeIndex(VertexAttributeUsage usage) const -> s32
+{
+	for (s32 i = 0; i < attributes_.size(); i++)
+	{
+		if (attributes_[i].usage == usage)
+			return i;
+	}
+	return -1;
 }
