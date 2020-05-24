@@ -109,8 +109,3 @@ auto MeshData::fromFileAsync(Device *device, const str &path, const VertexBuffer
 
     return handle;
 }
-
-auto MeshData::indexElementSize() const -> IndexElementSize
-{
-	return IndexElementSize::Bits32; // TODO 16-bit support
-}

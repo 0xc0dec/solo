@@ -11,12 +11,12 @@
 namespace solo
 {
     class Device;
+	class Mesh;
 
     class StaticMeshCollider: public Collider
     {
     public:
-        static auto fromFile(Device *device, const str &path) -> sptr<StaticMeshCollider>;
-        static auto fromFileAsync(Device *device, const str &path) -> sptr<AsyncHandle<StaticMeshCollider>>;
+    	static auto fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>;
 
     protected:
         StaticMeshCollider() = default;

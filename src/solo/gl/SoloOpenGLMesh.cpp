@@ -134,15 +134,15 @@ void OpenGLMesh::flushVertexArrayCache()
         vertexArrayCache_.erase(key);
 }
 
-auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	addVertexBuffer(layout, data, vertexCount, false);
+	addVertexBuffer(layout, data.data(), vertexCount, false);
 	return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
-auto OpenGLMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto OpenGLMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	addVertexBuffer(layout, data, vertexCount, true);
+	addVertexBuffer(layout, data.data(), vertexCount, true);
 	return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
@@ -179,19 +179,19 @@ void OpenGLMesh::removeVertexBuffer(u32 index)
 	Mesh::removeVertexBuffer(index);
 }
 
-auto OpenGLMesh::addPart(const void *data, u32 elementCount, IndexElementSize elementSize) -> u32
+auto OpenGLMesh::addPart(const vec<u32> &data, u32 elementCount) -> u32
 {
 	GLuint handle = 0;
 	glGenBuffers(1, &handle);
 	SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(elementSize) * elementCount, data, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(IndexElementSize::Bits32) * elementCount, data.data(), GL_STATIC_DRAW); // TODO 16-bit support?
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	indexBuffers_.push_back(handle);
 
-	return Mesh::addPart(data, elementCount, elementSize);
+	return Mesh::addPart(data, elementCount);
 }
 
 void OpenGLMesh::removePart(u32 part)
@@ -217,7 +217,7 @@ void OpenGLMesh::renderPart(u32 part, OpenGLEffect *effect)
 	flushVertexArrayCache();
 	glBindVertexArray(va);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffers_.at(part));
-	glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(indexElementSizes_.at(part)), nullptr);
+	glDrawElements(toPrimitiveType(primitiveType_), indexElementCounts_.at(part), toIndexType(IndexElementSize::Bits32), nullptr); // TODO 16-bit support?
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

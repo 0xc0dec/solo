@@ -19,15 +19,15 @@ VulkanMesh::VulkanMesh(Device *device)
     renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
 }
 
-auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data));
+	vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
-auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32
+auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data));
+	vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
@@ -43,12 +43,12 @@ void VulkanMesh::removeVertexBuffer(u32 index)
     Mesh::removeVertexBuffer(index);
 }
 
-auto VulkanMesh::addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32
+auto VulkanMesh::addPart(const vec<u32> &data, u32 indexElementCount) -> u32
 {
-    const auto size = static_cast<VkDeviceSize>(elementSize) * indexElementCount;
-    auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, indexData);
+    const auto size = static_cast<VkDeviceSize>(IndexElementSize::Bits32) * indexElementCount; // TODO 16-bit support?
+    auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data.data());
     indexBuffers_.push_back(std::move(buf));
-	return Mesh::addPart(indexData, indexElementCount, elementSize);
+	return Mesh::addPart(data, indexElementCount);
 }
 
 void VulkanMesh::removePart(u32 index)

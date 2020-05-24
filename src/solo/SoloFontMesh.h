@@ -6,8 +6,6 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
 
 namespace solo
 {
@@ -27,8 +25,8 @@ namespace solo
         Device *device_ = nullptr;
         sptr<Font> font_;
         sptr<Mesh> mesh_;
-        vec<Vector3> vertices_;
-        vec<Vector2> uvs_;
+        vec<float> vertices_;
+        vec<float> uvs_;
         vec<u32> indexes_;
         str text_;
 

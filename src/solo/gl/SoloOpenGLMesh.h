@@ -23,12 +23,12 @@ namespace solo
         OpenGLMesh() = default;
         ~OpenGLMesh();
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
-        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        auto addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
+        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
         void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
         void removeVertexBuffer(u32 index) override;
 
-        auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 override;
+        auto addPart(const vec<u32> &data, u32 indexElementCount) -> u32 override;
         void removePart(u32 part) override;
 
         auto primitiveType() const -> PrimitiveType override { return primitiveType_; }

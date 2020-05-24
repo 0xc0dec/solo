@@ -71,8 +71,7 @@ static void registerColliders(CppBindModule<LuaBinding> &module)
 
     {
         auto binding = module.beginExtendClass<StaticMeshCollider, Collider>("StaticMeshCollider");
-        REG_STATIC_METHOD(binding, StaticMeshCollider, fromFile);
-        REG_STATIC_METHOD(binding, StaticMeshCollider, fromFileAsync);
+    	REG_STATIC_METHOD(binding, StaticMeshCollider, fromMesh);
         REG_PTR_EQUALITY(binding, StaticMeshCollider);
         binding.endClass();
     }

@@ -25,18 +25,17 @@ namespace solo
         explicit VulkanMesh(Device *device);
         ~VulkanMesh() = default;
 
-        auto addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
-        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount) -> u32 override;
+        auto addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
+        auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 override;
         void updateDynamicVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
         void removeVertexBuffer(u32 index) override;
 
-        auto addPart(const void *indexData, u32 indexElementCount, IndexElementSize elementSize) -> u32 override;
+        auto addPart(const vec<u32> &data, u32 indexElementCount) -> u32 override;
         void removePart(u32 index) override;
 
         auto primitiveType() const -> PrimitiveType override;
         void setPrimitiveType(PrimitiveType type) override;
 
-        auto vertexBufferCount() const -> u32 { return static_cast<u32>(vertexBuffers_.size()); }
         auto vertexBuffer(u32 index) const -> VkBuffer { return vertexBuffers_.at(index).handle(); }
         auto partBuffer(u32 index) const -> VkBuffer { return indexBuffers_.at(index).handle(); }
         auto partIndexElementCount(u32 index) const -> u32 { return indexElementCounts_.at(index); }

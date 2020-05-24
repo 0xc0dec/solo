@@ -16,12 +16,13 @@ namespace solo
     class BulletStaticMeshCollider final: public BulletCollider, public StaticMeshCollider
     {
     public:
-        BulletStaticMeshCollider(sptr<MeshData> data);
+        // explicit BulletStaticMeshCollider(sptr<MeshData> data);
+    	explicit BulletStaticMeshCollider(sptr<Mesh> mesh);
 
         auto shape() -> btCollisionShape* override { return shape_.get(); }
 
     private:
-        sptr<MeshData> data_;
+    	sptr<Mesh> inputMesh_;
         uptr<btIndexedMesh> mesh_;
         uptr<btTriangleIndexVertexArray> arr_;
         uptr<btBvhTriangleMeshShape> shape_;

@@ -10,12 +10,12 @@ using namespace solo;
 
 static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-    return mesh->addVertexBuffer(layout, data.data(), vertexCount);
+    return mesh->addVertexBuffer(layout, data, vertexCount);
 }
 
 static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-    return mesh->addDynamicVertexBuffer(layout, data.data(), vertexCount);
+    return mesh->addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
 static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount)
@@ -25,7 +25,7 @@ static void updateDynamicVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, c
 
 static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32
 {
-    return mesh->addPart(indexData.data(), indexElementCount, IndexElementSize::Bits32); // TODO 16-bit support?
+    return mesh->addPart(indexData, indexElementCount);
 }
 
 static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
@@ -60,11 +60,16 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
         REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
         REG_FREE_FUNC_AS_METHOD(binding, updateDynamicVertexBuffer);
         REG_METHOD(binding, Mesh, removeVertexBuffer);
+    	REG_METHOD(binding, Mesh, vertexBufferCount);
+    	REG_METHOD(binding, Mesh, vertexBufferVertexCount);
     	REG_METHOD(binding, Mesh, vertexBufferLayout);
+    	REG_METHOD(binding, Mesh, vertexBufferData);
         REG_FREE_FUNC_AS_METHOD(binding, addPart);
         REG_METHOD(binding, Mesh, removePart);
         REG_METHOD(binding, Mesh, partCount);
+    	REG_METHOD(binding, Mesh, partElementCount);
     	REG_METHOD(binding, Mesh, partElementSize);
+    	REG_METHOD(binding, Mesh, partData);
         REG_METHOD(binding, Mesh, primitiveType);
         REG_METHOD(binding, Mesh, setPrimitiveType);
         REG_PTR_EQUALITY(binding, Mesh);

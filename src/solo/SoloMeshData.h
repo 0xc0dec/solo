@@ -23,9 +23,8 @@ namespace solo
         auto vertexData() const -> const vec<float>& { return vertexData_; }
         auto vertexCount() const -> u32 { return vertexCount_; }
     	auto partsCount() const -> u32 { return indexData_.size(); }
-    	auto indexData(u32 part) const -> const void* { return indexData_.at(part).data(); }
+    	auto indexData(u32 part) const -> const vec<u32>& { return indexData_.at(part); }
     	auto indexElementCount(u32 part) const -> u32 { return indexData_.at(part).size(); }
-    	auto indexElementSize() const -> IndexElementSize;
 
     private:
         vec<float> vertexData_;

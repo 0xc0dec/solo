@@ -32,7 +32,7 @@ function demo()
 
     ---
 
-    function createMesh(meshPath, material)
+    function createMesh(meshPath, material, onMeshLoad)
         local node = scene:createNode()
     
         local renderer = node:addComponent("MeshRenderer")
@@ -45,7 +45,10 @@ function demo()
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
         sl.Mesh.fromFileAsync(sl.device, assetPath(meshPath), layout)
-            :done(function(mesh) renderer:setMesh(mesh) end)
+            :done(function(mesh)
+                renderer:setMesh(mesh)
+                onMeshLoad(mesh)
+            end)
 
         return {
             node = node,
@@ -63,35 +66,32 @@ function demo()
         attachAxes(node)
     end
 
-    function createBackdrop(material)
-        local backdrop = createMesh("meshes/backdrop.obj", material)
+    function createStaticColliderMesh(meshPath, material)
+        local body
+
+        local context = createMesh(meshPath, material,
+            function(mesh)
+                local col = sl.StaticMeshCollider.fromMesh(mesh)
+                body:setCollider(col)
+            end)
         
         local params = sl.RigidBodyParams()
         params.mass = 0
         params.friction = 0.5
-        local body = backdrop.node:addComponent("RigidBody", params)
+        
+        body = context.node:addComponent("RigidBody", params)
         body:setKinematic(true)
         
-        sl.StaticMeshCollider.fromFileAsync(sl.device, assetPath("meshes/backdrop.obj"))
-            :done(function(col) body:setCollider(col) end)
+        return context
+    end
 
-        return backdrop
+    function createBackdrop(material)
+        return createStaticColliderMesh("meshes/backdrop.obj", material)
     end
 
     function createTeapot(mat)
-        local teapot = createMesh("meshes/teapot.obj", mat)
-        teapot.transform:setLocalPosition(vec3(3, 0, -3))
-
-        local params = sl.RigidBodyParams()
-        params.mass = 0
-        params.friction = 0.5
-        local body = teapot.node:addComponent("RigidBody", params)
-        body:setKinematic(true)
-
-        sl.StaticMeshCollider.fromFileAsync(sl.device, assetPath("meshes/teapot.obj"))
-            :done(function(col) body:setCollider(col) end)
-
-        return teapot
+        local context = createStaticColliderMesh("meshes/teapot.obj", mat)
+        context.transform:setLocalPosition(vec3(3, 0, -3))
     end
 
     function createShadowedMaterial(depthTex)

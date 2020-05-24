@@ -54,14 +54,26 @@ void FontMesh::rebuildMesh()
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 
-        vertices_.emplace_back(glyphInfo.positions[0]);
-        vertices_.emplace_back(glyphInfo.positions[1]);
-        vertices_.emplace_back(glyphInfo.positions[2]);
-        vertices_.emplace_back(glyphInfo.positions[3]);
-        uvs_.emplace_back(glyphInfo.uvs[0]);
-        uvs_.emplace_back(glyphInfo.uvs[1]);
-        uvs_.emplace_back(glyphInfo.uvs[2]);
-        uvs_.emplace_back(glyphInfo.uvs[3]);
+        vertices_.push_back(glyphInfo.positions[0].x());
+    	vertices_.push_back(glyphInfo.positions[0].y());
+    	vertices_.push_back(glyphInfo.positions[0].z());
+    	vertices_.push_back(glyphInfo.positions[1].x());
+    	vertices_.push_back(glyphInfo.positions[1].y());
+    	vertices_.push_back(glyphInfo.positions[1].z());
+    	vertices_.push_back(glyphInfo.positions[2].x());
+    	vertices_.push_back(glyphInfo.positions[2].y());
+    	vertices_.push_back(glyphInfo.positions[2].z());
+    	vertices_.push_back(glyphInfo.positions[3].x());
+    	vertices_.push_back(glyphInfo.positions[3].y());
+    	vertices_.push_back(glyphInfo.positions[3].z());
+        uvs_.push_back(glyphInfo.uvs[0].x());
+    	uvs_.push_back(glyphInfo.uvs[0].y());
+    	uvs_.push_back(glyphInfo.uvs[1].x());
+    	uvs_.push_back(glyphInfo.uvs[1].y());
+    	uvs_.push_back(glyphInfo.uvs[2].x());
+    	uvs_.push_back(glyphInfo.uvs[2].y());
+    	uvs_.push_back(glyphInfo.uvs[3].x());
+    	uvs_.push_back(glyphInfo.uvs[3].y());
         indexes_.push_back(lastIndex);
         indexes_.push_back(lastIndex + 1);
         indexes_.push_back(lastIndex + 2);
@@ -76,13 +88,13 @@ void FontMesh::rebuildMesh()
 
     VertexBufferLayout positionsLayout;
     positionsLayout.addAttribute(VertexAttributeUsage::Position);
-    mesh_->addDynamicVertexBuffer(positionsLayout, vertices_.data(), static_cast<u32>(vertices_.size()));
+    mesh_->addDynamicVertexBuffer(positionsLayout, vertices_, static_cast<u32>(vertices_.size()));
 
     VertexBufferLayout uvsLayout;
     uvsLayout.addAttribute(VertexAttributeUsage::TexCoord);
-    mesh_->addDynamicVertexBuffer(uvsLayout, uvs_.data(), static_cast<u32>(uvs_.size()));
+    mesh_->addDynamicVertexBuffer(uvsLayout, uvs_, static_cast<u32>(uvs_.size()));
 
-    mesh_->addPart(reinterpret_cast<const void *>(indexes_.data()), static_cast<u32>(indexes_.size()), IndexElementSize::Bits32);
+    mesh_->addPart(indexes_, static_cast<u32>(indexes_.size()));
     mesh_->setPrimitiveType(PrimitiveType::Triangles);
 }
 
@@ -98,14 +110,26 @@ void FontMesh::updateMesh()
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
 
-        vertices_.emplace_back(glyphInfo.positions[0]);
-        vertices_.emplace_back(glyphInfo.positions[1]);
-        vertices_.emplace_back(glyphInfo.positions[2]);
-        vertices_.emplace_back(glyphInfo.positions[3]);
-        uvs_.emplace_back(glyphInfo.uvs[0]);
-        uvs_.emplace_back(glyphInfo.uvs[1]);
-        uvs_.emplace_back(glyphInfo.uvs[2]);
-        uvs_.emplace_back(glyphInfo.uvs[3]);
+        vertices_.push_back(glyphInfo.positions[0].x());
+    	vertices_.push_back(glyphInfo.positions[0].y());
+    	vertices_.push_back(glyphInfo.positions[0].z());
+    	vertices_.push_back(glyphInfo.positions[1].x());
+    	vertices_.push_back(glyphInfo.positions[1].y());
+    	vertices_.push_back(glyphInfo.positions[1].z());
+    	vertices_.push_back(glyphInfo.positions[2].x());
+    	vertices_.push_back(glyphInfo.positions[2].y());
+    	vertices_.push_back(glyphInfo.positions[2].z());
+    	vertices_.push_back(glyphInfo.positions[3].x());
+    	vertices_.push_back(glyphInfo.positions[3].y());
+    	vertices_.push_back(glyphInfo.positions[3].z());
+        uvs_.push_back(glyphInfo.uvs[0].x());
+    	uvs_.push_back(glyphInfo.uvs[0].y());
+    	uvs_.push_back(glyphInfo.uvs[1].x());
+    	uvs_.push_back(glyphInfo.uvs[1].y());
+    	uvs_.push_back(glyphInfo.uvs[2].x());
+    	uvs_.push_back(glyphInfo.uvs[2].y());
+    	uvs_.push_back(glyphInfo.uvs[3].x());
+    	uvs_.push_back(glyphInfo.uvs[3].y());
     }
 
     mesh_->updateDynamicVertexBuffer(0, 0, reinterpret_cast<const float *>(vertices_.data()), static_cast<u32>(vertices_.size()));
