@@ -36,9 +36,8 @@ namespace solo
         auto primitiveType() const -> PrimitiveType override { return primitiveType_; }
         void setPrimitiveType(PrimitiveType type) override { primitiveType_ = type; }
 
-    	// TODO rename to render
-        void draw(OpenGLEffect *effect);
-        void drawPart(u32 part, OpenGLEffect *effect);
+        void render(OpenGLEffect *effect);
+        void renderPart(u32 part, OpenGLEffect *effect);
 
     private:
         PrimitiveType primitiveType_ = PrimitiveType::Triangles;

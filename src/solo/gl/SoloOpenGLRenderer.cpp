@@ -225,7 +225,7 @@ void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
     dynamic_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
-    dynamic_cast<OpenGLMesh*>(mesh)->draw(effect);
+    dynamic_cast<OpenGLMesh*>(mesh)->render(effect);
 }
 
 void OpenGLRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, Material *material)
@@ -233,7 +233,7 @@ void OpenGLRenderer::renderMeshPart(Mesh *mesh, u32 part, Transform *transform, 
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect*>(material->effect().get());
     dynamic_cast<OpenGLMaterial*>(material)->applyParams(currentCamera_, transform);
-    dynamic_cast<OpenGLMesh*>(mesh)->drawPart(part, effect);
+    dynamic_cast<OpenGLMesh*>(mesh)->renderPart(part, effect);
 }
 
 void OpenGLRenderer::beginFrame()

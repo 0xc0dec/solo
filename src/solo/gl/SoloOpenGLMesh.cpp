@@ -225,7 +225,7 @@ void OpenGLMesh::removePart(u32 part)
 	indexElementSizes_.erase(indexElementSizes_.begin() + part);
 }
 
-void OpenGLMesh::draw(OpenGLEffect *effect)
+void OpenGLMesh::render(OpenGLEffect *effect)
 {
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();
@@ -239,11 +239,11 @@ void OpenGLMesh::draw(OpenGLEffect *effect)
     else
     {
         for (auto i = 0; i < indexBuffers_.size(); i++)
-            drawPart(i, effect);
+            renderPart(i, effect);
     }
 }
 
-void OpenGLMesh::drawPart(u32 part, OpenGLEffect *effect)
+void OpenGLMesh::renderPart(u32 part, OpenGLEffect *effect)
 {
     const auto va = getOrCreateVertexArray(effect);
     flushVertexArrayCache();

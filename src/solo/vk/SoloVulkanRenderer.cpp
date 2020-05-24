@@ -145,7 +145,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
         currentPipelineContextKey_ = context.key();
     }
 
-    // TODO don't rebind an already bound mesh (for instance when we draw mesh parts)
+    // TODO don't rebind an already bound mesh (for instance when we render mesh parts)
     for (u32 i = 0; i < vkMesh->vertexBufferCount(); i++)
         currentCmdBuffer_->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
 }
