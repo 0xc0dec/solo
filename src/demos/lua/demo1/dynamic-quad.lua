@@ -37,7 +37,7 @@ return function(scene, assetCache)
 
     local mesh = sl.Mesh.empty(sl.device)
     mesh:addDynamicVertexBuffer(layout, data, 4)
-    mesh:addPart(indices, 6)
+    mesh:addIndexBuffer(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
     local effect = assetCache.getEffect("texture")

@@ -152,7 +152,7 @@ static auto fromData(Device *device, sptr<MeshData> data, const VertexBufferLayo
     mesh->addVertexBuffer(bufferLayout, data->vertexData(), data->vertexData().size() / bufferLayout.elementCount());
 
 	for (auto part = 0; part < data->partsCount(); part++)
-		mesh->addPart(data->indexData(part), data->indexElementCount(part));
+		mesh->addIndexBuffer(data->indexData(part), data->indexElementCount(part));
 
     return mesh;
 }
@@ -222,7 +222,7 @@ void Mesh::removeVertexBuffer(u32 index)
 	updateMinVertexCount();
 }
 
-auto Mesh::addPart(const vec<u32> &data, u32 elementCount) -> u32
+auto Mesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 {
 	indexElementCounts_.push_back(elementCount);
 	partData_.push_back(data);

@@ -30,7 +30,7 @@ namespace solo
         void updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) override;
         void removeVertexBuffer(u32 index) override;
 
-        auto addPart(const vec<u32> &data, u32 indexElementCount) -> u32 override;
+        auto addIndexBuffer(const vec<u32> &data, u32 indexElementCount) -> u32 override;
         void removePart(u32 index) override;
 
         auto primitiveType() const -> PrimitiveType override;

@@ -23,11 +23,6 @@ static void updateVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const ve
     mesh->updateVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
-static auto addPart(Mesh *mesh, const vec<u32> &indexData, u32 indexElementCount) -> u32
-{
-    return mesh->addPart(indexData, indexElementCount);
-}
-
 static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 {
     auto el = BEGIN_CLASS(module, VertexAttribute);
@@ -65,7 +60,7 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     	REG_METHOD(binding, Mesh, vertexBufferVertexCount);
     	REG_METHOD(binding, Mesh, vertexBufferLayout);
     	REG_METHOD(binding, Mesh, vertexBufferData);
-        REG_FREE_FUNC_AS_METHOD(binding, addPart);
+    	REG_METHOD(binding, Mesh, addIndexBuffer);
         REG_METHOD(binding, Mesh, removePart);
         REG_METHOD(binding, Mesh, partCount);
     	REG_METHOD(binding, Mesh, partElementCount);

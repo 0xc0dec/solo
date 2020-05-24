@@ -179,7 +179,7 @@ void OpenGLMesh::removeVertexBuffer(u32 index)
 	Mesh::removeVertexBuffer(index);
 }
 
-auto OpenGLMesh::addPart(const vec<u32> &data, u32 elementCount) -> u32
+auto OpenGLMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 {
 	GLuint handle = 0;
 	glGenBuffers(1, &handle);
@@ -191,7 +191,7 @@ auto OpenGLMesh::addPart(const vec<u32> &data, u32 elementCount) -> u32
 
 	indexBuffers_.push_back(handle);
 
-	return Mesh::addPart(data, elementCount);
+	return Mesh::addIndexBuffer(data, elementCount);
 }
 
 void OpenGLMesh::removePart(u32 part)

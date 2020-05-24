@@ -47,7 +47,7 @@ namespace solo
     	auto vertexBufferLayout(u32 index) const -> VertexBufferLayout { return layouts_.at(index); }
     	auto vertexBufferData(u32 index) const -> const vec<float>& { return vertexData_.at(index); }
 
-        virtual auto addPart(const vec<u32> &data, u32 indexElementCount) -> u32;
+        virtual auto addIndexBuffer(const vec<u32> &data, u32 indexElementCount) -> u32;
         virtual void removePart(u32 part);
         auto partCount() const -> u32 { return static_cast<u32>(indexElementCounts_.size()); }
     	auto partElementCount(u32 part) const -> u32 { return indexElementCounts_.at(part); }
