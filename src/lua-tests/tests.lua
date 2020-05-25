@@ -14,6 +14,7 @@ function run()
     runTest('quaternion')
     runTest('radians')
     runTest('degrees')
+    runTest('matrix')
 end
 
 callSafe(run)
