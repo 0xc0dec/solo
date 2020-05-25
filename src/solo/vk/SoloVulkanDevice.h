@@ -59,7 +59,7 @@ namespace solo
 
         void selectPhysicalDevice(VkInstance instance);
         void detectFormatSupport(VkFormat format);
-        auto selectDepthFormat() -> VkFormat;
+        auto selectDepthFormat() const -> VkFormat;
     };
 }
 

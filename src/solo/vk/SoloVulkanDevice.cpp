@@ -157,7 +157,7 @@ void VulkanDevice::detectFormatSupport(VkFormat format)
         supportedFormats_[format] = formatProps.optimalTilingFeatures;
 }
 
-auto VulkanDevice::selectDepthFormat() -> VkFormat
+auto VulkanDevice::selectDepthFormat() const -> VkFormat
 {
     vec<VkFormat> depthFormats =
     {
