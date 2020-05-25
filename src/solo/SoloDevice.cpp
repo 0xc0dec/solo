@@ -9,6 +9,7 @@
 #include "SoloPhysics.h"
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
+#include "SoloEnums.h"
 #include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
 

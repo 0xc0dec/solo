@@ -5,6 +5,7 @@
 
 #include "SoloRenderer.h"
 #include "SoloDevice.h"
+#include "SoloEnums.h"
 #include "gl/SoloOpenGLRenderer.h"
 #include "vk/SoloVulkanRenderer.h"
 

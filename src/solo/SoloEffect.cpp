@@ -7,6 +7,7 @@
 #include "SoloDevice.h"
 #include "SoloFileSystem.h"
 #include "SoloScriptRuntime.h"
+#include "SoloEnums.h"
 #include "gl/SoloOpenGLEffect.h"
 #include "vk/SoloVulkanEffect.h"
 

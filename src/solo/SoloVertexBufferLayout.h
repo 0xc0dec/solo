@@ -6,19 +6,10 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
-    enum class VertexAttributeUsage
-    {
-        Unknown,
-        Position,
-        Normal,
-        TexCoord,
-        Tangent,
-        Binormal
-    };
-
     class VertexAttribute final
     {
     public:

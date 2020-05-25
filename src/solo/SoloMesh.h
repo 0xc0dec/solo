@@ -11,21 +11,6 @@
 
 namespace solo
 {
-    enum class PrimitiveType
-    {
-        Triangles,
-        TriangleStrip,
-        Lines,
-        LineStrip,
-        Points
-    };
-
-	enum class IndexElementSize
-	{
-		Bits16 = sizeof(u16),
-		Bits32 = sizeof(u32)
-	};
-
     class Device;
 
 	// TODO Support for "non-GPU" meshes

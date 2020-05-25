@@ -7,18 +7,11 @@
 
 #include "SoloCommon.h"
 #include "SoloVector2.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
-    enum class TextureFormat;
     class Device;
-
-    enum class TextureDataFormat
-    {
-        Red,
-        RGB,
-        RGBA
-    };
 
     class Texture2DData: public NoCopyAndMove
     {

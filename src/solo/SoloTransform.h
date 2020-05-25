@@ -10,19 +10,13 @@
 #include "SoloQuaternion.h"
 #include "SoloMatrix.h"
 #include "SoloNode.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
     class Camera;
     class Transform;
     struct Radians;
-
-    enum class TransformSpace
-    {
-        Self,
-        Parent,
-        World
-    };
 
     class Transform final: public ComponentBase<Transform>
     {

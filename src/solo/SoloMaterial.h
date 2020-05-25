@@ -12,6 +12,7 @@
 #include "SoloVector4.h"
 #include "SoloMatrix.h"
 #include "SoloEffect.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
@@ -20,62 +21,6 @@ namespace solo
     class Texture;
     class Camera;
     class Transform;
-
-    enum class FaceCull
-    {
-        None = 0,
-        Front,
-        Back
-    };
-
-    enum class PolygonMode
-    {
-        Fill,
-        Wireframe,
-        Points
-    };
-
-    enum class DepthFunction
-    {
-        Never = 0,
-        Less,
-        Equal,
-        LEqual,
-        Greater,
-        NotEqual,
-        GEqual,
-        Always
-    };
-
-    enum class BlendFactor
-    {
-        Zero = 0,
-        One,
-        SrcColor,
-        OneMinusSrcColor,
-        DstColor,
-        OneMinusDstColor,
-        SrcAlpha,
-        OneMinusSrcAlpha,
-        DstAlpha,
-        OneMinusDstAlpha,
-        ConstantAlpha,
-        OneMinusConstantAlpha,
-        SrcAlphaSaturate
-    };
-
-    enum class ParameterBinding
-    {
-        WorldMatrix,
-        ViewMatrix,
-        ProjectionMatrix,
-        WorldViewMatrix,
-        ViewProjectionMatrix,
-        WorldViewProjectionMatrix,
-        InverseTransposedWorldMatrix,
-        InverseTransposedWorldViewMatrix,
-        CameraWorldPosition
-    };
 
     class Material: public NoCopyAndMove
     {

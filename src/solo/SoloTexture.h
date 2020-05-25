@@ -8,6 +8,7 @@
 #include "SoloCommon.h"
 #include "SoloVector2.h"
 #include "SoloAsyncHandle.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
@@ -16,36 +17,6 @@ namespace solo
     class Texture2DData;
     class CubeTexture;
     class CubeTextureData;
-
-    enum class TextureWrap
-    {
-        ClampToEdge = 0,
-        ClampToBorder,
-        Repeat,
-        MirrorRepeat
-    };
-
-    enum class TextureFilter
-    {
-        Nearest = 0,
-        Linear
-    };
-
-    enum class TextureMipFilter
-    {
-        None = 0,
-        Nearest,
-        Linear
-    };
-
-    enum class TextureFormat
-    {
-        Depth24,
-        R8,
-        RGB8,
-        RGBA8,
-        RGBA16F
-    };
 
     class Texture: public NoCopyAndMove
     {

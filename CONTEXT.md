@@ -1,6 +1,5 @@
 # TODO
 
-* Move enums to a separate header.
 * Character controller.
 * Camera not moving through walls.
 * Better selected object shader.

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "SoloEnums.h"
 #include "SoloAsyncHandle.h"
 #include "SoloBoxCollider.h"
 #include "SoloCamera.h"

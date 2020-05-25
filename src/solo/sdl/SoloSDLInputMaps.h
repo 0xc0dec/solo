@@ -7,6 +7,7 @@
 
 #include "SoloSDLDevice.h"
 #include "SoloDevice.h"
+#include "SoloEnums.h"
 
 namespace solo
 {
