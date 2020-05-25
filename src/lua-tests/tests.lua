@@ -16,6 +16,7 @@ function run()
     runTest('degrees')
     runTest('matrix')
     runTest('ray')
+    runTest('device')
 end
 
 callSafe(run)
