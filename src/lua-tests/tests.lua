@@ -17,6 +17,7 @@ function run()
     runTest('matrix')
     runTest('ray')
     runTest('device')
+    runTest('camera')
 end
 
 callSafe(run)
