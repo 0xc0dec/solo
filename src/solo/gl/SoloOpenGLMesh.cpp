@@ -47,7 +47,7 @@ static auto toIndexType(IndexElementSize elementSize) -> GLenum
 
 OpenGLMesh::~OpenGLMesh()
 {
-    resetVertexArrayCache();
+    clearVertexArrayCache();
     while (!vertexBuffers_.empty())
         removeVertexBuffer(0);
     while (!indexBuffers_.empty())
@@ -114,7 +114,7 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
     return handle;
 }
 
-void OpenGLMesh::resetVertexArrayCache()
+void OpenGLMesh::clearVertexArrayCache()
 {
     for (auto &p: vertexArrayCache_)
         glDeleteVertexArrays(1, &p.second.handle);
@@ -158,7 +158,7 @@ void OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
 
     vertexBuffers_.push_back(handle);
     
-    resetVertexArrayCache();
+    clearVertexArrayCache();
 }
 
 void OpenGLMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
@@ -175,7 +175,7 @@ void OpenGLMesh::removeVertexBuffer(u32 index)
 	auto handle = vertexBuffers_.at(index);
 	glDeleteBuffers(1, &handle);
 	vertexBuffers_.erase(vertexBuffers_.begin() + index);
-	resetVertexArrayCache();
+	clearVertexArrayCache();
 	Mesh::removeVertexBuffer(index);
 }
 

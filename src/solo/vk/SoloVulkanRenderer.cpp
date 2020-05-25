@@ -18,7 +18,7 @@
 
 using namespace solo;
 
-static auto pipelineContextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
+static auto contextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
 {
     size_t seed = 0;
     const std::hash<void*> hasher;
@@ -132,7 +132,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
 
-	const auto key = pipelineContextKey(transform, currentCamera_, vkMaterial, *currentRenderPass_);
+	const auto key = contextKey(transform, currentCamera_, vkMaterial, *currentRenderPass_);
 	if (!pipelineContexts_.count(key))
 		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&device_, key)));
 

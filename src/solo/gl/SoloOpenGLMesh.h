@@ -53,7 +53,7 @@ namespace solo
         void addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic);
 
         auto getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint;
-        void resetVertexArrayCache();
+        void clearVertexArrayCache();
         void flushVertexArrayCache();
     };
 }
