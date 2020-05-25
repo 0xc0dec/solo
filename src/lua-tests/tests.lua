@@ -11,6 +11,7 @@ function run()
     runTest('vector2')
     runTest('vector3')
     runTest('vector4')
+    runTest('quaternion')
 end
 
 callSafe(run)
