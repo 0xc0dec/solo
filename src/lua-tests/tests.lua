@@ -12,6 +12,7 @@ function run()
     runTest('vector3')
     runTest('vector4')
     runTest('quaternion')
+    runTest('radians')
 end
 
 callSafe(run)
