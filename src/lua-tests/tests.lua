@@ -15,6 +15,7 @@ function run()
     runTest('radians')
     runTest('degrees')
     runTest('matrix')
+    runTest('ray')
 end
 
 callSafe(run)
