@@ -20,6 +20,7 @@ function run()
     runTest('camera')
     runTest('enums')
     runTest('font')
+    runTest('material')
 end
 
 callSafe(run)
