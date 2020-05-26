@@ -6,9 +6,7 @@
 #include "SoloTransform.h"
 #include "SoloTexture.h"
 #include "SoloLuaCommon.h"
-#include "SoloDevice.h"
-#include "SoloMaterial.h"
-#include "SoloMesh.h"
+#include "SoloEnums.h"
 
 using namespace solo;
 

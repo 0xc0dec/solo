@@ -18,6 +18,7 @@ function run()
     runTest('ray')
     runTest('device')
     runTest('camera')
+    runTest('enums')
 end
 
 callSafe(run)
