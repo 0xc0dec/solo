@@ -19,6 +19,7 @@ function run()
     runTest('device')
     runTest('camera')
     runTest('enums')
+    runTest('font')
 end
 
 callSafe(run)
