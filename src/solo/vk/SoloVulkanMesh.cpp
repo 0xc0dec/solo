@@ -86,7 +86,6 @@ auto VulkanMesh::layoutHash() const -> size_t
             combineHash(seed, unsignedHasher(j));
             combineHash(seed, strHasher(attr.name));
             combineHash(seed, unsignedHasher(attr.elementCount));
-            combineHash(seed, unsignedHasher(attr.location));
             combineHash(seed, unsignedHasher(attr.offset));
             combineHash(seed, unsignedHasher(attr.size));
         }

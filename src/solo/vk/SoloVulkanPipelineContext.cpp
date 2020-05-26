@@ -118,7 +118,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
             const auto attr = layout.attribute(attrIndex);
             const auto format = toVertexFormat(attr);
             
-            auto location = attr.location;
+            u32 location = 0;
             auto found = true;
             if (!attr.name.empty())
             {

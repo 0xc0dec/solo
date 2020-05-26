@@ -16,7 +16,6 @@ namespace solo
         str name;
         u32 elementCount;
         u32 size;
-        u32 location;
         u32 offset;
         VertexAttributeUsage usage;
     };

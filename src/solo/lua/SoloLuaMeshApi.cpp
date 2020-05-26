@@ -27,7 +27,6 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
 {
     auto el = BEGIN_CLASS(module, VertexAttribute);
     REG_FIELD(el, VertexAttribute, name);
-    REG_FIELD(el, VertexAttribute, location);
     REG_FIELD(el, VertexAttribute, elementCount);
     REG_FIELD(el, VertexAttribute, size);
     REG_FIELD(el, VertexAttribute, offset);
