@@ -21,6 +21,7 @@ function run()
     runTest('enums')
     runTest('font')
     runTest('material')
+    runTest('mesh')
 end
 
 callSafe(run)
