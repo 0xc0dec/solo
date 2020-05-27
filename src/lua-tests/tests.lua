@@ -27,6 +27,7 @@ function run()
     runTest('mesh-renderer')
     runTest('spectator')
     runTest('effect')
+    runTest('file-system')
 end
 
 callSafe(run)

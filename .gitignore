@@ -18,3 +18,4 @@
 ..gitignore.un~
 *VC.db
 *VC.opendb
+temp/**/*
