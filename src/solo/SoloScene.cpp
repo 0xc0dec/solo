@@ -76,7 +76,7 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
     cmp->init();
 
     if (cmp->typeId() == Camera::getId())
-        cameras_.push_back(static_cast<Camera*>(cmp.get()));
+        cameras_.push_back(dynamic_cast<Camera*>(cmp.get()));
 }
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
@@ -87,11 +87,11 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
 
     auto &nodeComponents = node->second;
 
-    const auto cmpIt = nodeComponents.find(typeId);
+    const auto &cmpIt = nodeComponents.find(typeId);
     if (cmpIt == nodeComponents.end() || cmpIt->second.deleted)
         return;
 
-    auto cmp = cmpIt->second;
+    auto &cmp = cmpIt->second;
     cmp.deleted = true;
     cmp.component->terminate();
 
