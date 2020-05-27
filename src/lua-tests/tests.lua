@@ -29,6 +29,7 @@ function run()
     runTest('effect')
     runTest('file-system')
     runTest('renderer')
+    runTest('node')
 end
 
 callSafe(run)
