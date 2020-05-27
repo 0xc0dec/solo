@@ -31,6 +31,7 @@ function run()
     runTest('renderer')
     runTest('node')
     runTest('component')
+    runTest('physics')
 end
 
 callSafe(run)
