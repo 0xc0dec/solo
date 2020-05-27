@@ -22,6 +22,8 @@ function run()
     runTest('font')
     runTest('material')
     runTest('mesh')
+    runTest('frame-buffer')
+    runTest('scene')
 end
 
 callSafe(run)
