@@ -30,6 +30,7 @@ function run()
     runTest('file-system')
     runTest('renderer')
     runTest('node')
+    runTest('component')
 end
 
 callSafe(run)

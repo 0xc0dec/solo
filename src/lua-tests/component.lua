@@ -1,0 +1,10 @@
+local scene = sl.Scene.empty(sl.device)
+local node = scene:createNode()
+
+local cam = node:addComponent('Camera')
+cam:update()
+cam:render()
+assert(cam:typeId())
+assert(cam:tag())
+cam:setTag(123)
+assert(cam:node() == node)
