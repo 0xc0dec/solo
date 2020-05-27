@@ -25,6 +25,7 @@ function run()
     runTest('frame-buffer')
     runTest('scene')
     runTest('mesh-renderer')
+    runTest('spectator')
 end
 
 callSafe(run)
