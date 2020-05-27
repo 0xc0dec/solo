@@ -28,6 +28,7 @@ function run()
     runTest('spectator')
     runTest('effect')
     runTest('file-system')
+    runTest('renderer')
 end
 
 callSafe(run)
