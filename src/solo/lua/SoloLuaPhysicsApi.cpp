@@ -77,12 +77,6 @@ static void registerColliders(CppBindModule<LuaBinding> &module)
         REG_PTR_EQUALITY(binding, StaticMeshCollider);
         binding.endClass();
     }
-
-    {
-        auto binding = BEGIN_CLASS_RENAMED(module, AsyncHandle<StaticMeshCollider>, "StaticMeshColliderAsyncHandle");
-        REG_METHOD(binding, AsyncHandle<StaticMeshCollider>, done);
-        binding.endClass();
-    }
 }
 
 void registerPhysicsApi(CppBindModule<LuaBinding> &module)

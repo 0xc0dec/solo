@@ -36,6 +36,7 @@ namespace solo
         static auto create(const Node &node, const RigidBodyParams &params) -> sptr<RigidBody>;
 
         virtual void setCollider(sptr<Collider> collider) = 0;
+    	// TODO add collider() method
 
         virtual bool isKinematic() = 0;
         virtual void setKinematic(bool kinematic) = 0;
