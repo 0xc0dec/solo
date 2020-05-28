@@ -3,9 +3,7 @@
 * Character controller.
 * Camera not moving through walls.
 * Better selected object shader.
-* Bring back Lua tests.
 * Rendering into cube map, add glass material to demo.
-* Less umap usages.
 * Use proper image layouts in Vulkan.
 * Add center of mass offset.
 * Deferred demo - add shadows.
