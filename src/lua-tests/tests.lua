@@ -32,6 +32,7 @@ function run()
     runTest('node')
     runTest('component')
     runTest('physics')
+    runTest('transform')
     runTest('texture')
 end
 
