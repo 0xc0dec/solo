@@ -59,7 +59,6 @@ void OpenGLSDLDevice::cleanup()
         SDL_DestroyWindow(window_);
         window_ = nullptr;
     }
-    SDL_Quit();
 }
 
 void OpenGLSDLDevice::endUpdate()
