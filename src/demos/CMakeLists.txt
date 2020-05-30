@@ -8,7 +8,7 @@ function(add_demo NAME SUBPATH)
     target_link_libraries(${NAME} Solo)
 
     target_include_directories(${NAME} PRIVATE
-        "../../solo"
+        "../solo"
         "../../vendor/glm/0.9.8.4")
 
     if (MSVC)
