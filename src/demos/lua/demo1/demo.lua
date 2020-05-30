@@ -3,8 +3,8 @@
 -- MIT license
 -- 
 
-sl.includeDir("../../src/demos/lua/demo1")
-sl.includeDir("../../src/demos/lua/common")
+sl.includeDir("../../../src/demos/lua/demo1")
+sl.includeDir("../../../src/demos/lua/common")
 
 require "common"
 

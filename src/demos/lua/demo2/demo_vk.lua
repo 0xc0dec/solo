@@ -10,4 +10,4 @@ setup.canvasHeight = 900
 setup.fullScreen = false
 setup.vsync = true
 
-entry = "../../src/demos/lua/demo2/demo.lua"
+entry = "../../../src/demos/lua/demo2/demo.lua"
