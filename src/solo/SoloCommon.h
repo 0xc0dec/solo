@@ -31,15 +31,6 @@
 #   define SL_VULKAN_RENDERER
 #endif
 
-#define SL_MACRO_BLOCK(code) do { code; } while (false);
-#define SL_EMPTY_MACRO_BLOCK() do {} while (false);
-
-#ifdef SL_DEBUG
-#   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(SL_FMT(__VA_ARGS__, " (", __FILE__, ", line ", __LINE__, ")")))
-#else
-#   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
-#endif
-
 namespace solo
 {
     template <typename T> using sptr = std::shared_ptr<T>;
