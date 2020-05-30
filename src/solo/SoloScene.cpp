@@ -62,15 +62,11 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
     const auto typeId = cmp->typeId();
 
-    SL_DEBUG_BLOCK(
-    {
-        const auto node = nodes_.find(nodeId);
-        if (node != nodes_.end())
-        {
-            const auto &nodeComponents = node->second;
-            asrt(nodeComponents.find(typeId) == nodeComponents.end(), "Node already contains component with same id");
-        }
-    });
+	asrt([this, nodeId, typeId]()
+	{
+		const auto node = nodes_.find(nodeId);
+		return node != nodes_.end() ? node->second.find(typeId) == node->second.end() : true;
+	}, "Node already contains component with same id");
 
     nodes_[nodeId][typeId].component = cmp;
     cmp->init();

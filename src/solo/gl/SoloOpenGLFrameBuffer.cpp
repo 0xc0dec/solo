@@ -26,8 +26,8 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 
 auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
 {
-    SL_DEBUG_BLOCK(validateNewAttachments(attachments));
-    SL_DEBUG_BLOCK(::validateNewAttachments(attachments));
+	asrt([&attachments]() { validateNewAttachments(attachments); });
+	asrt([&attachments]() { ::validateNewAttachments(attachments); });
 
     auto result = sptr<OpenGLFrameBuffer>(new OpenGLFrameBuffer());
 

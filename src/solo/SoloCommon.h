@@ -13,6 +13,7 @@
 #include <array>
 #include <list>
 #include <memory>
+#include <functional>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #   define SL_WINDOWS
@@ -34,10 +35,8 @@
 #define SL_EMPTY_MACRO_BLOCK() do {} while (false);
 
 #ifdef SL_DEBUG
-#   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
 #   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(SL_FMT(__VA_ARGS__, " (", __FILE__, ", line ", __LINE__, ")")))
 #else
-#   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
@@ -95,15 +94,30 @@ namespace solo
     };
 
 	template <class... TArgs>
-	constexpr void asrt(bool condition, TArgs ... args)
+	constexpr void asrt(bool condition, TArgs ... msgArgs)
 	{
 #ifdef SL_DEBUG
 		if (!condition)
 		{
-			const auto msg = Formatter()(args...);
+			const auto msg = Formatter()(msgArgs...);
 			Logger::global().logDebug(msg);
 			exit(1);
 		}
+#endif
+	}
+
+	template <class... TArgs>
+	constexpr void asrt(const std::function<bool()> &condition, TArgs ... msgArgs)
+	{
+#ifdef SL_DEBUG
+		asrt(condition(), msgArgs...);
+#endif
+	}
+
+	inline void asrt(const std::function<void()> &check)
+	{
+#ifdef SL_DEBUG
+		check();
 #endif
 	}
 }

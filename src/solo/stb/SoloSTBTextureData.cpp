@@ -87,16 +87,26 @@ auto STBCubeTextureData::fromFaceFiles(
     faces.push_back(STBTexture2DData::fromFile(device, positiveZPath));
     faces.push_back(STBTexture2DData::fromFile(device, negativeZPath));
 
-    SL_DEBUG_BLOCK(
-    {
-        const auto dim = faces[0]->dimensions();
-        asrt(dim.x() == dim.y(), "Cube texture width must be equal to height");
-        for (const auto &face: faces)
-            asrt(face->dimensions() == dim, "All cube texture sizes must match");
-    });
+	asrt([&faces]()
+	{
+		const auto dim = faces[0]->dimensions();
+        return dim.x() == dim.y();
+	}, "Cube texture width must be equal to height");
+
+	asrt([&faces]()
+	{
+		const auto dim = faces[0]->dimensions();
+		for (const auto &face: faces)
+		{
+			if (face->dimensions() != dim)
+				return false;
+		}
+        return true;
+	}, "All cube texture sizes must match");
 
     auto tex = std::make_shared<STBCubeTextureData>(faces[0]->format(), static_cast<u32>(faces[0]->dimensions().x()));
     tex->faces_ = std::move(faces);
+	
     return tex;
 }
 

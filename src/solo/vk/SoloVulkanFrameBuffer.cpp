@@ -15,7 +15,7 @@ using namespace solo;
 
 auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
 {
-    SL_DEBUG_BLOCK(validateNewAttachments(attachments));
+	asrt([&attachments]() { validateNewAttachments(attachments); });
 
     const auto renderer = static_cast<VulkanRenderer*>(device->renderer());
     auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
