@@ -1,10 +1,10 @@
-file(GLOB SL_ENGINE_SRC_BULLET "src/solo/bullet/*.cpp" "src/solo/bullet/*.h")
-file(GLOB SL_ENGINE_SRC_GL "src/solo/gl/*.cpp" "src/solo/gl/*.h")
-file(GLOB SL_ENGINE_SRC_LUA "src/solo/lua/*.cpp" "src/solo/lua/*.h")
-file(GLOB SL_ENGINE_SRC_SDL "src/solo/sdl/*.cpp" "src/solo/sdl/*.h")
-file(GLOB SL_ENGINE_SRC_STB "src/solo/stb/*.cpp" "src/solo/stb/*.h")
-file(GLOB SL_ENGINE_SRC_VK "src/solo/vk/*.cpp" "src/solo/vk/*.h")
-file(GLOB SL_ENGINE_SRC_CORE "src/solo/*.cpp" "src/solo/*.h")
+file(GLOB SL_ENGINE_SRC_BULLET "bullet/*.cpp" "bullet/*.h")
+file(GLOB SL_ENGINE_SRC_GL "gl/*.cpp" "gl/*.h")
+file(GLOB SL_ENGINE_SRC_LUA "lua/*.cpp" "lua/*.h")
+file(GLOB SL_ENGINE_SRC_SDL "sdl/*.cpp" "sdl/*.h")
+file(GLOB SL_ENGINE_SRC_STB "stb/*.cpp" "stb/*.h")
+file(GLOB SL_ENGINE_SRC_VK "vk/*.cpp" "vk/*.h")
+file(GLOB SL_ENGINE_SRC_CORE "*.cpp" "*.h")
 
 source_group("bullet" FILES ${SL_ENGINE_SRC_BULLET})
 source_group("gl" FILES ${SL_ENGINE_SRC_GL})
@@ -24,21 +24,21 @@ add_library(Solo STATIC
     ${SL_ENGINE_SRC_CORE})
 
 target_include_directories(Solo PRIVATE
-    "src/solo"
-    "vendor" # TODO needed?
-    "vendor/glew/1.13/include"
-    "vendor/SDL/2.0.4/include"
-    "vendor/bullet/2.83.7"
-    "vendor/stb_truetype/1.11"
-    "vendor/vulkan/include"
-    "vendor/LuaIntf"
-    "vendor/lua/5.3.1"
-    "vendor/stb_image/2.15"
-    "vendor/spirv_cross"
-    "vendor/glm/0.9.8.4"
-    "vendor/stb_image/2.15"
-    "vendor/shaderc/libshaderc/include"
-    "vendor/assimp/4.1.0/include"
+    "."
+    "../../vendor" # TODO needed?
+    "../../vendor/glew/1.13/include"
+    "../../vendor/SDL/2.0.4/include"
+    "../../vendor/bullet/2.83.7"
+    "../../vendor/stb_truetype/1.11"
+    "../../vendor/vulkan/include"
+    "../../vendor/LuaIntf"
+    "../../vendor/lua/5.3.1"
+    "../../vendor/stb_image/2.15"
+    "../../vendor/spirv_cross"
+    "../../vendor/glm/0.9.8.4"
+    "../../vendor/stb_image/2.15"
+    "../../vendor/shaderc/libshaderc/include"
+    "../../vendor/assimp/4.1.0/include"
     "${PROJECT_BINARY_DIR}/vendor/assimp/4.1.0/include" # For assimp generated config.h
 )
 

@@ -1,5 +1,5 @@
 function(add_demo NAME SUBPATH)
-    file(GLOB SRC "src/demos/${SUBPATH}/*.cpp" "src/demos/${SUBPATH}/*.h")
+    file(GLOB SRC "${SUBPATH}/*.cpp" "${SUBPATH}/*.h")
 
     source_group("" FILES ${SRC})
 
@@ -8,8 +8,8 @@ function(add_demo NAME SUBPATH)
     target_link_libraries(${NAME} Solo)
 
     target_include_directories(${NAME} PRIVATE
-        "src/solo"
-        "vendor/glm/0.9.8.4")
+        "../../solo"
+        "../../vendor/glm/0.9.8.4")
 
     if (MSVC)
         target_compile_options(${NAME} PRIVATE /wd4267 /wd4244 /wd4312)

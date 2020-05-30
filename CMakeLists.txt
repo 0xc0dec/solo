@@ -49,11 +49,10 @@ function(set_default_compile_defs TARGET)
 endfunction()
 
 add_subdirectory("vendor")
+add_subdirectory("src/demos")
+add_subdirectory("src/solr")
+add_subdirectory("src/solo")
 
 if (WIN32)
     add_subdirectory("vendor/shaderc")
 endif()
-
-include("Solo.cmake.txt")
-include("Solr.cmake.txt")
-include("Demos.cmake.txt")
