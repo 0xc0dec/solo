@@ -32,7 +32,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             break;
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             break;
     }
 

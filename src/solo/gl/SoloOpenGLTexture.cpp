@@ -83,7 +83,7 @@ static auto toDataFormat(TextureDataFormat format) -> GLenum
             return GL_RGBA;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported texture data format");
+    debugPanicIf(true, "Unsupported texture data format");
     return 0;
 }
 
@@ -102,7 +102,7 @@ static auto toDataFormat(TextureFormat format) -> GLenum
             return GL_DEPTH_COMPONENT;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported texture format");
+    debugPanicIf(true, "Unsupported texture format");
     return 0;
 }
 
@@ -122,7 +122,7 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
             return GL_DEPTH_COMPONENT24;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported texture format");
+    debugPanicIf(true, "Unsupported texture format");
     return 0;
 }
 
@@ -140,7 +140,7 @@ static auto toWrap(TextureWrap wrap) -> GLenum
             return GL_REPEAT;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported wrap mode");
+    debugPanicIf(true, "Unsupported wrap mode");
     return 0;
 }
 
@@ -156,7 +156,7 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_LINEAR_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_LINEAR;
                 default:
-                    SL_DEBUG_PANIC(true, "Unsupported mip filter");
+                    debugPanicIf(true, "Unsupported mip filter");
                     return 0;
             }
         }
@@ -169,12 +169,12 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_NEAREST_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_NEAREST;
                 default:
-                    SL_DEBUG_PANIC(true, "Unsupported mip filter");
+                    debugPanicIf(true, "Unsupported mip filter");
                     return 0;
             }
         }
         default:
-            SL_DEBUG_PANIC(true, "Unsupported min filter");
+            debugPanicIf(true, "Unsupported min filter");
             return 0;
     }
 }
@@ -187,14 +187,14 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
         case TextureFilter::Nearest: return GL_NEAREST;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported mag filter");
+    debugPanicIf(true, "Unsupported mag filter");
     return 0;
 }
 
 OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle_);
-    SL_DEBUG_PANIC(!handle_, "Unable to create texture handle");
+    debugPanicIf(!handle_, "Unable to create texture handle");
 }
 
 OpenGLTexture::~OpenGLTexture()
@@ -216,7 +216,7 @@ auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
 
-    SL_DEBUG_PANIC(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+    debugPanicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->textureFormat(), dimensions));
 
@@ -244,7 +244,7 @@ auto OpenGLTexture2D::empty(u32 width, u32 height, TextureFormat format) -> sptr
     const auto dataFormat = toDataFormat(format);
     const auto dimensions = Vector2(width, height);
 
-    SL_DEBUG_PANIC(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+    debugPanicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
 
@@ -284,7 +284,7 @@ auto OpenGLCubeTexture::fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeT
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
         const auto internalFormat = toInternalFormat(data->textureFormat());
         const auto dataFormat = toDataFormat(data->format());
-        SL_DEBUG_PANIC(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+        debugPanicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(glFace, 0, internalFormat, data->dimension(), data->dimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->faceData(i));
     }

@@ -41,13 +41,13 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
             break;
     }
 
-    SL_DEBUG_PANIC(true, "Texture data format not convertible to texture format");
+    debugPanicIf(true, "Texture data format not convertible to texture format");
     return TextureFormat::RGBA8;
 }
 
 auto Texture2DData::fromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
-    SL_DEBUG_PANIC(!STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
+    debugPanicIf(!STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
     return STBTexture2DData::fromFile(device, path);
 }
 
@@ -73,7 +73,7 @@ auto CubeTextureData::fromFaceFiles(
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
 {
-    SL_DEBUG_PANIC(!STBCubeTextureData::canLoadFromFaceFiles(
+    debugPanicIf(!STBCubeTextureData::canLoadFromFaceFiles(
         positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath),
         "Unsupported cube texture face files ", positiveXPath, ", ...");
     return STBCubeTextureData::fromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);

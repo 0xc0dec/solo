@@ -21,7 +21,7 @@ static auto toFilter(TextureFilter filter) -> VkFilter
         case TextureFilter::Nearest: return VK_FILTER_NEAREST;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported texture filter");
+    debugPanicIf(true, "Unsupported texture filter");
     return VK_FILTER_BEGIN_RANGE;
 }
 
@@ -34,7 +34,7 @@ static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode
         case TextureMipFilter::None: return VK_SAMPLER_MIPMAP_MODE_NEAREST;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported mip filter");
+    debugPanicIf(true, "Unsupported mip filter");
     return VK_SAMPLER_MIPMAP_MODE_END_RANGE;
 }
 
@@ -48,7 +48,7 @@ static auto toAddressMode(TextureWrap wrap) -> VkSamplerAddressMode
         case TextureWrap::Repeat: return VK_SAMPLER_ADDRESS_MODE_REPEAT;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported wrap mode");
+    debugPanicIf(true, "Unsupported wrap mode");
     return VK_SAMPLER_ADDRESS_MODE_MAX_ENUM;
 }
 

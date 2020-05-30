@@ -31,7 +31,7 @@ public:
 
     void setWorldTransform(const btTransform &worldTransform) override
     {
-        SL_DEBUG_PANIC(transform_->parent(), "Rigid body transform must not have a parent");
+        debugPanicIf(transform_->parent(), "Rigid body transform must not have a parent");
         transform_->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
         transform_->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
     }

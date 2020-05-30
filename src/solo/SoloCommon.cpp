@@ -28,7 +28,7 @@ namespace solo
             if (!path.empty())
             {
                 file.open(path, std::ios_base::trunc);
-                SL_DEBUG_PANIC(!file.is_open(), "Unable to open log file ", path);
+                debugPanicIf(!file.is_open(), "Unable to open log file ", path);
             }
         }
 

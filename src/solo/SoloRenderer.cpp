@@ -24,7 +24,7 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
             return std::make_shared<VulkanRenderer>(device);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }

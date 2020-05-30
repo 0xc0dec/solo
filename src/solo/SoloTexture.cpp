@@ -64,7 +64,7 @@ auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipm
     auto producers = JobBase<Texture2DData>::Producers{[=]() { return Texture2DData::fromFile(device, path); }};
     auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results)
     {
-        auto texture = fromData(device, results[0], generateMipmaps);
+	    const auto texture = fromData(device, results[0], generateMipmaps);
         handle->resolve(texture);
     };
 
@@ -86,7 +86,7 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
             return VulkanTexture2D::empty(device, width, height, format);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }
@@ -104,7 +104,7 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
             return VulkanTexture2D::fromData(device, data, generateMipmaps);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }
@@ -148,7 +148,7 @@ auto CubeTexture::fromFaceFilesAsync(
     }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
-        auto texture = fromData(device, results[0]);
+	    const auto texture = fromData(device, results[0]);
         handle->resolve(texture);
     };
 
@@ -170,7 +170,7 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
             return VulkanCubeTexture::fromData(device, data);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }
@@ -179,7 +179,7 @@ CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
     Texture(format),
     dimension_(dimension)
 {
-    rebuild();
+    rebuild(); // yes, virtual call
 }
 
 void CubeTexture::setWrap(TextureWrap wrap)

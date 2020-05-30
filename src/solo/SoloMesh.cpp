@@ -28,7 +28,7 @@ public:
 	    Assimp::Importer importer;
 	    const auto flags = aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
 		const auto scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), flags);
-	    SL_DEBUG_PANIC(!scene, "Unable to parse file ", path);
+	    debugPanicIf(!scene, "Unable to parse file ", path);
 
 	    auto data = std::make_shared<MeshData>();
 	    u32 indexBase = 0;
@@ -140,7 +140,7 @@ auto Mesh::empty(Device *device) -> sptr<Mesh>
         return std::make_shared<VulkanMesh>(device);
 #endif
     default:
-        SL_DEBUG_PANIC(true, "Unknown device mode");
+        debugPanicIf(true, "Unknown device mode");
         return nullptr;
     }
 }

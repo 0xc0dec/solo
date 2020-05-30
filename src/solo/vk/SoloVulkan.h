@@ -17,7 +17,7 @@
 #include <vulkan.h>
 
 #ifdef SL_DEBUG
-#   define SL_VK_CHECK_RESULT(vkCall) SL_DEBUG_PANIC(vkCall != VK_SUCCESS, "Vulkan API call failed")
+#   define SL_VK_CHECK_RESULT(vkCall) solo::debugPanicIf(vkCall != VK_SUCCESS, "Vulkan API call failed")
 #else
 #   define SL_VK_CHECK_RESULT(vkCall) vkCall
 #endif

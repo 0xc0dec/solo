@@ -36,7 +36,7 @@ void VertexBufferLayout::addAttribute(VertexAttributeUsage usage)
             addAttribute(3, "sl_Binormal", VertexAttributeUsage::Binormal);
             break;
         default:
-            SL_DEBUG_PANIC(true, "Unsupported vertex attribute usage");
+            debugPanicIf(true, "Unsupported vertex attribute usage");
     }
 }
 

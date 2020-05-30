@@ -26,7 +26,7 @@ static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat
         case 3: return VK_FORMAT_R32G32B32_SFLOAT;
         case 4: return VK_FORMAT_R32G32B32A32_SFLOAT;
         default:
-            SL_DEBUG_PANIC(true, "Unsupported vertex attribute element count");
+            debugPanicIf(true, "Unsupported vertex attribute element count");
             return VK_FORMAT_UNDEFINED;
     }
 }
@@ -53,7 +53,7 @@ static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor
             break;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported blend factor");
+    debugPanicIf(true, "Unsupported blend factor");
     return VK_BLEND_FACTOR_MAX_ENUM;
 }
 
@@ -74,7 +74,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMaterial *materia
             cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
             break;
         default:
-            SL_DEBUG_PANIC(true, "Unsupported polygon mode");
+            debugPanicIf(true, "Unsupported polygon mode");
     }
 
     switch (material->faceCull())
@@ -89,7 +89,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMaterial *materia
             cfg.withCullMode(VK_CULL_MODE_BACK_BIT);
             break;
         default:
-            SL_DEBUG_PANIC(true, "Unsupported face cull mode");
+            debugPanicIf(true, "Unsupported face cull mode");
     }
 
     cfg.withDepthTest(material->hasDepthWrite(), material->hasDepthTest());

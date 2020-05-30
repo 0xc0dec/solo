@@ -48,7 +48,7 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
             return GL_SRC_ALPHA_SATURATE;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported blend factor");
+    debugPanicIf(true, "Unsupported blend factor");
     return 0;
 }
 
@@ -187,7 +187,7 @@ OpenGLRenderer::OpenGLRenderer(Device *device)
 {
 	const auto ver = version();
     name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
-    SL_DEBUG_PANIC(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
+    debugPanicIf(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
 }
 
 auto OpenGLRenderer::gpuName() const -> const char*

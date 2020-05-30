@@ -24,21 +24,21 @@ auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &at
             return VulkanFrameBuffer::fromAttachments(device, attachments);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }
 
 void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
-    SL_DEBUG_PANIC(attachments.empty(), "Frame buffer must have at least one attachment");
+    debugPanicIf(attachments.empty(), "Frame buffer must have at least one attachment");
 
     auto width = (std::numeric_limits<u32>::max)(), height = (std::numeric_limits<u32>::max)();
     auto depthAttachmentCount = 0;
     for (const auto &attachment : attachments)
     {
         if (attachment->format() == TextureFormat::Depth24)
-            SL_DEBUG_PANIC(++depthAttachmentCount > 1, "Frame buffer can only have one depth attachment");
+            debugPanicIf(++depthAttachmentCount > 1, "Frame buffer can only have one depth attachment");
 
         const auto size = attachment->dimensions();
         if (width == (std::numeric_limits<u32>::max)())
@@ -48,7 +48,7 @@ void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments
         }
         else
         {
-            SL_DEBUG_PANIC(static_cast<u32>(size.x()) != width || static_cast<u32>(size.y()) != height,
+            debugPanicIf(static_cast<u32>(size.x()) != width || static_cast<u32>(size.y()) != height,
                 "Frame buffer attachments must have same dimentions");
         }
     }

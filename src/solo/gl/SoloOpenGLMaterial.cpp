@@ -243,8 +243,8 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        default:
-            SL_DEBUG_PANIC(true, "Unsupported parameter binding")
+    	default:
+            debugPanicIf(true, "Unsupported parameter binding");
     }
 }
 

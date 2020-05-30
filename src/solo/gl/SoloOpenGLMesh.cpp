@@ -29,7 +29,7 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
             return GL_POINTS;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported primitive type");
+    debugPanicIf(true, "Unsupported primitive type");
     return 0;
 }
 
@@ -41,7 +41,7 @@ static auto toIndexType(IndexElementSize elementSize) -> GLenum
 		case IndexElementSize::Bits32: return GL_UNSIGNED_INT;
 	}
 
-	SL_DEBUG_PANIC(true, "Unsupported index element size");
+	debugPanicIf(true, "Unsupported index element size");
     return 0;
 }
 
@@ -64,7 +64,7 @@ auto OpenGLMesh::getOrCreateVertexArray(OpenGLEffect *effect) -> GLuint
         return handle;
     
     glGenVertexArrays(1, &handle);
-    SL_DEBUG_PANIC(!handle, "Unable to create vertex array");
+    debugPanicIf(!handle, "Unable to create vertex array");
 
     glBindVertexArray(handle);
 
@@ -150,7 +150,7 @@ void OpenGLMesh::addVertexBuffer(const VertexBufferLayout &layout, const void *d
 {
     GLuint handle = 0;
     glGenBuffers(1, &handle);
-    SL_DEBUG_PANIC(!handle, "Unable to create vertex buffer handle");
+    debugPanicIf(!handle, "Unable to create vertex buffer handle");
 
     glBindBuffer(GL_ARRAY_BUFFER, handle);
     glBufferData(GL_ARRAY_BUFFER, layout.size() * vertexCount, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
@@ -183,7 +183,7 @@ auto OpenGLMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
 {
 	GLuint handle = 0;
 	glGenBuffers(1, &handle);
-	SL_DEBUG_PANIC(!handle, "Unable to create index buffer handle");
+	debugPanicIf(!handle, "Unable to create index buffer handle");
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(IndexElementSize::Bits32) * elementCount, data.data(), GL_STATIC_DRAW); // TODO 16-bit support?

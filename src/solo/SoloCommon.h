@@ -36,18 +36,9 @@
 #ifdef SL_DEBUG
 #   define SL_DEBUG_BLOCK(code) SL_MACRO_BLOCK(code)
 #   define SL_DEBUG_LOG(...) SL_MACRO_BLOCK(Logger::global().logDebug(SL_FMT(__VA_ARGS__, " (", __FILE__, ", line ", __LINE__, ")")))
-#   define SL_DEBUG_PANIC(condition, ...) \
-        SL_MACRO_BLOCK( \
-            if (condition) \
-            { \
-                SL_DEBUG_LOG(__VA_ARGS__); \
-                exit(1); \
-            } \
-        )
 #else
 #   define SL_DEBUG_BLOCK(code) SL_EMPTY_MACRO_BLOCK()
 #   define SL_DEBUG_LOG(...) SL_EMPTY_MACRO_BLOCK()
-#   define SL_DEBUG_PANIC(condition, ...) SL_EMPTY_MACRO_BLOCK()
 #endif
 
 namespace solo
@@ -102,4 +93,17 @@ namespace solo
     protected:
         Logger() = default;
     };
+
+	template <class... TArgs>
+	constexpr void debugPanicIf(bool condition, TArgs ... args)
+	{
+#ifdef SL_DEBUG
+		if (condition)
+		{
+			const auto msg = Formatter()(args...);
+			Logger::global().logDebug(msg);
+			exit(1);
+		}
+#endif
+	}
 }

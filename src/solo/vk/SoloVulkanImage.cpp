@@ -28,7 +28,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
             break;
     }
 
-    SL_DEBUG_PANIC(true, "Unsupported texture format");
+    debugPanicIf(true, "Unsupported texture format");
     return VK_FORMAT_UNDEFINED;
 }
 
@@ -86,7 +86,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
     const auto fmt = toVulkanFormat(format);
 
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
-    SL_DEBUG_PANIC(
+    debugPanicIf(
         !dev.isFormatSupported(
             fmt,
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
@@ -133,7 +133,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    SL_DEBUG_PANIC(
+    debugPanicIf(
         !dev.isFormatSupported(format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
@@ -144,7 +144,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     u32 mipLevels = 1;
     if (generateMipmaps)
     {
-        SL_DEBUG_PANIC(
+        debugPanicIf(
             !dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
             "Image format/features not supported"
         );
@@ -302,7 +302,7 @@ auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    SL_DEBUG_PANIC(
+    debugPanicIf(
         !dev.isFormatSupported(format,
             VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
             VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |

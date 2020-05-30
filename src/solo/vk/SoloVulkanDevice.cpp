@@ -24,10 +24,10 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     createInfo.pfnCallback = callbackFunc;
 
     const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    SL_DEBUG_PANIC(!create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
+    debugPanicIf(!create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
 
     const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
-    SL_DEBUG_PANIC(!destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
+    debugPanicIf(!destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
     SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
@@ -68,7 +68,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
             return i;
     }
 
-    SL_DEBUG_PANIC(true, "Unable to find queue index");
+    debugPanicIf(true, "Unable to find queue index");
     return 0;
 }
 
@@ -174,7 +174,7 @@ auto VulkanDevice::selectDepthFormat() const -> VkFormat
             return format;
     }
 
-    SL_DEBUG_PANIC(true, "Unable to pick depth format");
+    debugPanicIf(true, "Unable to pick depth format");
     return VK_FORMAT_UNDEFINED;
 }
 

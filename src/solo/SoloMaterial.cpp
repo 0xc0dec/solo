@@ -24,7 +24,7 @@ auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
             return std::make_shared<VulkanMaterial>(effect);
 #endif
         default:
-            SL_DEBUG_PANIC(true, "Unknown device mode");
+            debugPanicIf(true, "Unknown device mode");
             return nullptr;
     }
 }
