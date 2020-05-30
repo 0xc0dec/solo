@@ -28,10 +28,10 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
         setup.canvasWidth, setup.canvasHeight,
         flags
     );
-    debugPanicIf(!window_, "Unable to create device window");
+    asrt(window_, "Unable to create device window");
 
     context_ = SDL_GL_CreateContext(window_);
-    debugPanicIf(!context_, "Unable to create OpenGL context");
+    asrt(context_, "Unable to create OpenGL context");
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)

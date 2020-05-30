@@ -24,11 +24,10 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::RGBA8: return VK_FORMAT_R8G8B8A8_UNORM;
         case TextureFormat::RGBA16F: return VK_FORMAT_R16G16B16A16_SFLOAT;
         case TextureFormat::Depth24: return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
-        default:
-            break;
     }
 
-    debugPanicIf(true, "Unsupported texture format");
+    asrt(false, "Unsupported texture format");
+	
     return VK_FORMAT_UNDEFINED;
 }
 
@@ -86,12 +85,8 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
     const auto fmt = toVulkanFormat(format);
 
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
-    debugPanicIf(
-        !dev.isFormatSupported(
-            fmt,
-            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
-                (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)
-        ),
+    asrt(dev.isFormatSupported(fmt, VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+        (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)),
         "Image format/features not supported"
     );
 
@@ -133,19 +128,17 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    debugPanicIf(
-        !dev.isFormatSupported(format,
-            VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
-            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
-            VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
-            "Image format/features not supported"
-        );
+    asrt(dev.isFormatSupported(format,
+        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
+        "Image format/features not supported"
+    );
 
     u32 mipLevels = 1;
     if (generateMipmaps)
     {
-        debugPanicIf(
-            !dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
+        asrt(dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
             "Image format/features not supported"
         );
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
@@ -302,13 +295,12 @@ auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    debugPanicIf(
-        !dev.isFormatSupported(format,
-            VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
-            VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
-            VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
-            "Image format/features not supported"
-        );
+    asrt(dev.isFormatSupported(format,
+        VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
+        VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+        VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
+        "Image format/features not supported"
+    );
 
     auto image = VulkanImage(dev, width, height, mipLevels, layers, format, layout,
         VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT, usage, VK_IMAGE_VIEW_TYPE_CUBE, VK_IMAGE_ASPECT_COLOR_BIT);

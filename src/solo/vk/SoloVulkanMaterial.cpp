@@ -90,7 +90,7 @@ void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFu
     const auto parsedName = parseName(name);
     const auto &bufferName = std::get<0>(parsedName);
     const auto &fieldName = std::get<1>(parsedName);
-    debugPanicIf(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
+    asrt(!bufferName.empty() && !fieldName.empty(), "Invalid material parameter name ", name);
 
     auto bufferInfo = effect_->uniformBuffer(bufferName);
     const auto itemInfo = bufferInfo.members.at(fieldName);
@@ -116,10 +116,10 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
     const auto parsedName = parseName(name);
     const auto &bufferName = std::get<0>(parsedName);
     const auto &fieldName = std::get<1>(parsedName);
-    debugPanicIf(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
+    asrt(!bufferName.empty() && !fieldName.empty(), "Invalid material parameter name ", name);
 
     auto bufferInfo = effect_->uniformBuffer(bufferName);
-    debugPanicIf(!bufferInfo.size || bufferInfo.members.empty(), "Material parameter ", name, " not found");
+    asrt(bufferInfo.size && !bufferInfo.members.empty(), "Material parameter ", name, " not found");
 
     auto itemInfo = bufferInfo.members.at(fieldName);
     auto &item = bufferItems_[bufferName][fieldName];
@@ -244,7 +244,7 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
         }
 
         default:
-            debugPanicIf(true, "Unsupported parameter binding");
+            asrt(false, "Unsupported parameter binding");
     }
 }
 

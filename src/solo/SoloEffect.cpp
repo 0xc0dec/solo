@@ -36,10 +36,10 @@ auto Effect::fromDescription(Device* device, const str& description) -> sptr<Eff
 auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
 {
     const auto vertTagStartIdx = source.find("// VERTEX");
-    debugPanicIf(vertTagStartIdx == std::string::npos, "Vertex shader not found in ", source);
+    asrt(vertTagStartIdx != std::string::npos, "Vertex shader not found in ", source);
 
     const auto fragTagStartIdx = source.find("// FRAGMENT");
-    debugPanicIf(vertTagStartIdx == std::string::npos, "Fragment shader not found in ", source);
+    asrt(vertTagStartIdx != std::string::npos, "Fragment shader not found in ", source);
 
     const auto vertShaderStartIdx = vertTagStartIdx + std::strlen("// VERTEX");
     const auto vertShaderEndIdx = fragTagStartIdx > vertTagStartIdx ? fragTagStartIdx - 1 : source.size() - 1;
@@ -63,7 +63,8 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
 #endif
     }
 
-	debugPanicIf(true, "Unknown device mode");
+	asrt(false, "Unknown device mode");
+	
     return nullptr;
 }
 

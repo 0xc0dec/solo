@@ -37,7 +37,8 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 		case IndexElementSize::Bits32: return VK_INDEX_TYPE_UINT32;
 	}
 
-	debugPanicIf(true, "Unknown index element size");
+	asrt(false, "Unknown index element size");
+	
 	return VK_INDEX_TYPE_MAX_ENUM;
 }
 

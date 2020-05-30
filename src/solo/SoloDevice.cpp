@@ -32,7 +32,7 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
             break;
 #endif
         default:
-            debugPanicIf(true, "Unknown device mode");
+            asrt(false, "Unknown device mode");
             break;
     }
 

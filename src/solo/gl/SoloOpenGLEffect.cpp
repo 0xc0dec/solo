@@ -32,7 +32,7 @@ static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
         vec<GLchar> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
         glDeleteShader(shader);
-        debugPanicIf(true, "Unable to compile ", typeNames[type], " shader:\n", log.data());
+        asrt(false, "Unable to compile ", typeNames[type], " shader:\n", log.data());
     }
 
     return shader;
@@ -54,7 +54,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
         vec<GLchar> log(logLength);
         glGetProgramInfoLog(program, logLength, nullptr, log.data());
         glDeleteProgram(program);
-        debugPanicIf(true, "Unable to link program:\n", log.data());
+        asrt(false, "Unable to link program:\n", log.data());
     }
 
     return program;
@@ -84,7 +84,7 @@ auto OpenGLEffect::uniformInfo(const str &name) -> UniformInfo
 {
     if (uniforms_.count(name))
         return uniforms_.at(name);
-    debugPanicIf(true, "Uniform ", name, " not found");
+    asrt(false, "Uniform ", name, " not found");
     return {};
 }
 
@@ -97,7 +97,7 @@ auto OpenGLEffect::attributeInfo(const str &name) -> AttributeInfo
 {
     if (attributes_.count(name))
         return attributes_.at(name);
-    debugPanicIf(true, "Attribute ", name, " not found");
+    asrt(false, "Attribute ", name, " not found");
     return {};
 }
 

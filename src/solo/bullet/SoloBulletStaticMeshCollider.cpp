@@ -17,25 +17,27 @@ static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType
 			return PHY_SHORT;
 		case IndexElementSize::Bits32:
 			return PHY_INTEGER;
-		default:
-			debugPanicIf(true, "Unknown index element size");
-			break;
 	}
+	
+	asrt(false, "Unknown index element size");
+	
+	return PHY_INTEGER;;
 }
 
 // TODO Support meshes with multiple parts/non-indexed meshes
 BulletStaticMeshCollider::BulletStaticMeshCollider(sptr<Mesh> mesh):
 	inputMesh_(mesh)
 {
-	debugPanicIf(mesh->vertexBufferCount() > 1, "Only single-buffer meshes are supported for now");
-	debugPanicIf(mesh->indexBufferCount() > 1, "Only single-index meshes are supported for now");
+	asrt(mesh->vertexBufferCount() == 1, "Only single-buffer meshes are supported for now");
+	asrt(mesh->indexBufferCount() == 1, "Only single-index meshes are supported for now");
 	
 	mesh_ = std::make_unique<btIndexedMesh>();
 
 	const auto layout = mesh->vertexBufferLayout(0);
 
 	const auto posAttrIdx = layout.attributeIndex(VertexAttributeUsage::Position);
-	debugPanicIf(posAttrIdx == -1, "No position attribute found in mesh buffer layout");
+	asrt(posAttrIdx != -1, "No position attribute found in mesh buffer layout");
+	
 	const auto posAttr = layout.attribute(posAttrIdx);
 	
 	mesh_->m_vertexType = PHY_FLOAT;

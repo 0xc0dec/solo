@@ -46,7 +46,7 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
 
     const auto compilationStatus = result.GetCompilationStatus();
     const auto errorMessage = result.GetErrorMessage();
-    debugPanicIf(compilationStatus != shaderc_compilation_status_success, "Unable to compile effect to SPV: ", errorMessage);
+    asrt(compilationStatus == shaderc_compilation_status_success, "Unable to compile effect to SPV: ", errorMessage);
 
     return result;
 }
@@ -76,13 +76,13 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
 
 auto VulkanEffect::uniformBuffer(const str &name) -> UniformBuffer
 {
-    debugPanicIf(!uniformBuffers_.count(name), "Uniform buffer ", name, " not found");
+    asrt(uniformBuffers_.count(name), "Uniform buffer ", name, " not found");
     return uniformBuffers_.at(name);
 }
 
 auto VulkanEffect::sampler(const str &name) -> Sampler
 {
-    debugPanicIf(!samplers_.count(name), "Sampler ", name, " not found");
+    asrt(samplers_.count(name), "Sampler ", name, " not found");
     return samplers_.at(name);
 }
 

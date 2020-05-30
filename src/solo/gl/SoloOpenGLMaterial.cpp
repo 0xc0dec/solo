@@ -244,7 +244,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
         }
 
     	default:
-            debugPanicIf(true, "Unsupported parameter binding");
+            asrt(false, "Unsupported parameter binding");
     }
 }
 

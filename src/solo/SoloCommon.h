@@ -95,10 +95,10 @@ namespace solo
     };
 
 	template <class... TArgs>
-	constexpr void debugPanicIf(bool condition, TArgs ... args)
+	constexpr void asrt(bool condition, TArgs ... args)
 	{
 #ifdef SL_DEBUG
-		if (condition)
+		if (!condition)
 		{
 			const auto msg = Formatter()(args...);
 			Logger::global().logDebug(msg);
