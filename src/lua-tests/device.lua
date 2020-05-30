@@ -9,7 +9,6 @@ assert(d:dpiIndependentCanvasSize())
 assert(d:isVsync() ~= nil)
 assert(d:mode())
 
-d:saveScreenshot('test/path')
 d:setCursorCaptured(false)
 
 assert(d:lifetime())

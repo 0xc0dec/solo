@@ -19,8 +19,6 @@ namespace solo
         explicit OpenGLSDLDevice(const DeviceSetup &setup);
         virtual ~OpenGLSDLDevice();
 
-        void saveScreenshot(const str &path) override;
-
     private:
         SDL_GLContext context_ = nullptr;
 

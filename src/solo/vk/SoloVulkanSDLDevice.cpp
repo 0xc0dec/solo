@@ -92,11 +92,6 @@ VulkanSDLDevice::~VulkanSDLDevice()
     cleanupSubsystems();
 }
 
-void VulkanSDLDevice::saveScreenshot(const str &path)
-{
-    // TODO
-}
-
 void VulkanSDLDevice::endUpdate()
 {
 }

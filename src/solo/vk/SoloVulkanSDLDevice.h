@@ -20,8 +20,6 @@ namespace solo
         explicit VulkanSDLDevice(const DeviceSetup &setup);
         ~VulkanSDLDevice();
 
-        void saveScreenshot(const str &path) override final;
-
         auto instance() const -> VkInstance { return instance_; }
         auto surface() const -> VkSurfaceKHR { return surface_; }
 

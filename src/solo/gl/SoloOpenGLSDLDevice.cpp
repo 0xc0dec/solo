@@ -8,7 +8,6 @@
 #ifdef SL_OPENGL_RENDERER
 
 #include "SoloOpenGL.h"
-#include <SDL_surface.h>
 
 using namespace solo;
 
@@ -64,32 +63,6 @@ void OpenGLSDLDevice::cleanup()
 void OpenGLSDLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window_);
-}
-
-void OpenGLSDLDevice::saveScreenshot(const str &path)
-{
-    s32 width, height;
-    SDL_GetWindowSize(window_, &width, &height);
-
-    auto surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
-    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
-
-    // Flip the image
-    vec<u8> buf;
-    buf.reserve(surface->pitch);
-    const auto pixels = static_cast<u8*>(surface->pixels);
-    for (s32 row = 0; row < height / 2; ++row)
-    {
-        const auto row1 = pixels + surface->pitch * row;
-        const auto row2 = pixels + surface->pitch * (height - row - 1);
-        memcpy(buf.data(), row1, surface->pitch);
-        memcpy(row1, row2, surface->pitch);
-        memcpy(row2, buf.data(), surface->pitch);
-    }
-
-    SDL_SaveBMP(surface, path.c_str());
-
-    SDL_FreeSurface(surface);
 }
 
 #endif

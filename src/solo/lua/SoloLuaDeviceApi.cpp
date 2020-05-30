@@ -20,7 +20,6 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Device, dpiIndependentCanvasSize);
     REG_METHOD(binding, Device, isVsync);
     REG_METHOD(binding, Device, mode);
-    REG_METHOD(binding, Device, saveScreenshot);
     REG_METHOD(binding, Device, setCursorCaptured);
     REG_METHOD(binding, Device, lifetime);
     REG_METHOD(binding, Device, timeDelta);

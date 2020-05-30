@@ -34,8 +34,6 @@ namespace solo
         virtual auto canvasSize() const -> Vector2 = 0;
         virtual auto dpiIndependentCanvasSize() const -> Vector2 = 0;
 
-        virtual void saveScreenshot(const str &path) = 0;
-
         virtual void setCursorCaptured(bool captured) = 0;
 
         virtual auto lifetime() const -> float = 0;
