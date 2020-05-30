@@ -1,6 +1,4 @@
-file(GLOB SL_GLEW_SRC
-    "glew/1.13/src/glew.c"
-)
+file(GLOB SL_GLEW_SRC "glew/1.13/src/glew.c")
  
 file(GLOB_RECURSE SL_BULLET_SRC
     "bullet/2.83.7/BulletCollision/*.cpp"
@@ -12,9 +10,7 @@ file(GLOB_RECURSE SL_BULLET_SRC
 )
 
 if (WIN32)
-    file(GLOB SL_SPIRV_CROSS_SRC
-        "spirv_cross/*.cpp"
-    )
+    file(GLOB SL_SPIRV_CROSS_SRC "spirv_cross/*.cpp")
 else()
     set(SL_SPIRV_CROSS_SRC "")
 endif()
