@@ -19,8 +19,7 @@
             uv = "vec2",
             shadowCoord = "vec4",
             normal = "vec3",
-            lightVec = "vec3",
-            viewVec = "vec3"
+            lightVec = "vec3"
         },
 
         code = [[
@@ -38,10 +37,8 @@
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                vec4 worldPos = #uniforms:model# * vec4(sl_Position, 1.0);
                 normal = mat3(#uniforms:model#) * sl_Normal;
                 lightVec = normalize(#uniforms:lightPos# - sl_Position);
-                viewVec = -worldPos.xyz;			
             }
         ]]
     },
@@ -101,8 +98,6 @@
             {
                 vec3 n = normalize(normal);
                 vec3 l = normalize(lightVec);
-                vec3 v = normalize(viewVec);
-                vec3 r = normalize(-reflect(l, n));
                 float diffuse = max(dot(n, l), ambient);
 
                 vec4 coords = shadowCoord / shadowCoord.w;
