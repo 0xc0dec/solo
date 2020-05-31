@@ -7,7 +7,7 @@ return function(dev, scene, physics, assetCache)
     function createTargetMesh()
         local node = scene:createNode()
 
-        local eff = assetCache.getEffect("color")
+        local eff = assetCache.effect("color")
 
         local mat = sl.Material.fromEffect(dev, eff)
         mat:setFaceCull(sl.FaceCull.None)

@@ -40,7 +40,7 @@ return function(scene, assetCache)
     mesh:addIndexBuffer(indices, 6)
     mesh:setPrimitiveType(sl.PrimitiveType.Triangles)
 
-    local effect = assetCache.getEffect("texture")
+    local effect = assetCache.effect("texture")
     local material = sl.Material.fromEffect(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)

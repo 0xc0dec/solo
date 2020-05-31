@@ -10,12 +10,12 @@ local getImagePath = function(fileName)
 end
 
 return function(scene, assetCache)
-    local mesh = assetCache.meshes.getQuad()
+    local mesh = assetCache.meshes.quad()
     local tag = tags.skybox
     
     local node = scene:createNode()
 
-    local effect = assetCache.getEffect("skybox")
+    local effect = assetCache.effect("skybox")
     local material = sl.Material.fromEffect(sl.device, effect)
     material:setDepthTest(true)
     material:setDepthWrite(false)

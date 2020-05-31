@@ -96,7 +96,7 @@ function demo()
     end
 
     function createShadowedMaterial(lightCam)
-        local eff = assetCache.getEffect("shadowed")
+        local eff = assetCache.effect("shadowed")
         local mat = sl.Material.fromEffect(sl.device, eff)
         mat:setFaceCull(sl.FaceCull.None)
         mat:bindParameter("uniforms:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
@@ -116,8 +116,8 @@ function demo()
         node:findComponent("Transform"):setLocalPosition(vec3(10, 10, -5))
         node:findComponent("Transform"):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
         node:addScriptComponent(createTracer(sl.device, scene, physics, assetCache))
-        node:addScriptComponent(createSpawner(assetCache, shadowedMat))
         node:addScriptComponent(createHighlighter(assetCache, physics))
+        node:addScriptComponent(createSpawner(assetCache, shadowedMat))
 
         return {
             camera = camera,
@@ -140,7 +140,11 @@ function demo()
 
     local lightCam = createLightCamera(scene)
     local shadowedMat = createShadowedMaterial(lightCam)
-    local mainCamera = createSpectatorCamera(shadowedMat)
+    
+    local spawnedObjMat = shadowedMat:clone()
+    spawnedObjMat:setTextureParameter('colorMap', assetCache.textures.texture2.color)
+    spawnedObjMat:setTextureParameter('normalMap', assetCache.textures.texture2.normal)
+    local mainCamera = createSpectatorCamera(spawnedObjMat)
 
     local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
     local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)

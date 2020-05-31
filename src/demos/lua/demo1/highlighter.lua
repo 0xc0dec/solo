@@ -4,7 +4,7 @@
 -- 
 
 return function(assetCache, physics)
-    local supportedEffect = assetCache.getEffect('shadowed')
+    local supportedEffect = assetCache.effect('shadowed')
 
     return sl.createComponent("Highlighter", {
         init = function(self)

@@ -55,7 +55,7 @@ function demo()
     end
 
     function createColorMaterial(color)
-        local effect = assetCache.getEffect("color")
+        local effect = assetCache.effect("color")
         local m = sl.Material.fromEffect(sl.device, effect)
         m:setPolygonMode(sl.PolygonMode.Wireframe)
         m:setFaceCull(sl.FaceCull.None)

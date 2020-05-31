@@ -120,7 +120,7 @@
 
                 // diffuse
                 vec3 lightDir = normalize(tangentLightPos - tangentPos);
-                vec3 diffuse = min(max(dot(lightDir, n), 0.0), shadow) * color;
+                vec3 diffuse = min(max(dot(lightDir, n), 0.0), shadow) * color * 1.2;
 
                 // specular
                 vec3 viewDir = normalize(tangentCamPos - tangentPos);

@@ -4,13 +4,12 @@
 -- 
 
 return function()
-    local texture1 = sl.Texture2D.fromFile(sl.device, assetPath("textures/wood-gate.jpg"), true)
-    texture1:setAnisotropyLevel(16)
-    texture1:setWrap(sl.TextureWrap.Repeat)
-
-    local texture1Normal = sl.Texture2D.fromFile(sl.device, assetPath("textures/wood-gate_normal.jpg"), true)
-    texture1Normal:setAnisotropyLevel(16)
-    texture1Normal:setWrap(sl.TextureWrap.Repeat)
+    function loadTexture(path)
+        local tex = sl.Texture2D.fromFile(sl.device, assetPath(path), true)
+        tex:setAnisotropyLevel(16)
+        tex:setWrap(sl.TextureWrap.Repeat)
+        return tex
+    end
 
     local cache = {}
 
@@ -24,7 +23,7 @@ return function()
     end
 
     return {
-        getEffect = function(name)
+        effect = function(name)
             local path = assetPath("effects/" .. name .. ".lua")
             return getOrAdd(path, function()
                 return sl.Effect.fromDescriptionFile(sl.device, path)
@@ -43,7 +42,7 @@ return function()
                 end)
             end,
 
-            getQuad = function()
+            quad = function()
                 return getOrAdd("mesh_quad", function()
                     local layout = sl.VertexBufferLayout()
                     layout:addAttribute(sl.VertexAttributeUsage.Position)
@@ -56,8 +55,13 @@ return function()
 
         textures = {
             texture1 = {
-                color = texture1,
-                normal = texture1Normal
+                color = loadTexture("textures/wood-gate.jpg"),
+                normal = loadTexture("textures/wood-gate_normal.jpg")
+            },
+
+            texture2 = {
+                color = loadTexture("textures/waffle-slab.png"),
+                normal = loadTexture("textures/waffle-slab_normal.png")
             }
         }
     }

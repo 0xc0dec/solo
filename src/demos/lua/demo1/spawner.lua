@@ -4,7 +4,7 @@
 -- 
 
 return function(assetCache, material)
-    local effect = assetCache.getEffect("color")
+    local effect = assetCache.effect("color")
 
     return sl.createComponent("Spawner", {
         init = function(self)

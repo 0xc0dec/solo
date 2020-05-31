@@ -6,7 +6,7 @@
 local createRotator = require "rotator"
 
 return function(scene, assetCache)
-    local effect = assetCache.getEffect("checker")
+    local effect = assetCache.effect("checker")
     local material = sl.Material.fromEffect(sl.device, effect)
     material:setFaceCull(sl.FaceCull.None)
     material:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)

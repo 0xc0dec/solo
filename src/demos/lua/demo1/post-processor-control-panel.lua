@@ -8,7 +8,7 @@ local tags = require "tags"
 return function(assetCache, mainCameraNode, postProcessor)
     local scene = mainCameraNode:scene()
 
-    local effect = assetCache.getEffect("color")
+    local effect = assetCache.effect("color")
 
     function createColorMaterial(color)
         local m = sl.Material.fromEffect(sl.device, effect)
@@ -29,7 +29,7 @@ return function(assetCache, mainCameraNode, postProcessor)
 
         local mesh = sl.FontMesh.fromFont(sl.device, font)
 
-        local effect = assetCache.getEffect("font")
+        local effect = assetCache.effect("font")
         local material = sl.Material.fromEffect(sl.device, effect)
         material:setFaceCull(sl.FaceCull.None)
         material:setBlend(true)
