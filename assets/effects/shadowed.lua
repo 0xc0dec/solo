@@ -5,7 +5,8 @@
                 wvp = "mat4",
                 world = "mat4",
                 lightVp = "mat4",
-                lightPos = "vec3"
+                lightPos = "vec3",
+                camPos = "vec3"
             }
         },
 
@@ -20,7 +21,8 @@
             uv = "vec2",
             shadowCoord = "vec4",
             tangentLightPos = "vec3",
-            tangentPos = "vec3"
+            tangentPos = "vec3",
+            tangentCamPos = "vec3"
         },
 
         code = [[
@@ -46,6 +48,7 @@
                 
                 tangentLightPos = tbn * #uniforms:lightPos#;
                 tangentPos = tbn * worldPos;
+                tangentCamPos = tbn * #uniforms:camPos#;
             }
         ]]
     },
@@ -106,11 +109,16 @@
             {
                 vec3 n = normalize(texture(normalMap, uv).rgb * 2 - 1);
                 vec3 lightDir = normalize(tangentLightPos - tangentPos);
-                
+
                 float diffuse = max(dot(n, lightDir), ambient);
                 float shadow = samplePCF(shadowCoord / shadowCoord.w);
 
-                fragColor = texture(colorMap, uv) * min(diffuse, shadow);
+                vec3 viewDir = normalize(tangentCamPos - tangentPos);
+                vec3 reflectDir = reflect(-lightDir, n);
+                vec3 halfwayDir = normalize(lightDir + viewDir);  
+                float spec = pow(max(dot(n, halfwayDir), 0.0), 32.0);
+
+                fragColor = (texture(colorMap, uv) + spec) * min(diffuse, shadow);
 
                 if (#variables:highlighted# > 0)
                     fragColor.r *= 2;
