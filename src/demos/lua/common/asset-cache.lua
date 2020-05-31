@@ -13,6 +13,7 @@ return function()
     function getOrAdd(key, factory)
         if not cache[key] then
             cache[key] = factory()
+            print('Loaded ' .. key)
         end
 
         return cache[key]
