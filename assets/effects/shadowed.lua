@@ -40,15 +40,18 @@
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                mat3 worldMat = mat3(#uniforms:world#);
-                vec3 worldPos = worldMat * sl_Position;
-                vec3 worldNormal = normalize(worldMat * sl_Normal);
-                vec3 worldTangent = normalize(worldMat * sl_Tangent);
-                vec3 worldBinormal = cross(worldNormal, worldTangent);
-                mat3 tbn = transpose(mat3(worldTangent, worldBinormal, worldNormal)); // transpose == inverse for orthogonal matrices
+                mat4 worldMat = #uniforms:world#;
+                mat3 normalMat = transpose(inverse(mat3(worldMat)));
+                vec3 n = normalize(normalMat * sl_Normal);
+                vec3 t = normalize(normalMat * sl_Tangent);
+                t = normalize(t - dot(t, n) * n);
+                vec3 b = cross(n, t);
+                mat3 tbn = transpose(mat3(t, b, n)); // transpose == inverse for orthogonal matrices
+
+                vec3 p = vec3(worldMat * vec4(sl_Position, 1.0));
                 
                 tangentLightPos = tbn * #uniforms:lightPos#;
-                tangentPos = tbn * worldPos;
+                tangentPos = tbn * p;
                 tangentCamPos = tbn * #uniforms:camPos#;
             }
         ]]
