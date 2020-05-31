@@ -18,12 +18,18 @@ namespace solo
     class CubeTexture;
     class CubeTextureData;
 
-    class Texture: public NoCopyAndMove
+    class Texture
     {
     public:
-        virtual ~Texture() = default;
+		Texture() = delete;
+        Texture(const Texture &other) = delete;
+		Texture(Texture &&other) = delete;
+		virtual ~Texture() = default;
+    	
+		auto operator=(const Texture &other) -> Texture& = delete;
+		auto operator=(Texture &&other) -> Texture& = delete;
 
-        auto format() const -> TextureFormat { return format_; }
+		auto format() const -> TextureFormat { return format_; }
 
         auto horizontalWrap() const -> TextureWrap { return horizontalWrap_; }
         auto verticalWrap() const -> TextureWrap { return verticalWrap_; }

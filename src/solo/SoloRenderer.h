@@ -16,12 +16,17 @@ namespace solo
     class Transform;
     class Material;
 
-    class Renderer: public NoCopyAndMove
+    class Renderer
     {
     public:
         static auto fromDevice(Device *device) -> sptr<Renderer>;
 
+        Renderer(const Renderer &other) = delete;
+        Renderer(Renderer &&other) = delete;
         virtual ~Renderer() = default;
+    	
+        auto operator=(const Renderer &other) -> Renderer& = delete;
+        auto operator=(Renderer &&other) -> Renderer& = delete;
 
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;

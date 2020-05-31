@@ -12,12 +12,17 @@ namespace solo
 {
     class Device;
 
-    class FileSystem: public NoCopyAndMove
+    class FileSystem
     {
     public:
         static auto fromDevice(Device *device) -> sptr<FileSystem>;
 
+        FileSystem(const FileSystem &other) = delete;
+        FileSystem(FileSystem &&other) = delete;
         virtual ~FileSystem() = default;
+    	
+        auto operator=(const FileSystem &other) -> FileSystem& = delete;
+        auto operator=(FileSystem &&other) -> FileSystem& = delete;
 
         virtual auto stream(const str &path) -> sptr<std::istream>;
 

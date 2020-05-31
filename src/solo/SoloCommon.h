@@ -51,26 +51,19 @@ namespace solo
     using u32 = uint32_t;
     using u64 = uint64_t;
 
-    class NoCopyAndMove
-    {
-    public:
-        NoCopyAndMove() = default;
-        virtual ~NoCopyAndMove() = default;
-
-        NoCopyAndMove(const NoCopyAndMove &other) = delete;
-        NoCopyAndMove(NoCopyAndMove &&other) = delete;
-        auto operator=(const NoCopyAndMove &other) -> NoCopyAndMove& = delete;
-        auto operator=(NoCopyAndMove &&other) -> NoCopyAndMove& = delete;
-    };
-
     class Device;
 
-    class Logger: public NoCopyAndMove
+    class Logger
     {
     public:
         static auto global() -> Logger&;
 
+        Logger(const Logger &other) = delete;
+        Logger(Logger &&other) = delete;
         virtual ~Logger() = default;
+    	
+        auto operator=(const Logger &other) -> Logger& = delete;
+        auto operator=(Logger &&other) -> Logger& = delete;
 
         virtual void setOutputFile(const str &path) = 0;
 

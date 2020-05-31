@@ -14,11 +14,16 @@
 
 namespace solo
 {
-    class OpenGLTexture: public NoCopyAndMove
+    class OpenGLTexture
     {
     public:
         OpenGLTexture();
+    	OpenGLTexture(const OpenGLTexture &other) = delete;
+        OpenGLTexture(OpenGLTexture &&other) = delete;
         virtual ~OpenGLTexture();
+        
+        auto operator=(const OpenGLTexture &other) -> OpenGLTexture& = delete;
+        auto operator=(OpenGLTexture &&other) -> OpenGLTexture& = delete;
 
         auto handle() const -> GLuint { return handle_; }
 

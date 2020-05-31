@@ -14,14 +14,19 @@ namespace solo
     class Device;
 
 	// TODO Support for "non-GPU" meshes
-    class Mesh: public NoCopyAndMove
+    class Mesh
     {
     public:
         static auto empty(Device *device) -> sptr<Mesh>;
         static auto fromFile(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>;
         static auto fromFileAsync(Device *device, const str &path, const VertexBufferLayout &bufferLayout) -> sptr<AsyncHandle<Mesh>>;
 
+        Mesh(const Mesh &other) = delete;
+        Mesh(Mesh &&other) = delete;
         virtual ~Mesh() = default;
+
+    	auto operator=(const Mesh &other) -> Mesh& = delete;
+        auto operator=(Mesh &&other) -> Mesh& = delete;
 
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32;
         virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32;

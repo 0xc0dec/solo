@@ -23,7 +23,7 @@ namespace solo
         float offsetX, offsetY;
     };
 
-    class Font: public NoCopyAndMove
+    class Font
     {
     public:
         static auto loadFromFile(Device *device, const str &path,
@@ -31,7 +31,12 @@ namespace solo
             u32 firstChar, u32 charCount,
             u32 oversampleX, u32 oversampleY) -> sptr<Font>;
 
-        virtual ~Font() = default;
+        Font(const Font &other) = delete;
+        Font(Font &&other) = delete;
+    	virtual ~Font() = default;
+    	
+        auto operator=(const Font &other) -> Font& = delete;
+        auto operator=(Font &&other) -> Font& = delete;
 
         virtual auto atlas() const -> sptr<Texture2D> = 0;
         virtual auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;

@@ -15,12 +15,18 @@ namespace solo
     class Node;
     class Camera;
 
-    class Scene final: public NoCopyAndMove
+    class Scene final
     {
     public:
         static auto empty(Device *device) -> sptr<Scene>;
 
+		Scene() = delete;
+        Scene(const Scene &other) = delete;
+        Scene(Scene &&other) = delete;
         ~Scene() = default;
+    	
+        auto operator=(const Scene &other) -> Scene& = delete;
+        auto operator=(Scene &&other) -> Scene& = delete;
 
         auto device() const -> Device* { return device_; }
 

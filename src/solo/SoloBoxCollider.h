@@ -6,6 +6,7 @@
 #pragma once
 
 #include "SoloCollider.h"
+#include "SoloCommon.h"
 
 namespace solo
 {

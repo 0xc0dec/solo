@@ -22,12 +22,17 @@ namespace solo
     class Camera;
     class Transform;
 
-    class Material: public NoCopyAndMove
+    class Material
     {
     public:
         static auto fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
+        Material(const Material &other) = delete;
+        Material(Material &&other) = delete;
         virtual ~Material() = default;
+    	
+        auto operator=(const Material &other) -> Material& = delete;
+        auto operator=(Material &&other) -> Material& = delete;
 
         virtual void setFloatParameter(const str &name, float value) = 0;
         virtual void setVector2Parameter(const str &name, const Vector2 &value) = 0;

@@ -22,11 +22,16 @@ namespace solo
         static u32 counter_;
     };
 
-    class Component: public NoCopyAndMove
+    class Component
     {
     public:
+    	Component(const Component &other) = delete;
+        Component(Component &&other) = delete;
         virtual ~Component() = default;
 
+        auto operator=(const Component &other) -> Component& = delete;
+        auto operator=(Component &&other) -> Component& = delete;
+    	
         virtual auto typeId() -> u32 = 0;
 
         virtual void init() {}

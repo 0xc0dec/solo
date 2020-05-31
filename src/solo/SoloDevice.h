@@ -21,12 +21,17 @@ namespace solo
 	enum class KeyCode;
 	enum class MouseButton;
 
-    class Device: public NoCopyAndMove
+    class Device
     {
     public:
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
+    	Device(const Device &other) = delete;
+        Device(Device &&other) = delete;
         virtual ~Device() = default;
+
+    	auto operator=(const Device &other) -> Device& = delete;
+        auto operator=(Device &&other) -> Device& = delete;
 
         virtual auto windowTitle() const -> str = 0;
         virtual void setWindowTitle(const str &title) = 0;

@@ -26,12 +26,18 @@ namespace solo
         }
     };
 
-    class Physics: public NoCopyAndMove
+    class Physics
     {
     public:
         static auto fromDevice(Device *device) -> sptr<Physics>;
 
+    	Physics() = delete;
+        Physics(const Physics &other) = delete;
+        Physics(Physics &&other) = delete;
         virtual ~Physics() = default;
+
+        auto operator=(const Physics &other) -> Physics& = delete;
+        auto operator=(Physics &&other) -> Physics& = delete;
 
         virtual void update() = 0;
 
@@ -42,7 +48,7 @@ namespace solo
 
     protected:
         Device *device_ = nullptr;
-      
+
         Physics(Device *device);
     };
 }

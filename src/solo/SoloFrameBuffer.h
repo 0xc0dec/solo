@@ -13,12 +13,17 @@ namespace solo
     class Device;
     class Texture2D;
 
-    class FrameBuffer: public NoCopyAndMove
+    class FrameBuffer
     {
     public:
         static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>;
 
+        FrameBuffer(const FrameBuffer &other) = delete;
+        FrameBuffer(FrameBuffer &&other) = delete;
         virtual ~FrameBuffer() = default;
+    	
+        auto operator=(const FrameBuffer &other) -> FrameBuffer& = delete;
+        auto operator=(FrameBuffer &&other) -> FrameBuffer& = delete;
 
         auto dimensions() const -> Vector2 { return dimensions_; }
 

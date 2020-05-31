@@ -12,10 +12,15 @@
 
 namespace solo
 {
-    class Job: public NoCopyAndMove
+    class Job
     {
     public:
+    	Job(const Job &other) = delete;
+        Job(Job &&other) = delete;
         virtual ~Job() = default;
+        
+        auto operator=(const Job &other) -> Job& = delete;
+        auto operator=(Job &&other) -> Job& = delete;
 
         bool isDone() const { return done_; }
 
@@ -79,10 +84,16 @@ namespace solo
         Consumer callback_;
     };
 
-    class JobPool final: public NoCopyAndMove
+    class JobPool
     {
     public:
         JobPool() = default;
+    	JobPool(const JobPool &other) = delete;
+        JobPool(JobPool &&other) = delete;
+        virtual ~JobPool() = default;
+        
+        auto operator=(const JobPool &other) -> JobPool& = delete;
+        auto operator=(JobPool &&other) -> JobPool& = delete;
 
         bool hasActiveJobs() const { return anyActiveJobs_; }
         void addJob(sptr<Job> job);
