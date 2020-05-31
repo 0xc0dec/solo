@@ -52,14 +52,22 @@ namespace solo
         void applyParams(const Camera *camera, const Transform *nodeTransform) const;
 
     protected:
-        using ParameterApplier = std::function<void(const Camera *, const Transform *)>;
+        using ParameterWriter = std::function<void(GLuint, GLuint, const Camera*, const Transform*)>;
+
+    	struct ParameterDescriptor
+    	{
+    		GLuint location;
+    		GLuint samplerIndex;
+    		ParameterWriter writer;
+    	};
 
         sptr<OpenGLEffect> effect_;
 
-        // Maybe not the fastest, but convenient and good enough for now
-        umap<str, ParameterApplier> appliers_;
+        // TODO More optimize
+        umap<str, ParameterWriter> writers_;
+    	umap<str, ParameterDescriptor> descriptors_;
 
-        void setParameter(const str &paramName, const std::function<ParameterApplier(GLuint, GLint)> &getApplier);
+    	void saveParameter(const str &paramName, const ParameterWriter &writer);
     };
 }
 
