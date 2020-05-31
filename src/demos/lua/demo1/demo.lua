@@ -94,14 +94,16 @@ function demo()
         context.transform:setLocalPosition(vec3(3, 0, -3))
     end
 
-    function createShadowedMaterial(depthTex)
+    function createShadowedMaterial(lightCam)
         local eff = assetCache.getEffect("shadowed")
         local mat = sl.Material.fromEffect(sl.device, eff)
         mat:setFaceCull(sl.FaceCull.None)
         mat:bindParameter("uniforms:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         mat:bindParameter("uniforms:model", sl.ParameterBinding.WorldMatrix)
         mat:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
-        mat:setTextureParameter("shadowMap", depthTex)
+        mat:setTextureParameter("shadowMap", lightCam.depthTex)
+        mat:bindMatrixParameter("uniforms:lightVp", function() return lightCam.camera:viewProjectionMatrix() end)
+        mat:bindVector3Parameter("uniforms:lightPos", function() return lightCam.transform:worldPosition() end)
         mat:setFloatParameter('variables:highlighted', 0)
         return mat
     end
@@ -134,7 +136,7 @@ function demo()
     ---
 
     local lightCam = createLightCamera(scene)
-    local shadowedMat = createShadowedMaterial(lightCam.depthTex)
+    local shadowedMat = createShadowedMaterial(lightCam)
     local mainCamera = createSpectatorCamera(shadowedMat)
 
     local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
@@ -186,8 +188,6 @@ function demo()
 
     function update()
         scene:visit(updateCmp)
-        shadowedMat:setMatrixParameter("uniforms:lightVp", lightCam.camera:viewProjectionMatrix())
-        shadowedMat:setVector3Parameter("uniforms:lightPos", lightCam.transform:worldPosition())
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
         postProcessor:apply()
