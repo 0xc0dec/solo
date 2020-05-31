@@ -113,7 +113,7 @@ void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 
 void VulkanMaterial::bindFloatParameter(const str &name, const std::function<float()> &valueGetter)
 {
-	setUniformParameter(name, [&valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+	setUniformParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
     {
 		const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
@@ -122,7 +122,7 @@ void VulkanMaterial::bindFloatParameter(const str &name, const std::function<flo
 
 void VulkanMaterial::bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter)
 {
-	setUniformParameter(name, [&valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+	setUniformParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
     {
 		const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
@@ -131,7 +131,7 @@ void VulkanMaterial::bindVector2Parameter(const str &name, const std::function<V
 
 void VulkanMaterial::bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter)
 {
-	setUniformParameter(name, [&valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+	setUniformParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
     {
 		const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
@@ -140,7 +140,7 @@ void VulkanMaterial::bindVector3Parameter(const str &name, const std::function<V
 
 void VulkanMaterial::bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter)
 {
-	setUniformParameter(name, [&valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+	setUniformParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
     {
 		const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
@@ -149,7 +149,7 @@ void VulkanMaterial::bindVector4Parameter(const str &name, const std::function<V
 
 void VulkanMaterial::bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter)
 {
-    setUniformParameter(name, [&valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setUniformParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
     {
     	const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
