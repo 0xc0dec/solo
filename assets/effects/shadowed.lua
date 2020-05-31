@@ -19,9 +19,8 @@
         outputs = {
             uv = "vec2",
             shadowCoord = "vec4",
-            worldNormal = "vec3",
-            worldDirToLight = "vec3",
-            tbn = "mat3"
+            tangentLightPos = "vec3",
+            tangentPos = "vec3"
         },
 
         code = [[
@@ -39,12 +38,14 @@
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                worldNormal = mat3(#uniforms:world#) * sl_Normal;
-                worldDirToLight = normalize(#uniforms:lightPos# - sl_Position);
-
+                vec3 worldNormal = mat3(#uniforms:world#) * sl_Normal;
+                vec3 worldPos = mat3(#uniforms:world#) * sl_Position;
                 vec3 worldTangent = normalize(vec3(#uniforms:world# * vec4(sl_Tangent, 0.0)));
                 vec3 worldBinormal = cross(worldNormal, worldTangent);
-                tbn = mat3(worldTangent, worldBinormal, worldNormal);
+                mat3 tbn = transpose(mat3(worldTangent, worldBinormal, worldNormal)); // transpose == inverse for orthogonal matrices
+                
+                tangentLightPos = tbn * #uniforms:lightPos#;
+                tangentPos = tbn * worldPos;
             }
         ]]
     },
@@ -103,10 +104,10 @@
 
             void main()
             {
-                vec3 n = normalize(tbn * (texture(normalMap, uv).rgb * 2 - 1));
-                vec3 l = normalize(worldDirToLight);
+                vec3 n = normalize(texture(normalMap, uv).rgb * 2 - 1);
+                vec3 lightDir = normalize(tangentLightPos - tangentPos);
                 
-                float diffuse = max(dot(n, l), ambient);
+                float diffuse = max(dot(n, lightDir), ambient);
                 float shadow = samplePCF(shadowCoord / shadowCoord.w);
 
                 fragColor = texture(colorMap, uv) * min(diffuse, shadow);
