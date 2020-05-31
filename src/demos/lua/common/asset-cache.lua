@@ -8,6 +8,14 @@ return function()
     cobbleStone:setAnisotropyLevel(16)
     cobbleStone:setWrap(sl.TextureWrap.Repeat)
 
+    local brickwall = sl.Texture2D.fromFile(sl.device, assetPath("textures/brickwall.jpg"), true)
+    brickwall:setAnisotropyLevel(16)
+    brickwall:setWrap(sl.TextureWrap.Repeat)
+
+    local brickwallNormal = sl.Texture2D.fromFile(sl.device, assetPath("textures/brickwall_normal.jpg"), true)
+    brickwallNormal:setAnisotropyLevel(16)
+    brickwallNormal:setWrap(sl.TextureWrap.Repeat)
+
     local cache = {}
 
     function getOrAdd(key, factory)
@@ -50,7 +58,11 @@ return function()
         },
 
         textures = {
-            cobbleStone = cobbleStone
+            cobbleStone = cobbleStone,
+            brickwall = {
+                color = brickwall,
+                normal = brickwallNormal
+            }
         }
     }
 end
