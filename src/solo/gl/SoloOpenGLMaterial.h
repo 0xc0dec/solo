@@ -58,7 +58,7 @@ namespace solo
     	{
     		GLuint location;
     		GLuint samplerIndex;
-    		ParameterWriter writer;
+    		ParameterWriter write;
     	};
 
         sptr<OpenGLEffect> effect_;

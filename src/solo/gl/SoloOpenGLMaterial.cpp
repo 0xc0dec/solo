@@ -23,7 +23,7 @@ OpenGLMaterial::OpenGLMaterial(const sptr<Effect> &effect):
 void OpenGLMaterial::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
     for (const auto &d: descriptors_)
-        d.second.writer(d.second.location, d.second.samplerIndex, camera, nodeTransform);
+        d.second.write(d.second.location, d.second.samplerIndex, camera, nodeTransform);
 }
 
 void OpenGLMaterial::setFloatParameter(const str &name, float value)
