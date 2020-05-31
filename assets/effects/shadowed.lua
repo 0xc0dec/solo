@@ -51,7 +51,7 @@
         },
 
         samplers = {
-            mainTex = "sampler2D",
+            colorMap = "sampler2D",
             shadowMap = "sampler2D"
         },
 
@@ -103,7 +103,7 @@
                 vec4 coords = shadowCoord / shadowCoord.w;
                 float shadow = samplePCF(coords);
 
-                fragColor = texture(mainTex, uv) * min(diffuse, shadow);
+                fragColor = texture(colorMap, uv) * min(diffuse, shadow);
 
                 if (#variables:highlighted# > 0)
                     fragColor.r *= 2;
