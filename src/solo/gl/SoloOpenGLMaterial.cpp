@@ -15,7 +15,7 @@
 
 using namespace solo;
 
-OpenGLMaterial::OpenGLMaterial(sptr<Effect> effect):
+OpenGLMaterial::OpenGLMaterial(const sptr<Effect> &effect):
     effect_(std::static_pointer_cast<OpenGLEffect>(effect))
 {
 }
@@ -107,7 +107,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->worldMatrix().columns();
+	                    const auto data = nodeTransform->worldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -123,7 +123,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->viewMatrix().columns();
+	                    const auto data = camera->viewMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -139,7 +139,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->projectionMatrix().columns();
+	                    const auto data = camera->projectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -155,7 +155,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->worldViewMatrix(camera).columns();
+	                    const auto data = nodeTransform->worldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -171,7 +171,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (camera)
                     {
-                        auto data = camera->viewProjectionMatrix().columns();
+	                    const auto data = camera->viewProjectionMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -187,7 +187,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->worldViewProjMatrix(camera).columns();
+	                    const auto data = nodeTransform->worldViewProjMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -203,7 +203,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform)
                     {
-                        auto data = nodeTransform->invTransposedWorldMatrix().columns();
+	                    const auto data = nodeTransform->invTransposedWorldMatrix().columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };
@@ -219,7 +219,7 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
                 {
                     if (nodeTransform && camera)
                     {
-                        auto data = nodeTransform->invTransposedWorldViewMatrix(camera).columns();
+	                    const auto data = nodeTransform->invTransposedWorldViewMatrix(camera).columns();
                         glUniformMatrix4fv(location, 1, GL_FALSE, data);
                     }
                 };

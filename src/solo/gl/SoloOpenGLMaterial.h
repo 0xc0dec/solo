@@ -26,11 +26,14 @@ namespace solo
     class OpenGLMaterial final : public Material
     {
     public:
-        explicit OpenGLMaterial(sptr<Effect> effect);
+        explicit OpenGLMaterial(const sptr<Effect> &effect);
+    	OpenGLMaterial(const OpenGLMaterial &other) = default;
         virtual ~OpenGLMaterial() = default;
 
         auto effect() const -> sptr<Effect> override { return effect_; }
 
+        auto clone() const -> sptr<Material> override { return std::make_shared<OpenGLMaterial>(*this); }
+    	
         void setFloatParameter(const str &name, float value) override;
         void setVector2Parameter(const str &name, const Vector2 &value) override;
         void setVector3Parameter(const str &name, const Vector3 &value) override;

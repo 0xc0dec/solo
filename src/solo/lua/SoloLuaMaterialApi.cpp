@@ -20,6 +20,7 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Material, setTextureParameter);
     REG_METHOD(binding, Material, bindParameter);
     REG_METHOD(binding, Material, effect);
+    REG_METHOD(binding, Material, clone);
     REG_METHOD(binding, Material, polygonMode);
     REG_METHOD(binding, Material, setPolygonMode);
     REG_METHOD(binding, Material, hasBlend);

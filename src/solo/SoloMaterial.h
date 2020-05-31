@@ -27,7 +27,6 @@ namespace solo
     public:
         static auto fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
-        Material(const Material &other) = delete;
         Material(Material &&other) = delete;
         virtual ~Material() = default;
     	
@@ -44,6 +43,8 @@ namespace solo
         virtual void bindParameter(const str &name, ParameterBinding binding) = 0;
 
         virtual auto effect() const -> sptr<Effect> = 0;
+
+    	virtual auto clone() const -> sptr<Material> = 0;
 
         auto polygonMode() const -> PolygonMode { return polygonMode_; }
         void setPolygonMode(PolygonMode mode) { polygonMode_ = mode; }
@@ -78,5 +79,6 @@ namespace solo
         DepthFunction depthFunc_ = DepthFunction::Less;
 
         Material() = default;
+    	Material(const Material &other) = default;
     };
 }

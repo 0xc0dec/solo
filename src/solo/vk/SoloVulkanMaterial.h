@@ -37,18 +37,21 @@ namespace solo
         };
 
         explicit VulkanMaterial(const sptr<Effect> &effect);
+    	VulkanMaterial(const VulkanMaterial &other) = default;
         ~VulkanMaterial() = default;
 
-        auto effect() const -> sptr<Effect> override final { return effect_; }
+        auto effect() const -> sptr<Effect> override { return effect_; }
 
-        void setFloatParameter(const str &name, float value) override final;
-        void setVector2Parameter(const str &name, const Vector2 &value) override final;
-        void setVector3Parameter(const str &name, const Vector3 &value) override final;
-        void setVector4Parameter(const str &name, const Vector4 &value) override final;
-        void setMatrixParameter(const str &name, const Matrix &value) override final;
-        void setTextureParameter(const str &name, sptr<Texture> value) override final;
+        auto clone() const -> sptr<Material> override { return std::make_shared<VulkanMaterial>(*this); }
+    	
+        void setFloatParameter(const str &name, float value) override;
+        void setVector2Parameter(const str &name, const Vector2 &value) override;
+        void setVector3Parameter(const str &name, const Vector3 &value) override;
+        void setVector4Parameter(const str &name, const Vector4 &value) override;
+        void setMatrixParameter(const str &name, const Matrix &value) override;
+        void setTextureParameter(const str &name, sptr<Texture> value) override;
 
-        void bindParameter(const str &name, ParameterBinding binding) override final;
+        void bindParameter(const str &name, ParameterBinding binding) override;
 
         auto samplers() const -> umap<str, Sampler> const& { return samplers_; }
         auto bufferItems() const -> umap<str, umap<str, UniformBufferItem>> const& { return bufferItems_; } // TODO rename
