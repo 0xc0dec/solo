@@ -4,11 +4,11 @@
 -- 
 
 return function()
-    local texture1 = sl.Texture2D.fromFile(sl.device, assetPath("textures/waffle-slab.png"), true)
+    local texture1 = sl.Texture2D.fromFile(sl.device, assetPath("textures/wood-gate.jpg"), true)
     texture1:setAnisotropyLevel(16)
     texture1:setWrap(sl.TextureWrap.Repeat)
 
-    local texture1Normal = sl.Texture2D.fromFile(sl.device, assetPath("textures/waffle-slab_normal.png"), true)
+    local texture1Normal = sl.Texture2D.fromFile(sl.device, assetPath("textures/wood-gate_normal.jpg"), true)
     texture1Normal:setAnisotropyLevel(16)
     texture1Normal:setWrap(sl.TextureWrap.Repeat)
 
@@ -38,6 +38,7 @@ return function()
                     layout:addAttribute(sl.VertexAttributeUsage.Position)
                     layout:addAttribute(sl.VertexAttributeUsage.Normal)
                     layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
+                    layout:addAttribute(sl.VertexAttributeUsage.Tangent)
                     return sl.Mesh.fromFile(sl.device, assetPath("meshes/box.dae"), layout)
                 end)
             end,

@@ -29,7 +29,7 @@ return function(assetCache, material)
             renderer:setMesh(assetCache.meshes.box())
             renderer:setMaterial(0, material)
 
-            local size = 0.1 + math.random()
+            local size = 1
             local transform = node:findComponent("Transform")
             transform:setLocalScale(vec3(size, size, size))
             transform:setLocalPosition(initialPos)
