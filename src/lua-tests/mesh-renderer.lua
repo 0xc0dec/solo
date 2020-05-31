@@ -9,7 +9,7 @@ local mesh = sl.Mesh.empty(sl.device)
 renderer:setMesh(mesh)
 assert(renderer:mesh() == mesh)
 
-local effect = sl.Effect.fromDescriptionFile(sl.device, '../../assets/effects/test.lua')
+local effect = sl.Effect.fromDescriptionFile(sl.device, assetPath('effects/test.lua'))
 local mat = sl.Material.fromEffect(sl.device, effect)
 
 renderer:setMaterial(0, mat)

@@ -18,11 +18,11 @@ assert(layout:elementCount() == 6)
 local m = sl.Mesh.empty(sl.device)
 assert(m)
 
-m = sl.Mesh.fromFile(sl.device, '../../assets/meshes/box.dae', layout)
+m = sl.Mesh.fromFile(sl.device, assetPath('meshes/box.dae'), layout)
 assert(m)
 
 -- TODO Properly check the result
-assert(sl.Mesh.fromFileAsync(sl.device, '../../assets/meshes/box.dae', layout))
+assert(sl.Mesh.fromFileAsync(sl.device, assetPath('meshes/box.dae'), layout))
 
 m = sl.Mesh.empty(sl.device)
 

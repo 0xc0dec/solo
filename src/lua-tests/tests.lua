@@ -1,4 +1,4 @@
-sl.includeDir("../../src/lua-tests")
+sl.includeDir("../../../src/lua-tests")
 
 require "common"
 

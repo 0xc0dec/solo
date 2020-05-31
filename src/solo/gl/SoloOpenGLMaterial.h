@@ -41,6 +41,12 @@ namespace solo
         void setMatrixParameter(const str &name, const Matrix &value) override;
         void setTextureParameter(const str &name, sptr<Texture> value) override;
 
+        void bindFloatParameter(const str &name, const std::function<float()> &valueGetter) override;
+        void bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter) override;
+    	void bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter) override;
+    	void bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter) override;
+    	void bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter) override;
+    	
         void bindParameter(const str &name, ParameterBinding binding) override;
 
         void applyParams(const Camera *camera, const Transform *nodeTransform) const;

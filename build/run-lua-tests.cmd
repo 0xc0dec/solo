@@ -1,5 +1,5 @@
-pushd Debug
+pushd "bin/Debug"
 
-Solr.exe "../../src/lua-tests/entry.lua"
+Solr.exe "../../../src/lua-tests/entry.lua"
 
 popd

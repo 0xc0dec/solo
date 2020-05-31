@@ -1,5 +1,5 @@
-assert(sl.Effect.fromDescriptionFile(sl.device, '../../assets/effects/test.lua'))
-assert(sl.Effect.fromSourceFile(sl.device, '../../assets/effects/test.effect'))
+assert(sl.Effect.fromDescriptionFile(sl.device, assetPath('effects/test.lua')))
+assert(sl.Effect.fromSourceFile(sl.device, assetPath('effects/test.effect')))
 assert(sl.Effect.fromSource(sl.device, [[
     // VERTEX
 

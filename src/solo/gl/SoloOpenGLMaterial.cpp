@@ -95,6 +95,64 @@ void OpenGLMaterial::setTextureParameter(const str &name, sptr<Texture> value)
     });
 }
 
+void OpenGLMaterial::bindFloatParameter(const str &name, const std::function<float()> &valueGetter)
+{
+	setParameter(name, [valueGetter](GLuint location, GLuint)
+    {
+        return [location, valueGetter](const Camera *, const Transform *)
+        {
+            glUniform1f(location, valueGetter());
+        };
+    });
+}
+
+void OpenGLMaterial::bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter)
+{
+	setParameter(name, [valueGetter](GLuint location, GLuint)
+    {
+        return [location, valueGetter](const Camera *, const Transform *)
+        {
+        	const auto val = valueGetter();
+            glUniform2f(location, val.x(), val.y());
+        };
+    });
+}
+
+void OpenGLMaterial::bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter)
+{
+	setParameter(name, [valueGetter](GLuint location, GLuint)
+    {
+        return [location, valueGetter](const Camera *, const Transform *)
+        {
+        	const auto val = valueGetter();
+            glUniform3f(location, val.x(), val.y(), val.z());
+        };
+    });
+}
+
+void OpenGLMaterial::bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter)
+{
+	setParameter(name, [valueGetter](GLuint location, GLuint)
+    {
+        return [location, valueGetter](const Camera *, const Transform *)
+        {
+        	const auto val = valueGetter();
+            glUniform4f(location, val.x(), val.y(), val.z(), val.w());
+        };
+    });
+}
+
+void OpenGLMaterial::bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter)
+{
+	setParameter(name, [valueGetter](GLuint location, GLuint)
+    {
+        return [location, valueGetter](const Camera *, const Transform *)
+        {
+            glUniformMatrix4fv(location, 1, GL_FALSE, valueGetter().columns());
+        };
+    });
+}
+
 void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
     switch (binding)

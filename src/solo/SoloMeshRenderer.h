@@ -21,7 +21,7 @@ namespace solo
     public:
         explicit MeshRenderer(const Node &node);
 
-        void render() override final;
+        void render() override;
 
         auto mesh() const -> sptr<Mesh> { return mesh_; }
         void setMesh(sptr<Mesh> mesh) { this->mesh_ = mesh; }

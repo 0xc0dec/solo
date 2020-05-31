@@ -8,7 +8,7 @@ assert(boxCollider)
 local layout = sl.VertexBufferLayout()
 layout:addAttribute(sl.VertexAttributeUsage.Position)
 layout:addAttribute(sl.VertexAttributeUsage.Normal)
-local mesh = sl.Mesh.fromFile(sl.device, '../../assets/meshes/box.dae', layout)
+local mesh = sl.Mesh.fromFile(sl.device, assetPath('meshes/box.dae'), layout)
 local meshCollider = sl.StaticMeshCollider.fromMesh(mesh)
 assert(meshCollider)
 

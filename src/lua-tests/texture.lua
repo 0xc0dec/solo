@@ -1,21 +1,21 @@
-assert(sl.Texture2D.fromFile(sl.device, '../../assets/textures/cobblestone_color.png', true))
-local handle = sl.Texture2D.fromFileAsync(sl.device, '../../assets/textures/cobblestone_color.png', true)
+assert(sl.Texture2D.fromFile(sl.device, assetPath('textures/cobblestone_color.png'), true))
+local handle = sl.Texture2D.fromFileAsync(sl.device, assetPath('textures/cobblestone_color.png'), true)
 assert(handle.done)
 
 local tex = sl.Texture2D.empty(sl.device, 100, 100, sl.TextureFormat.Depth24)
 assert(tex:dimensions())
 
 handle = sl.CubeTexture.fromFaceFilesAsync(sl.device,
-    '../../assets/textures/skyboxes/deep-space/+x.png', '../../assets/textures/skyboxes/deep-space/-x.png',
-    '../../assets/textures/skyboxes/deep-space/+y.png', '../../assets/textures/skyboxes/deep-space/-y.png',
-    '../../assets/textures/skyboxes/deep-space/+z.png', '../../assets/textures/skyboxes/deep-space/-z.png'
+    assetPath('textures/skyboxes/deep-space/+x.png'), assetPath('textures/skyboxes/deep-space/-x.png'),
+    assetPath('textures/skyboxes/deep-space/+y.png'), assetPath('textures/skyboxes/deep-space/-y.png'),
+    assetPath('textures/skyboxes/deep-space/+z.png'), assetPath('textures/skyboxes/deep-space/-z.png')
 )
 assert(handle.done)
 
 tex = sl.CubeTexture.fromFaceFiles(sl.device,
-    '../../assets/textures/skyboxes/deep-space/+x.png', '../../assets/textures/skyboxes/deep-space/-x.png',
-    '../../assets/textures/skyboxes/deep-space/+y.png', '../../assets/textures/skyboxes/deep-space/-y.png',
-    '../../assets/textures/skyboxes/deep-space/+z.png', '../../assets/textures/skyboxes/deep-space/-z.png'
+    assetPath('textures/skyboxes/deep-space/+x.png'), assetPath('textures/skyboxes/deep-space/-x.png'),
+    assetPath('textures/skyboxes/deep-space/+y.png'), assetPath('textures/skyboxes/deep-space/-y.png'),
+    assetPath('textures/skyboxes/deep-space/+z.png'), assetPath('textures/skyboxes/deep-space/-z.png')
 )
 
 assert(tex:format())

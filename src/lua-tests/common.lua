@@ -8,7 +8,7 @@ vec3 = sl.Vector3
 vec4 = sl.Vector4
 
 function assetPath(fileName)
-    return "../../assets/" .. fileName
+    return "../../../assets/" .. fileName
 end
 
 function callSafe(f)

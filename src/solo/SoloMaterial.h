@@ -40,6 +40,12 @@ namespace solo
         virtual void setMatrixParameter(const str &name, const Matrix &value) = 0;
         virtual void setTextureParameter(const str &name, sptr<Texture> value) = 0;
 
+    	virtual void bindFloatParameter(const str &name, const std::function<float()> &valueGetter) = 0;
+    	virtual void bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter) = 0;
+    	virtual void bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter) = 0;
+    	virtual void bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter) = 0;
+    	virtual void bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter) = 0; // TODO return matrix reference from getter
+
         virtual void bindParameter(const str &name, ParameterBinding binding) = 0;
 
         virtual auto effect() const -> sptr<Effect> = 0;
