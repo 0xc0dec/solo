@@ -17,13 +17,7 @@ using namespace solo;
 VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
-    auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI);
-    if (setup.fullScreen)
-        flags |= SDL_WINDOW_FULLSCREEN;
-
-    window_ = SDL_CreateWindow(setup.windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        setup.canvasWidth, setup.canvasHeight, flags);
-    asrt(window_, "Unable to create device window");
+	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
 
     VkApplicationInfo appInfo {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -70,7 +64,7 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
     SDL_VERSION(&wmInfo.version);
-    SDL_GetWindowWMInfo(window_, &wmInfo);
+    SDL_GetWindowWMInfo(window(), &wmInfo);
 
     const auto hwnd = wmInfo.info.win.window;
     const auto hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtr(hwnd, GWLP_HINSTANCE));

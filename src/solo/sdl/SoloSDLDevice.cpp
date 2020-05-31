@@ -14,8 +14,25 @@ SDLDevice::SDLDevice(const DeviceSetup &setup) :
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
+void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags)
+{
+	auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI | additionalFlags);
+    if (fullScreen)
+        flags |= SDL_WINDOW_FULLSCREEN;
+
+    window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        canvasWidth, canvasHeight, flags);
+    asrt(window_, "Failed to create device window");
+}
+
 SDLDevice::~SDLDevice()
 {
+	if (window_)
+    {
+        SDL_DestroyWindow(window_);
+        window_ = nullptr;
+    }
+	
     SDL_Quit();
 }
 

@@ -18,19 +18,9 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    auto flags = static_cast<u32>(SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
-    if (setup.fullScreen)
-        flags |= SDL_WINDOW_FULLSCREEN;
+	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, SDL_WINDOW_OPENGL);
 
-    window_ = SDL_CreateWindow(
-        setup.windowTitle.c_str(),
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        setup.canvasWidth, setup.canvasHeight,
-        flags
-    );
-    asrt(window_, "Unable to create device window");
-
-    context_ = SDL_GL_CreateContext(window_);
+    context_ = SDL_GL_CreateContext(window());
     asrt(context_, "Unable to create OpenGL context");
 
     glewExperimental = true;
@@ -53,16 +43,11 @@ void OpenGLSDLDevice::cleanup()
         SDL_GL_DeleteContext(context_);
         context_ = nullptr;
     }
-    if (window_)
-    {
-        SDL_DestroyWindow(window_);
-        window_ = nullptr;
-    }
 }
 
 void OpenGLSDLDevice::endUpdate()
 {
-    SDL_GL_SwapWindow(window_);
+    SDL_GL_SwapWindow(window());
 }
 
 #endif

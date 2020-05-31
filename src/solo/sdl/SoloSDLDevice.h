@@ -26,16 +26,18 @@ namespace solo
         auto dpiIndependentCanvasSize() const -> Vector2 override final;
 
     protected:
-        SDL_Window *window_ = nullptr;
-
         bool hasMouseFocus_ = false;
         bool hasKeyboardFocus_ = false;
 
         explicit SDLDevice(const DeviceSetup &setup);
 
-        void beginUpdate() override final;
+    	void initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags);
+    	auto window() const -> SDL_Window* { return window_; }
+    	void beginUpdate() override final;
 
     private:
+		SDL_Window *window_ = nullptr;
+    	
         void prepareKeyboardState();
         void prepareMouseState();
         void readWindowState();
