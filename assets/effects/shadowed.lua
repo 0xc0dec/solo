@@ -40,9 +40,9 @@
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                mat3 worldMat = transpose(inverse(mat3(#uniforms:world#)));
-                vec3 worldNormal = worldMat * sl_Normal;
+                mat3 worldMat = mat3(#uniforms:world#);
                 vec3 worldPos = worldMat * sl_Position;
+                vec3 worldNormal = normalize(worldMat * sl_Normal);
                 vec3 worldTangent = normalize(worldMat * sl_Tangent);
                 vec3 worldBinormal = cross(worldNormal, worldTangent);
                 mat3 tbn = transpose(mat3(worldTangent, worldBinormal, worldNormal)); // transpose == inverse for orthogonal matrices
