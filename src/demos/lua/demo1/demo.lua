@@ -102,6 +102,7 @@ function demo()
         mat:bindParameter("uniforms:model", sl.ParameterBinding.WorldMatrix)
         mat:setTextureParameter("mainTex", assetCache.textures.cobbleStone)
         mat:setTextureParameter("shadowMap", depthTex)
+        mat:setFloatParameter('variables:highlighted', 0)
         return mat
     end
 

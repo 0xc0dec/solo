@@ -47,6 +47,12 @@
     },
 
     fragment = {
+        uniformBuffers = {
+            variables = {
+                highlighted = "float"
+            }
+        },
+
         samplers = {
             mainTex = "sampler2D",
             shadowMap = "sampler2D"
@@ -103,6 +109,9 @@
                 float shadow = samplePCF(coords);
 
                 fragColor = texture(mainTex, uv) * min(diffuse, shadow);
+
+                if (#variables:highlighted# > 0)
+                    fragColor.r *= 2;
             }
         ]]
     }

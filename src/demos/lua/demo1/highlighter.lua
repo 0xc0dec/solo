@@ -4,12 +4,7 @@
 -- 
 
 return function(assetCache, physics)
-    local highlightEff = assetCache.getEffect("color")
-    local highlightMat = sl.Material.fromEffect(sl.device, highlightEff)
-    highlightMat:setFaceCull(sl.FaceCull.None)
-    highlightMat:setPolygonMode(sl.PolygonMode.Wireframe)
-    highlightMat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
-    highlightMat:setVector4Parameter("variables:color", vec4(1, 1, 0, 1))
+    local supportedEffect = assetCache.getEffect('shadowed')
 
     return sl.createComponent("Highlighter", {
         init = function(self)
@@ -32,10 +27,18 @@ return function(assetCache, physics)
             end
 
             if hitNode and not self.lastNode then
-                self.lastNode = hitNode
-                self.lastRenderer = self.lastNode:findComponent("MeshRenderer")
-                self.lastMaterial = self.lastRenderer:material(0)
-                self.lastRenderer:setMaterial(0, highlightMat)
+                local renderer = hitNode:findComponent("MeshRenderer")
+                local material = renderer:material(0)
+
+                if material:effect() == supportedEffect then
+                    self.lastNode = hitNode
+                    self.lastRenderer = renderer
+                    self.lastMaterial = material
+
+                    local newMat = material:clone()
+                    newMat:setFloatParameter('variables:highlighted', 1)
+                    renderer:setMaterial(0, newMat)
+                end
             end
         end,
     });
