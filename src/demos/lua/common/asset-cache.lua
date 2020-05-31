@@ -4,13 +4,13 @@
 -- 
 
 return function()
-    local brickwall = sl.Texture2D.fromFile(sl.device, assetPath("textures/brickwall.jpg"), true)
-    brickwall:setAnisotropyLevel(16)
-    brickwall:setWrap(sl.TextureWrap.Repeat)
+    local texture1 = sl.Texture2D.fromFile(sl.device, assetPath("textures/waffle-slab.png"), true)
+    texture1:setAnisotropyLevel(16)
+    texture1:setWrap(sl.TextureWrap.Repeat)
 
-    local brickwallNormal = sl.Texture2D.fromFile(sl.device, assetPath("textures/brickwall_normal.jpg"), true)
-    brickwallNormal:setAnisotropyLevel(16)
-    brickwallNormal:setWrap(sl.TextureWrap.Repeat)
+    local texture1Normal = sl.Texture2D.fromFile(sl.device, assetPath("textures/waffle-slab_normal.png"), true)
+    texture1Normal:setAnisotropyLevel(16)
+    texture1Normal:setWrap(sl.TextureWrap.Repeat)
 
     local cache = {}
 
@@ -54,9 +54,9 @@ return function()
         },
 
         textures = {
-            brickwall = {
-                color = brickwall,
-                normal = brickwallNormal
+            texture1 = {
+                color = texture1,
+                normal = texture1Normal
             }
         }
     }

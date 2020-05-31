@@ -1,5 +1,5 @@
-assert(sl.Texture2D.fromFile(sl.device, assetPath('textures/brickwall.jpg'), true))
-local handle = sl.Texture2D.fromFileAsync(sl.device, assetPath('textures/brickwall.jpg'), true)
+assert(sl.Texture2D.fromFile(sl.device, assetPath('textures/waffle-slab.png'), true))
+local handle = sl.Texture2D.fromFileAsync(sl.device, assetPath('textures/waffle-slab.png'), true)
 assert(handle.done)
 
 local tex = sl.Texture2D.empty(sl.device, 100, 100, sl.TextureFormat.Depth24)
