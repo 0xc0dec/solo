@@ -3,7 +3,7 @@
         uniformBuffers = {
             uniforms = {
                 wvp = "mat4",
-                model = "mat4",
+                world = "mat4",
                 lightVp = "mat4",
                 lightPos = "vec3"
             }
@@ -12,14 +12,17 @@
         inputs = {
             sl_Position = "vec3",
             sl_TexCoord = "vec2",
-            sl_Normal = "vec3"
+            sl_Normal = "vec3",
+            sl_Tangent = "vec3"
         },
 
         outputs = {
             uv = "vec2",
             shadowCoord = "vec4",
-            normal = "vec3",
-            lightVec = "vec3"
+            worldNormal = "vec3",
+            worldTangent = "vec3",
+            worldDirToLight = "vec3",
+            tbn = "mat3"
         },
 
         code = [[
@@ -33,12 +36,16 @@
                 gl_Position = #uniforms:wvp# * vec4(sl_Position, 1);
                 SL_FIX_Y#gl_Position#;
 
-                vec4 lightProjectedPos = (#uniforms:lightVp# * #uniforms:model#) * vec4(sl_Position, 1.0);
+                vec4 lightProjectedPos = (#uniforms:lightVp# * #uniforms:world#) * vec4(sl_Position, 1.0);
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                normal = mat3(#uniforms:model#) * sl_Normal;
-                lightVec = normalize(#uniforms:lightPos# - sl_Position);
+                worldNormal = mat3(#uniforms:world#) * sl_Normal;
+                worldDirToLight = normalize(#uniforms:lightPos# - sl_Position);
+
+                worldTangent = normalize(vec3(#uniforms:world# * vec4(sl_Tangent, 0.0)));
+                vec3 worldBinormal = cross(worldNormal, worldTangent);
+                tbn = mat3(worldTangent, worldBinormal, worldNormal);
             }
         ]]
     },
@@ -52,6 +59,7 @@
 
         samplers = {
             colorMap = "sampler2D",
+            normalMap = "sampler2D",
             shadowMap = "sampler2D"
         },
 
@@ -96,12 +104,16 @@
 
             void main()
             {
-                vec3 n = normalize(normal);
-                vec3 l = normalize(lightVec);
-                float diffuse = max(dot(n, l), ambient);
+                vec3 n = texture(normalMap, uv).rgb;
+                n = n * 2 - 1;
+                n = normalize(tbn * n);
 
-                vec4 coords = shadowCoord / shadowCoord.w;
-                float shadow = samplePCF(coords);
+                // vec3 n = normalize(worldNormal);
+
+                vec3 l = normalize(worldDirToLight);
+                
+                float diffuse = max(dot(n, l), ambient);
+                float shadow = samplePCF(shadowCoord / shadowCoord.w);
 
                 fragColor = texture(colorMap, uv) * min(diffuse, shadow);
 
