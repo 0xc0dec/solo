@@ -71,14 +71,12 @@
         },
 
         code = [[
-            const float ambient = 0.1;
-
             float sampleShadow(vec4 coords, vec2 offset)
             {
                 float shadow = 1.0;
                 float dist = texture(shadowMap, coords.st + offset).r;
                 if (dist < coords.z - 0.00002)
-                    shadow = ambient;
+                    shadow = 0;
                 return shadow;
             }
 
@@ -108,17 +106,25 @@
             void main()
             {
                 vec3 n = normalize(texture(normalMap, uv).rgb * 2 - 1);
-                vec3 lightDir = normalize(tangentLightPos - tangentPos);
+                vec3 color = texture(colorMap, uv).rgb;
+                
+                // ambient
+                vec3 ambient = 0.2 * color;
 
-                float diffuse = max(dot(n, lightDir), ambient);
+                // shadow
                 float shadow = samplePCF(shadowCoord / shadowCoord.w);
 
+                // diffuse
+                vec3 lightDir = normalize(tangentLightPos - tangentPos);
+                vec3 diffuse = min(max(dot(lightDir, n), 0.0), shadow) * color;
+
+                // specular
                 vec3 viewDir = normalize(tangentCamPos - tangentPos);
                 vec3 reflectDir = reflect(-lightDir, n);
                 vec3 halfwayDir = normalize(lightDir + viewDir);  
-                float spec = pow(max(dot(n, halfwayDir), 0.0), 32.0);
+                vec3 specular = vec3(0.5) * min(pow(max(dot(n, halfwayDir), 0.0), 32.0), shadow);
 
-                fragColor = (texture(colorMap, uv) + spec) * min(diffuse, shadow);
+                fragColor = vec4(ambient + diffuse + specular, 1);
 
                 if (#variables:highlighted# > 0)
                     fragColor.r *= 2;
