@@ -40,9 +40,10 @@
                 SL_FIX_Y#lightProjectedPos#;
                 shadowCoord = biasMat * lightProjectedPos;
 
-                vec3 worldNormal = mat3(#uniforms:world#) * sl_Normal;
-                vec3 worldPos = mat3(#uniforms:world#) * sl_Position;
-                vec3 worldTangent = normalize(vec3(#uniforms:world# * vec4(sl_Tangent, 0.0)));
+                mat3 worldMat = transpose(inverse(mat3(#uniforms:world#)));
+                vec3 worldNormal = worldMat * sl_Normal;
+                vec3 worldPos = worldMat * sl_Position;
+                vec3 worldTangent = normalize(worldMat * sl_Tangent);
                 vec3 worldBinormal = cross(worldNormal, worldTangent);
                 mat3 tbn = transpose(mat3(worldTangent, worldBinormal, worldNormal)); // transpose == inverse for orthogonal matrices
                 
@@ -127,7 +128,7 @@
                 fragColor = vec4(ambient + diffuse + specular, 1);
 
                 if (#variables:highlighted# > 0)
-                    fragColor.r *= 2;
+                    fragColor.b *= 2;
             }
         ]]
     }
