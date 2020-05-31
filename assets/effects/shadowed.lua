@@ -131,7 +131,11 @@
                 fragColor = vec4(ambient + diffuse + specular, 1);
 
                 if (#variables:highlighted# > 0)
-                    fragColor.b *= 2;
+                {
+                    float angleCos = abs(dot(viewDir, n));
+                    float rim = pow(1 - angleCos, 4);
+                    fragColor += vec4(1, 1, 0, 1) * rim;
+                }
             }
         ]]
     }
