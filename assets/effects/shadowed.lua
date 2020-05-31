@@ -20,7 +20,6 @@
             uv = "vec2",
             shadowCoord = "vec4",
             worldNormal = "vec3",
-            worldTangent = "vec3",
             worldDirToLight = "vec3",
             tbn = "mat3"
         },
@@ -43,7 +42,7 @@
                 worldNormal = mat3(#uniforms:world#) * sl_Normal;
                 worldDirToLight = normalize(#uniforms:lightPos# - sl_Position);
 
-                worldTangent = normalize(vec3(#uniforms:world# * vec4(sl_Tangent, 0.0)));
+                vec3 worldTangent = normalize(vec3(#uniforms:world# * vec4(sl_Tangent, 0.0)));
                 vec3 worldBinormal = cross(worldNormal, worldTangent);
                 tbn = mat3(worldTangent, worldBinormal, worldNormal);
             }
@@ -104,12 +103,7 @@
 
             void main()
             {
-                vec3 n = texture(normalMap, uv).rgb;
-                n = n * 2 - 1;
-                n = normalize(tbn * n);
-
-                // vec3 n = normalize(worldNormal);
-
+                vec3 n = normalize(tbn * (texture(normalMap, uv).rgb * 2 - 1));
                 vec3 l = normalize(worldDirToLight);
                 
                 float diffuse = max(dot(n, l), ambient);
