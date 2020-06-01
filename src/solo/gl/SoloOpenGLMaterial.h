@@ -67,7 +67,7 @@ namespace solo
         umap<str, ParameterWriter> writers_;
     	umap<str, ParameterDescriptor> descriptors_;
 
-    	void saveParameter(const str &paramName, const ParameterWriter &writer);
+    	void setParameter(const str &paramName, const ParameterWriter &writer);
     };
 }
 

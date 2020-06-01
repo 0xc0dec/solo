@@ -70,7 +70,7 @@ namespace solo
         umap<str, umap<str, UniformBufferItem>> bufferItems_;
         umap<str, Sampler> samplers_;
 
-        void setUniformParameter(const str &name, const ParameterWriteFunc &write);
+        void setParameter(const str &name, const ParameterWriteFunc &write);
     };
 }
 
