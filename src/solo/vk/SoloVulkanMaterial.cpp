@@ -90,16 +90,27 @@ void VulkanMaterial::setUniformParameter(const str &name, const ParameterWriteFu
     const auto parsedName = parseName(name);
     const auto &bufferName = std::get<0>(parsedName);
     const auto &fieldName = std::get<1>(parsedName);
-    asrt(!bufferName.empty() && !fieldName.empty(), "Invalid material parameter name ", name);
 
-    auto bufferInfo = effect_->uniformBuffer(bufferName);
-    const auto itemInfo = bufferInfo.members.at(fieldName);
+	panicIf(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
-    auto &item = bufferItems_[bufferName][fieldName];
-    item.write = [itemInfo, write](VulkanBuffer &buffer, const Camera *camera, const Transform *transform)
-    {
-        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
-    };
+	if (effect_->hasUniformBuffer(bufferName))
+	{
+		auto bufferInfo = effect_->uniformBuffer(bufferName);
+		if (bufferInfo.members.count(fieldName))
+		{
+			const auto itemInfo = bufferInfo.members.at(fieldName);
+		    auto &item = bufferItems_[bufferName][fieldName];
+			
+		    item.write = [itemInfo, write](VulkanBuffer &buffer, const Camera *camera, const Transform *transform)
+		    {
+		        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
+		    };
+
+			return;
+		}
+	}
+	
+	panic("Unknown material parameter ", name);
 }
 
 void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
@@ -158,138 +169,127 @@ void VulkanMaterial::bindMatrixParameter(const str &name, const std::function<Ma
 
 void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
-    const auto parsedName = parseName(name);
-    const auto &bufferName = std::get<0>(parsedName);
-    const auto &fieldName = std::get<1>(parsedName);
-    asrt(!bufferName.empty() && !fieldName.empty(), "Invalid material parameter name ", name);
-
-    auto bufferInfo = effect_->uniformBuffer(bufferName);
-    asrt(bufferInfo.size && !bufferInfo.members.empty(), "Material parameter ", name, " not found");
-
-    auto itemInfo = bufferInfo.members.at(fieldName);
-    auto &item = bufferItems_[bufferName][fieldName];
-
     switch (binding)
     {
         case ParameterBinding::WorldMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+			setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *, const Transform *nodeTransform)
             {
                 if (nodeTransform)
                 {
                     auto value = nodeTransform->worldMatrix();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::ViewMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
             {
                 if (camera)
                 {
                     auto value = camera->viewMatrix();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::ProjectionMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
             {
                 if (camera)
                 {
                     auto value = camera->projectionMatrix();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::WorldViewMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+			setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera && nodeTransform)
                 {
                     auto value = nodeTransform->worldViewMatrix(camera);
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::ViewProjectionMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+        	setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
             {
                 if (camera)
                 {
                     auto value = camera->viewProjectionMatrix();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::WorldViewProjectionMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+        	setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
                     auto value = nodeTransform->worldViewProjMatrix(camera);
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::InverseTransposedWorldMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+            setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *, const Transform *nodeTransform)
             {
                 if (nodeTransform)
                 {
                     auto value = nodeTransform->invTransposedWorldMatrix();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+        	setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
                     auto value = nodeTransform->invTransposedWorldViewMatrix(camera);
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         case ParameterBinding::CameraWorldPosition:
         {
-            item.write = [itemInfo](VulkanBuffer &buffer, const Camera *camera, const Transform *nodeTransform)
+        	setUniformParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
             {
                 if (camera)
                 {
                     auto value = camera->transform()->worldPosition();
-                    buffer.updatePart(&value, itemInfo.offset, itemInfo.size);
+                    buffer.updatePart(&value, offset, size);
                 }
-            };
+            });
             break;
         }
 
         default:
-            asrt(false, "Unsupported parameter binding");
+    		panic("Unsupported parameter binding");
     }
 }
 

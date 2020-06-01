@@ -74,12 +74,6 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
-auto VulkanEffect::uniformBuffer(const str &name) -> UniformBuffer
-{
-    asrt(uniformBuffers_.count(name), "Uniform buffer ", name, " not found");
-    return uniformBuffers_.at(name);
-}
-
 auto VulkanEffect::sampler(const str &name) -> Sampler
 {
     asrt(samplers_.count(name), "Sampler ", name, " not found");

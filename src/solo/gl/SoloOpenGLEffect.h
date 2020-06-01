@@ -33,9 +33,10 @@ namespace solo
 
         auto handle() const -> GLuint { return handle_; }
 
-        auto uniformInfo(const str &name) -> UniformInfo;
-        auto hasAttribute(const str &name) const -> bool;
-        auto attributeInfo(const str &name) -> AttributeInfo;
+    	auto hasUniform(const str &name) const -> bool { return uniforms_.count(name); }
+        auto uniformInfo(const str &name) const -> UniformInfo { return uniforms_.at(name); }
+        auto hasAttribute(const str &name) const -> bool { return attributes_.count(name); }
+        auto attributeInfo(const str &name) const -> AttributeInfo { return attributes_.at(name); }
 
     private:
         GLuint handle_ = 0;

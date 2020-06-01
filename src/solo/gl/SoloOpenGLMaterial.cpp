@@ -252,6 +252,7 @@ void OpenGLMaterial::saveParameter(const str &paramName, const ParameterWriter &
     const auto idx = paramName.find_last_of(':');
     if (idx != std::string::npos)
         name.replace(idx, 1, "_");
+	panicIf(!effect_->hasUniform(name), "Unknown material parameter ", paramName);
     const auto info = effect_->uniformInfo(name);
 	descriptors_[paramName] = { info.location, info.samplerIndex, writer };
 }

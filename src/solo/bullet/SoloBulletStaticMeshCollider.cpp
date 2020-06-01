@@ -19,7 +19,7 @@ static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType
 			return PHY_INTEGER;
 	}
 	
-	asrt(false, "Unknown index element size");
+	panic("Unknown index element size");
 	
 	return PHY_INTEGER;;
 }

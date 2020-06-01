@@ -104,4 +104,19 @@ namespace solo
 		check();
 #endif
 	}
+
+	template <class... TArgs>
+	constexpr void panic(TArgs ...args)
+	{
+		const auto msg = Formatter()(args...);
+		Logger::global().logCritical(msg);
+		exit(1);
+	}
+
+	template <class... TArgs>
+	constexpr void panicIf(bool condition, TArgs ...args)
+	{
+		if (condition)
+			panic(args...);
+	}
 }

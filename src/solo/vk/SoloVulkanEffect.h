@@ -51,7 +51,8 @@ namespace solo
         auto vsModule() const -> VkShaderModule { return vs_; }
         auto fsModule() const -> VkShaderModule { return fs_; }
 
-        auto uniformBuffer(const str &name) -> UniformBuffer;
+    	auto hasUniformBuffer(const str &name) const -> bool { return uniformBuffers_.count(name); }
+        auto uniformBuffer(const str &name) const -> UniformBuffer { return uniformBuffers_.at(name); }
         auto sampler(const str &name) -> Sampler;
 
         auto uniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers_; }
