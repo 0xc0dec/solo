@@ -53,7 +53,8 @@ namespace solo
 
     	auto hasUniformBuffer(const str &name) const -> bool { return uniformBuffers_.count(name); }
         auto uniformBuffer(const str &name) const -> UniformBuffer { return uniformBuffers_.at(name); }
-        auto sampler(const str &name) -> Sampler;
+    	auto hasSampler(const str &name) const -> bool { return samplers_.count(name); }
+        auto sampler(const str &name) const -> Sampler { return samplers_.at(name); }
 
         auto uniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers_; }
         auto samplers() const -> umap<str, Sampler> const& { return samplers_; }

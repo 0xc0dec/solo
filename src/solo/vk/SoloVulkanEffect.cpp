@@ -74,12 +74,6 @@ VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, cons
     introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
-auto VulkanEffect::sampler(const str &name) -> Sampler
-{
-    asrt(samplers_.count(name), "Sampler ", name, " not found");
-    return samplers_.at(name);
-}
-
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
 {
 	const spirv_cross::CompilerGLSL compiler{src, len};
