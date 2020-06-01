@@ -12,7 +12,7 @@ using namespace solo;
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
     u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	Logger::global().logDebug(Formatter()("Vulkan: ", msg));
+	// Logger::global().logDebug(Formatter()("Vulkan: ", msg));
     return VK_FALSE;
 }
 

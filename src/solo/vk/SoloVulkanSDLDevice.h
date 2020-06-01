@@ -24,7 +24,7 @@ namespace solo
         auto surface() const -> VkSurfaceKHR { return surface_; }
 
     protected:
-        void endUpdate() override final;
+        void endUpdate() override;
 
     private:
         VulkanResource<VkInstance> instance_;

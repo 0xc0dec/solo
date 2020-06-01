@@ -10,6 +10,7 @@
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
 #include "SoloEnums.h"
+#include "SoloDebugInterface.h"
 #include "gl/SoloOpenGLSDLDevice.h"
 #include "vk/SoloVulkanSDLDevice.h"
 
@@ -54,6 +55,7 @@ void Device::initSubsystems(const DeviceSetup &setup)
         Logger::global().setOutputFile(setup.logFilePath);
 
     renderer_ = Renderer::fromDevice(this);
+	debugInterface_ = DebugInterface::fromDevice(this);
     physics_ = Physics::fromDevice(this);
     fs_ = FileSystem::fromDevice(this);
     scriptRuntime_ = ScriptRuntime::fromDevice(this);
@@ -66,6 +68,7 @@ void Device::cleanupSubsystems()
     jobPool_.reset();
     scriptRuntime_.reset();
     fs_.reset();
+	debugInterface_.reset();
     renderer_.reset();
 }
 
@@ -101,7 +104,12 @@ void Device::update(const std::function<void()> &update)
     beginUpdate();
     jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics_->update();
-    renderer_->renderFrame(update);
+    renderer_->renderFrame([&]()
+	{
+		debugInterface_->beginFrame();
+    	update();
+    	debugInterface_->endFrame();
+	});
     endUpdate();
 }
 

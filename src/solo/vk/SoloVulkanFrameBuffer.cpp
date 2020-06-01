@@ -17,7 +17,6 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
 {
 	asrt([&attachments]() { validateNewAttachments(attachments); });
 
-    const auto renderer = static_cast<VulkanRenderer*>(device->renderer());
     auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
 
     vec<VkImageView> views;
@@ -47,6 +46,7 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
     views.push_back(result->depthAttachment_->image().view());
     config.setDepthAttachment(result->depthAttachment_->image().format());
 
+	const auto renderer = dynamic_cast<VulkanRenderer*>(device->renderer());
     result->renderPass_ = VulkanRenderPass(renderer->device(), config);
     result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions_.x(), result->dimensions_.y());
 

@@ -15,6 +15,7 @@ namespace solo
     class Scene;
     class FileSystem;
     class Renderer;
+	class DebugInterface;
     class Physics;
     class ScriptRuntime;
     class JobPool;
@@ -69,6 +70,7 @@ namespace solo
 
     protected:
         sptr<Renderer> renderer_;
+    	sptr<DebugInterface> debugInterface_;
         sptr<Physics> physics_;
         sptr<FileSystem> fs_;
         sptr<ScriptRuntime> scriptRuntime_;

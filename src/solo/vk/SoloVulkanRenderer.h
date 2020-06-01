@@ -27,7 +27,7 @@ namespace solo
     {
     public:
         explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer();
+        ~VulkanRenderer() = default;
 
         void beginCamera(Camera *camera) override;
         void endCamera(Camera *camera) override;
@@ -38,6 +38,10 @@ namespace solo
         auto gpuName() const -> const char* override { return device_.gpuName(); }
 
         auto device() const -> const VulkanDevice& { return device_; }
+    	auto swapchain() const -> const VulkanSwapchain& { return swapchain_; }
+
+    	// TODO remove
+    	auto currentCmdBuffer() const -> const VulkanCmdBuffer& { return *currentCmdBuffer_; }
 
     protected:
         void beginFrame() override;
@@ -62,6 +66,7 @@ namespace solo
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
     	umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
+    	// TODO Introduce "frame" struct serving as state
         Camera *currentCamera_ = nullptr;
         VulkanRenderPass *currentRenderPass_ = nullptr;
         VulkanCmdBuffer *currentCmdBuffer_ = nullptr;
