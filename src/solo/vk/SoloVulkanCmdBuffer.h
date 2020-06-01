@@ -66,6 +66,7 @@ namespace solo
         auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer& = default;
 
         operator bool() const { return handle_; }
+    	operator VkCommandBuffer() const { return handle_; }
         operator const VkCommandBuffer*() { return &handle_; }
 
     private:

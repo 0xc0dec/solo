@@ -27,7 +27,7 @@ namespace solo
     {
     public:
         explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer() = default;
+        ~VulkanRenderer();
 
         void beginCamera(Camera *camera) override;
         void endCamera(Camera *camera) override;

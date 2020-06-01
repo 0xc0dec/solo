@@ -38,6 +38,8 @@ namespace solo
         auto moveNext() -> VkSemaphore;
         void present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
+    	auto imageCount() const -> u32 { return steps_.size(); }
+
     private:
         struct Step
         {

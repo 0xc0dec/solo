@@ -15,6 +15,9 @@
 #include "SoloVulkanMesh.h"
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
+#include <imgui.h>
+#include <examples/imgui_impl_sdl.h>
+#include <examples/imgui_impl_vulkan.h>
 
 using namespace solo;
 
@@ -41,6 +44,8 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 	}
 }
 
+static VulkanSDLDevice *d = nullptr;
+
 VulkanRenderer::VulkanRenderer(Device *device):
     engineDevice_(device)
 {
@@ -52,6 +57,102 @@ VulkanRenderer::VulkanRenderer(Device *device):
     device_ = VulkanDevice(instance, surface);
     swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
 		device->isVsync());
+
+	IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	VkDescriptorPoolSize pool_sizes[] =
+    {
+        { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+        { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+        { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+    };
+    VkDescriptorPoolCreateInfo pool_info = {};
+    pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+    pool_info.maxSets = 1000 * IM_ARRAYSIZE(pool_sizes);
+    pool_info.poolSizeCount = static_cast<uint32_t>(IM_ARRAYSIZE(pool_sizes));
+    pool_info.pPoolSizes = pool_sizes;
+
+	VkDescriptorPool descPool;
+	SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device_, &pool_info, nullptr, &descPool));
+
+	VkAttachmentDescription attachment = {};
+    attachment.format = device_.colorFormat();
+    attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+    VkAttachmentReference color_attachment = {};
+    color_attachment.attachment = 0;
+    color_attachment.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    VkSubpassDescription subpass = {};
+    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    subpass.colorAttachmentCount = 1;
+    subpass.pColorAttachments = &color_attachment;
+    VkSubpassDependency dependency = {};
+    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+    dependency.dstSubpass = 0;
+    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.srcAccessMask = 0;
+    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    VkRenderPassCreateInfo info = {};
+    info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    info.attachmentCount = 1;
+    info.pAttachments = &attachment;
+    info.subpassCount = 1;
+    info.pSubpasses = &subpass;
+    info.dependencyCount = 1;
+    info.pDependencies = &dependency;
+
+	VkRenderPass rp;
+	SL_VK_CHECK_RESULT(vkCreateRenderPass(device_, &info, nullptr, &rp));
+
+    d = dynamic_cast<VulkanSDLDevice*>(device);
+	
+	ImGui_ImplSDL2_InitForVulkan(d->window());
+    ImGui_ImplVulkan_InitInfo init_info = {};
+    init_info.Instance = d->instance();
+    init_info.PhysicalDevice = device_.physical();
+    init_info.Device = device_;
+    init_info.QueueFamily = device_.queueIndex();
+    init_info.Queue = device_.queue();
+    init_info.PipelineCache = VK_NULL_HANDLE;
+    init_info.DescriptorPool = descPool;
+    init_info.Allocator = nullptr;
+    init_info.MinImageCount = 2;
+    init_info.ImageCount = swapchain_.imageCount();
+    init_info.CheckVkResultFn = [](VkResult err) {};
+
+	ImGui_ImplVulkan_Init(&init_info, rp);
+
+	d->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
+
+	auto cmdBuf = VulkanCmdBuffer(device_);
+	cmdBuf.begin(true);
+	ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
+	cmdBuf.endAndFlush();
+	ImGui_ImplVulkan_DestroyFontUploadObjects();
+}
+
+VulkanRenderer::~VulkanRenderer()
+{
+	ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void VulkanRenderer::beginCamera(Camera *camera)
@@ -98,6 +199,18 @@ void VulkanRenderer::beginCamera(Camera *camera)
 
 void VulkanRenderer::endCamera(Camera *camera)
 {
+	ImGui_ImplVulkan_NewFrame();
+    ImGui_ImplSDL2_NewFrame(d->window());
+    ImGui::NewFrame();
+
+	bool open = true;
+	ImGui::ShowDemoWindow(&open);
+
+	ImGui::Render();
+    ImDrawData* draw_data = ImGui::GetDrawData();
+
+	ImGui_ImplVulkan_RenderDrawData(draw_data, *currentCmdBuffer_);
+	
     auto &ctx = renderPassContexts_.at(currentRenderPass_);
     ctx.cmdBuf.endRenderPass();
     ctx.cmdBuf.end();
@@ -164,7 +277,7 @@ void VulkanRenderer::beginFrame()
 
 void VulkanRenderer::endFrame()
 {
-    swapchain_.present(device_.queue(), 1, &prevSemaphore_);
+	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better

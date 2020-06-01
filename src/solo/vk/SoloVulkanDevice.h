@@ -41,6 +41,7 @@ namespace solo
         auto colorSpace() const -> VkColorSpaceKHR { return colorSpace_; }
         auto commandPool() const -> VkCommandPool { return commandPool_; }
         auto queue() const -> VkQueue { return queue_; }
+    	auto queueIndex() const -> u32 { return queueIndex_; }
 
     private:
         VulkanResource<VkDevice> handle_;
@@ -54,6 +55,7 @@ namespace solo
         VkFormat depthFormat_ = VK_FORMAT_UNDEFINED;
         VkColorSpaceKHR colorSpace_ = VK_COLOR_SPACE_MAX_ENUM_KHR;
         VkQueue queue_ = nullptr;
+    	u32 queueIndex_ = -1;
         VulkanResource<VkDebugReportCallbackEXT> debugCallback_;
         umap<VkFormat, VkFormatFeatureFlags> supportedFormats_;
 

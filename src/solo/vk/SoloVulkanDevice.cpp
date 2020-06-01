@@ -137,11 +137,11 @@ VulkanDevice::VulkanDevice(VkInstance instance, VkSurfaceKHR surface):
     colorSpace_ = std::get<1>(surfaceFormats);
     depthFormat_ = selectDepthFormat();
 
-    const auto queueIndex = selectQueueIndex(physical_, surface);
-    handle_ = createDevice(physical_, queueIndex);
-    vkGetDeviceQueue(handle_, queueIndex, 0, &queue_);
+    queueIndex_ = selectQueueIndex(physical_, surface);
+    handle_ = createDevice(physical_, queueIndex_);
+    vkGetDeviceQueue(handle_, queueIndex_, 0, &queue_);
 
-    commandPool_ = createCommandPool(handle_, queueIndex);
+    commandPool_ = createCommandPool(handle_, queueIndex_);
 }
 
 bool VulkanDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const

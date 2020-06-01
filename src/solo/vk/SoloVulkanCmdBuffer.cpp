@@ -189,7 +189,6 @@ void VulkanCmdBuffer::endAndFlush()
 }
 
 auto VulkanCmdBuffer::begin(bool transient) -> VulkanCmdBuffer&
-
 {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
