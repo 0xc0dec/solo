@@ -28,7 +28,7 @@ public:
 	    Assimp::Importer importer;
 	    const auto flags = aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals;
 		const auto scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), flags);
-	    asrt(scene, "Unable to parse file ", path);
+	    panicIf(!scene, "Unable to parse file ", path);
 
 	    auto data = std::make_shared<MeshData>();
 	    u32 indexBase = 0;

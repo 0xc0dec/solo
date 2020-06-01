@@ -46,7 +46,7 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
 
     const auto compilationStatus = result.GetCompilationStatus();
     const auto errorMessage = result.GetErrorMessage();
-    asrt(compilationStatus == shaderc_compilation_status_success, "Unable to compile effect to SPV: ", errorMessage);
+    panicIf(compilationStatus != shaderc_compilation_status_success, "Unable to compile effect to SPV: ", errorMessage);
 
     return result;
 }

@@ -46,7 +46,7 @@ auto STBTexture2DData::fromFile(Device *device, const str &path) -> sptr<STBText
     stbi_set_flip_vertically_on_load(device->mode() == DeviceMode::OpenGL);
     // According to the docs, channels are not affected by the requested channels
     const auto data = stbi_load_from_memory(bytes.data(), bytes.size(), &width, &height, &channels, 4);
-    asrt(data, "Unable to load image ", path);
+    panicIf(!data, "Unable to load image ", path);
 
     const auto result = std::make_shared<STBTexture2DData>(toFormat(4), Vector2(width, height));
     result->channels_ = 4;

@@ -21,7 +21,7 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
 	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, SDL_WINDOW_OPENGL);
 
     context_ = SDL_GL_CreateContext(window());
-    asrt(context_, "Unable to create OpenGL context");
+    panicIf(!context_, "Unable to create OpenGL context");
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)

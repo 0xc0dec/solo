@@ -221,7 +221,7 @@ auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -
         ? std::floor(std::log2((std::max)(dimensions.x(), dimensions.y()))) + 1
         : 0;
 
-    asrt(isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+    panicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(data->textureFormat(), dimensions));
 
@@ -249,7 +249,7 @@ auto OpenGLTexture2D::empty(u32 width, u32 height, TextureFormat format) -> sptr
     const auto dataFormat = toDataFormat(format);
     const auto dimensions = Vector2(width, height);
 
-    asrt(isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+    panicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
 
     const auto result = sptr<OpenGLTexture2D>(new OpenGLTexture2D(format, dimensions));
 
@@ -289,7 +289,7 @@ auto OpenGLCubeTexture::fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeT
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
         const auto internalFormat = toInternalFormat(data->textureFormat());
         const auto dataFormat = toDataFormat(data->format());
-        asrt(isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
+        panicIf(!isFormatSupported(internalFormat, dataFormat, GL_UNSIGNED_BYTE), "Texture format not supported");
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(glFace, 0, internalFormat, data->dimension(), data->dimension(), 0, dataFormat, GL_UNSIGNED_BYTE, data->faceData(i));
     }

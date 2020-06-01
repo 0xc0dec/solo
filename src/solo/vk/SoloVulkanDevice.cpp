@@ -24,10 +24,10 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     createInfo.pfnCallback = callbackFunc;
 
     const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
-    asrt(create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
+    panicIf(!create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
 
     const auto destroy = reinterpret_cast<PFN_vkDestroyDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT"));
-    asrt(destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
+    panicIf(!destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
     SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));

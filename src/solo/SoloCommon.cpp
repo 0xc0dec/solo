@@ -28,7 +28,7 @@ namespace solo
             if (!path.empty())
             {
                 file.open(path, std::ios_base::trunc);
-                asrt(file.is_open(), "Unable to open log file ", path);
+                panicIf(!file.is_open(), "Unable to open log file ", path);
             }
         }
 

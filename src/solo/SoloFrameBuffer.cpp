@@ -31,14 +31,14 @@ auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &at
 
 void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 {
-    asrt(!attachments.empty(), "Frame buffer must have at least one attachment");
+    panicIf(attachments.empty(), "Frame buffer must have at least one attachment");
 
     auto width = (std::numeric_limits<u32>::max)(), height = (std::numeric_limits<u32>::max)();
     auto depthAttachmentCount = 0;
     for (const auto &attachment : attachments)
     {
         if (attachment->format() == TextureFormat::Depth24)
-            asrt(++depthAttachmentCount == 1, "Frame buffer can only have one depth attachment");
+            panicIf(++depthAttachmentCount > 1, "Frame buffer can only have one depth attachment");
 
         const auto size = attachment->dimensions();
         if (width == (std::numeric_limits<u32>::max)())
@@ -48,7 +48,7 @@ void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments
         }
         else
         {
-            asrt(static_cast<u32>(size.x()) == width && static_cast<u32>(size.y()) == height,
+            panicIf(static_cast<u32>(size.x()) != width && static_cast<u32>(size.y()) == height,
                 "Frame buffer attachments must have same dimentions");
         }
     }

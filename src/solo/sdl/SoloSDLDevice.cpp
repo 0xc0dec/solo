@@ -22,7 +22,7 @@ void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, 
 
     window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         canvasWidth, canvasHeight, flags);
-    asrt(window_, "Failed to create device window");
+    panicIf(!window_, "Failed to create device window");
 }
 
 SDLDevice::~SDLDevice()

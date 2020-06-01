@@ -28,15 +28,15 @@ static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType
 BulletStaticMeshCollider::BulletStaticMeshCollider(sptr<Mesh> mesh):
 	inputMesh_(mesh)
 {
-	asrt(mesh->vertexBufferCount() == 1, "Only single-buffer meshes are supported for now");
-	asrt(mesh->indexBufferCount() == 1, "Only single-index meshes are supported for now");
+	panicIf(mesh->vertexBufferCount() != 1, "Only single-buffer meshes are supported for now");
+	panicIf(mesh->indexBufferCount() != 1, "Only single-index meshes are supported for now");
 	
 	mesh_ = std::make_unique<btIndexedMesh>();
 
 	const auto layout = mesh->vertexBufferLayout(0);
 
 	const auto posAttrIdx = layout.attributeIndex(VertexAttributeUsage::Position);
-	asrt(posAttrIdx != -1, "No position attribute found in mesh buffer layout");
+	panicIf(posAttrIdx == -1, "No position attribute found in mesh buffer layout");
 	
 	const auto posAttr = layout.attribute(posAttrIdx);
 	

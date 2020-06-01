@@ -85,7 +85,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
     const auto fmt = toVulkanFormat(format);
 
     // TODO Better check. Checking for color attachment and sampled bits seems not right or too general
-    asrt(dev.isFormatSupported(fmt, VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
+    panicIf(!dev.isFormatSupported(fmt, VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
         (isDepth ? VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT : VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT)),
         "Image format/features not supported"
     );
@@ -128,7 +128,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    asrt(dev.isFormatSupported(format,
+    panicIf(!dev.isFormatSupported(format,
         VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
         VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
         VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),
@@ -138,7 +138,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     u32 mipLevels = 1;
     if (generateMipmaps)
     {
-        asrt(dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
+        panicIf(!dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
             "Image format/features not supported"
         );
         mipLevels = static_cast<u32>(std::floorf(std::log2f((std::fmax)(static_cast<float>(width), static_cast<float>(height))))) + 1;
@@ -295,7 +295,7 @@ auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -
         VK_IMAGE_USAGE_SAMPLED_BIT |
         VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
-    asrt(dev.isFormatSupported(format,
+    panicIf(!dev.isFormatSupported(format,
         VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT |
         VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT |
         VK_FORMAT_FEATURE_TRANSFER_DST_BIT_KHR),

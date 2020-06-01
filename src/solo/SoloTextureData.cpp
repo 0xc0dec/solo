@@ -42,7 +42,7 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
 
 auto Texture2DData::fromFile(Device *device, const str &path) -> sptr<Texture2DData>
 {
-    asrt(STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
+    panicIf(!STBTexture2DData::canLoadFromFile(path), "Unsupported cube texture file ", path);
     return STBTexture2DData::fromFile(device, path);
 }
 
@@ -68,7 +68,7 @@ auto CubeTextureData::fromFaceFiles(
     const str& positiveYPath, const str& negativeYPath,
     const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
 {
-    asrt(STBCubeTextureData::canLoadFromFaceFiles(
+    panicIf(!STBCubeTextureData::canLoadFromFaceFiles(
         positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath),
         "Unsupported cube texture face files ", positiveXPath, ", ...");
     return STBCubeTextureData::fromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);

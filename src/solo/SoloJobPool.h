@@ -65,7 +65,7 @@ namespace solo
                 }
                 else
                 {
-                    asrt(!!results_[i], "Unable to obtain job result");
+                    panicIf(!results_[i], "Unable to obtain job result");
                     readyCount++;
                 }
                 i++;
