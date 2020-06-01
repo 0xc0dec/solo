@@ -85,11 +85,10 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
         case DeviceMode::Vulkan:
             return VulkanTexture2D::empty(device, width, height, format);
 #endif
+		default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-	return nullptr;
 }
 
 auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
@@ -104,11 +103,10 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
         case DeviceMode::Vulkan:
             return VulkanTexture2D::fromData(device, data, generateMipmaps);
 #endif
+		default:
+    		panic("Unknown device mode");
+			return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-	return nullptr;
 }
 
 Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
@@ -171,11 +169,10 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
         case DeviceMode::Vulkan:
             return VulkanCubeTexture::fromData(device, data);
 #endif
+    	default:
+    		panic("Unknown device mode");
+			return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 
 CubeTexture::CubeTexture(TextureFormat format, u32 dimension):

@@ -139,11 +139,10 @@ auto Mesh::empty(Device *device) -> sptr<Mesh>
     case DeviceMode::Vulkan:
         return std::make_shared<VulkanMesh>(device);
 #endif
+    	default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 
 static auto fromData(Device *device, sptr<MeshData> data, const VertexBufferLayout &bufferLayout) -> sptr<Mesh>

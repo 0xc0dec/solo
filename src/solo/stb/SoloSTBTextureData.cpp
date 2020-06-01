@@ -20,11 +20,10 @@ static auto toFormat(int components) -> TextureDataFormat
         case 1: return TextureDataFormat::Red;
         case 3: return TextureDataFormat::RGB;
         case 4: return TextureDataFormat::RGBA;
+    	default:
+    		panic("Components count ", components, " not converible to texture data format");
+    		return TextureDataFormat::RGB;
     }
-
-    asrt(false, "Components count ", components, " not converible to texture data format");
-	
-    return TextureDataFormat::RGB;
 }
 
 bool STBTexture2DData::canLoadFromFile(const str &path)

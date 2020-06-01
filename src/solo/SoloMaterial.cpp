@@ -23,11 +23,10 @@ auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
         case DeviceMode::Vulkan:
             return std::make_shared<VulkanMaterial>(effect);
 #endif
+    	default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 
 void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)

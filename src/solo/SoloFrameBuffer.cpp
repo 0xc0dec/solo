@@ -23,11 +23,10 @@ auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &at
         case DeviceMode::Vulkan:
             return VulkanFrameBuffer::fromAttachments(device, attachments);
 #endif
+    	default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 
 void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments)

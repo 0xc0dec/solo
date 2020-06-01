@@ -61,10 +61,9 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
         case DeviceMode::Vulkan:
             return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
 #endif
+    	default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 

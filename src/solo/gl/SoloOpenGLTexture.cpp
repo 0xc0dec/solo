@@ -83,8 +83,9 @@ static auto toDataFormat(TextureDataFormat format) -> GLenum
             return GL_RGBA;
     }
 
-    asrt(false, "Unsupported texture data format");
-    return 0;
+    panic("Unsupported texture data format");
+
+	return 0;
 }
 
 static auto toDataFormat(TextureFormat format) -> GLenum
@@ -102,8 +103,9 @@ static auto toDataFormat(TextureFormat format) -> GLenum
             return GL_DEPTH_COMPONENT;
     }
 
-    asrt(false, "Unsupported texture format");
-    return 0;
+    panic("Unsupported texture format");
+
+	return 0;
 }
 
 static auto toInternalFormat(TextureFormat format) -> GLenum
@@ -122,7 +124,8 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
             return GL_DEPTH_COMPONENT24;
     }
 
-    asrt(false, "Unsupported texture format");
+    panic("Unsupported texture format");
+	
     return 0;
 }
 
@@ -140,7 +143,8 @@ static auto toWrap(TextureWrap wrap) -> GLenum
             return GL_REPEAT;
     }
 
-    asrt(false, "Unsupported wrap mode");
+    panic("Unsupported wrap mode");
+	
     return 0;
 }
 
@@ -156,7 +160,7 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_LINEAR_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_LINEAR;
                 default:
-                    asrt(false, "Unsupported mip filter");
+                    panic("Unsupported mip filter");
                     return 0;
             }
         }
@@ -169,12 +173,12 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
                 case TextureMipFilter::Nearest: return GL_NEAREST_MIPMAP_NEAREST;
                 case TextureMipFilter::None: return GL_NEAREST;
                 default:
-                    asrt(false, "Unsupported mip filter");
+                    panic("Unsupported mip filter");
                     return 0;
             }
         }
         default:
-            asrt(false, "Unsupported min filter");
+            panic("Unsupported min filter");
             return 0;
     }
 }
@@ -187,14 +191,15 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
         case TextureFilter::Nearest: return GL_NEAREST;
     }
 
-    asrt(false, "Unsupported mag filter");
+    panic("Unsupported mag filter");
+	
     return 0;
 }
 
 OpenGLTexture::OpenGLTexture()
 {
     glGenTextures(1, &handle_);
-    asrt(handle_, "Unable to create texture handle");
+    panicIf(!handle_, "Unable to create texture handle");
 }
 
 OpenGLTexture::~OpenGLTexture()

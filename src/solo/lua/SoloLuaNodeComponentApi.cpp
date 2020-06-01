@@ -40,7 +40,8 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
     if (name == "RigidBody")
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyParams>());
 
-    asrt(false, "Unknown built-in component ", name);
+    panic("Unknown built-in component ", name);
+	
     return nullptr;
 }
 

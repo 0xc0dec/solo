@@ -23,11 +23,10 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
         case DeviceMode::Vulkan:
             return std::make_shared<VulkanRenderer>(device);
 #endif
+    	default:
+    		panic("Unknown device mode");
+    		return nullptr;
     }
-
-	asrt(false, "Unknown device mode");
-	
-    return nullptr;
 }
 
 void Renderer::renderFrame(const std::function<void()> &render)

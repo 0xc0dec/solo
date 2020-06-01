@@ -26,7 +26,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
         case TextureFormat::Depth24: return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
     }
 
-    asrt(false, "Unsupported texture format");
+    panic("Unsupported texture format");
 	
     return VK_FORMAT_UNDEFINED;
 }

@@ -68,7 +68,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
             return i;
     }
 
-    asrt(false, "Unable to find queue index");
+    panic("Failed to find queue index");
 	
     return 0;
 }
@@ -175,7 +175,7 @@ auto VulkanDevice::selectDepthFormat() const -> VkFormat
             return format;
     }
 
-    asrt(false, "Unable to pick depth format");
+    panic("Failed to pick depth format");
 	
     return VK_FORMAT_UNDEFINED;
 }

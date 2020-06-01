@@ -48,7 +48,7 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
             return GL_SRC_ALPHA_SATURATE;
     }
 
-    asrt(false, "Unsupported blend factor");
+    panic("Unsupported blend factor");
 	
     return 0;
 }

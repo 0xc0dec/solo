@@ -29,7 +29,7 @@ static auto toPrimitiveType(PrimitiveType type) -> GLenum
             return GL_POINTS;
     }
 
-    asrt(false, "Unsupported primitive type");
+    panic("Unsupported primitive type");
 	
     return 0;
 }
@@ -42,7 +42,7 @@ static auto toIndexType(IndexElementSize elementSize) -> GLenum
 		case IndexElementSize::Bits32: return GL_UNSIGNED_INT;
 	}
 
-	asrt(false, "Unsupported index element size");
+	panic("Unsupported index element size");
 	
     return 0;
 }
