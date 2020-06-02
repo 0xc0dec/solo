@@ -32,7 +32,7 @@ namespace solo
     protected:
         void beginFrame() override;
         void endFrame() override;
-
+    	
     private:
         str name_;
         Camera *currentCamera_ = nullptr;

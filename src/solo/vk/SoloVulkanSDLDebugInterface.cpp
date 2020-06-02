@@ -25,6 +25,9 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+	ImGui_ImplSDL2_InitForVulkan(device_->window());
+	device_->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
+
 	// Desc pool
 	{
 		std::vector<VkDescriptorPoolSize> poolSizes = {
@@ -45,9 +48,10 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 	    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	    poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 	    poolInfo.maxSets = 1000 * poolSizes.size();
-	    poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
+	    poolInfo.poolSizeCount = static_cast<u32>(poolSizes.size());
 	    poolInfo.pPoolSizes = poolSizes.data();
 
+		descPool_ = VulkanResource<VkDescriptorPool>{renderer_->device(), vkDestroyDescriptorPool};
 		SL_VK_CHECK_RESULT(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
 	}
 
@@ -58,35 +62,27 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 		renderPass_ = VulkanRenderPass(renderer_->device(), cfg);
 	}
 
-	ImGui_ImplSDL2_InitForVulkan(device_->window());
-    ImGui_ImplVulkan_InitInfo init_info = {};
-    init_info.Instance = device_->instance();
-    init_info.PhysicalDevice = renderer_->device().physical();
-    init_info.Device = renderer_->device();
-    init_info.QueueFamily = renderer_->device().queueIndex();
-    init_info.Queue = renderer_->device().queue();
-    init_info.PipelineCache = VK_NULL_HANDLE;
-    init_info.DescriptorPool = descPool_;
-    init_info.Allocator = nullptr;
-    init_info.MinImageCount = 2;
-    init_info.ImageCount = renderer_->swapchain().imageCount();
-    init_info.CheckVkResultFn = [](VkResult) {};
+    ImGui_ImplVulkan_InitInfo initInfo = {};
+    initInfo.Instance = device_->instance();
+    initInfo.PhysicalDevice = renderer_->device().physical();
+    initInfo.Device = renderer_->device();
+    initInfo.QueueFamily = renderer_->device().queueIndex();
+    initInfo.Queue = renderer_->device().queue();
+    initInfo.PipelineCache = VK_NULL_HANDLE;
+    initInfo.DescriptorPool = descPool_;
+    initInfo.Allocator = nullptr;
+    initInfo.MinImageCount = 2;
+    initInfo.ImageCount = renderer_->swapchain().imageCount();
+    initInfo.CheckVkResultFn = [](VkResult) {};
 
-	ImGui_ImplVulkan_Init(&init_info, renderPass_.handle());
-
-	device_->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
+	ImGui_ImplVulkan_Init(&initInfo, renderPass_.handle());
 
 	// Load fonts
-	{
-		auto cmdBuf = VulkanCmdBuffer(renderer_->device());
-		cmdBuf.begin(true);
-		ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
-		cmdBuf.endAndFlush();
-		ImGui_ImplVulkan_DestroyFontUploadObjects();
-	}
-
-	finishSemaphore_ = vk::createSemaphore(renderer_->device());
-	renderCmdBuf_ = VulkanCmdBuffer(renderer_->device());
+	auto cmdBuf = VulkanCmdBuffer(renderer_->device());
+	cmdBuf.begin(true);
+	ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
+	cmdBuf.endAndFlush();
+	ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 VulkanSDLDebugInterface::~VulkanSDLDebugInterface()
@@ -96,43 +92,17 @@ VulkanSDLDebugInterface::~VulkanSDLDebugInterface()
     ImGui::DestroyContext();
 }
 
-void VulkanSDLDebugInterface::beginFrame()
+void VulkanSDLDebugInterface::render(VkCommandBuffer targetCmdBuffer) const
 {
-}
-
-void VulkanSDLDebugInterface::endFrame()
-{
-	
-}
-
-auto VulkanSDLDebugInterface::render(VkSemaphore waitSemaphore) -> VkSemaphore
-{
-	renderCmdBuf_.begin(false);
-	
-	renderCmdBuf_.beginRenderPass(renderPass_, renderer_->swapchain().currentFrameBuffer(),
-		device_->canvasSize().x(), device_->canvasSize().y());
-	const auto viewport = Vector4(0, 0, device_->canvasSize().x(), device_->canvasSize().y());
-	renderCmdBuf_.setViewport(viewport, 0, 1);
-	renderCmdBuf_.setScissor(viewport);
-	
-    ImGui_ImplSDL2_NewFrame(device_->window());
+	ImGui_ImplSDL2_NewFrame(device_->window());
     ImGui::NewFrame();
-
+	
 	// TODO remove
 	bool open = true;
 	ImGui::ShowDemoWindow(&open);
 	
 	ImGui::Render();
-	const auto data = ImGui::GetDrawData();
-	ImGui_ImplVulkan_RenderDrawData(data, renderCmdBuf_);
-
-	renderCmdBuf_.endRenderPass();
-	renderCmdBuf_.end();
-
-	vk::queueSubmit(renderer_->device().queue(), 1, &waitSemaphore, 1, &finishSemaphore_, 1, renderCmdBuf_);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer_->device().queue()));
-
-	return finishSemaphore_;
+	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);
 }
 
 #endif

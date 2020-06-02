@@ -19,16 +19,16 @@ namespace solo
 	class VulkanSDLDevice;
 	class VulkanRenderer;
 	class Device;
-	
+
 	class VulkanSDLDebugInterface final: public DebugInterface
 	{
 	public:
 		explicit VulkanSDLDebugInterface(Device *device);
 		~VulkanSDLDebugInterface();
 
-		void beginFrame() override;
-		void endFrame() override;
-		auto render(VkSemaphore waitSemaphore) -> VkSemaphore;
+		void render(VkCommandBuffer targetCmdBuffer) const;
+
+		auto renderPass() const -> const VulkanRenderPass& { return renderPass_; }
 		
 	private:
 		VulkanSDLDevice *device_;
@@ -37,6 +37,7 @@ namespace solo
 		VulkanCmdBuffer renderCmdBuf_;
 		VulkanRenderPass renderPass_;
 		VulkanResource<VkDescriptorPool> descPool_;
+		// TODO remove no longer used fields
 	};
 }
 

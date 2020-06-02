@@ -22,6 +22,7 @@ namespace solo
     class Camera;
     class VulkanMesh;
     class VulkanMaterial;
+	class VulkanSDLDebugInterface;
 
     class VulkanRenderer final : public Renderer
     {
@@ -40,13 +41,10 @@ namespace solo
         auto device() const -> const VulkanDevice& { return device_; }
     	auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
-    	// TODO remove
-    	auto currentCmdBuffer() const -> const VulkanCmdBuffer& { return *currentCmdBuffer_; }
-
     protected:
         void beginFrame() override;
         void endFrame() override;
-
+    	
     private:
         Device *engineDevice_ = nullptr;
     	
@@ -59,6 +57,12 @@ namespace solo
             VulkanCmdBuffer cmdBuf;
             u32 frameOfLastUse = 0;
         };
+
+    	struct
+    	{
+    		VulkanCmdBuffer renderCmdBuffer;
+    		VulkanResource<VkSemaphore> completeSemaphore;
+    	} debugInterfaceContext;
 
         u32 frame_ = 0;
 

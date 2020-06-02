@@ -16,6 +16,9 @@
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
 #include "SoloVulkanSDLDebugInterface.h"
+#include <imgui.h>
+#include <examples/imgui_impl_sdl.h>
+#include <examples/imgui_impl_vulkan.h>
 
 using namespace solo;
 
@@ -53,6 +56,9 @@ VulkanRenderer::VulkanRenderer(Device *device):
     device_ = VulkanDevice(instance, surface);
     swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
 		device->isVsync());
+
+	debugInterfaceContext.completeSemaphore = vk::createSemaphore(device_);
+	debugInterfaceContext.renderCmdBuffer = VulkanCmdBuffer(device_);
 }
 
 void VulkanRenderer::beginCamera(Camera *camera)
@@ -165,10 +171,33 @@ void VulkanRenderer::beginFrame()
 
 void VulkanRenderer::endFrame()
 {
-	auto *x = dynamic_cast<VulkanSDLDebugInterface*>(engineDevice_->debugInterface());
-	auto finishSemaphore = x->render(prevSemaphore_);
+	// TODO extract function
+	{
+		const auto debugInterface = dynamic_cast<VulkanSDLDebugInterface*>(engineDevice_->debugInterface());
+		
+		const auto canvasSize = engineDevice_->canvasSize();
+		
+		debugInterfaceContext.renderCmdBuffer.begin(false);
+		
+		debugInterfaceContext.renderCmdBuffer.beginRenderPass(
+			debugInterface->renderPass(),
+			swapchain_.currentFrameBuffer(),
+			canvasSize.x(), canvasSize.y());
+		
+		const auto viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
+		debugInterfaceContext.renderCmdBuffer.setViewport(viewport, 0, 1);
+		debugInterfaceContext.renderCmdBuffer.setScissor(viewport);
+
+		debugInterface->render(debugInterfaceContext.renderCmdBuffer);
+
+		debugInterfaceContext.renderCmdBuffer.endRenderPass();
+		debugInterfaceContext.renderCmdBuffer.end();
+
+		vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &debugInterfaceContext.completeSemaphore, 1, debugInterfaceContext.renderCmdBuffer);
+	    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+	}
 	
-	swapchain_.present(device_.queue(), 1, &finishSemaphore);
+	swapchain_.present(device_.queue(), 1, &debugInterfaceContext.completeSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better
