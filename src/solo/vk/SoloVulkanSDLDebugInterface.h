@@ -10,6 +10,9 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloDebugInterface.h"
+#include "SoloVulkan.h"
+#include "SoloVulkanCmdBuffer.h"
+#include "SoloVulkanRenderPass.h"
 
 namespace solo
 {
@@ -25,10 +28,14 @@ namespace solo
 
 		void beginFrame() override;
 		void endFrame() override;
+		auto render(VkSemaphore waitSemaphore) -> VkSemaphore;
 		
 	private:
 		VulkanSDLDevice *device_;
 		VulkanRenderer *renderer_;
+		VulkanResource<VkSemaphore> finishSemaphore_; // TODO rename?
+		VulkanCmdBuffer renderCmdBuf_;
+		VulkanRenderPass renderPass_;
 	};
 }
 

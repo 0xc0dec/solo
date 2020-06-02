@@ -49,40 +49,43 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 	VkDescriptorPool descPool;
 	SL_VK_CHECK_RESULT(vkCreateDescriptorPool(renderer_->device(), &pool_info, nullptr, &descPool));
 
-	VkAttachmentDescription attachment = {};
-    attachment.format = renderer_->device().colorFormat();
-    attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-    attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-    attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    VkAttachmentReference color_attachment = {};
-    color_attachment.attachment = 0;
-    color_attachment.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    VkSubpassDescription subpass = {};
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &color_attachment;
-    VkSubpassDependency dependency = {};
-    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-    dependency.dstSubpass = 0;
-    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.srcAccessMask = 0;
-    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    VkRenderPassCreateInfo info = {};
-    info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    info.attachmentCount = 1;
-    info.pAttachments = &attachment;
-    info.subpassCount = 1;
-    info.pSubpasses = &subpass;
-    info.dependencyCount = 1;
-    info.pDependencies = &dependency;
+	// VkAttachmentDescription attachment = {};
+ //    attachment.format = renderer_->device().colorFormat();
+ //    attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+ //    attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+ //    attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+ //    attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+ //    attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+ //    attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+ //    attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+ //    VkAttachmentReference color_attachment = {};
+ //    color_attachment.attachment = 0;
+ //    color_attachment.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+ //    VkSubpassDescription subpass = {};
+ //    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+ //    subpass.colorAttachmentCount = 1;
+ //    subpass.pColorAttachments = &color_attachment;
+ //    VkSubpassDependency dependency = {};
+ //    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+ //    dependency.dstSubpass = 0;
+ //    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+ //    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+ //    dependency.srcAccessMask = 0;
+ //    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+ //    VkRenderPassCreateInfo info = {};
+ //    info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+ //    info.attachmentCount = 1;
+ //    info.pAttachments = &attachment;
+ //    info.subpassCount = 1;
+ //    info.pSubpasses = &subpass;
+ //    info.dependencyCount = 1;
+ //    info.pDependencies = &dependency;
 
-	VkRenderPass rp;
-	SL_VK_CHECK_RESULT(vkCreateRenderPass(renderer_->device(), &info, nullptr, &rp));
+	const auto cfg = VulkanRenderPassConfig()
+		.addColorAttachment(renderer_->device().colorFormat(), VK_IMAGE_LAYOUT_GENERAL); // TODO proper layout
+	renderPass_ = VulkanRenderPass(renderer_->device(), cfg);
+
+	// SL_VK_CHECK_RESULT(vkCreateRenderPass(renderer_->device(), &info, nullptr, &renderPass_));
 
 	ImGui_ImplSDL2_InitForVulkan(device_->window());
     ImGui_ImplVulkan_InitInfo init_info = {};
@@ -98,7 +101,7 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
     init_info.ImageCount = renderer_->swapchain().imageCount();
     init_info.CheckVkResultFn = [](VkResult) {};
 
-	ImGui_ImplVulkan_Init(&init_info, rp);
+	ImGui_ImplVulkan_Init(&init_info, renderPass_.handle());
 
 	device_->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
 
@@ -107,6 +110,9 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 	ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
 	cmdBuf.endAndFlush();
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
+
+	finishSemaphore_ = vk::createSemaphore(renderer_->device());
+	renderCmdBuf_ = VulkanCmdBuffer(renderer_->device());
 }
 
 VulkanSDLDebugInterface::~VulkanSDLDebugInterface()
@@ -123,6 +129,37 @@ void VulkanSDLDebugInterface::beginFrame()
 void VulkanSDLDebugInterface::endFrame()
 {
 	
+}
+
+auto VulkanSDLDebugInterface::render(VkSemaphore waitSemaphore) -> VkSemaphore
+{
+	renderCmdBuf_.begin(false);
+	
+	renderCmdBuf_.beginRenderPass(renderPass_, renderer_->swapchain().currentFrameBuffer(),
+		device_->canvasSize().x(), device_->canvasSize().y());
+	const auto viewport = Vector4(0, 0, device_->canvasSize().x(), device_->canvasSize().y());
+	renderCmdBuf_.setViewport(viewport, 0, 1);
+	renderCmdBuf_.setScissor(viewport);
+	
+	ImGui_ImplVulkan_NewFrame(); // TODO remove, it's empty
+    ImGui_ImplSDL2_NewFrame(device_->window());
+    ImGui::NewFrame();
+
+	// TODO remove
+	bool open = true;
+	ImGui::ShowDemoWindow(&open);
+	
+	ImGui::Render();
+	const auto data = ImGui::GetDrawData();
+	ImGui_ImplVulkan_RenderDrawData(data, renderCmdBuf_);
+
+	renderCmdBuf_.endRenderPass();
+	renderCmdBuf_.end();
+
+	vk::queueSubmit(renderer_->device().queue(), 1, &waitSemaphore, 1, &finishSemaphore_, 1, renderCmdBuf_);
+    SL_VK_CHECK_RESULT(vkQueueWaitIdle(renderer_->device().queue()));
+
+	return finishSemaphore_;
 }
 
 #endif

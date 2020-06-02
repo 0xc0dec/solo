@@ -38,7 +38,7 @@ namespace solo
         auto gpuName() const -> const char* override { return device_.gpuName(); }
 
         auto device() const -> const VulkanDevice& { return device_; }
-    	auto swapchain() const -> const VulkanSwapchain& { return swapchain_; }
+    	auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
     	// TODO remove
     	auto currentCmdBuffer() const -> const VulkanCmdBuffer& { return *currentCmdBuffer_; }
@@ -57,7 +57,6 @@ namespace solo
         {
             VulkanResource<VkSemaphore> completeSemaphore;
             VulkanCmdBuffer cmdBuf;
-            VulkanRenderPass *renderPass = nullptr;
             u32 frameOfLastUse = 0;
         };
 

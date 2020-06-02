@@ -47,7 +47,8 @@ namespace solo
         auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
 
-        operator VkRenderPass() { return pass_; }
+    	auto handle() const -> VkRenderPass { return pass_; }
+
         operator const VkRenderPass() const { return pass_; }
 
     private:

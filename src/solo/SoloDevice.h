@@ -64,6 +64,7 @@ namespace solo
 
         auto fileSystem() const -> FileSystem* { return fs_.get(); }
         auto renderer() const -> Renderer* { return renderer_.get(); }
+    	auto debugInterface() const -> DebugInterface* { return debugInterface_.get(); }
         auto physics() const -> Physics* { return physics_.get(); }
         auto scriptRuntime() const -> ScriptRuntime* { return scriptRuntime_.get(); }
         auto jobPool() const -> JobPool* { return jobPool_.get(); }

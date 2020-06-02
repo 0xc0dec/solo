@@ -15,6 +15,7 @@
 #include "SoloVulkanMesh.h"
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
+#include "SoloVulkanSDLDebugInterface.h"
 #include <imgui.h>
 #include <examples/imgui_impl_sdl.h>
 #include <examples/imgui_impl_vulkan.h>
@@ -43,8 +44,6 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 			return VK_INDEX_TYPE_MAX_ENUM;
 	}
 }
-
-static VulkanSDLDevice *d = nullptr;
 
 VulkanRenderer::VulkanRenderer(Device *device):
     engineDevice_(device)
@@ -103,21 +102,6 @@ void VulkanRenderer::beginCamera(Camera *camera)
 
 void VulkanRenderer::endCamera(Camera *)
 {
-	// TODO Move to debug interface
-	{
-		ImGui_ImplVulkan_NewFrame(); // TODO remove, it's empty
-	    ImGui_ImplSDL2_NewFrame(dynamic_cast<VulkanSDLDevice*>(engineDevice_)->window());
-	    ImGui::NewFrame();
-
-		// TODO remove
-		bool open = true;
-		ImGui::ShowDemoWindow(&open);
-		
-		ImGui::Render();
-		const auto data = ImGui::GetDrawData();
-		ImGui_ImplVulkan_RenderDrawData(data, *currentCmdBuffer_);
-	}
-	
 	auto &ctx = renderPassContexts_.at(currentRenderPass_);
     ctx.cmdBuf.endRenderPass();
     ctx.cmdBuf.end();
@@ -152,7 +136,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
 
-	const auto key = contextKey(transform, currentCamera_, vkMaterial, *currentRenderPass_);
+	const auto key = contextKey(transform, currentCamera_, vkMaterial, currentRenderPass_->handle());
 	if (!pipelineContexts_.count(key))
 		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&device_, key)));
 
@@ -184,7 +168,10 @@ void VulkanRenderer::beginFrame()
 
 void VulkanRenderer::endFrame()
 {
-	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
+	auto *x = dynamic_cast<VulkanSDLDebugInterface*>(engineDevice_->debugInterface());
+	auto finishSemaphore = x->render(prevSemaphore_);
+	
+	swapchain_.present(device_.queue(), 1, &finishSemaphore);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better
