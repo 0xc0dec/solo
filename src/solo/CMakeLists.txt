@@ -39,6 +39,8 @@ target_include_directories(Solo PRIVATE
     "../../vendor/stb_image/2.15"
     "../../vendor/shaderc/libshaderc/include"
     "../../vendor/assimp/4.1.0/include"
+    "../../vendor/imgui"
+    "../../vendor/imgui/examples"
     "${PROJECT_BINARY_DIR}/vendor/assimp/4.1.0/include" # For assimp generated config.h
 )
 
