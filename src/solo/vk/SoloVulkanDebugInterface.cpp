@@ -3,7 +3,7 @@
  * MIT license 
  */
 
-#include "SoloVulkanSDLDebugInterface.h"
+#include "SoloVulkanDebugInterface.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -17,7 +17,7 @@
 
 using namespace solo;
 
-VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
+VulkanDebugInterface::VulkanDebugInterface(Device *device):
 	device_(dynamic_cast<VulkanSDLDevice*>(device)),
 	renderer_(dynamic_cast<VulkanRenderer*>(device->renderer()))
 {
@@ -85,14 +85,14 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 	ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
-VulkanSDLDebugInterface::~VulkanSDLDebugInterface()
+VulkanDebugInterface::~VulkanDebugInterface()
 {
 	ImGui_ImplVulkan_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 }
 
-void VulkanSDLDebugInterface::render(VkCommandBuffer targetCmdBuffer) const
+void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
 {
 	ImGui_ImplSDL2_NewFrame(device_->window());
     ImGui::NewFrame();

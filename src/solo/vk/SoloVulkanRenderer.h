@@ -22,7 +22,7 @@ namespace solo
     class Camera;
     class VulkanMesh;
     class VulkanMaterial;
-	class VulkanSDLDebugInterface;
+	class VulkanDebugInterface;
 
     class VulkanRenderer final : public Renderer
     {

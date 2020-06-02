@@ -6,7 +6,7 @@
 #include "SoloDebugInterface.h"
 #include "SoloDevice.h"
 #include "SoloEnums.h"
-#include "vk/SoloVulkanSDLDebugInterface.h"
+#include "vk/SoloVulkanDebugInterface.h"
 
 using namespace solo;
 
@@ -17,7 +17,7 @@ auto DebugInterface::fromDevice(Device *device) -> sptr<DebugInterface>
 		// TODO OpenGL
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            return std::make_shared<VulkanSDLDebugInterface>(device);
+            return std::make_shared<VulkanDebugInterface>(device);
 #endif
     	default:
     		panic("Unknown device mode");

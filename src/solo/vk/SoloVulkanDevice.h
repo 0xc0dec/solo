@@ -13,6 +13,7 @@
 
 namespace solo
 {
+	// Rename to VulkanDriverDevice to free up name for VulkanDevice impl of the engine Device
     class VulkanDevice
     {
     public:

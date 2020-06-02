@@ -15,10 +15,7 @@
 #include "SoloVulkanMesh.h"
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
-#include "SoloVulkanSDLDebugInterface.h"
-#include <imgui.h>
-#include <examples/imgui_impl_sdl.h>
-#include <examples/imgui_impl_vulkan.h>
+#include "SoloVulkanDebugInterface.h"
 
 using namespace solo;
 
@@ -173,8 +170,7 @@ void VulkanRenderer::endFrame()
 {
 	// TODO extract function
 	{
-		const auto debugInterface = dynamic_cast<VulkanSDLDebugInterface*>(engineDevice_->debugInterface());
-		
+		const auto debugInterface = dynamic_cast<VulkanDebugInterface*>(engineDevice_->debugInterface());
 		const auto canvasSize = engineDevice_->canvasSize();
 		
 		debugInterfaceContext.renderCmdBuffer.begin(false);
@@ -188,7 +184,7 @@ void VulkanRenderer::endFrame()
 		debugInterfaceContext.renderCmdBuffer.setViewport(viewport, 0, 1);
 		debugInterfaceContext.renderCmdBuffer.setScissor(viewport);
 
-		debugInterface->render(debugInterfaceContext.renderCmdBuffer);
+		debugInterface->renderInto(debugInterfaceContext.renderCmdBuffer);
 
 		debugInterfaceContext.renderCmdBuffer.endRenderPass();
 		debugInterfaceContext.renderCmdBuffer.end();
