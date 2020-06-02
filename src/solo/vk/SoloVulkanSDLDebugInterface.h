@@ -36,6 +36,7 @@ namespace solo
 		VulkanResource<VkSemaphore> finishSemaphore_; // TODO rename?
 		VulkanCmdBuffer renderCmdBuf_;
 		VulkanRenderPass renderPass_;
+		VulkanResource<VkDescriptorPool> descPool_;
 	};
 }
 

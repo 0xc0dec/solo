@@ -25,67 +25,38 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	VkDescriptorPoolSize pool_sizes[] =
-    {
-        { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
-        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
-        { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
-        { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
-        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
-        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
-        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
-        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
-    };
-    VkDescriptorPoolCreateInfo pool_info = {};
-    pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-    pool_info.maxSets = 1000 * IM_ARRAYSIZE(pool_sizes);
-    pool_info.poolSizeCount = static_cast<uint32_t>(IM_ARRAYSIZE(pool_sizes));
-    pool_info.pPoolSizes = pool_sizes;
+	// Desc pool
+	{
+		std::vector<VkDescriptorPoolSize> poolSizes = {
+			{ VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+	        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+	        { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+	        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+	        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+	        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+		};
+		
+	    VkDescriptorPoolCreateInfo poolInfo = {};
+	    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+	    poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+	    poolInfo.maxSets = 1000 * poolSizes.size();
+	    poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
+	    poolInfo.pPoolSizes = poolSizes.data();
 
-	VkDescriptorPool descPool;
-	SL_VK_CHECK_RESULT(vkCreateDescriptorPool(renderer_->device(), &pool_info, nullptr, &descPool));
+		SL_VK_CHECK_RESULT(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
+	}
 
-	// VkAttachmentDescription attachment = {};
- //    attachment.format = renderer_->device().colorFormat();
- //    attachment.samples = VK_SAMPLE_COUNT_1_BIT;
- //    attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
- //    attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
- //    attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
- //    attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
- //    attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
- //    attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
- //    VkAttachmentReference color_attachment = {};
- //    color_attachment.attachment = 0;
- //    color_attachment.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
- //    VkSubpassDescription subpass = {};
- //    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
- //    subpass.colorAttachmentCount = 1;
- //    subpass.pColorAttachments = &color_attachment;
- //    VkSubpassDependency dependency = {};
- //    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
- //    dependency.dstSubpass = 0;
- //    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
- //    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
- //    dependency.srcAccessMask = 0;
- //    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
- //    VkRenderPassCreateInfo info = {};
- //    info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
- //    info.attachmentCount = 1;
- //    info.pAttachments = &attachment;
- //    info.subpassCount = 1;
- //    info.pSubpasses = &subpass;
- //    info.dependencyCount = 1;
- //    info.pDependencies = &dependency;
-
-	const auto cfg = VulkanRenderPassConfig()
-		.addColorAttachment(renderer_->device().colorFormat(), VK_IMAGE_LAYOUT_GENERAL); // TODO proper layout
-	renderPass_ = VulkanRenderPass(renderer_->device(), cfg);
-
-	// SL_VK_CHECK_RESULT(vkCreateRenderPass(renderer_->device(), &info, nullptr, &renderPass_));
+	// Render pass
+	{
+		const auto cfg = VulkanRenderPassConfig()
+			.addColorAttachment(renderer_->device().colorFormat(), VK_IMAGE_LAYOUT_GENERAL); // TODO proper layout
+		renderPass_ = VulkanRenderPass(renderer_->device(), cfg);
+	}
 
 	ImGui_ImplSDL2_InitForVulkan(device_->window());
     ImGui_ImplVulkan_InitInfo init_info = {};
@@ -95,7 +66,7 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
     init_info.QueueFamily = renderer_->device().queueIndex();
     init_info.Queue = renderer_->device().queue();
     init_info.PipelineCache = VK_NULL_HANDLE;
-    init_info.DescriptorPool = descPool;
+    init_info.DescriptorPool = descPool_;
     init_info.Allocator = nullptr;
     init_info.MinImageCount = 2;
     init_info.ImageCount = renderer_->swapchain().imageCount();
@@ -105,11 +76,14 @@ VulkanSDLDebugInterface::VulkanSDLDebugInterface(Device *device):
 
 	device_->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
 
-	auto cmdBuf = VulkanCmdBuffer(renderer_->device());
-	cmdBuf.begin(true);
-	ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
-	cmdBuf.endAndFlush();
-	ImGui_ImplVulkan_DestroyFontUploadObjects();
+	// Load fonts
+	{
+		auto cmdBuf = VulkanCmdBuffer(renderer_->device());
+		cmdBuf.begin(true);
+		ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
+		cmdBuf.endAndFlush();
+		ImGui_ImplVulkan_DestroyFontUploadObjects();
+	}
 
 	finishSemaphore_ = vk::createSemaphore(renderer_->device());
 	renderCmdBuf_ = VulkanCmdBuffer(renderer_->device());
@@ -141,7 +115,6 @@ auto VulkanSDLDebugInterface::render(VkSemaphore waitSemaphore) -> VkSemaphore
 	renderCmdBuf_.setViewport(viewport, 0, 1);
 	renderCmdBuf_.setScissor(viewport);
 	
-	ImGui_ImplVulkan_NewFrame(); // TODO remove, it's empty
     ImGui_ImplSDL2_NewFrame(device_->window());
     ImGui::NewFrame();
 

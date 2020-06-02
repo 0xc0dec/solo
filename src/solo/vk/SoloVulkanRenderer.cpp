@@ -16,9 +16,6 @@
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
 #include "SoloVulkanSDLDebugInterface.h"
-#include <imgui.h>
-#include <examples/imgui_impl_sdl.h>
-#include <examples/imgui_impl_vulkan.h>
 
 using namespace solo;
 

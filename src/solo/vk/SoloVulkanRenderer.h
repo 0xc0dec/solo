@@ -49,7 +49,7 @@ namespace solo
 
     private:
         Device *engineDevice_ = nullptr;
-
+    	
         VulkanDevice device_;
         VulkanSwapchain swapchain_;
 
