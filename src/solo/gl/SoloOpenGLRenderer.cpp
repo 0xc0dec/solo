@@ -13,6 +13,7 @@
 #include "SoloOpenGLMesh.h"
 #include "SoloOpenGLFrameBuffer.h"
 #include "SoloOpenGL.h"
+#include "SoloOpenGLDebugInterface.h"
 
 using namespace solo;
 
@@ -184,7 +185,8 @@ void applyMaterial(Material *material)
     setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
 }
 
-OpenGLRenderer::OpenGLRenderer(Device *device)
+OpenGLRenderer::OpenGLRenderer(Device *device):
+	device_(device)
 {
 	const auto ver = version();
     name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
@@ -244,6 +246,8 @@ void OpenGLRenderer::beginFrame()
 
 void OpenGLRenderer::endFrame()
 {
+	const auto debugInterface = dynamic_cast<OpenGLDebugInterface*>(device_->debugInterface());
+	debugInterface->render();
 }
 
 #endif

@@ -170,6 +170,7 @@ void VulkanRenderer::endFrame()
 {
 	// TODO extract function
 	{
+		// TODO
 		const auto debugInterface = dynamic_cast<VulkanDebugInterface*>(engineDevice_->debugInterface());
 		const auto canvasSize = engineDevice_->canvasSize();
 		

@@ -19,6 +19,8 @@ namespace solo
         explicit OpenGLSDLDevice(const DeviceSetup &setup);
         virtual ~OpenGLSDLDevice();
 
+    	auto context() const -> const SDL_GLContext& { return context_; }
+
     private:
         SDL_GLContext context_ = nullptr;
 

@@ -27,6 +27,7 @@ namespace solo
 
     	auto window() const -> SDL_Window* { return window_; }
 
+    	// TODO Better replacement
     	void onEvent(const std::function<void(SDL_Event)> &onEvent) { onEvent_ = onEvent; }
 
     protected:

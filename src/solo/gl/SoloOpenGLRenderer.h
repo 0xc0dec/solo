@@ -35,6 +35,7 @@ namespace solo
     	
     private:
         str name_;
+    	Device *device_ = nullptr;
         Camera *currentCamera_ = nullptr;
     };
 }
