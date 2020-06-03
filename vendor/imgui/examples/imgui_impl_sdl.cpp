@@ -55,7 +55,7 @@
 #endif
 
 #define SDL_HAS_CAPTURE_AND_GLOBAL_MOUSE    SDL_VERSION_ATLEAST(2,0,4)
-#define SDL_HAS_VULKAN                      1
+#define SDL_HAS_VULKAN                      SDL_VERSION_ATLEAST(2,0,6)
 
 // Data
 static SDL_Window*  g_Window = NULL;
