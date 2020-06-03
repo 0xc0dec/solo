@@ -9,9 +9,9 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloDebugInterface.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderPass.h"
+#include "../sdl/SoloSDLDebugInterface.h"
 
 namespace solo
 {
@@ -19,7 +19,7 @@ namespace solo
 	class VulkanRenderer;
 	class Device;
 
-	class VulkanDebugInterface final: public DebugInterface
+	class VulkanDebugInterface final: public SDLDebugInterface
 	{
 	public:
 		explicit VulkanDebugInterface(Device *device);
@@ -35,8 +35,6 @@ namespace solo
 		VulkanRenderPass renderPass_;
 		VulkanResource<VkDescriptorPool> descPool_;
 		// TODO remove no longer used fields
-
-		void beginFrame() override;
 	};
 }
 

@@ -18,16 +18,11 @@
 using namespace solo;
 
 VulkanDebugInterface::VulkanDebugInterface(Device *device):
-	DebugInterface(device),
+	SDLDebugInterface(device),
 	device_(dynamic_cast<VulkanDevice*>(device)),
 	renderer_(dynamic_cast<VulkanRenderer*>(device->renderer()))
 {
-	IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
 	ImGui_ImplSDL2_InitForVulkan(device_->window());
-	device_->onEvent([](SDL_Event &evt) { ImGui_ImplSDL2_ProcessEvent(&evt); });
 
 	// Desc pool
 	{
@@ -89,14 +84,6 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
 VulkanDebugInterface::~VulkanDebugInterface()
 {
 	ImGui_ImplVulkan_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
-}
-
-void VulkanDebugInterface::beginFrame()
-{
-	ImGui_ImplSDL2_NewFrame(device_->window());
-    ImGui::NewFrame();
 }
 
 void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const

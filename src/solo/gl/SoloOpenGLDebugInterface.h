@@ -9,14 +9,14 @@
 
 #ifdef SL_OPENGL_RENDERER
 
-#include "SoloDebugInterface.h"
+#include "../sdl/SoloSDLDebugInterface.h"
 
 namespace solo
 {
 	class Device;
 	class OpenGLDevice;
 
-	class OpenGLDebugInterface final: public DebugInterface
+	class OpenGLDebugInterface final: public SDLDebugInterface
 	{
 	public:
 		explicit OpenGLDebugInterface(Device *device);
