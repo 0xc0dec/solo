@@ -23,7 +23,7 @@ VulkanCmdBuffer::VulkanCmdBuffer(const VulkanDriverDevice &dev):
     allocateInfo.commandBufferCount = 1;
 
     handle_ = VulkanResource<VkCommandBuffer>{dev.handle(), dev.commandPool(), vkFreeCommandBuffers};
-    SL_VK_CHECK_RESULT(vkAllocateCommandBuffers(dev.handle(), &allocateInfo, &handle_));
+    vk::assertResult(vkAllocateCommandBuffers(dev.handle(), &allocateInfo, &handle_));
 }
 
 auto VulkanCmdBuffer::beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth,
@@ -185,7 +185,7 @@ void VulkanCmdBuffer::endAndFlush()
 {
     end();
     vk::queueSubmit(device_->queue(), 0, nullptr, 0, nullptr, 1, &handle_);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_->queue()));
+    vk::assertResult(vkQueueWaitIdle(device_->queue()));
 }
 
 auto VulkanCmdBuffer::begin(bool transient) -> VulkanCmdBuffer&
@@ -193,13 +193,13 @@ auto VulkanCmdBuffer::begin(bool transient) -> VulkanCmdBuffer&
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = transient ? VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT : 0;
-    SL_VK_CHECK_RESULT(vkBeginCommandBuffer(handle_, &beginInfo));
+    vk::assertResult(vkBeginCommandBuffer(handle_, &beginInfo));
     return *this;
 }
 
 void VulkanCmdBuffer::end() const
 {
-    SL_VK_CHECK_RESULT(vkEndCommandBuffer(handle_));
+    vk::assertResult(vkEndCommandBuffer(handle_));
 }
 
 #endif

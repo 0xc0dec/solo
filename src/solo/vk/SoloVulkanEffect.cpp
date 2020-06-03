@@ -27,7 +27,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
     info.pCode = static_cast<const u32*>(data);
 
     VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
-    SL_VK_CHECK_RESULT(vkCreateShaderModule(device, &info, nullptr, module.cleanRef()));
+    vk::assertResult(vkCreateShaderModule(device, &info, nullptr, module.cleanRef()));
 
     return module;
 }

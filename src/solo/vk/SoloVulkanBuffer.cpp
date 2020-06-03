@@ -60,7 +60,7 @@ VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkB
     bufferInfo.pQueueFamilyIndices = nullptr;
 
     buffer_ = VulkanResource<VkBuffer>{dev.handle(), vkDestroyBuffer};
-    SL_VK_CHECK_RESULT(vkCreateBuffer(dev.handle(), &bufferInfo, nullptr, buffer_.cleanRef()));
+    vk::assertResult(vkCreateBuffer(dev.handle(), &bufferInfo, nullptr, buffer_.cleanRef()));
 
     VkMemoryRequirements memReqs;
     vkGetBufferMemoryRequirements(dev.handle(), buffer_, &memReqs);
@@ -71,14 +71,14 @@ VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkB
     allocInfo.memoryTypeIndex = vk::findMemoryType(dev.physicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
     memory_ = VulkanResource<VkDeviceMemory>{dev.handle(), vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(dev.handle(), &allocInfo, nullptr, memory_.cleanRef()));
-    SL_VK_CHECK_RESULT(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
+    vk::assertResult(vkAllocateMemory(dev.handle(), &allocInfo, nullptr, memory_.cleanRef()));
+    vk::assertResult(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
 }
 
 void VulkanBuffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
+    vk::assertResult(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size_);
     vkUnmapMemory(device_->handle(), memory_);
 }
@@ -86,7 +86,7 @@ void VulkanBuffer::updateAll(const void *newData) const
 void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size) const
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
+    vk::assertResult(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size);
     vkUnmapMemory(device_->handle(), memory_);
 }

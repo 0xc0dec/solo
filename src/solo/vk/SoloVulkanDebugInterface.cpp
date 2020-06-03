@@ -48,7 +48,7 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
 	    poolInfo.pPoolSizes = poolSizes.data();
 
 		descPool_ = VulkanResource<VkDescriptorPool>{renderer_->device(), vkDestroyDescriptorPool};
-		SL_VK_CHECK_RESULT(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
+		vk::assertResult(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
 	}
 
 	// Render pass

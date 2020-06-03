@@ -30,7 +30,7 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     panicIf(!destroy, "Unable to load pointer to vkDestroyDebugReportCallbackEXT");
 
     VulkanResource<VkDebugReportCallbackEXT> result{instance, destroy};
-    SL_VK_CHECK_RESULT(create(instance, &createInfo, nullptr, result.cleanRef()));
+    vk::assertResult(create(instance, &createInfo, nullptr, result.cleanRef()));
 
     return result;
 }
@@ -38,10 +38,10 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
 static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
 {
     u32 count;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
+    vk::assertResult(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
 
     vec<VkSurfaceFormatKHR> formats(count);
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
+    vk::assertResult(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, formats.data()));
 
     if (count == 1 && formats[0].format == VK_FORMAT_UNDEFINED)
         return {VK_FORMAT_B8G8R8A8_UNORM, formats[0].colorSpace};
@@ -59,7 +59,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
 
     vec<VkBool32> presentSupported(count);
     for (u32 i = 0; i < count; i++)
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
+    vk::assertResult(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
 
     // TODO support for separate rendering and presenting queues
     for (u32 i = 0; i < count; i++)
@@ -96,7 +96,7 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
     deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     VulkanResource<VkDevice> result{vkDestroyDevice};
-    SL_VK_CHECK_RESULT(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanRef()));
+    vk::assertResult(vkCreateDevice(physicalDevice, &deviceCreateInfo, nullptr, result.cleanRef()));
 
     return result;
 }
@@ -109,7 +109,7 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VulkanResource<VkCommandPool> commandPool{device, vkDestroyCommandPool};
-    SL_VK_CHECK_RESULT(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanRef()));
+    vk::assertResult(vkCreateCommandPool(device, &poolInfo, nullptr, commandPool.cleanRef()));
 
     return commandPool;
 }
@@ -183,10 +183,10 @@ auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
 void VulkanDriverDevice::selectPhysicalDevice(VkInstance instance)
 {
     u32 gpuCount = 0;
-    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
+    vk::assertResult(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
 
     vec<VkPhysicalDevice> devices(gpuCount);
-    SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
+    vk::assertResult(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
 
     for (const auto &device: devices)
     {

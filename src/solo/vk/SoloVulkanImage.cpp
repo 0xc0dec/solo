@@ -49,7 +49,7 @@ static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height,
     imageCreateInfo.flags = createFlags;
 
     VulkanResource<VkImage> image{device, vkDestroyImage};
-    SL_VK_CHECK_RESULT(vkCreateImage(device, &imageCreateInfo, nullptr, image.cleanRef()));
+    vk::assertResult(vkCreateImage(device, &imageCreateInfo, nullptr, image.cleanRef()));
 
     return image;
 }
@@ -65,8 +65,8 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
     allocInfo.memoryTypeIndex = vk::findMemoryType(memProps, memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
     VulkanResource<VkDeviceMemory> memory{device, vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
-    SL_VK_CHECK_RESULT(vkBindImageMemory(device, image, memory, 0));
+    vk::assertResult(vkAllocateMemory(device, &allocInfo, nullptr, memory.cleanRef()));
+    vk::assertResult(vkBindImageMemory(device, image, memory, 0));
 
     return memory;
 }

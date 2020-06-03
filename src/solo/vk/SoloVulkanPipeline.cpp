@@ -36,7 +36,7 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     layoutInfo.pPushConstantRanges = nullptr;
 
     layout_ = VulkanResource<VkPipelineLayout>{device, vkDestroyPipelineLayout};
-    SL_VK_CHECK_RESULT(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
+    vk::assertResult(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     VkPipelineMultisampleStateCreateInfo multisampleState{};
     multisampleState.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
@@ -122,7 +122,7 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     pipelineInfo.basePipelineIndex = -1;
 
     pipeline_ = VulkanResource<VkPipeline>{device, vkDestroyPipeline};
-    SL_VK_CHECK_RESULT(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline_.cleanRef()));
+    vk::assertResult(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline_.cleanRef()));
 }
 
 VulkanPipelineConfig::VulkanPipelineConfig(VkShaderModule vertexShader, VkShaderModule fragmentShader):

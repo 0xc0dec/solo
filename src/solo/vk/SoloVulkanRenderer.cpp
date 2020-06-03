@@ -107,7 +107,7 @@ void VulkanRenderer::endCamera(Camera *)
     ctx.cmdBuf.end();
 
     vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &ctx.completeSemaphore, 1, ctx.cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+    vk::assertResult(vkQueueWaitIdle(device_.queue()));
 
     prevSemaphore_ = ctx.completeSemaphore;
 
@@ -196,13 +196,13 @@ void VulkanRenderer::endFrame()
 		debugInterfaceContext.renderCmdBuffer.end();
 
 		vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &debugInterfaceContext.completeSemaphore, 1, debugInterfaceContext.renderCmdBuffer);
-	    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+	    vk::assertResult(vkQueueWaitIdle(device_.queue()));
 
 		prevSemaphore_ = debugInterfaceContext.completeSemaphore;
 	}
 	
 	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+    vk::assertResult(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better
     if (frame_ % 100 == 0)

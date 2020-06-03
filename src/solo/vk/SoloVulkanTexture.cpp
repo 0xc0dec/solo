@@ -80,7 +80,7 @@ static auto createSampler(
     samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 
     VulkanResource<VkSampler> sampler{device, vkDestroySampler};
-    SL_VK_CHECK_RESULT(vkCreateSampler(device, &samplerInfo, nullptr, sampler.cleanRef()));
+    vk::assertResult(vkCreateSampler(device, &samplerInfo, nullptr, sampler.cleanRef()));
 
     return sampler;
 }
