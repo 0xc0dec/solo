@@ -18,7 +18,7 @@ using namespace solo;
 static void registerDebugInterface(CppBindModule<LuaBinding> &module)
 {
 	auto binding = BEGIN_CLASS(module, DebugInterface);
-	REG_METHOD(binding, DebugInterface, magic);
+	REG_METHOD(binding, DebugInterface, overlay);
 	REG_PTR_EQUALITY(binding, DebugInterface);
     binding.endClass();
 }

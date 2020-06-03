@@ -198,7 +198,13 @@ function demo()
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
         postProcessor:apply()
-        sl.device:debugInterface():magic()
+        sl.device:debugInterface():overlay(
+[[
+Controls:
+  Hold RMB - rotate camera
+  W, A, S, D, Q, E - move camera
+  Space - spawn a box
+]])
     end
 
     function run()

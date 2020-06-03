@@ -39,7 +39,7 @@ void DebugInterface::renderFrame(const std::function<void()> &render)
 	endFrame();
 }
 
-void DebugInterface::magic()
+void DebugInterface::overlay(const str &text)
 {
 	const float DISTANCE = 10.0f;
     static int corner = 0;
@@ -56,14 +56,7 @@ void DebugInterface::magic()
     if (corner != -1)
         flags |= ImGuiWindowFlags_NoMove;
     if (ImGui::Begin("Example: Simple overlay", nullptr, flags))
-    {
-        ImGui::Text("Simple overlay\n" "in the corner of the screen.\n" "(right-click to change position)");
-        ImGui::Separator();
-        if (ImGui::IsMousePosValid())
-            ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
-        else
-            ImGui::Text("Mouse Position: <invalid>");
-    }
+        ImGui::Text(text.c_str());
     ImGui::End();
 }
 

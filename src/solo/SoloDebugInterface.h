@@ -26,7 +26,7 @@ namespace solo
 
 		void renderFrame(const std::function<void()> &render);
 
-		void magic();
+		void overlay(const str &text);
 
 	protected:
 		explicit DebugInterface(Device *device);
