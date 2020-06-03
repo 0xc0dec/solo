@@ -34,6 +34,7 @@ function run()
     runTest('physics')
     runTest('transform')
     runTest('texture')
+    runTest('debug-interface')
 end
 
 callSafe(run)

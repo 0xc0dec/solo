@@ -39,7 +39,7 @@ void DebugInterface::renderFrame(const std::function<void()> &render)
 	endFrame();
 }
 
-void DebugInterface::beginWindow(const WindowConfig &cfg)
+void DebugInterface::renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside)
 {
 	const ImVec2 pos = ImVec2(cfg.position.x(), cfg.position.y());
 	const ImVec2 pivot = ImVec2(cfg.pivot.x(), cfg.pivot.y());
@@ -57,16 +57,15 @@ void DebugInterface::beginWindow(const WindowConfig &cfg)
         flags |= ImGuiWindowFlags_NoMove;
 
 	ImGui::Begin(cfg.title.c_str(), nullptr, flags);
+
+	renderInside();
+	
+	ImGui::End();
 }
 
-void DebugInterface::text(const str &text)
+void DebugInterface::renderText(const str &text)
 {
 	ImGui::Text(text.c_str());
-}
-
-void DebugInterface::endWindow()
-{
-	ImGui::End();
 }
 
 DebugInterface::DebugInterface(Device *device):

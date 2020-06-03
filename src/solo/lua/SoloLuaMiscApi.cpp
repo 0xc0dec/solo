@@ -106,9 +106,8 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
 
 	{
 		auto b = BEGIN_CLASS(module, DebugInterface);
-		REG_METHOD(b, DebugInterface, beginWindow);
-		REG_METHOD(b, DebugInterface, endWindow);
-		REG_METHOD(b, DebugInterface, text);
+		REG_METHOD(b, DebugInterface, renderWindow);
+		REG_METHOD(b, DebugInterface, renderText);
 		REG_PTR_EQUALITY(b, DebugInterface);
 		b.endClass();
 	}

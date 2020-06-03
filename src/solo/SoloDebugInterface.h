@@ -39,9 +39,8 @@ namespace solo
 
 		void renderFrame(const std::function<void()> &render);
 
-		void beginWindow(const WindowConfig &cfg);
-		void endWindow();
-		void text(const str &text);
+		void renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside);
+		void renderText(const str &text);
 
 	protected:
 		explicit DebugInterface(Device *device);

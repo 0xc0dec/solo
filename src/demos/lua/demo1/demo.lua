@@ -202,17 +202,15 @@ function demo()
         windowCfg.decoration = false
         windowCfg.alpha = 0.5
 
-        ui:beginWindow(windowCfg)
-
-        ui:text(
+        ui:renderWindow(windowCfg, function()
+            ui:renderText(
 [[
 Controls:
-  Hold RMB - rotate camera
-  W, A, S, D, Q, E - move camera
-  Space - spawn a box
-]])
-
-        ui:endWindow()
+    Hold RMB - rotate camera
+    W, A, S, D, Q, E - move camera
+    Space - spawn a box
+]])        
+        end)
     end
 
     function update()
