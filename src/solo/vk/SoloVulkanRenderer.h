@@ -13,7 +13,7 @@
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanCmdBuffer.h"
-#include "SoloVulkanDevice.h"
+#include "SoloVulkanDriverDevice.h"
 #include "SoloVulkanPipelineContext.h"
 
 namespace solo
@@ -39,7 +39,7 @@ namespace solo
         auto name() const -> const char* override { return "Vulkan"; }
         auto gpuName() const -> const char* override { return device_.gpuName(); }
 
-        auto device() const -> const VulkanDevice& { return device_; }
+        auto device() const -> const VulkanDriverDevice& { return device_; }
     	auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
     protected:
@@ -49,7 +49,7 @@ namespace solo
     private:
         Device *engineDevice_ = nullptr;
     	
-        VulkanDevice device_;
+        VulkanDriverDevice device_;
         VulkanSwapchain swapchain_;
 
         struct RenderPassContext

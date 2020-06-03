@@ -13,11 +13,11 @@
 
 namespace solo
 {
-    class OpenGLSDLDevice final : public SDLDevice
+    class OpenGLDevice final : public SDLDevice
     {
     public:
-        explicit OpenGLSDLDevice(const DeviceSetup &setup);
-        virtual ~OpenGLSDLDevice();
+        explicit OpenGLDevice(const DeviceSetup &setup);
+        virtual ~OpenGLDevice();
 
     	auto context() const -> const SDL_GLContext& { return context_; }
 

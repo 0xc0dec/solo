@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-auto VulkanBuffer::staging(const VulkanDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
+auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -24,14 +24,14 @@ auto VulkanBuffer::staging(const VulkanDevice &dev, VkDeviceSize size, const voi
     return buffer;
 }
 
-auto VulkanBuffer::uniformHostVisible(const VulkanDevice &dev, VkDeviceSize size) -> VulkanBuffer
+auto VulkanBuffer::uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer
 {
     return VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
 	const auto stagingBuffer = staging(dev, size, data);
     auto buffer = VulkanBuffer(dev, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -39,14 +39,14 @@ auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBuf
     return buffer;
 }
 
-auto VulkanBuffer::hostVisible(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(dev, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
     return buffer;
 }
 
-VulkanBuffer::VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     device_(&dev),
     size_(size)
 {

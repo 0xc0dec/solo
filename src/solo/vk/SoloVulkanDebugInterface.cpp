@@ -9,7 +9,7 @@
 
 #include "SoloVulkan.h"
 #include "SoloVulkanRenderer.h"
-#include "SoloVulkanSDLDevice.h"
+#include "SoloVulkanDevice.h"
 #include "SoloVulkanCmdBuffer.h"
 #include <imgui.h>
 #include <examples/imgui_impl_sdl.h>
@@ -19,7 +19,7 @@ using namespace solo;
 
 VulkanDebugInterface::VulkanDebugInterface(Device *device):
 	DebugInterface(device),
-	device_(dynamic_cast<VulkanSDLDevice*>(device)),
+	device_(dynamic_cast<VulkanDevice*>(device)),
 	renderer_(dynamic_cast<VulkanRenderer*>(device->renderer()))
 {
 	IMGUI_CHECKVERSION();

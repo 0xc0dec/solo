@@ -3,7 +3,7 @@
  * MIT license 
  */
 
-#include "SoloVulkanSDLDevice.h"
+#include "SoloVulkanDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -14,7 +14,7 @@
 
 using namespace solo;
 
-VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
+VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
 	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
@@ -81,12 +81,12 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
 #endif
 }
 
-VulkanSDLDevice::~VulkanSDLDevice()
+VulkanDevice::~VulkanDevice()
 {
     cleanupSubsystems();
 }
 
-void VulkanSDLDevice::endUpdate()
+void VulkanDevice::endUpdate()
 {
 }
 

@@ -23,7 +23,7 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
     return images;
 }
 
-static auto selectPresentMode(const VulkanDevice &dev, bool vsync) -> VkPresentModeKHR
+static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPresentModeKHR
 {
     u32 presentModeCount;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, nullptr));
@@ -50,7 +50,7 @@ static auto selectPresentMode(const VulkanDevice &dev, bool vsync) -> VkPresentM
     return presentMode;
 }
 
-static auto createSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
+static auto createSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
     SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev.physical(), dev.surface(), &capabilities));
@@ -98,7 +98,7 @@ static auto createSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool
     return swapchain;
 }
 
-VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync):
+VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync):
     device_(dev.handle())
 {
     const auto colorFormat = dev.colorFormat();

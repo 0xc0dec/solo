@@ -3,7 +3,7 @@
  * MIT license 
  */
 
-#include "SoloVulkanDevice.h"
+#include "SoloVulkanDriverDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -114,7 +114,7 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
     return commandPool;
 }
 
-VulkanDevice::VulkanDevice(VkInstance instance, VkSurfaceKHR surface):
+VulkanDriverDevice::VulkanDriverDevice(VkInstance instance, VkSurfaceKHR surface):
     surface_(surface)
 {
 #ifdef SL_DEBUG
@@ -144,12 +144,12 @@ VulkanDevice::VulkanDevice(VkInstance instance, VkSurfaceKHR surface):
     commandPool_ = createCommandPool(handle_, queueIndex_);
 }
 
-bool VulkanDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const
+bool VulkanDriverDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const
 {
     return supportedFormats_.count(format) && (supportedFormats_.at(format) & features) == features;
 }
 
-void VulkanDevice::detectFormatSupport(VkFormat format)
+void VulkanDriverDevice::detectFormatSupport(VkFormat format)
 {
     // TODO Check for linear tiling as well
     VkFormatProperties formatProps;
@@ -158,7 +158,7 @@ void VulkanDevice::detectFormatSupport(VkFormat format)
         supportedFormats_[format] = formatProps.optimalTilingFeatures;
 }
 
-auto VulkanDevice::selectDepthFormat() const -> VkFormat
+auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
 {
     vec<VkFormat> depthFormats =
     {
@@ -180,7 +180,7 @@ auto VulkanDevice::selectDepthFormat() const -> VkFormat
     return VK_FORMAT_UNDEFINED;
 }
 
-void VulkanDevice::selectPhysicalDevice(VkInstance instance)
+void VulkanDriverDevice::selectPhysicalDevice(VkInstance instance)
 {
     u32 gpuCount = 0;
     SL_VK_CHECK_RESULT(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));

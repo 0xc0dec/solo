@@ -10,7 +10,7 @@
 #include "SoloDevice.h"
 #include "SoloHash.h"
 #include "SoloVulkanFrameBuffer.h"
-#include "SoloVulkanSDLDevice.h"
+#include "SoloVulkanDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 #include "SoloCamera.h"
@@ -45,12 +45,12 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 VulkanRenderer::VulkanRenderer(Device *device):
     engineDevice_(device)
 {
-    const auto vkDevice = dynamic_cast<VulkanSDLDevice*>(device);
+    const auto vkDevice = dynamic_cast<VulkanDevice*>(device);
     const auto instance = vkDevice->instance();
     const auto surface = vkDevice->surface();
     const auto canvasSize = device->canvasSize();
 
-    device_ = VulkanDevice(instance, surface);
+    device_ = VulkanDriverDevice(instance, surface);
     swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
 		device->isVsync());
 

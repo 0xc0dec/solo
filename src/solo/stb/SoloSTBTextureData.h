@@ -22,8 +22,8 @@ namespace solo
         STBTexture2DData(TextureDataFormat format, Vector2 dimensions);
         ~STBTexture2DData();
 
-        auto size() const -> u32 override final { return static_cast<u32>(dimensions_.x()) * static_cast<u32>(dimensions_.y()) * channels_; }
-        auto data() const -> const void * override final { return data_; }
+        auto size() const -> u32 override { return static_cast<u32>(dimensions_.x()) * static_cast<u32>(dimensions_.y()) * channels_; }
+        auto data() const -> const void * override { return data_; }
 
     private:
         u32 channels_ = 0;
@@ -45,9 +45,9 @@ namespace solo
 
         STBCubeTextureData(TextureDataFormat format, u32 dimension);
 
-        auto size() const -> u32 override final;
-        auto faceSize(u32 face) const -> u32 override final;
-        auto faceData(u32 face) const -> const void* override final;
+        auto size() const -> u32 override;
+        auto faceSize(u32 face) const -> u32 override { return faces_[face]->size(); }
+        auto faceData(u32 face) const -> const void* override { return faces_[face]->data(); }
 
     private:
         vec<sptr<STBTexture2DData>> faces_;

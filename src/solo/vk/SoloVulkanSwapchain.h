@@ -15,13 +15,13 @@
 
 namespace solo
 {
-    class VulkanDevice;
+    class VulkanDriverDevice;
 
     class VulkanSwapchain final
     {
     public:
         VulkanSwapchain() = default;
-        VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync);
+        VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync);
         VulkanSwapchain(const VulkanSwapchain &other) = delete;
         VulkanSwapchain(VulkanSwapchain &&other) = default;
         ~VulkanSwapchain() = default;

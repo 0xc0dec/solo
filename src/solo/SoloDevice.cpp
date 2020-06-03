@@ -11,8 +11,8 @@
 #include "SoloJobPool.h"
 #include "SoloEnums.h"
 #include "SoloDebugInterface.h"
-#include "gl/SoloOpenGLSDLDevice.h"
-#include "vk/SoloVulkanSDLDevice.h"
+#include "gl/SoloOpenGLDevice.h"
+#include "vk/SoloVulkanDevice.h"
 
 using namespace solo;
 
@@ -24,12 +24,12 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            device = std::make_unique<OpenGLSDLDevice>(setup);
+            device = std::make_unique<OpenGLDevice>(setup);
             break;
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            device = std::make_unique<VulkanSDLDevice>(setup);
+            device = std::make_unique<VulkanDevice>(setup);
             break;
 #endif
         default:

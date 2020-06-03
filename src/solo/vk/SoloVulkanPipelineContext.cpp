@@ -8,7 +8,7 @@
 #ifdef SL_VULKAN_RENDERER
 
 #include "SoloVulkanMaterial.h"
-#include "SoloVulkanDevice.h"
+#include "SoloVulkanDriverDevice.h"
 #include "SoloVulkanMesh.h"
 #include "SoloVulkanRenderPass.h"
 #include "SoloVulkanTexture.h"
@@ -132,7 +132,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
     }
 }
 
-VulkanPipelineContext::VulkanPipelineContext(VulkanDevice *device, size_t key):
+VulkanPipelineContext::VulkanPipelineContext(VulkanDriverDevice *device, size_t key):
 	device_(device), key_(key)
 {
 }

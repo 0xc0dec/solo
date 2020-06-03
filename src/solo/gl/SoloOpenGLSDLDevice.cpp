@@ -3,7 +3,7 @@
  * MIT license 
  */
 
-#include "SoloOpenGLSDLDevice.h"
+#include "SoloOpenGLDevice.h"
 
 #ifdef SL_OPENGL_RENDERER
 
@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
+OpenGLDevice::OpenGLDevice(DeviceSetup const &setup):
     SDLDevice(setup)
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -30,13 +30,13 @@ OpenGLSDLDevice::OpenGLSDLDevice(DeviceSetup const &setup):
     SDL_GL_SetSwapInterval(setup.vsync ? -1 : 0);
 }
 
-OpenGLSDLDevice::~OpenGLSDLDevice()
+OpenGLDevice::~OpenGLDevice()
 {
     cleanupSubsystems();
     cleanup();
 }
 
-void OpenGLSDLDevice::cleanup()
+void OpenGLDevice::cleanup()
 {
     if (context_)
     {
@@ -45,7 +45,7 @@ void OpenGLSDLDevice::cleanup()
     }
 }
 
-void OpenGLSDLDevice::endUpdate()
+void OpenGLDevice::endUpdate()
 {
     SDL_GL_SwapWindow(window());
 }

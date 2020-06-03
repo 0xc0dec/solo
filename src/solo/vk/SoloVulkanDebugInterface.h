@@ -15,7 +15,7 @@
 
 namespace solo
 {
-	class VulkanSDLDevice;
+	class VulkanDevice;
 	class VulkanRenderer;
 	class Device;
 
@@ -30,7 +30,7 @@ namespace solo
 		auto renderPass() const -> const VulkanRenderPass& { return renderPass_; }
 	
 	private:
-		VulkanSDLDevice *device_;
+		VulkanDevice *device_;
 		VulkanRenderer *renderer_;
 		VulkanRenderPass renderPass_;
 		VulkanResource<VkDescriptorPool> descPool_;

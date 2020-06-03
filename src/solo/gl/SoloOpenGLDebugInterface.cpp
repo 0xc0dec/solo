@@ -7,7 +7,7 @@
 
 #ifdef SL_OPENGL_RENDERER
 
-#include "SoloOpenGLSDLDevice.h"
+#include "SoloOpenGLDevice.h"
 #include <imgui.h>
 #include <examples/imgui_impl_sdl.h>
 #include <examples/imgui_impl_opengl3.h>
@@ -16,7 +16,7 @@ using namespace solo;
 
 OpenGLDebugInterface::OpenGLDebugInterface(Device *device):
 	DebugInterface(device),
-	device_(dynamic_cast<OpenGLSDLDevice*>(device))
+	device_(dynamic_cast<OpenGLDevice*>(device))
 {
 	IMGUI_CHECKVERSION();
     ImGui::CreateContext();

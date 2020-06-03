@@ -14,7 +14,7 @@
 namespace solo
 {
 	class Device;
-	class OpenGLSDLDevice;
+	class OpenGLDevice;
 
 	class OpenGLDebugInterface final: public DebugInterface
 	{
@@ -25,7 +25,7 @@ namespace solo
 		void render() const;
 		
 	private:
-		OpenGLSDLDevice *device_;
+		OpenGLDevice *device_;
 
 		void beginFrame() override;
 	};

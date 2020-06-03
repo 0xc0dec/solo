@@ -72,7 +72,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
+auto VulkanImage::empty(const VulkanDriverDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
 {
     const auto isDepth = format == TextureFormat::Depth24;
     const auto layout = VK_IMAGE_LAYOUT_GENERAL; // TODO better
@@ -117,7 +117,7 @@ auto VulkanImage::empty(const VulkanDevice &dev, u32 width, u32 height, TextureF
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage
+auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage
 {
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
@@ -282,7 +282,7 @@ auto VulkanImage::fromData(const VulkanDevice &dev, Texture2DData *data, bool ge
     return image;
 }
 
-auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage
+auto VulkanImage::fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *data) -> VulkanImage
 {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
@@ -380,7 +380,7 @@ auto VulkanImage::fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -
     return image;
 }
 
-auto VulkanImage::swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage
+auto VulkanImage::swapchainDepthStencil(const VulkanDriverDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage
 {
     return VulkanImage(dev, width, height, 1, 1, format,
         VK_IMAGE_LAYOUT_UNDEFINED,
@@ -390,7 +390,7 @@ auto VulkanImage::swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 
         VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT);
 }
 
-VulkanImage::VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
+VulkanImage::VulkanImage(const VulkanDriverDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
     VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask):
     layout_(layout),
     format_(format),

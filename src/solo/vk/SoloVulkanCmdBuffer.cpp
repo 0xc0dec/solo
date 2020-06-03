@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-VulkanCmdBuffer::VulkanCmdBuffer(const VulkanDevice &dev):
+VulkanCmdBuffer::VulkanCmdBuffer(const VulkanDriverDevice &dev):
     device_(&dev)
 {
     VkCommandBufferAllocateInfo allocateInfo{};
