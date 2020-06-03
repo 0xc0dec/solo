@@ -176,22 +176,14 @@ function demo()
                sl.device:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
-    function renderCmp(cmp)
-        cmp:render()
-    end
-
-    function updateCmp(cmp)
-        cmp:update()
-    end
-
     function renderLightCamFrame()
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep), renderCmp)
+        scene:render(~(skybox.tag | tags.postProcessorStep))
     end
 
     function renderMainCamFrame()
-        scene:visitByTags(skybox.tag, renderCmp)
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep | tags.transparent), renderCmp)
-        scene:visitByTags(tags.transparent, renderCmp)
+        scene:render(skybox.tag)
+        scene:render(~(skybox.tag | tags.postProcessorStep | tags.transparent))
+        scene:render(tags.transparent)
     end
 
     function renderUi()
@@ -214,7 +206,7 @@ Controls:
     end
 
     function update()
-        scene:visit(updateCmp)
+        scene:update()
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
         postProcessor:apply()

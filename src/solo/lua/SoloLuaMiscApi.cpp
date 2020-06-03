@@ -60,6 +60,8 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
 		REG_METHOD(b, Scene, removeNodeById);
 		REG_METHOD(b, Scene, visit);
 		REG_METHOD(b, Scene, visitByTags);
+		REG_METHOD(b, Scene, update);
+		REG_METHOD(b, Scene, render);
 		REG_PTR_EQUALITY(b, Scene);
 		b.endClass();
 	}

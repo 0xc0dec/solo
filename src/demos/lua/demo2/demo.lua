@@ -230,25 +230,17 @@ function demo()
                dev:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
-    function renderCmp(cmp)
-        cmp:render()
-    end
-
-    function updateCmp(cmp)
-        cmp:update()
-    end
-
     function renderScene()
-        scene:visitByTags(tags.skybox, renderCmp)
-        scene:visitByTags(~(tags.skybox | tags.postProcessorStep), renderCmp)
+        scene:render(tags.skybox)
+        scene:render(~(tags.skybox | tags.postProcessorStep))
     end
 
     function renderQuad()
-        scene:visitByTags(tags.postProcessorStep, renderCmp)
+        scene:render(tags.postProcessorStep)
     end
 
     function update()
-        scene:visit(updateCmp)
+        scene:update()
 
         mainCam:setRenderTarget(mrtFrameBuffer)
         mainCam:renderFrame(renderScene)

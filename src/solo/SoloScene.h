@@ -41,6 +41,9 @@ namespace solo
         void visit(const std::function<void(Component*)> &accept);
         void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
 
+    	void update();
+    	void render(u32 tagMask);
+
     private:
         using NodeComponents = umap<u32, sptr<Component>>;
         using NodesWithComponents = umap<u32, NodeComponents>;

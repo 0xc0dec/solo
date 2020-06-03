@@ -108,12 +108,22 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &acce
     {
         for (const auto &cmp : node.second)
         {
-            if (!cmp.second.deleted && cmp.second.component->tag() & tagMask)
+            if (!cmp.second.deleted && (cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
                 accept(cmp.second.component.get());
         }
     }
 
     cleanupDeleted();
+}
+
+void Scene::update()
+{
+	visit([](auto cmp) { cmp->update(); });
+}
+
+void Scene::render(u32 tagMask)
+{
+	visitByTags(tagMask, [](auto cmp) { cmp->render(); });
 }
 
 auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component*
