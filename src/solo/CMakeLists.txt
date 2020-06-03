@@ -27,7 +27,7 @@ target_include_directories(Solo PRIVATE
     "."
     "../../vendor" # TODO needed?
     "../../vendor/glew/1.13/include"
-    "../../vendor/SDL/2.0.4/include"
+    "../../vendor/SDL/2.0.12/include"
     "../../vendor/bullet/2.83.7"
     "../../vendor/stb_truetype/1.11"
     "../../vendor/vulkan/include"
