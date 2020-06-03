@@ -13,7 +13,7 @@
 #include "SoloVulkanSwapchain.h"
 #include "SoloVulkan.h"
 #include "SoloVulkanCmdBuffer.h"
-#include "SoloVulkanDevice.h"
+#include "SoloVulkanDriverDevice.h"
 #include "SoloVulkanPipelineContext.h"
 
 namespace solo
@@ -22,6 +22,7 @@ namespace solo
     class Camera;
     class VulkanMesh;
     class VulkanMaterial;
+	class VulkanDebugInterface;
 
     class VulkanRenderer final : public Renderer
     {
@@ -33,35 +34,44 @@ namespace solo
         void endCamera(Camera *camera) override;
         void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
         void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
-
+        void renderDebugInterface(DebugInterface *debugInterface) override;
+    	
         auto name() const -> const char* override { return "Vulkan"; }
         auto gpuName() const -> const char* override { return device_.gpuName(); }
 
-        auto device() const -> const VulkanDevice& { return device_; }
+        auto device() const -> const VulkanDriverDevice& { return device_; }
+    	auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
     protected:
         void beginFrame() override;
         void endFrame() override;
-
+    	
     private:
         Device *engineDevice_ = nullptr;
-
-        VulkanDevice device_;
+    	
+        VulkanDriverDevice device_;
         VulkanSwapchain swapchain_;
 
         struct RenderPassContext
         {
             VulkanResource<VkSemaphore> completeSemaphore;
             VulkanCmdBuffer cmdBuf;
-            VulkanRenderPass *renderPass = nullptr;
             u32 frameOfLastUse = 0;
         };
+
+    	struct
+    	{
+    		VulkanDebugInterface *debugInterface = nullptr;
+    		VulkanCmdBuffer renderCmdBuffer;
+    		VulkanResource<VkSemaphore> completeSemaphore;
+    	} debugInterfaceContext;
 
         u32 frame_ = 0;
 
         umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
     	umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
+    	// TODO Introduce "frame" struct serving as state
         Camera *currentCamera_ = nullptr;
         VulkanRenderPass *currentRenderPass_ = nullptr;
         VulkanCmdBuffer *currentCmdBuffer_ = nullptr;

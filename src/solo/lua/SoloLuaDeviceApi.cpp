@@ -36,6 +36,7 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Device, fileSystem);
     REG_METHOD(binding, Device, physics);
     REG_METHOD(binding, Device, renderer);
+    REG_METHOD(binding, Device, debugInterface);
     REG_PTR_EQUALITY(binding, Device);
     binding.endClass();
 }

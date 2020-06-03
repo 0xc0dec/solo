@@ -14,22 +14,22 @@ using namespace solo;
 static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec<VkImage>
 {
     u32 imageCount = 0;
-    SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
+    vk::assertResult(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
     
     vec<VkImage> images;
     images.resize(imageCount);
-    SL_VK_CHECK_RESULT(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
+    vk::assertResult(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
 
     return images;
 }
 
-static auto selectPresentMode(const VulkanDevice &dev, bool vsync) -> VkPresentModeKHR
+static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPresentModeKHR
 {
     u32 presentModeCount;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, nullptr));
+    vk::assertResult(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, nullptr));
 
     vec<VkPresentModeKHR> presentModes(presentModeCount);
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, presentModes.data()));
+    vk::assertResult(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, presentModes.data()));
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
@@ -50,10 +50,10 @@ static auto selectPresentMode(const VulkanDevice &dev, bool vsync) -> VkPresentM
     return presentMode;
 }
 
-static auto createSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
+static auto createSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
 {
     VkSurfaceCapabilitiesKHR capabilities;
-    SL_VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev.physical(), dev.surface(), &capabilities));
+    vk::assertResult(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev.physical(), dev.surface(), &capabilities));
 
     if (capabilities.currentExtent.width != std::numeric_limits<u32>::max())
     {
@@ -93,12 +93,12 @@ static auto createSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool
     swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 
     VulkanResource<VkSwapchainKHR> swapchain{dev.handle(), vkDestroySwapchainKHR};
-    SL_VK_CHECK_RESULT(vkCreateSwapchainKHR(dev.handle(), &swapchainInfo, nullptr, swapchain.cleanRef()));
+    vk::assertResult(vkCreateSwapchainKHR(dev.handle(), &swapchainInfo, nullptr, swapchain.cleanRef()));
 
     return swapchain;
 }
 
-VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height, bool vsync):
+VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync):
     device_(dev.handle())
 {
     const auto colorFormat = dev.colorFormat();
@@ -149,7 +149,7 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDevice &dev, u32 width, u32 height,
 
 auto VulkanSwapchain::moveNext() -> VkSemaphore
 {
-    SL_VK_CHECK_RESULT(vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, presentCompleteSem_, VK_NULL_HANDLE, &currentStep_));
+    vk::assertResult(vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, presentCompleteSem_, VK_NULL_HANDLE, &currentStep_));
     return presentCompleteSem_;
 }
 
@@ -163,7 +163,7 @@ void VulkanSwapchain::present(VkQueue queue, u32 waitSemaphoreCount, const VkSem
     presentInfo.pImageIndices = &currentStep_;
     presentInfo.pWaitSemaphores = waitSemaphores;
     presentInfo.waitSemaphoreCount = waitSemaphoreCount;
-    SL_VK_CHECK_RESULT(vkQueuePresentKHR(queue, &presentInfo));
+    vk::assertResult(vkQueuePresentKHR(queue, &presentInfo));
 }
 
 #endif

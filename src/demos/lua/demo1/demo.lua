@@ -13,6 +13,7 @@ function demo()
     local physics = sl.device:physics()
     local renderer = sl.device:renderer()
     local scene = sl.Scene.empty(sl.device)
+    local ui = sl.device:debugInterface()
 
     local tags = require "tags"
     local createRotator = require "rotator"
@@ -175,29 +176,41 @@ function demo()
                sl.device:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
-    function renderCmp(cmp)
-        cmp:render()
-    end
-
-    function updateCmp(cmp)
-        cmp:update()
-    end
-
     function renderLightCamFrame()
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep), renderCmp)
+        scene:render(~(skybox.tag | tags.postProcessorStep))
     end
 
     function renderMainCamFrame()
-        scene:visitByTags(skybox.tag, renderCmp)
-        scene:visitByTags(~(skybox.tag | tags.postProcessorStep | tags.transparent), renderCmp)
-        scene:visitByTags(tags.transparent, renderCmp)
+        scene:render(skybox.tag)
+        scene:render(~(skybox.tag | tags.postProcessorStep | tags.transparent))
+        scene:render(tags.transparent)
+    end
+
+    function renderUi()
+        local windowCfg = sl.WindowConfig()
+        windowCfg.title = 'Window title'
+        windowCfg.position = vec2(10, 10)
+        windowCfg.movable = false
+        windowCfg.decoration = false
+        windowCfg.alpha = 0.5
+
+        ui:renderWindow(windowCfg, function()
+            ui:renderText(
+[[
+Controls:
+    Hold RMB - rotate camera
+    W, A, S, D, Q, E - move camera
+    Space - spawn a box
+]])        
+        end)
     end
 
     function update()
-        scene:visit(updateCmp)
+        scene:update()
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
         postProcessor:apply()
+        renderUi()
     end
 
     function run()

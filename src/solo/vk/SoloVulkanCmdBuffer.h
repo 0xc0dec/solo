@@ -23,7 +23,7 @@ namespace solo
     {
     public:
         VulkanCmdBuffer() = default;
-        VulkanCmdBuffer(const VulkanDevice &dev);
+        VulkanCmdBuffer(const VulkanDriverDevice &dev);
         VulkanCmdBuffer(const VulkanCmdBuffer &other) = delete;
         VulkanCmdBuffer(VulkanCmdBuffer &&other) = default;
         ~VulkanCmdBuffer() = default;
@@ -66,10 +66,11 @@ namespace solo
         auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer& = default;
 
         operator bool() const { return handle_; }
+    	operator VkCommandBuffer() const { return handle_; }
         operator const VkCommandBuffer*() { return &handle_; }
 
     private:
-        const VulkanDevice *device_ = nullptr;
+        const VulkanDriverDevice *device_ = nullptr;
         VulkanResource<VkCommandBuffer> handle_;
     };
 }

@@ -13,3 +13,6 @@ scene:removeNodeById(node:id())
 
 scene:visit(function(cmp) end)
 scene:visitByTags(0, function(cmp) end)
+
+scene:update()
+scene:render(~0)

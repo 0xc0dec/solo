@@ -13,18 +13,18 @@
 
 namespace solo
 {
-    class VulkanDevice;
+    class VulkanDriverDevice;
 
     class VulkanBuffer
     {
     public:
-        static auto staging(const VulkanDevice &dev, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
-        static auto uniformHostVisible(const VulkanDevice &dev, VkDeviceSize size) -> VulkanBuffer;
-        static auto deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
-        static auto hostVisible(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        static auto staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
+        static auto uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer;
+        static auto deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
+        static auto hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer;
 
         VulkanBuffer() = default;
-        VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
+        VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags);
         VulkanBuffer(VulkanBuffer &&other) = default;
         VulkanBuffer(const VulkanBuffer &other) = delete;
         ~VulkanBuffer() = default;
@@ -42,7 +42,7 @@ namespace solo
         void transferTo(const VulkanBuffer& dst) const;
 
     private:
-        const VulkanDevice *device_ = nullptr;
+        const VulkanDriverDevice *device_ = nullptr;
         VulkanResource<VkDeviceMemory> memory_;
         VulkanResource<VkBuffer> buffer_;
         VkDeviceSize size_ = 0;

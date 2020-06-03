@@ -62,7 +62,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     renderPassInfo.pDependencies = dependencies.data();
 
     pass_ = VulkanResource<VkRenderPass>{device, vkDestroyRenderPass};
-    SL_VK_CHECK_RESULT(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass_.cleanRef()));
+    vk::assertResult(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass_.cleanRef()));
 }
 
 void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)

@@ -47,7 +47,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     layoutInfo.pBindings = cfg.bindings_.data();
 
     layout_ = VulkanResource<VkDescriptorSetLayout>{device, vkDestroyDescriptorSetLayout};
-    SL_VK_CHECK_RESULT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
+    vk::assertResult(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     vec<VkDescriptorPoolSize> sizes;
     for (const auto &s: cfg.sizes_)
@@ -65,7 +65,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     poolInfo.maxSets = 1;
 
     pool_ = VulkanResource<VkDescriptorPool>{device, vkDestroyDescriptorPool};
-    SL_VK_CHECK_RESULT(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool_.cleanRef()));
+    vk::assertResult(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool_.cleanRef()));
 
     // Set
     VkDescriptorSetAllocateInfo allocInfo{};
@@ -74,7 +74,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     allocInfo.descriptorSetCount = 1;
     allocInfo.pSetLayouts = &layout_;
 
-    SL_VK_CHECK_RESULT(vkAllocateDescriptorSets(device, &allocInfo, &set_));
+    vk::assertResult(vkAllocateDescriptorSets(device, &allocInfo, &set_));
 }
 
 // TODO do updates in batch using single vkUpdateDescriptorSets call

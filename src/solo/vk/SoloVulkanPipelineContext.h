@@ -24,7 +24,7 @@ namespace solo
 	class VulkanPipelineContext
 	{
 	public:
-		VulkanPipelineContext(VulkanDevice *device, size_t key);
+		VulkanPipelineContext(VulkanDriverDevice *device, size_t key);
 		VulkanPipelineContext(const VulkanPipelineContext &other) = delete;
 		VulkanPipelineContext(VulkanPipelineContext &&other) noexcept;
 
@@ -43,7 +43,7 @@ namespace solo
 			Camera *camera, Transform *transform);
 
 	private:
-		VulkanDevice *device_ = nullptr;
+		VulkanDriverDevice *device_ = nullptr;
 		umap<str, VulkanBuffer> uniformBuffers_;
 		VulkanPipeline pipeline_;
 		VulkanDescriptorSet descSet_;

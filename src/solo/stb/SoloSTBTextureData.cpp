@@ -123,13 +123,3 @@ auto STBCubeTextureData::size() const -> u32
            faces_[4]->size() + 
            faces_[5]->size();
 }
-
-auto STBCubeTextureData::faceSize(u32 face) const -> u32
-{
-    return faces_[face]->size();
-}
-
-auto STBCubeTextureData::faceData(u32 face) const -> const void*
-{
-    return faces_[face]->data();
-}

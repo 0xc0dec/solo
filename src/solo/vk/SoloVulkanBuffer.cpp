@@ -12,7 +12,7 @@
 
 using namespace solo;
 
-auto VulkanBuffer::staging(const VulkanDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
+auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -24,14 +24,14 @@ auto VulkanBuffer::staging(const VulkanDevice &dev, VkDeviceSize size, const voi
     return buffer;
 }
 
-auto VulkanBuffer::uniformHostVisible(const VulkanDevice &dev, VkDeviceSize size) -> VulkanBuffer
+auto VulkanBuffer::uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer
 {
     return VulkanBuffer(dev, size,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
 	const auto stagingBuffer = staging(dev, size, data);
     auto buffer = VulkanBuffer(dev, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -39,14 +39,14 @@ auto VulkanBuffer::deviceLocal(const VulkanDevice &dev, VkDeviceSize size, VkBuf
     return buffer;
 }
 
-auto VulkanBuffer::hostVisible(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
+auto VulkanBuffer::hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
 {
     auto buffer = VulkanBuffer(dev, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
     return buffer;
 }
 
-VulkanBuffer::VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
+VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     device_(&dev),
     size_(size)
 {
@@ -60,7 +60,7 @@ VulkanBuffer::VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferU
     bufferInfo.pQueueFamilyIndices = nullptr;
 
     buffer_ = VulkanResource<VkBuffer>{dev.handle(), vkDestroyBuffer};
-    SL_VK_CHECK_RESULT(vkCreateBuffer(dev.handle(), &bufferInfo, nullptr, buffer_.cleanRef()));
+    vk::assertResult(vkCreateBuffer(dev.handle(), &bufferInfo, nullptr, buffer_.cleanRef()));
 
     VkMemoryRequirements memReqs;
     vkGetBufferMemoryRequirements(dev.handle(), buffer_, &memReqs);
@@ -71,14 +71,14 @@ VulkanBuffer::VulkanBuffer(const VulkanDevice &dev, VkDeviceSize size, VkBufferU
     allocInfo.memoryTypeIndex = vk::findMemoryType(dev.physicalMemoryFeatures(), memReqs.memoryTypeBits, memPropertyFlags);
 
     memory_ = VulkanResource<VkDeviceMemory>{dev.handle(), vkFreeMemory};
-    SL_VK_CHECK_RESULT(vkAllocateMemory(dev.handle(), &allocInfo, nullptr, memory_.cleanRef()));
-    SL_VK_CHECK_RESULT(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
+    vk::assertResult(vkAllocateMemory(dev.handle(), &allocInfo, nullptr, memory_.cleanRef()));
+    vk::assertResult(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
 }
 
 void VulkanBuffer::updateAll(const void *newData) const
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
+    vk::assertResult(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size_);
     vkUnmapMemory(device_->handle(), memory_);
 }
@@ -86,7 +86,7 @@ void VulkanBuffer::updateAll(const void *newData) const
 void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size) const
 {
     void *ptr = nullptr;
-    SL_VK_CHECK_RESULT(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
+    vk::assertResult(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size);
     vkUnmapMemory(device_->handle(), memory_);
 }

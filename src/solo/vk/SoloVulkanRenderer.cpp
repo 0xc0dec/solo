@@ -10,11 +10,12 @@
 #include "SoloDevice.h"
 #include "SoloHash.h"
 #include "SoloVulkanFrameBuffer.h"
-#include "SoloVulkanSDLDevice.h"
+#include "SoloVulkanDevice.h"
 #include "SoloVulkanMaterial.h"
 #include "SoloVulkanMesh.h"
 #include "SoloCamera.h"
 #include "SoloVulkanPipelineContext.h"
+#include "SoloVulkanDebugInterface.h"
 
 using namespace solo;
 
@@ -44,14 +45,17 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 VulkanRenderer::VulkanRenderer(Device *device):
     engineDevice_(device)
 {
-    const auto vkDevice = dynamic_cast<VulkanSDLDevice*>(device);
+    const auto vkDevice = dynamic_cast<VulkanDevice*>(device);
     const auto instance = vkDevice->instance();
     const auto surface = vkDevice->surface();
     const auto canvasSize = device->canvasSize();
 
-    device_ = VulkanDevice(instance, surface);
+    device_ = VulkanDriverDevice(instance, surface);
     swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
 		device->isVsync());
+
+	debugInterfaceContext.completeSemaphore = vk::createSemaphore(device_);
+	debugInterfaceContext.renderCmdBuffer = VulkanCmdBuffer(device_);
 }
 
 void VulkanRenderer::beginCamera(Camera *camera)
@@ -96,14 +100,14 @@ void VulkanRenderer::beginCamera(Camera *camera)
     currentCmdBuffer_->setScissor(viewport);
 }
 
-void VulkanRenderer::endCamera(Camera *camera)
+void VulkanRenderer::endCamera(Camera *)
 {
-    auto &ctx = renderPassContexts_.at(currentRenderPass_);
+	auto &ctx = renderPassContexts_.at(currentRenderPass_);
     ctx.cmdBuf.endRenderPass();
     ctx.cmdBuf.end();
 
     vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &ctx.completeSemaphore, 1, ctx.cmdBuf);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+    vk::assertResult(vkQueueWaitIdle(device_.queue()));
 
     prevSemaphore_ = ctx.completeSemaphore;
 
@@ -127,12 +131,17 @@ void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     currentCmdBuffer_->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
 }
 
+void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface)
+{
+	debugInterfaceContext.debugInterface = dynamic_cast<VulkanDebugInterface*>(debugInterface);
+}
+
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
 
-	const auto key = contextKey(transform, currentCamera_, vkMaterial, *currentRenderPass_);
+	const auto key = contextKey(transform, currentCamera_, vkMaterial, currentRenderPass_->handle());
 	if (!pipelineContexts_.count(key))
 		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&device_, key)));
 
@@ -159,13 +168,41 @@ void VulkanRenderer::beginFrame()
     currentRenderPass_ = nullptr;
     currentCmdBuffer_ = nullptr;
     currentPipelineContextKey_ = 0;
+	debugInterfaceContext.debugInterface = nullptr;
     prevSemaphore_ = swapchain_.moveNext();
 }
 
 void VulkanRenderer::endFrame()
 {
-    swapchain_.present(device_.queue(), 1, &prevSemaphore_);
-    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+	// TODO extract function
+	if (debugInterfaceContext.debugInterface)
+	{
+		debugInterfaceContext.renderCmdBuffer.begin(false);
+
+		const auto canvasSize = engineDevice_->canvasSize();
+		
+		debugInterfaceContext.renderCmdBuffer.beginRenderPass(
+			debugInterfaceContext.debugInterface->renderPass(),
+			swapchain_.currentFrameBuffer(),
+			canvasSize.x(), canvasSize.y());
+		
+		const auto viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
+		debugInterfaceContext.renderCmdBuffer.setViewport(viewport, 0, 1);
+		debugInterfaceContext.renderCmdBuffer.setScissor(viewport);
+
+		debugInterfaceContext.debugInterface->renderInto(debugInterfaceContext.renderCmdBuffer);
+
+		debugInterfaceContext.renderCmdBuffer.endRenderPass();
+		debugInterfaceContext.renderCmdBuffer.end();
+
+		vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &debugInterfaceContext.completeSemaphore, 1, debugInterfaceContext.renderCmdBuffer);
+	    vk::assertResult(vkQueueWaitIdle(device_.queue()));
+
+		prevSemaphore_ = debugInterfaceContext.completeSemaphore;
+	}
+	
+	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
+    vk::assertResult(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better
     if (frame_ % 100 == 0)

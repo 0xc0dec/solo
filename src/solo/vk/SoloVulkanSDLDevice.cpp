@@ -3,7 +3,7 @@
  * MIT license 
  */
 
-#include "SoloVulkanSDLDevice.h"
+#include "SoloVulkanDevice.h"
 
 #ifdef SL_VULKAN_RENDERER
 
@@ -14,7 +14,7 @@
 
 using namespace solo;
 
-VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
+VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
 	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
@@ -59,7 +59,7 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     }
 
     instance_ = VulkanResource<VkInstance>{vkDestroyInstance};
-    SL_VK_CHECK_RESULT(vkCreateInstance(&instanceInfo, nullptr, instance_.cleanRef()));
+    vk::assertResult(vkCreateInstance(&instanceInfo, nullptr, instance_.cleanRef()));
 
 #ifdef SL_WINDOWS
     SDL_SysWMinfo wmInfo;
@@ -77,16 +77,16 @@ VulkanSDLDevice::VulkanSDLDevice(const DeviceSetup &setup):
     surfaceInfo.hwnd = hwnd;
 
     surface_ = VulkanResource<VkSurfaceKHR>{instance_, vkDestroySurfaceKHR};
-    SL_VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(instance_, &surfaceInfo, nullptr, surface_.cleanRef()));
+    vk::assertResult(vkCreateWin32SurfaceKHR(instance_, &surfaceInfo, nullptr, surface_.cleanRef()));
 #endif
 }
 
-VulkanSDLDevice::~VulkanSDLDevice()
+VulkanDevice::~VulkanDevice()
 {
     cleanupSubsystems();
 }
 
-void VulkanSDLDevice::endUpdate()
+void VulkanDevice::endUpdate()
 {
 }
 

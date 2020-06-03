@@ -16,16 +16,16 @@ namespace solo
 {
     class Texture2DData;
     class CubeTextureData;
-    class VulkanDevice;
+    class VulkanDriverDevice;
     enum class TextureFormat;
 
     class VulkanImage
     {
     public:
-        static auto empty(const VulkanDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage;
-        static auto fromData(const VulkanDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
-        static auto fromCubeData(const VulkanDevice &dev, CubeTextureData *data) -> VulkanImage;
-        static auto swapchainDepthStencil(const VulkanDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage; // TODO more generic?
+        static auto empty(const VulkanDriverDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage;
+        static auto fromData(const VulkanDriverDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
+        static auto fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *data) -> VulkanImage;
+        static auto swapchainDepthStencil(const VulkanDriverDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage; // TODO more generic?
 
         VulkanImage() = default;
         VulkanImage(const VulkanImage &other) = delete;
@@ -55,7 +55,7 @@ namespace solo
         u32 height_ = 0;
         VkImageAspectFlags aspectMask_ = VK_IMAGE_ASPECT_COLOR_BIT;
 
-        VulkanImage(const VulkanDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
+        VulkanImage(const VulkanDriverDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
             VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
     };
 }

@@ -17,7 +17,7 @@ auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
     info.flags = 0;
 
     VulkanResource<VkSemaphore> semaphore{device, vkDestroySemaphore};
-    SL_VK_CHECK_RESULT(vkCreateSemaphore(device, &info, nullptr, semaphore.cleanRef()));
+    assertResult(vkCreateSemaphore(device, &info, nullptr, semaphore.cleanRef()));
 
     return semaphore;
 }
@@ -37,7 +37,7 @@ void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *w
     info.pSignalSemaphores = signalSemaphores;
     info.commandBufferCount = commandBufferCount;
     info.pCommandBuffers = commandBuffers;
-    SL_VK_CHECK_RESULT(vkQueueSubmit(queue, 1, &info, VK_NULL_HANDLE));
+    assertResult(vkQueueSubmit(queue, 1, &info, VK_NULL_HANDLE));
 }
 
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
@@ -69,7 +69,7 @@ auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
     info.layers = 1;
 
     VulkanResource<VkFramebuffer> frameBuffer{device, vkDestroyFramebuffer};
-    SL_VK_CHECK_RESULT(vkCreateFramebuffer(device, &info, nullptr, frameBuffer.cleanRef()));
+    assertResult(vkCreateFramebuffer(device, &info, nullptr, frameBuffer.cleanRef()));
 
     return frameBuffer;
 }
@@ -91,7 +91,7 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
     viewInfo.image = image;
 
     VulkanResource<VkImageView> view{device, vkDestroyImageView};
-    SL_VK_CHECK_RESULT(vkCreateImageView(device, &viewInfo, nullptr, view.cleanRef()));
+    assertResult(vkCreateImageView(device, &viewInfo, nullptr, view.cleanRef()));
 
     return view;
 }

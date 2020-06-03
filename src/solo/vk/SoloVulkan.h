@@ -16,12 +16,6 @@
 #endif
 #include <vulkan.h>
 
-#ifdef SL_DEBUG
-#   define SL_VK_CHECK_RESULT(vkCall) solo::asrt(vkCall == VK_SUCCESS, "Vulkan API call failed")
-#else
-#   define SL_VK_CHECK_RESULT(vkCall) vkCall
-#endif
-
 namespace solo
 {
     namespace vk
@@ -38,6 +32,13 @@ namespace solo
             VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>;
         auto makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout,
             VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier;
+
+    	constexpr void assertResult(VkResult result)
+    	{
+#ifdef SL_DEBUG
+    		asrt(result == VK_SUCCESS, "Vulkan API call failed");
+#endif
+    	}
     }
 }
 

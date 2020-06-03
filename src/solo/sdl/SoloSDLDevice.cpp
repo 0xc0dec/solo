@@ -212,6 +212,9 @@ void SDLDevice::readEvents()
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
     {
+		if (onEvent_)
+			onEvent_(evt);
+    	
         switch (evt.type)
         {
             case SDL_QUIT:

@@ -9,10 +9,21 @@ file(GLOB_RECURSE SL_BULLET_SRC
     "bullet/2.83.7/LinearMath/*.cpp"
 )
 
-if (WIN32)
-    file(GLOB SL_SPIRV_CROSS_SRC "spirv_cross/*.cpp")
-else()
+if (APPLE)
     set(SL_SPIRV_CROSS_SRC "")
+else()
+    file(GLOB SL_SPIRV_CROSS_SRC "spirv_cross/*.cpp")
+endif()
+
+
+file(GLOB SL_IMGUI_SRC "imgui/*.cpp")
+file(GLOB SL_IMGUI_GL_SRC "imgui/examples/imgui_impl_opengl3.cpp")
+file(GLOB SL_IMGUI_SDL_SRC "imgui/examples/imgui_impl_sdl.cpp")
+
+if (APPLE)
+    file(GLOB SL_IMGUI_VK_SRC "")
+else()
+    file(GLOB SL_IMGUI_VK_SRC "imgui/examples/imgui_impl_vulkan.cpp")
 endif()
 
 if (WIN32)
@@ -180,12 +191,22 @@ elseif(APPLE)
     )
 endif()
 
-add_library(Vendor STATIC ${SL_GLEW_SRC} ${SL_BULLET_SRC} ${SL_SPIRV_CROSS_SRC} ${SL_SDL_SRC})
+add_library(Vendor STATIC
+    ${SL_GLEW_SRC}
+    ${SL_BULLET_SRC}
+    ${SL_SPIRV_CROSS_SRC}
+    ${SL_SDL_SRC}
+    ${SL_IMGUI_SRC}
+    ${SL_IMGUI_SDL_SRC}
+    ${SL_IMGUI_GL_SRC}
+    ${SL_IMGUI_VK_SRC}
+)
 
 source_group("glew" FILES ${SL_GLEW_SRC})
 source_group("bullet" FILES ${SL_BULLET_SRC})
 source_group("spirv_cross" FILES ${SL_SPIRV_CROSS_SRC})
 source_group("SDL" FILES ${SL_SDL_SRC})
+source_group("imgui" FILES ${SL_IMGUI_SRC} ${SL_IMGUI_SDL_SRC} ${SL_IMGUI_GL_SRC} ${SL_IMGUI_VK_SRC})
 
 target_include_directories(Vendor PRIVATE
     "."
@@ -194,6 +215,8 @@ target_include_directories(Vendor PRIVATE
     "glew/1.13/include"
     "bullet/2.83.7"
     "SDL/2.0.4/include"
+    "imgui"
+    "imgui/examples"
 )
 
 if (APPLE)
@@ -216,9 +239,7 @@ if (APPLE)
         ${SL_COREVIDEO_LIB}
         ${SL_COREFOUNDATION_LIB}
     )
-endif()
-
-if (WIN32)
+else()
     find_library(SL_VULKAN_LIB
         NAMES vulkan-1
         HINTS "vulkan/lib"

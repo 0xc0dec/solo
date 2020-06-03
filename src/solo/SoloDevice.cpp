@@ -10,8 +10,9 @@
 #include "SoloScriptRuntime.h"
 #include "SoloJobPool.h"
 #include "SoloEnums.h"
-#include "gl/SoloOpenGLSDLDevice.h"
-#include "vk/SoloVulkanSDLDevice.h"
+#include "SoloDebugInterface.h"
+#include "gl/SoloOpenGLDevice.h"
+#include "vk/SoloVulkanDevice.h"
 
 using namespace solo;
 
@@ -23,12 +24,12 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device>
     {
 #ifdef SL_OPENGL_RENDERER
         case DeviceMode::OpenGL:
-            device = std::make_unique<OpenGLSDLDevice>(setup);
+            device = std::make_unique<OpenGLDevice>(setup);
             break;
 #endif
 #ifdef SL_VULKAN_RENDERER
         case DeviceMode::Vulkan:
-            device = std::make_unique<VulkanSDLDevice>(setup);
+            device = std::make_unique<VulkanDevice>(setup);
             break;
 #endif
         default:
@@ -54,6 +55,7 @@ void Device::initSubsystems(const DeviceSetup &setup)
         Logger::global().setOutputFile(setup.logFilePath);
 
     renderer_ = Renderer::fromDevice(this);
+	debugInterface_ = DebugInterface::fromDevice(this);
     physics_ = Physics::fromDevice(this);
     fs_ = FileSystem::fromDevice(this);
     scriptRuntime_ = ScriptRuntime::fromDevice(this);
@@ -66,6 +68,7 @@ void Device::cleanupSubsystems()
     jobPool_.reset();
     scriptRuntime_.reset();
     fs_.reset();
+	debugInterface_.reset();
     renderer_.reset();
 }
 
@@ -101,7 +104,10 @@ void Device::update(const std::function<void()> &update)
     beginUpdate();
     jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics_->update();
-    renderer_->renderFrame(update);
+    renderer_->renderFrame([&]()
+	{
+    	debugInterface_->renderFrame(update);
+	});
     endUpdate();
 }
 
