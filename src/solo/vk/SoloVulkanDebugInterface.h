@@ -25,18 +25,18 @@ namespace solo
 		explicit VulkanDebugInterface(Device *device);
 		~VulkanDebugInterface();
 
-		void beginFrame() override;
-		
 		void renderInto(VkCommandBuffer targetCmdBuffer) const;
 
 		auto renderPass() const -> const VulkanRenderPass& { return renderPass_; }
-		
+	
 	private:
 		VulkanSDLDevice *device_;
 		VulkanRenderer *renderer_;
 		VulkanRenderPass renderPass_;
 		VulkanResource<VkDescriptorPool> descPool_;
 		// TODO remove no longer used fields
+
+		void beginFrame() override;
 	};
 }
 

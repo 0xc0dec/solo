@@ -15,6 +15,7 @@ namespace solo
     class Mesh;
     class Transform;
     class Material;
+	class DebugInterface;
 
     class Renderer
     {
@@ -32,6 +33,7 @@ namespace solo
         virtual void endCamera(Camera *camera) = 0;
         virtual void renderMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
         virtual void renderMeshIndex(Mesh *mesh, u32 part, Transform *transform, Material *material) = 0;
+    	virtual void renderDebugInterface(DebugInterface *debugInterface) = 0;
 
         virtual auto name() const -> const char* = 0;
         virtual auto gpuName() const -> const char* = 0;

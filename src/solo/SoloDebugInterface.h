@@ -10,6 +10,7 @@
 namespace solo
 {
 	class Device;
+	class Renderer;
 	
 	class DebugInterface
 	{
@@ -23,11 +24,18 @@ namespace solo
 		auto operator=(const DebugInterface &other) -> DebugInterface& = delete;
 		auto operator=(const DebugInterface &&other) -> DebugInterface& = delete;
 
-		virtual void beginFrame() = 0;
+		void renderFrame(const std::function<void()> &render);
 
 		void magic();
 
 	protected:
-		DebugInterface() = default;
+		explicit DebugInterface(Device *device);
+		
+		virtual void beginFrame() = 0;
+
+	private:
+		Renderer *renderer_ = nullptr;
+		
+		void endFrame();
 	};
 }

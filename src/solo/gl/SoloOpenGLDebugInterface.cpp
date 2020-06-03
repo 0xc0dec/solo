@@ -15,6 +15,7 @@
 using namespace solo;
 
 OpenGLDebugInterface::OpenGLDebugInterface(Device *device):
+	DebugInterface(device),
 	device_(dynamic_cast<OpenGLSDLDevice*>(device))
 {
 	IMGUI_CHECKVERSION();
@@ -43,10 +44,6 @@ void OpenGLDebugInterface::beginFrame()
 
 void OpenGLDebugInterface::render() const
 {
-	// auto open = true; // never close
-	// ImGui::ShowDemoWindow(&open);
-
-	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

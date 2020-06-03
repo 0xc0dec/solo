@@ -131,6 +131,11 @@ void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     currentCmdBuffer_->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
 }
 
+void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface)
+{
+	debugInterfaceContext.debugInterface = dynamic_cast<VulkanDebugInterface*>(debugInterface);
+}
+
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
 {
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
@@ -163,21 +168,21 @@ void VulkanRenderer::beginFrame()
     currentRenderPass_ = nullptr;
     currentCmdBuffer_ = nullptr;
     currentPipelineContextKey_ = 0;
+	debugInterfaceContext.debugInterface = nullptr;
     prevSemaphore_ = swapchain_.moveNext();
 }
 
 void VulkanRenderer::endFrame()
 {
 	// TODO extract function
+	if (debugInterfaceContext.debugInterface)
 	{
-		// TODO
-		const auto debugInterface = dynamic_cast<VulkanDebugInterface*>(engineDevice_->debugInterface());
+		debugInterfaceContext.renderCmdBuffer.begin(false);
+
 		const auto canvasSize = engineDevice_->canvasSize();
 		
-		debugInterfaceContext.renderCmdBuffer.begin(false);
-		
 		debugInterfaceContext.renderCmdBuffer.beginRenderPass(
-			debugInterface->renderPass(),
+			debugInterfaceContext.debugInterface->renderPass(),
 			swapchain_.currentFrameBuffer(),
 			canvasSize.x(), canvasSize.y());
 		
@@ -185,16 +190,18 @@ void VulkanRenderer::endFrame()
 		debugInterfaceContext.renderCmdBuffer.setViewport(viewport, 0, 1);
 		debugInterfaceContext.renderCmdBuffer.setScissor(viewport);
 
-		debugInterface->renderInto(debugInterfaceContext.renderCmdBuffer);
+		debugInterfaceContext.debugInterface->renderInto(debugInterfaceContext.renderCmdBuffer);
 
 		debugInterfaceContext.renderCmdBuffer.endRenderPass();
 		debugInterfaceContext.renderCmdBuffer.end();
 
 		vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &debugInterfaceContext.completeSemaphore, 1, debugInterfaceContext.renderCmdBuffer);
 	    SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
+
+		prevSemaphore_ = debugInterfaceContext.completeSemaphore;
 	}
 	
-	swapchain_.present(device_.queue(), 1, &debugInterfaceContext.completeSemaphore);
+	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
     SL_VK_CHECK_RESULT(vkQueueWaitIdle(device_.queue()));
 
     // TODO Naive cleanup, need better

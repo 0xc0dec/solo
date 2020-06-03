@@ -18,6 +18,7 @@
 using namespace solo;
 
 VulkanDebugInterface::VulkanDebugInterface(Device *device):
+	DebugInterface(device),
 	device_(dynamic_cast<VulkanSDLDevice*>(device)),
 	renderer_(dynamic_cast<VulkanRenderer*>(device->renderer()))
 {
@@ -100,11 +101,6 @@ void VulkanDebugInterface::beginFrame()
 
 void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
 {
-	// TODO remove
-	// bool open = true;
-	// ImGui::ShowDemoWindow(&open);
-	
-	ImGui::Render();
 	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);
 }
 

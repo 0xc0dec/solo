@@ -185,8 +185,7 @@ void applyMaterial(Material *material)
     setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
 }
 
-OpenGLRenderer::OpenGLRenderer(Device *device):
-	device_(device)
+OpenGLRenderer::OpenGLRenderer(Device *)
 {
 	const auto ver = version();
     name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
@@ -239,15 +238,21 @@ void OpenGLRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     dynamic_cast<OpenGLMesh*>(mesh)->renderIndex(index, effect);
 }
 
+void OpenGLRenderer::renderDebugInterface(DebugInterface *debugInterface)
+{
+	currentDebugInterface_ = dynamic_cast<OpenGLDebugInterface*>(debugInterface);
+}
+
 void OpenGLRenderer::beginFrame()
 {
     currentCamera_ = nullptr;
+	currentDebugInterface_ = nullptr;
 }
 
 void OpenGLRenderer::endFrame()
 {
-	const auto debugInterface = dynamic_cast<OpenGLDebugInterface*>(device_->debugInterface());
-	debugInterface->render();
+	if (currentDebugInterface_)
+		currentDebugInterface_->render();
 }
 
 #endif

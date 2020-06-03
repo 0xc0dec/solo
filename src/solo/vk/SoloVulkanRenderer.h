@@ -34,7 +34,8 @@ namespace solo
         void endCamera(Camera *camera) override;
         void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
         void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
-
+        void renderDebugInterface(DebugInterface *debugInterface) override;
+    	
         auto name() const -> const char* override { return "Vulkan"; }
         auto gpuName() const -> const char* override { return device_.gpuName(); }
 
@@ -60,6 +61,7 @@ namespace solo
 
     	struct
     	{
+    		VulkanDebugInterface *debugInterface = nullptr;
     		VulkanCmdBuffer renderCmdBuffer;
     		VulkanResource<VkSemaphore> completeSemaphore;
     	} debugInterfaceContext;

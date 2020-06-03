@@ -6,6 +6,7 @@
 #include "SoloDebugInterface.h"
 #include "SoloDevice.h"
 #include "SoloEnums.h"
+#include "SoloRenderer.h"
 #include "vk/SoloVulkanDebugInterface.h"
 #include "gl/SoloOpenGLDebugInterface.h"
 #include <imgui.h>
@@ -29,6 +30,13 @@ auto DebugInterface::fromDevice(Device *device) -> sptr<DebugInterface>
     		panic("Unknown device mode");
     		return nullptr;
     }
+}
+
+void DebugInterface::renderFrame(const std::function<void()> &render)
+{
+	beginFrame();
+	render();
+	endFrame();
 }
 
 void DebugInterface::magic()
@@ -57,4 +65,15 @@ void DebugInterface::magic()
             ImGui::Text("Mouse Position: <invalid>");
     }
     ImGui::End();
+}
+
+DebugInterface::DebugInterface(Device *device):
+	renderer_(device->renderer())
+{
+}
+
+void DebugInterface::endFrame()
+{
+	ImGui::Render();
+	renderer_->renderDebugInterface(this);
 }

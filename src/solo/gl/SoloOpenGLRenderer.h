@@ -14,6 +14,7 @@
 namespace solo
 {
     class Device;
+	class OpenGLDebugInterface;
 
     class OpenGLRenderer final : public Renderer
     {
@@ -25,6 +26,7 @@ namespace solo
         void endCamera(Camera *camera) override;
         void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
         void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
+    	void renderDebugInterface(DebugInterface *debugInterface) override;
 
         auto name() const -> const char* override { return name_.c_str(); }
         auto gpuName() const -> const char* override;
@@ -35,8 +37,8 @@ namespace solo
     	
     private:
         str name_;
-    	Device *device_ = nullptr;
         Camera *currentCamera_ = nullptr;
+    	OpenGLDebugInterface *currentDebugInterface_ = nullptr;
     };
 }
 
