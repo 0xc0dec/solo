@@ -15,8 +15,82 @@
 
 using namespace solo;
 
-static void registerDebugInterface(CppBindModule<LuaBinding> &module)
+void registerMiscApi(CppBindModule<LuaBinding> &module)
 {
+	{
+		auto b = BEGIN_CLASS(module, FileSystem);
+		REG_METHOD(b, FileSystem, readBytes);
+		REG_METHOD(b, FileSystem, writeBytes);
+		REG_METHOD(b, FileSystem, readText);
+		REG_METHOD(b, FileSystem, readLines);
+		REG_METHOD(b, FileSystem, writeLines);
+		REG_METHOD(b, FileSystem, iterateLines);
+		REG_PTR_EQUALITY(b, FileSystem);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS(module, Effect);
+		REG_STATIC_METHOD(b, Effect, fromSourceFile);
+		REG_STATIC_METHOD(b, Effect, fromDescriptionFile);
+		REG_STATIC_METHOD(b, Effect, fromSource);
+		REG_PTR_EQUALITY(b, Effect);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
+		REG_METHOD(b, MeshRenderer, render);
+		REG_METHOD(b, MeshRenderer, mesh);
+		REG_METHOD_NULLABLE_1ST_ARG(b, MeshRenderer, setMesh, sptr<Mesh>);
+		REG_METHOD(b, MeshRenderer, material);
+		REG_METHOD_NULLABLE_2ND_ARG(b, MeshRenderer, setMaterial, u32, sptr<Material>);
+		REG_METHOD_NULLABLE_1ST_ARG(b, MeshRenderer, setDefaultMaterial, sptr<Material>);
+		REG_METHOD(b, MeshRenderer, materialCount);
+		REG_PTR_EQUALITY(b, MeshRenderer);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS(module, Scene);
+		REG_STATIC_METHOD(b, Scene, empty);
+		REG_METHOD(b, Scene, device);
+		REG_METHOD(b, Scene, createNode);
+		REG_METHOD(b, Scene, removeNode);
+		REG_METHOD(b, Scene, removeNodeById);
+		REG_METHOD(b, Scene, visit);
+		REG_METHOD(b, Scene, visitByTags);
+		REG_PTR_EQUALITY(b, Scene);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS(module, Renderer);
+		REG_METHOD(b, Renderer, name);
+		REG_METHOD(b, Renderer, gpuName);
+		REG_PTR_EQUALITY(b, Renderer);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS(module, FrameBuffer);
+		REG_STATIC_METHOD(b, FrameBuffer, fromAttachments);
+		REG_METHOD(b, FrameBuffer, dimensions);
+		REG_PTR_EQUALITY(b, FrameBuffer);
+		b.endClass();
+	}
+
+	{
+		auto b = BEGIN_CLASS_EXTEND(module, Spectator, Component);
+		REG_METHOD(b, Spectator, movementSpeed);
+		REG_METHOD(b, Spectator, setMovementSpeed);
+		REG_METHOD(b, Spectator, mouseSensitivity);
+		REG_METHOD(b, Spectator, setMouseSensitivity);
+		REG_METHOD(b, Spectator, rotationAcceleration);
+		REG_METHOD(b, Spectator, setRotationAcceleration);
+		REG_PTR_EQUALITY(b, Spectator);
+	}
+
 	{
 		auto b = BEGIN_CLASS(module, WindowConfig);
 		REG_CTOR(b);
@@ -27,108 +101,15 @@ static void registerDebugInterface(CppBindModule<LuaBinding> &module)
 		REG_FIELD(b, WindowConfig, autoResize);
 		REG_FIELD(b, WindowConfig, movable);
 		REG_FIELD(b, WindowConfig, decoration);
-	    b.endClass();
+		b.endClass();
 	}
-	
+
 	{
 		auto b = BEGIN_CLASS(module, DebugInterface);
 		REG_METHOD(b, DebugInterface, beginWindow);
 		REG_METHOD(b, DebugInterface, endWindow);
 		REG_METHOD(b, DebugInterface, text);
 		REG_PTR_EQUALITY(b, DebugInterface);
-	    b.endClass();
+		b.endClass();
 	}
-}
-
-static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS(module, FrameBuffer);
-    REG_STATIC_METHOD(binding, FrameBuffer, fromAttachments);
-    REG_METHOD(binding, FrameBuffer, dimensions);
-    REG_PTR_EQUALITY(binding, FrameBuffer);
-    binding.endClass();
-}
-
-static void registerScene(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS(module, Scene);
-    REG_STATIC_METHOD(binding, Scene, empty);
-    REG_METHOD(binding, Scene, device);
-    REG_METHOD(binding, Scene, createNode);
-    REG_METHOD(binding, Scene, removeNode);
-    REG_METHOD(binding, Scene, removeNodeById);
-    REG_METHOD(binding, Scene, visit);
-    REG_METHOD(binding, Scene, visitByTags);
-    REG_PTR_EQUALITY(binding, Scene);
-    binding.endClass();
-}
-
-static void registerMeshRenderer(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS_EXTEND(module, MeshRenderer, Component);
-    REG_METHOD(binding, MeshRenderer, render);
-    REG_METHOD(binding, MeshRenderer, mesh);
-    REG_METHOD_NULLABLE_1ST_ARG(binding, MeshRenderer, setMesh, sptr<Mesh>);
-    REG_METHOD(binding, MeshRenderer, material);
-    REG_METHOD_NULLABLE_2ND_ARG(binding, MeshRenderer, setMaterial, u32, sptr<Material>);
-    REG_METHOD_NULLABLE_1ST_ARG(binding, MeshRenderer, setDefaultMaterial, sptr<Material>);
-    REG_METHOD(binding, MeshRenderer, materialCount);
-    REG_PTR_EQUALITY(binding, MeshRenderer);
-    binding.endClass();
-}
-
-static void registerSpectator(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS_EXTEND(module, Spectator, Component);
-    REG_METHOD(binding, Spectator, movementSpeed);
-    REG_METHOD(binding, Spectator, setMovementSpeed);
-    REG_METHOD(binding, Spectator, mouseSensitivity);
-    REG_METHOD(binding, Spectator, setMouseSensitivity);
-    REG_METHOD(binding, Spectator, rotationAcceleration);
-    REG_METHOD(binding, Spectator, setRotationAcceleration);
-    REG_PTR_EQUALITY(binding, Spectator);
-}
-
-static void registerEffect(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS(module, Effect);
-    REG_STATIC_METHOD(binding, Effect, fromSourceFile);
-    REG_STATIC_METHOD(binding, Effect, fromDescriptionFile);
-    REG_STATIC_METHOD(binding, Effect, fromSource);
-    REG_PTR_EQUALITY(binding, Effect);
-    binding.endClass();
-}
-
-static void registerFileSystem(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS(module, FileSystem);
-    REG_METHOD(binding, FileSystem, readBytes);
-    REG_METHOD(binding, FileSystem, writeBytes);
-    REG_METHOD(binding, FileSystem, readText);
-    REG_METHOD(binding, FileSystem, readLines);
-    REG_METHOD(binding, FileSystem, writeLines);
-    REG_METHOD(binding, FileSystem, iterateLines);
-    REG_PTR_EQUALITY(binding, FileSystem);
-    binding.endClass();
-}
-
-static void registerRenderer(CppBindModule<LuaBinding> &module)
-{
-    auto binding = BEGIN_CLASS(module, Renderer);
-    REG_METHOD(binding, Renderer, name);
-    REG_METHOD(binding, Renderer, gpuName);
-    REG_PTR_EQUALITY(binding, Renderer);
-    binding.endClass();
-}
-
-void registerMiscApi(CppBindModule<LuaBinding> &module)
-{
-    registerFileSystem(module);
-    registerEffect(module);
-    registerMeshRenderer(module);
-    registerScene(module);
-    registerRenderer(module);
-    registerFrameBuffer(module);
-    registerSpectator(module);
-	registerDebugInterface(module);
 }
