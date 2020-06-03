@@ -92,14 +92,17 @@ VulkanDebugInterface::~VulkanDebugInterface()
     ImGui::DestroyContext();
 }
 
-void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
+void VulkanDebugInterface::beginFrame()
 {
 	ImGui_ImplSDL2_NewFrame(device_->window());
     ImGui::NewFrame();
-	
+}
+
+void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
+{
 	// TODO remove
-	bool open = true;
-	ImGui::ShowDemoWindow(&open);
+	// bool open = true;
+	// ImGui::ShowDemoWindow(&open);
 	
 	ImGui::Render();
 	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);

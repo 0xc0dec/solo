@@ -11,7 +11,6 @@
 
 #include "SoloDebugInterface.h"
 #include "SoloVulkan.h"
-#include "SoloVulkanCmdBuffer.h"
 #include "SoloVulkanRenderPass.h"
 
 namespace solo
@@ -26,6 +25,8 @@ namespace solo
 		explicit VulkanDebugInterface(Device *device);
 		~VulkanDebugInterface();
 
+		void beginFrame() override;
+		
 		void renderInto(VkCommandBuffer targetCmdBuffer) const;
 
 		auto renderPass() const -> const VulkanRenderPass& { return renderPass_; }

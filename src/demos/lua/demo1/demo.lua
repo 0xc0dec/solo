@@ -198,6 +198,7 @@ function demo()
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
         postProcessor:apply()
+        sl.device:debugInterface():magic()
     end
 
     function run()

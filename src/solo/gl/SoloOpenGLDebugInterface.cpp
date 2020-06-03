@@ -34,14 +34,17 @@ OpenGLDebugInterface::~OpenGLDebugInterface()
     ImGui::DestroyContext();
 }
 
-void OpenGLDebugInterface::render() const
+void OpenGLDebugInterface::beginFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(device_->window());
     ImGui::NewFrame();
+}
 
-	auto open = true; // never close
-	ImGui::ShowDemoWindow(&open);
+void OpenGLDebugInterface::render() const
+{
+	// auto open = true; // never close
+	// ImGui::ShowDemoWindow(&open);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

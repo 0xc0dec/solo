@@ -77,7 +77,7 @@ namespace solo
         Renderer *renderer_ = nullptr;
 
         Transform *transform_ = nullptr;
-        sptr<FrameBuffer> renderTarget_ = nullptr;
+        sptr<FrameBuffer> renderTarget_;
 
         Vector4 viewport_;
         Vector4 clearColor_{0, 0.5, 0.5, 1};
@@ -105,7 +105,7 @@ namespace solo
     template <class... Args>
     auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera*
     {
-        auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
+	    const auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
         return body.get();
     }

@@ -11,8 +11,17 @@
 #include "SoloFileSystem.h"
 #include "SoloSpectator.h"
 #include "SoloRenderer.h"
+#include "SoloDebugInterface.h"
 
 using namespace solo;
+
+static void registerDebugInterface(CppBindModule<LuaBinding> &module)
+{
+	auto binding = BEGIN_CLASS(module, DebugInterface);
+	REG_METHOD(binding, DebugInterface, magic);
+	REG_PTR_EQUALITY(binding, DebugInterface);
+    binding.endClass();
+}
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)
 {
@@ -104,4 +113,5 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
     registerRenderer(module);
     registerFrameBuffer(module);
     registerSpectator(module);
+	registerDebugInterface(module);
 }

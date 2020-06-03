@@ -104,6 +104,7 @@ void Device::update(const std::function<void()> &update)
     beginUpdate();
     jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics_->update();
+	debugInterface_->beginFrame();
     renderer_->renderFrame(update);
     endUpdate();
 }

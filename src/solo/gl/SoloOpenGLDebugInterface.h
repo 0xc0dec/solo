@@ -22,8 +22,10 @@ namespace solo
 		explicit OpenGLDebugInterface(Device *device);
 		~OpenGLDebugInterface();
 
+		void beginFrame() override;
+		
 		void render() const;
-
+		
 	private:
 		OpenGLSDLDevice *device_;
 	};

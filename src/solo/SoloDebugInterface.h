@@ -23,6 +23,10 @@ namespace solo
 		auto operator=(const DebugInterface &other) -> DebugInterface& = delete;
 		auto operator=(const DebugInterface &&other) -> DebugInterface& = delete;
 
+		virtual void beginFrame() = 0;
+
+		void magic();
+
 	protected:
 		DebugInterface() = default;
 	};
