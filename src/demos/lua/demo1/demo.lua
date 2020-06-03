@@ -13,6 +13,7 @@ function demo()
     local physics = sl.device:physics()
     local renderer = sl.device:renderer()
     local scene = sl.Scene.empty(sl.device)
+    local ui = sl.device:debugInterface()
 
     local tags = require "tags"
     local createRotator = require "rotator"
@@ -193,18 +194,33 @@ function demo()
         scene:visitByTags(tags.transparent, renderCmp)
     end
 
-    function update()
-        scene:visit(updateCmp)
-        lightCam.camera:renderFrame(renderLightCamFrame)
-        mainCamera.camera:renderFrame(renderMainCamFrame)
-        postProcessor:apply()
-        sl.device:debugInterface():overlay(
+    function renderUi()
+        local windowCfg = sl.WindowConfig()
+        windowCfg.title = 'Window title'
+        windowCfg.position = vec2(10, 10)
+        windowCfg.movable = false
+        windowCfg.decoration = false
+        windowCfg.alpha = 0.5
+
+        ui:beginWindow(windowCfg)
+
+        ui:text(
 [[
 Controls:
   Hold RMB - rotate camera
   W, A, S, D, Q, E - move camera
   Space - spawn a box
 ]])
+
+        ui:endWindow()
+    end
+
+    function update()
+        scene:visit(updateCmp)
+        lightCam.camera:renderFrame(renderLightCamFrame)
+        mainCamera.camera:renderFrame(renderMainCamFrame)
+        postProcessor:apply()
+        renderUi()
     end
 
     function run()

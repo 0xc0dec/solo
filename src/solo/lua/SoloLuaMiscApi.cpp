@@ -17,10 +17,27 @@ using namespace solo;
 
 static void registerDebugInterface(CppBindModule<LuaBinding> &module)
 {
-	auto binding = BEGIN_CLASS(module, DebugInterface);
-	REG_METHOD(binding, DebugInterface, overlay);
-	REG_PTR_EQUALITY(binding, DebugInterface);
-    binding.endClass();
+	{
+		auto b = BEGIN_CLASS(module, WindowConfig);
+		REG_CTOR(b);
+		REG_FIELD(b, WindowConfig, title);
+		REG_FIELD(b, WindowConfig, position);
+		REG_FIELD(b, WindowConfig, pivot);
+		REG_FIELD(b, WindowConfig, alpha);
+		REG_FIELD(b, WindowConfig, autoResize);
+		REG_FIELD(b, WindowConfig, movable);
+		REG_FIELD(b, WindowConfig, decoration);
+	    b.endClass();
+	}
+	
+	{
+		auto b = BEGIN_CLASS(module, DebugInterface);
+		REG_METHOD(b, DebugInterface, beginWindow);
+		REG_METHOD(b, DebugInterface, endWindow);
+		REG_METHOD(b, DebugInterface, text);
+		REG_PTR_EQUALITY(b, DebugInterface);
+	    b.endClass();
+	}
 }
 
 static void registerFrameBuffer(CppBindModule<LuaBinding> &module)

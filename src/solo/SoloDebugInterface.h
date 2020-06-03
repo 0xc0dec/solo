@@ -6,11 +6,24 @@
 #pragma once
 
 #include "SoloCommon.h"
+#include "SoloVector2.h"
 
 namespace solo
 {
 	class Device;
 	class Renderer;
+
+	class WindowConfig
+	{
+	public:
+		str title;
+		Vector2 position;
+		Vector2 pivot;
+		float alpha = 0;
+		bool autoResize = false;
+		bool movable = true;
+		bool decoration = true;
+	};
 	
 	class DebugInterface
 	{
@@ -26,7 +39,9 @@ namespace solo
 
 		void renderFrame(const std::function<void()> &render);
 
-		void overlay(const str &text);
+		void beginWindow(const WindowConfig &cfg);
+		void endWindow();
+		void text(const str &text);
 
 	protected:
 		explicit DebugInterface(Device *device);

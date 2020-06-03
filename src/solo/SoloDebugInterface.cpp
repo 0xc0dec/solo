@@ -39,25 +39,34 @@ void DebugInterface::renderFrame(const std::function<void()> &render)
 	endFrame();
 }
 
-void DebugInterface::overlay(const str &text)
+void DebugInterface::beginWindow(const WindowConfig &cfg)
 {
-	const float DISTANCE = 10.0f;
-    static int corner = 0;
-    ImGuiIO& io = ImGui::GetIO();
-    if (corner != -1)
-    {
-        ImVec2 pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
-        ImVec2 pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-        ImGui::SetNextWindowPos(pos, ImGuiCond_Always, pivot);
-    }
-    ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings
-		| ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-    if (corner != -1)
+	const ImVec2 pos = ImVec2(cfg.position.x(), cfg.position.y());
+	const ImVec2 pivot = ImVec2(cfg.pivot.x(), cfg.pivot.y());
+	
+	ImGui::SetNextWindowPos(pos, ImGuiCond_Once, pivot);
+	
+    ImGui::SetNextWindowBgAlpha(cfg.alpha);
+
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoSavedSettings;
+	if (cfg.autoResize)
+		flags |= ImGuiWindowFlags_AlwaysAutoResize;
+	if (!cfg.decoration)
+		flags |= ImGuiWindowFlags_NoDecoration;
+	if (!cfg.movable)
         flags |= ImGuiWindowFlags_NoMove;
-    if (ImGui::Begin("Example: Simple overlay", nullptr, flags))
-        ImGui::Text(text.c_str());
-    ImGui::End();
+
+	ImGui::Begin(cfg.title.c_str(), nullptr, flags);
+}
+
+void DebugInterface::text(const str &text)
+{
+	ImGui::Text(text.c_str());
+}
+
+void DebugInterface::endWindow()
+{
+	ImGui::End();
 }
 
 DebugInterface::DebugInterface(Device *device):
