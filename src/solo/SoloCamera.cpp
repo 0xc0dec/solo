@@ -6,10 +6,10 @@
 #include "SoloCamera.h"
 #include "SoloNode.h"
 #include "SoloDevice.h"
-#include "SoloRadians.h"
-#include "SoloDegrees.h"
+#include "math/SoloRadians.h"
+#include "math/SoloDegrees.h"
 #include "SoloScene.h"
-#include "SoloRay.h"
+#include "math/SoloRay.h"
 #include "SoloRenderer.h"
 
 using namespace solo;

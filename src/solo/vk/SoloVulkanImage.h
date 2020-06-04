@@ -9,7 +9,7 @@
 
 #ifdef SL_VULKAN_RENDERER
 
-#include "SoloVector2.h"
+#include "math/SoloVector2.h"
 #include "SoloVulkan.h"
 
 namespace solo

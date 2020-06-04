@@ -6,8 +6,8 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
+#include "math/SoloVector2.h"
+#include "math/SoloVector3.h"
 
 namespace solo
 {

@@ -6,7 +6,7 @@
 #include "SoloSpectator.h"
 #include "SoloTransform.h"
 #include "SoloDevice.h"
-#include "SoloRadians.h"
+#include "math/SoloRadians.h"
 
 using namespace solo;
 

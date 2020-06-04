@@ -4,7 +4,7 @@
  */
 
 #include "SoloCamera.h"
-#include "SoloRay.h" // really needed
+#include "math/SoloRay.h" // really needed
 #include "SoloLuaCommon.h"
 
 using namespace solo;

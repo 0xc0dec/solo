@@ -6,7 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVector2.h"
+#include "math/SoloVector2.h"
 #include "SoloAsyncHandle.h"
 #include "SoloEnums.h"
 

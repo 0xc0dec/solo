@@ -7,7 +7,7 @@
 
 #include "SoloCommon.h"
 #include "SoloComponent.h"
-#include "SoloVector3.h"
+#include "math/SoloVector3.h"
 #include "SoloTransform.h"
 
 namespace solo

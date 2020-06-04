@@ -4,6 +4,7 @@ file(GLOB SL_ENGINE_SRC_LUA "lua/*.cpp" "lua/*.h")
 file(GLOB SL_ENGINE_SRC_SDL "sdl/*.cpp" "sdl/*.h")
 file(GLOB SL_ENGINE_SRC_STB "stb/*.cpp" "stb/*.h")
 file(GLOB SL_ENGINE_SRC_VK "vk/*.cpp" "vk/*.h")
+file(GLOB SL_ENGINE_SRC_MATH "math/*.cpp" "math/*.h")
 file(GLOB SL_ENGINE_SRC_CORE "*.cpp" "*.h")
 
 source_group("bullet" FILES ${SL_ENGINE_SRC_BULLET})
@@ -12,6 +13,7 @@ source_group("lua" FILES ${SL_ENGINE_SRC_LUA})
 source_group("sdl" FILES ${SL_ENGINE_SRC_SDL})
 source_group("stb" FILES ${SL_ENGINE_SRC_STB})
 source_group("vk" FILES ${SL_ENGINE_SRC_VK})
+source_group("math" FILES ${SL_ENGINE_SRC_MATH})
 source_group("" FILES ${SL_ENGINE_SRC_CORE})
 
 add_library(Solo STATIC
@@ -21,6 +23,7 @@ add_library(Solo STATIC
     ${SL_ENGINE_SRC_SDL}
     ${SL_ENGINE_SRC_STB}
     ${SL_ENGINE_SRC_VK}
+    ${SL_ENGINE_SRC_MATH}
     ${SL_ENGINE_SRC_CORE})
 
 target_include_directories(Solo PRIVATE

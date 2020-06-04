@@ -6,9 +6,9 @@
 #pragma once
 
 #include "SoloComponent.h"
-#include "SoloVector3.h"
-#include "SoloQuaternion.h"
-#include "SoloMatrix.h"
+#include "math/SoloVector3.h"
+#include "math/SoloQuaternion.h"
+#include "math/SoloMatrix.h"
 #include "SoloNode.h"
 #include "SoloEnums.h"
 

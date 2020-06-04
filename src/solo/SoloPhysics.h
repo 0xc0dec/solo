@@ -6,7 +6,7 @@
 #pragma once
 
 #include "SoloCommon.h"
-#include "SoloVector3.h"
+#include "math/SoloVector3.h"
 
 namespace solo
 {

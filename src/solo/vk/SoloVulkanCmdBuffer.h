@@ -12,7 +12,7 @@
 #include "SoloVulkanDescriptorSet.h"
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkan.h"
-#include "SoloVector4.h"
+#include "math/SoloVector4.h"
 #include "SoloVulkanImage.h"
 
 namespace solo

@@ -6,11 +6,11 @@
 #pragma once
 
 #include "SoloComponent.h"
-#include "SoloVector2.h"
-#include "SoloVector4.h"
+#include "math/SoloVector2.h"
+#include "math/SoloVector4.h"
 #include "SoloTransform.h"
 #include "SoloNode.h"
-#include "SoloRadians.h"
+#include "math/SoloRadians.h"
 #include <functional>
 
 namespace solo

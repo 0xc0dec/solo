@@ -7,10 +7,10 @@
 
 #include "SoloCommon.h"
 #include "SoloRenderer.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
-#include "SoloVector4.h"
-#include "SoloMatrix.h"
+#include "math/SoloVector2.h"
+#include "math/SoloVector3.h"
+#include "math/SoloVector4.h"
+#include "math/SoloMatrix.h"
 #include "SoloEffect.h"
 #include "SoloEnums.h"
 

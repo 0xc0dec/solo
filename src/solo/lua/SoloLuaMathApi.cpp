@@ -3,14 +3,14 @@
  * MIT license 
  */
 
-#include "SoloRadians.h"
-#include "SoloDegrees.h"
-#include "SoloVector2.h"
-#include "SoloVector3.h"
-#include "SoloVector4.h"
-#include "SoloQuaternion.h"
-#include "SoloMatrix.h"
-#include "SoloRay.h"
+#include "math/SoloRadians.h"
+#include "math/SoloDegrees.h"
+#include "math/SoloVector2.h"
+#include "math/SoloVector3.h"
+#include "math/SoloVector4.h"
+#include "math/SoloQuaternion.h"
+#include "math/SoloMatrix.h"
+#include "math/SoloRay.h"
 #include "SoloLuaCommon.h"
 
 using namespace solo;

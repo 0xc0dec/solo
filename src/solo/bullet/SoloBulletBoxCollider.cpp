@@ -4,7 +4,7 @@
  */
 
 #include "SoloBulletBoxCollider.h"
-#include "SoloVector3.h"
+#include "math/SoloVector3.h"
 #include "SoloBulletCommon.h"
 
 using namespace solo;
