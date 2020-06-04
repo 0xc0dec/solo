@@ -8,10 +8,10 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     layout.addAttribute(VertexAttributeUsage::Position);
     layout.addAttribute(VertexAttributeUsage::Normal);
     layout.addAttribute(VertexAttributeUsage::TexCoord);
-    const auto mesh = Mesh::fromFile(device, "../../assets/meshes/quad.dae", layout);
+    const auto mesh = Mesh::fromFile(device, "../../../assets/meshes/quad.dae", layout);
 
     // TODO move lua effect files elsewhere?
-    const auto effect = Effect::fromDescriptionFile(device, "../../assets/effects/skybox.lua");
+    const auto effect = Effect::fromDescriptionFile(device, "../../../assets/effects/skybox.lua");
     const auto material = Material::fromEffect(device, effect);
     material->setDepthTest(true);
     material->setDepthWrite(false);
@@ -25,12 +25,12 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     renderer->setMaterial(0, material);
 
     const auto texture = CubeTexture::fromFaceFiles(device,
-        "../../assets/textures/skyboxes/deep-space/+x.png",
-        "../../assets/textures/skyboxes/deep-space/-x.png",
-        "../../assets/textures/skyboxes/deep-space/+y.png",
-        "../../assets/textures/skyboxes/deep-space/-y.png",
-        "../../assets/textures/skyboxes/deep-space/+z.png",
-        "../../assets/textures/skyboxes/deep-space/-z.png"
+        "../../../assets/textures/skyboxes/deep-space/+x.png",
+        "../../../assets/textures/skyboxes/deep-space/-x.png",
+        "../../../assets/textures/skyboxes/deep-space/+y.png",
+        "../../../assets/textures/skyboxes/deep-space/-y.png",
+        "../../../assets/textures/skyboxes/deep-space/+z.png",
+        "../../../assets/textures/skyboxes/deep-space/-z.png"
     );
     texture->setWrap(TextureWrap::ClampToEdge);
 

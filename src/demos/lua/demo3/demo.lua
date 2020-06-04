@@ -80,21 +80,13 @@ function demo()
                sl.device:isKeyPressed(sl.KeyCode.Escape, true)
     end
 
-    function renderCmp(cmp)
-        cmp:render()
-    end
-
-    function updateCmp(cmp)
-        cmp:update()
-    end
-
     function renderMainCam()
-        scene:visitByTags(skybox.tag, renderCmp)
-        scene:visitByTags(~skybox.tag, renderCmp)
+        scene:render(skybox.tag)
+        scene:render(~skybox.tag)
     end
 
     function update()
-        scene:visit(updateCmp)
+        scene:update()
         mainCamera.camera:renderFrame(renderMainCam)
     end
 

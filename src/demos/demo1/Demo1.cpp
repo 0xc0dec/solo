@@ -24,19 +24,18 @@ int main()
     const auto device = Device::create({DeviceMode::OpenGL, 1366, 768, false, false, "Demo 1"});
     const auto scene = Scene::empty(device.get());
 
-    const auto skyboxRenderer = createSkybox(device.get(), scene.get());
+    createSkybox(device.get(), scene.get());
     const auto camera = createMainCamera(scene.get());
 
     while (true)
     {
         device->update([&]()
         {
-            scene->visit([&](auto cmp) { cmp->update(); });
-        });
-
-        camera->renderFrame([&]()
-        {
-            skyboxRenderer->render();
+            scene->update();
+        	camera->renderFrame([&]()
+        	{
+        		scene->render(~0);
+        	});
         });
 
         if (device->isQuitRequested() ||
