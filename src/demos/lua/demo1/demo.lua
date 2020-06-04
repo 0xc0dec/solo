@@ -216,7 +216,6 @@ Controls:
     function run()
         while not shouldStop() do
             sl.device:update(update)
-            collectgarbage("collect")
         end
     end
 

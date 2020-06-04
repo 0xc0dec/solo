@@ -252,7 +252,6 @@ function demo()
     function run()
         while not shouldStop() do
             dev:update(update)
-            collectgarbage("collect")
         end
     end
 
