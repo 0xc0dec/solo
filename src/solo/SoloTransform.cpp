@@ -86,9 +86,7 @@ auto Transform::invTransposedWorldMatrix() const -> Matrix
 {
     if (dirty_)
     {
-        invTransposedWorldMatrix_ = worldMatrix();
-        invTransposedWorldMatrix_.invert();
-        invTransposedWorldMatrix_.transpose();
+        invTransposedWorldMatrix_ = worldMatrix().inverted().transposed();
         dirty_ = false;
     }
     return invTransposedWorldMatrix_;
@@ -106,10 +104,7 @@ auto Transform::worldViewProjMatrix(const Camera *camera) const -> Matrix
 
 auto Transform::invTransposedWorldViewMatrix(const Camera *camera) const -> Matrix
 {
-    auto result = camera->viewMatrix() * worldMatrix();
-    result.invert();
-    result.transpose();
-    return result;
+    return (camera->viewMatrix() * worldMatrix()).inverted().transposed();
 }
 
 void Transform::translateLocal(const Vector3 &translation)
@@ -181,8 +176,7 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
 
     if (parent_)
     {
-        auto m(parent_->worldMatrix());
-        m.invert();
+	    const auto m = parent_->worldMatrix().inverted();
         localTarget = m.transformPoint(target);
         localUp = m.transformDirection(up);
     }
@@ -218,8 +212,7 @@ void Transform::setWorldPosition(const Vector3 &position)
 	auto localPos = position;
 	if (parent_)
 	{
-		auto worldMat = parent_->worldMatrix();
-		worldMat.invert();
+		const auto worldMat = parent_->worldMatrix().inverted();
 		localPos = worldMat.transformPoint(position);
 	}
 	setLocalPosition(localPos);

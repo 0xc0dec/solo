@@ -38,7 +38,9 @@ namespace solo
         bool isIdentity() const;
         auto getDeterminant() const -> float;
         void invert();
+    	auto inverted() const -> Matrix;
         void transpose();
+    	auto transposed() const -> Matrix;
 
         auto scale() const -> Vector3;
         auto rotation() const -> Quaternion;

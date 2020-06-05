@@ -7,7 +7,9 @@ assert(m:isIdentity() ~= nil)
 assert(m:getDeterminant() ~= nil)
 
 m:invert()
+assert(m:inverted())
 m:transpose()
+assert(m:transposed())
 
 assert(sl.Matrix.createLookAt(sl.Vector3(0, 0, 0), sl.Vector3(1, 1, 1), sl.Vector3(0, 1, 0)))
 assert(sl.Matrix.createPerspective(sl.Radians(2), 1, 2, 3))

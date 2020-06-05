@@ -87,8 +87,7 @@ auto Camera::viewMatrix() const -> Matrix
 {
     if (dirtyFlags_ & ViewDirtyBit)
     {
-        viewMatrix_ = transform_->worldMatrix();
-        viewMatrix_.invert();
+        viewMatrix_ = transform_->worldMatrix().inverted();
         dirtyFlags_ &= ~ViewDirtyBit;
     }
     return viewMatrix_;
@@ -98,8 +97,7 @@ auto Camera::invViewMatrix() const -> Matrix
 {
     if (dirtyFlags_ & InvViewDirtyBit)
     {
-        invViewMatrix_ = viewMatrix();
-        invViewMatrix_.invert();
+        invViewMatrix_ = viewMatrix().inverted();
         dirtyFlags_ &= ~InvViewDirtyBit;
     }
     return invViewMatrix_;
@@ -132,8 +130,7 @@ auto Camera::invViewProjectionMatrix() const -> Matrix
 {
     if (dirtyFlags_ & InvViewProjectionDirtyBit)
     {
-        invViewProjectionMatrix_ = viewProjectionMatrix();
-        invViewProjectionMatrix_.invert();
+        invViewProjectionMatrix_ = viewProjectionMatrix().inverted();
         dirtyFlags_ &= ~InvViewProjectionDirtyBit;
     }
     return invViewProjectionMatrix_;

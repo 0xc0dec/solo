@@ -176,7 +176,9 @@ static void registerMatrix(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Matrix, isIdentity);
     REG_METHOD(binding, Matrix, getDeterminant);
     REG_METHOD(binding, Matrix, invert);
+    REG_METHOD(binding, Matrix, inverted);
     REG_METHOD(binding, Matrix, transpose);
+    REG_METHOD(binding, Matrix, transposed);
     REG_STATIC_METHOD(binding, Matrix, createLookAt);
     REG_STATIC_METHOD(binding, Matrix, createPerspective);
     REG_STATIC_METHOD(binding, Matrix, createOrthographic);

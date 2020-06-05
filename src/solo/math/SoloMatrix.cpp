@@ -72,6 +72,11 @@ void Matrix::invert()
     data_ = glm::inverse(data_);
 }
 
+auto Matrix::inverted() const -> Matrix
+{
+	return glm::inverse(data_);
+}
+
 bool Matrix::isIdentity() const
 {
     return
@@ -204,6 +209,11 @@ auto Matrix::operator+=(const Matrix &other) -> Matrix &
 void Matrix::transpose()
 {
     data_ = glm::transpose(data_);
+}
+
+auto Matrix::transposed() const -> Matrix
+{
+	return glm::transpose(data_);
 }
 
 auto Matrix::operator*=(float scalar) -> Matrix &
