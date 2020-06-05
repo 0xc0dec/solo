@@ -109,8 +109,6 @@ else()
     set(SL_PLATFORM_VENDOR_LIBS
         ${SL_VULKAN_LIB}
         shaderc
-        zlibstatic
-        SDL2-static
         winmm.lib
         imm32.lib
         version.lib
@@ -124,6 +122,8 @@ set(SL_VENDOR_LIBS
     ${SL_PLATFORM_VENDOR_LIBS}
     assimp
     IrrXML
+    SDL2-static
+    zlibstatic
 )
 
 target_link_libraries(Vendor ${SL_VENDOR_LIBS})
