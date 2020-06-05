@@ -14,6 +14,7 @@ assert(q:isZero() ~= nil)
 
 q:conjugate()
 q:invert()
+assert(q:inverted())
 q:normalize()
 assert(q:normalized() ~= nil)
 

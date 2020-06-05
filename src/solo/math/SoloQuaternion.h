@@ -37,10 +37,12 @@ namespace solo
         bool isZero() const;
 
         void conjugate();
-        void invert();
 
-        auto normalized() const -> Quaternion;
+    	void invert();
+    	auto inverted() const -> Quaternion;
+
         void normalize();
+        auto normalized() const -> Quaternion;
 
         auto toAxisAngle(Vector3 &axis) const -> Radians;
 

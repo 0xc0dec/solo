@@ -58,6 +58,11 @@ void Quaternion::invert()
     data_ = glm::inverse(data_);
 }
 
+auto Quaternion::inverted() const -> Quaternion
+{
+	return glm::inverse(data_);
+}
+
 void Quaternion::normalize()
 {
     data_ = glm::normalize(data_);

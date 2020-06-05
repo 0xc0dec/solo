@@ -115,8 +115,7 @@ void Transform::translateLocal(const Vector3 &translation)
 
 void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 {
-    auto normalizedRotation(const_cast<Quaternion &>(rotation));
-    normalizedRotation.normalize();
+	const auto normalizedRotation = rotation.normalized();
 
     switch (space)
     {
@@ -128,8 +127,7 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space)
             break;
         case TransformSpace::World:
         {
-            auto invWorldRotation = worldRotation();
-            invWorldRotation.invert();
+	        const auto invWorldRotation = worldRotation().inverted();
             localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * worldRotation();
             break;
         }
@@ -156,10 +154,8 @@ void Transform::scaleLocal(const Vector3 &scale)
 
 void Transform::setWorldRotation(const Quaternion &rotation)
 {
-	auto normalizedRotation(const_cast<Quaternion &>(rotation));
-    normalizedRotation.normalize();
-	auto invWorldRotation = worldRotation();
-    invWorldRotation.invert();
+	const auto normalizedRotation = rotation.normalized();
+	const auto invWorldRotation = worldRotation().inverted();
 	setLocalRotation(localRotation_ * invWorldRotation * normalizedRotation);
 }
 

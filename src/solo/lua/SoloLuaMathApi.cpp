@@ -129,6 +129,7 @@ static void registerQuaternion(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Quaternion, isZero);
     REG_METHOD(binding, Quaternion, conjugate);
     REG_METHOD(binding, Quaternion, invert);
+    REG_METHOD(binding, Quaternion, inverted);
     REG_METHOD(binding, Quaternion, normalize);
     REG_METHOD(binding, Quaternion, normalized);
     REG_METHOD(binding, Quaternion, toAxisAngle);
