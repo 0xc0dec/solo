@@ -203,6 +203,7 @@ Controls:
     Hold RMB - rotate camera
     W, A, S, D, Q, E - move camera
     Space - spawn a box
+    G - grab/drop an object
 ]])        
         end)
     end
