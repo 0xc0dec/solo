@@ -38,6 +38,9 @@ void Transform::setParent(Transform *parent)
     if (parent == this || parent == this->parent_)
         return;
 
+	const auto worldPos = worldPosition();
+	const auto worldRot = worldRotation();
+
     if (this->parent_)
     {
         auto &parentChildren = this->parent_->children_;
@@ -45,10 +48,12 @@ void Transform::setParent(Transform *parent)
     }
 
     this->parent_ = parent;
-    if (parent)
-        parent->children_.push_back(this);
+	if (parent)
+    	parent->children_.push_back(this);
 
-    setDirtyWithChildren(DirtyFlagWorld | DirtyFlagInvTransposedWorld);
+	setDirtyWithChildren(DirtyFlagAll);
+	setWorldPosition(worldPos);
+	setWorldRotation(worldRot);
 }
 
 void Transform::clearChildren()
@@ -76,10 +81,7 @@ auto Transform::worldMatrix() const -> Matrix
 {
     if (dirtyFlags_ & DirtyFlagWorld)
     {
-        if (parent_)
-            worldMatrix_ = parent_->worldMatrix() * matrix();
-        else
-            worldMatrix_ = matrix();
+        worldMatrix_ = parent_ ? parent_->worldMatrix() * matrix() : matrix();
         dirtyFlags_ &= ~DirtyFlagWorld;
     }
     return worldMatrix_;
@@ -162,6 +164,15 @@ void Transform::scaleLocal(const Vector3 &scale)
     setDirtyWithChildren(DirtyFlagAll);
 }
 
+void Transform::setWorldRotation(const Quaternion &rotation)
+{
+	auto normalizedRotation(const_cast<Quaternion &>(rotation));
+    normalizedRotation.normalize();
+	auto invWorldRotation = worldRotation();
+    invWorldRotation.invert();
+	setLocalRotation(localRotation_ * invWorldRotation * normalizedRotation);
+}
+
 void Transform::setLocalScale(const Vector3 &scale)
 {
     localScale_ = scale;
@@ -181,7 +192,7 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
         localUp = m.transformDirection(up);
     }
 
-    auto lookAtMatrix = Matrix::createLookAt(localPosition_, localTarget, localUp);
+    const auto lookAtMatrix = Matrix::createLookAt(localPosition_, localTarget, localUp);
     setLocalRotation(lookAtMatrix.rotation());
 }
 
@@ -205,6 +216,18 @@ void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radians &an
 {
     localRotation_ = Quaternion::fromAxisAngle(axis, angle);
     setDirtyWithChildren(DirtyFlagAll);
+}
+
+void Transform::setWorldPosition(const Vector3 &position)
+{
+	auto localPos = position;
+	if (parent_)
+	{
+		auto worldMat = parent_->worldMatrix();
+		worldMat.invert();
+		localPos = worldMat.transformPoint(position);
+	}
+	setLocalPosition(localPos);
 }
 
 void Transform::setLocalPosition(const Vector3 &position)

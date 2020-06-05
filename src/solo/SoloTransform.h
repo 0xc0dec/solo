@@ -36,13 +36,25 @@ namespace solo
         void clearChildren();
 
         auto worldScale() const -> Vector3 { return worldMatrix().scale(); }
-        auto localScale() const -> Vector3 { return localScale_; }
+
+    	auto localScale() const -> Vector3 { return localScale_; }
+    	void setLocalScale(const Vector3 &scale);
+    	void scaleLocal(const Vector3 &scale);
 
         auto worldRotation() const -> Quaternion { return worldMatrix().rotation(); }
+		void setWorldRotation(const Quaternion &rotation);
+    	
         auto localRotation() const -> Quaternion { return localRotation_; }
+    	void setLocalRotation(const Quaternion &rotation);
+        void setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle);
 
         auto worldPosition() const -> Vector3 { return worldMatrix().translation(); }
-        auto localPosition() const -> Vector3 { return localPosition_; }
+    	void setWorldPosition(const Vector3 &position);
+
+    	auto localPosition() const -> Vector3 { return localPosition_; }
+    	void setLocalPosition(const Vector3 &position);
+
+    	void translateLocal(const Vector3 &translation);
 
         auto worldUp() const -> Vector3 { return worldMatrix().upVector(); }
         auto localUp() const -> Vector3 { return matrix().upVector(); }
@@ -62,17 +74,8 @@ namespace solo
         auto worldBack() const -> Vector3 { return worldMatrix().backVector(); }
         auto localBack() const -> Vector3 { return matrix().backVector(); }
 
-        void translateLocal(const Vector3 &translation);
-        void scaleLocal(const Vector3 &scale);
-
-        void setLocalPosition(const Vector3 &position);
-        void setLocalScale(const Vector3 &scale);
-
         void rotate(const Quaternion &rotation, TransformSpace space = TransformSpace::Self);
         void rotateByAxisAngle(const Vector3 &axis, const Radians &angle, TransformSpace space = TransformSpace::Self);
-
-        void setLocalRotation(const Quaternion &rotation);
-        void setLocalAxisAngleRotation(const Vector3 &axis, const Radians &angle);
 
         void lookAt(const Vector3 &target, const Vector3 &up);
 

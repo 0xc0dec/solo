@@ -30,6 +30,7 @@ function demo()
     local createLookAt = require "look-at"
     local createHighlighter = require "highlighter"
     local createLightCamera = require "light-camera"
+    local createGrabber = require "grabber"
 
     ---
 
@@ -119,6 +120,7 @@ function demo()
         node:addScriptComponent(createTracer(sl.device, scene, physics, assetCache))
         node:addScriptComponent(createHighlighter(assetCache, physics))
         node:addScriptComponent(createSpawner(assetCache, shadowedMat))
+        node:addScriptComponent(createGrabber())
 
         return {
             camera = camera,
