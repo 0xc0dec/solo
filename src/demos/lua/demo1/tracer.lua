@@ -52,13 +52,8 @@ return function(dev, scene, physics, assetCache)
         end,
 
         update = function(self)
-            if sl.device:isMouseButtonDown(sl.MouseButton.Right, false) then
-                self.hitNode = nil
-                self.target.hide()
-                return
-            end
-
-            local mousePos = sl.device:mousePosition()
+            local canvasSize = sl.device:canvasSize()
+            local mousePos = canvasSize / 2
             local ray = self.camera:windowPointToWorldRay(mousePos)
             local from = ray:origin()
             local to = from + ray:direction() * 100
