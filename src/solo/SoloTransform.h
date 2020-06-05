@@ -90,7 +90,7 @@ namespace solo
         auto transformDirection(const Vector3 &direction) const -> Vector3;
 
     private:
-        mutable u32 dirtyFlags_ = ~0;
+    	mutable bool dirty_ = true;
         mutable u32 version_ = 0;
 
         Transform *parent_ = nullptr;
@@ -103,7 +103,7 @@ namespace solo
         mutable Matrix worldMatrix_;
         mutable Matrix invTransposedWorldMatrix_;
 
-        void setDirtyWithChildren(u32 flags) const;
-        void setChildrenDirty(u32 flags) const;
+        void setDirtyWithChildren() const;
+        void setChildrenDirty() const;
     };
 }
