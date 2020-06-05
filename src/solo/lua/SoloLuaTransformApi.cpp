@@ -43,6 +43,7 @@ void registerTransformApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(transform, Transform, rotate);
     REG_METHOD(transform, Transform, rotateByAxisAngle);
     REG_METHOD(transform, Transform, setLocalRotation);
+    REG_METHOD(transform, Transform, setWorldRotation);
     REG_METHOD(transform, Transform, setLocalAxisAngleRotation);
     REG_METHOD(transform, Transform, setWorldPosition);
     REG_METHOD(transform, Transform, lookAt);
