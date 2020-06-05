@@ -11,7 +11,7 @@ return function(assetCache, physics)
             self.transform = self.node:findComponent("Transform") 
             self.scene = self.node:scene()
             self.camera = self.node:findComponent("Camera")
-            self.tracer = self.node:findScriptComponent(sl.cmpNameToId("Tracer"))
+            self.tracer = self.node:findScriptComponent(sl.cmpId("Tracer"))
         end,
 
         update = function(self)

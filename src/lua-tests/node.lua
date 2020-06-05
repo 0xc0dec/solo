@@ -19,9 +19,9 @@ local cmp = node:addScriptComponent(sl.createComponent("TestyTest", {
     end
 }))
 
-cmp = node:findScriptComponent(sl.cmpNameToId("TestyTest"))
+cmp = node:findScriptComponent(sl.cmpId("TestyTest"))
 -- findScriptComponent will always return a different wrapper, so direct comparison doesn't work
 assert(cmp.abc == 123)
 
 node:removeScriptComponent(cmp)
-assert(node:findScriptComponent(sl.cmpNameToId("TestyTest")) == nil)
+assert(node:findScriptComponent(sl.cmpId("TestyTest")) == nil)

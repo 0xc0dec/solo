@@ -95,7 +95,7 @@ return function(assetCache, mainCameraNode, postProcessor)
 
     local cmp = sl.createComponent("PostProcessorControlPanel", {
         init = function(self)
-            self.tracer = mainCameraNode:findScriptComponent(sl.cmpNameToId("Tracer"))
+            self.tracer = mainCameraNode:findScriptComponent(sl.cmpId("Tracer"))
             self.font = createFont()
             self.fontRenderer = textNode:addComponent("MeshRenderer")
             self.fontRenderer:setMaterial(0, self.font.material)
@@ -105,7 +105,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         update = function(self)
             local btn
             if self.tracer.hitNode then
-                btn = self.tracer.hitNode:findScriptComponent(sl.cmpNameToId("PostProcessorControlPanelBtn"));
+                btn = self.tracer.hitNode:findScriptComponent(sl.cmpId("PostProcessorControlPanelBtn"));
             end
 
             if btn ~= self.lastHighlightedBtn and self.lastHighlightedBtn then

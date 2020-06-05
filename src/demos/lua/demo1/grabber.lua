@@ -6,7 +6,7 @@
 return function()
     return sl.createComponent('Grabber', {
         init = function(self)
-            self.tracer = self.node:findScriptComponent(sl.cmpNameToId('Tracer'))
+            self.tracer = self.node:findScriptComponent(sl.cmpId('Tracer'))
             self.transform = self.node:findComponent('Transform')
             self.node = nil
         end,
