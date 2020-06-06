@@ -54,21 +54,22 @@ void Device::initSubsystems(const DeviceSetup &setup)
     if (!setup.logFilePath.empty())
         Logger::global().setOutputFile(setup.logFilePath);
 
+	jobPool_ = std::make_shared<JobPool>();
+	physics_ = Physics::fromDevice(this);
+    fs_ = FileSystem::fromDevice(this);
+	scriptRuntime_ = ScriptRuntime::fromDevice(this);
     renderer_ = Renderer::fromDevice(this);
 	debugInterface_ = DebugInterface::fromDevice(this);
-    physics_ = Physics::fromDevice(this);
-    fs_ = FileSystem::fromDevice(this);
-    scriptRuntime_ = ScriptRuntime::fromDevice(this);
-    jobPool_ = std::make_shared<JobPool>();
 }
 
 void Device::cleanupSubsystems()
 {
     // Order matters
-    jobPool_.reset();
-    scriptRuntime_.reset();
-    fs_.reset();
 	debugInterface_.reset();
+    jobPool_.reset();
+	scriptRuntime_.reset();
+	physics_.reset();
+    fs_.reset();
     renderer_.reset();
 }
 
