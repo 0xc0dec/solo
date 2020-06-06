@@ -115,7 +115,7 @@ void VulkanMaterial::setParameter(const str &name, const ParameterWriteFunc &wri
 
 void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 {
-	panicIf(!effect_->hasSampler(name));
+	panicIf(!effect_->hasSampler(name), "Unknown material parameter ", name);
     const auto samplerInfo = effect_->sampler(name);
     auto &sampler = samplers_[name];
     sampler.binding = samplerInfo.binding;

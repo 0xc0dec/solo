@@ -19,7 +19,6 @@
 #include "SoloFileSystem.h"
 #include "SoloFont.h"
 #include "SoloFontMesh.h"
-#include "SoloFormatter.h"
 #include "SoloFrameBuffer.h"
 #include "SoloHash.h"
 #include "SoloJobPool.h"

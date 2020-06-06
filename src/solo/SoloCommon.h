@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "SoloFormatter.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -14,6 +13,7 @@
 #include <list>
 #include <memory>
 #include <functional>
+#include <sstream>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS)
 #   define SL_WINDOWS
@@ -83,18 +83,39 @@ namespace solo
 #ifdef SL_DEBUG
 		if (!condition)
 		{
-			const auto msg = Formatter()(msgArgs...);
+			const auto msg = fmt(msgArgs...);
 			Logger::global().logDebug(msg);
 			exit(1);
 		}
 #endif
 	}
 
+	template <class T>
+	constexpr auto fmt(std::ostringstream &out, T &&arg) -> str
+	{
+		out << arg << std::endl;
+		return out.str();
+	}
+
+	template <class TFirst, class... TArgs>
+	constexpr auto fmt(std::ostringstream &out, TFirst &&first, TArgs&& ...args) -> str
+	{
+		out << first;
+		return fmt(out, std::forward<TArgs>(args)...);
+	}
+
 	template <class... TArgs>
-	constexpr void asrt(const std::function<bool()> &condition, TArgs ... msgArgs)
+	constexpr auto fmt(TArgs&& ...args) -> str
+	{
+		std::ostringstream out;
+		return fmt(out, std::forward<TArgs>(args)...);
+	}
+
+	template <class... TArgs>
+	constexpr void asrt(const std::function<bool()> &condition, TArgs&& ...msgArgs)
 	{
 #ifdef SL_DEBUG
-		asrt(condition(), msgArgs...);
+		asrt(condition(), std::forward<TArgs>(msgArgs)...);
 #endif
 	}
 
@@ -106,17 +127,17 @@ namespace solo
 	}
 
 	template <class... TArgs>
-	constexpr void panic(TArgs ...args)
+	constexpr void panic(TArgs&& ...args)
 	{
-		const auto msg = Formatter()(args...);
+		const auto msg = fmt(std::forward<TArgs>(args)...);
 		Logger::global().logCritical(msg);
 		exit(1);
 	}
 
 	template <class... TArgs>
-	constexpr void panicIf(bool condition, TArgs ...args)
+	constexpr void panicIf(bool condition, TArgs&& ...args)
 	{
 		if (condition)
-			panic(args...);
+			panic(std::forward<TArgs>(args)...);
 	}
 }

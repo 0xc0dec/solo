@@ -68,7 +68,7 @@ void LuaScriptRuntime::execFile(const str& path)
     if (lua_.loadFile(path.c_str()))
     {
         const auto msg = lua_.getString(-1);
-    	Logger::global().logError(Formatter()("Script failed to load: ", msg));
+    	Logger::global().logError(fmt("Script failed to load: ", msg));
     }
 
     // TODO use FileSystem to read the file

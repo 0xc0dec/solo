@@ -188,7 +188,7 @@ void applyMaterial(Material *material)
 OpenGLRenderer::OpenGLRenderer(Device *)
 {
 	const auto ver = version();
-    name_ = SL_FMT("OpenGL ", ver.first, ".", ver.second);
+    name_ = fmt("OpenGL ", ver.first, ".", ver.second);
     panicIf(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
 }
 
