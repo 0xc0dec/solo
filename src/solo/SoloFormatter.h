@@ -20,10 +20,10 @@ namespace solo
         }
 
         template <class TFirst, class... TRest>
-        auto operator()(TFirst first, TRest... rest)
+        auto operator()(TFirst &&first, TRest&&... rest)
         {
             buf_ << first;
-            return operator()(rest...);
+            return operator()(std::forward<TRest>(rest)...);
         }
 
     private:
