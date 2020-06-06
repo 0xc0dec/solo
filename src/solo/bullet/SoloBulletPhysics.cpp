@@ -55,18 +55,18 @@ auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<Ra
 
     btCollisionWorld::AllHitsRayResultCallback callback(btFrom, btTo);
     world_->rayTest(btFrom, btTo, callback);
-    const auto size = callback.m_collisionObjects.size();
-    if (size == 0)
+    const auto count = callback.m_collisionObjects.size();
+    if (!count)
         return {};
 
     auto result = vec<RayTestResult>();
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < count; i++)
     {
         const auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObjects[i]);
         if (body)
         {
             const auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
-            result.push_back(RayTestResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i])));
+            result.emplace_back(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i]));
         }
     }
 
