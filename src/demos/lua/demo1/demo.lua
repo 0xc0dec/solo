@@ -92,8 +92,12 @@ function demo()
         return createStaticColliderMesh("meshes/backdrop.obj", material)
     end
 
-    function createTeapot(mat)
-        local context = createStaticColliderMesh("meshes/teapot.obj", mat)
+    function createHouse(material)
+        return createStaticColliderMesh('meshes/house.obj', material)
+    end
+
+    function createTeapot(material)
+        local context = createStaticColliderMesh("meshes/teapot.obj", material)
         context.transform:setLocalPosition(vec3(3, 0, -3))
     end
 
@@ -149,26 +153,26 @@ function demo()
     spawnedObjMat:setTextureParameter('normalMap', assetCache.textures.texture2.normal)
     local mainCamera = createSpectatorCamera(spawnedObjMat)
 
-    -- local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
-    -- local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)
-    -- ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
-    -- ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0),
-    --     sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
+    local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
+    local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)
+    ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
+    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0),
+        sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
 
-    -- mainCamera.node:addScriptComponent(ppControlPanel.cmp)
+    mainCamera.node:addScriptComponent(ppControlPanel.cmp)
 
     local skybox = createSkybox(scene, assetCache)
-    -- local backdrop = createBackdrop(shadowedMat)
     
-    -- local dynamicQuad = createDynamicQuad(scene, assetCache)
-    -- dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
+    local dynamicQuad = createDynamicQuad(scene, assetCache)
+    dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
-    local teapot = createTeapot(nil)
+    local checkerBox = createCheckerBox(scene, assetCache)
+    checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
 
-    -- local checkerBox = createCheckerBox(scene, assetCache)
-    -- checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
-
-    -- createAxes()
+    createAxes()
+    createTeapot(shadowedMat)
+    createBackdrop(shadowedMat)
+    createHouse(shadowedMat)
 
     ---
 
