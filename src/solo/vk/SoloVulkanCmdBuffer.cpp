@@ -174,8 +174,8 @@ auto VulkanCmdBuffer::blit(VkImage src, VkImage dst, VkImageLayout srcLayout, Vk
     const VkImageBlit &blit, VkFilter filter) -> VulkanCmdBuffer&
 {
     vkCmdBlitImage(handle_,
-        src, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-        dst, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        src, srcLayout,
+        dst, dstLayout,
         1, &blit,
         filter);
     return *this;
