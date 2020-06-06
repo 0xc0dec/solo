@@ -5,7 +5,7 @@
 
 local tags = require "tags"
 
-local getImagePath = function(fileName)
+local texturePath = function(fileName)
     return assetPath("textures/skyboxes/deep-space/") .. fileName
 end
 
@@ -29,9 +29,9 @@ return function(scene, assetCache)
     renderer:setMaterial(0, material)
 
     sl.CubeTexture.fromFaceFilesAsync(sl.device,
-        getImagePath("+x.png"), getImagePath("-x.png"),
-        getImagePath("+y.png"), getImagePath("-y.png"),
-        getImagePath("+z.png"), getImagePath("-z.png")
+        texturePath("+x.png"), texturePath("-x.png"),
+        texturePath("+y.png"), texturePath("-y.png"),
+        texturePath("+z.png"), texturePath("-z.png")
     ):done(function(tex)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
         material:setTextureParameter("colorMap", tex)
