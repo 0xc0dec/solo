@@ -43,19 +43,19 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 }
 
 VulkanRenderer::VulkanRenderer(Device *device):
-    engineDevice_(device)
+    device_(device)
 {
     const auto vkDevice = dynamic_cast<VulkanDevice*>(device);
     const auto instance = vkDevice->instance();
     const auto surface = vkDevice->surface();
     const auto canvasSize = device->canvasSize();
 
-    device_ = VulkanDriverDevice(instance, surface);
-    swapchain_ = VulkanSwapchain(device_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
+    driverDevice_ = VulkanDriverDevice(instance, surface);
+    swapchain_ = VulkanSwapchain(driverDevice_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
 		device->isVsync());
 
-	debugInterfaceContext.completeSemaphore = vk::createSemaphore(device_);
-	debugInterfaceContext.renderCmdBuffer = VulkanCmdBuffer(device_);
+	context_.debugInterface.completeSemaphore = vk::createSemaphore(driverDevice_);
+	context_.debugInterface.renderCmdBuffer = VulkanCmdBuffer(driverDevice_);
 }
 
 void VulkanRenderer::beginCamera(Camera *camera)
@@ -63,62 +63,62 @@ void VulkanRenderer::beginCamera(Camera *camera)
 	const auto renderTarget = camera->renderTarget().get();
 	const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer*>(renderTarget);
     const auto currentFrameBuffer = targetFrameBuffer ? targetFrameBuffer->handle() : swapchain_.currentFrameBuffer();
-    const auto dimensions = targetFrameBuffer ? targetFrameBuffer->dimensions() : engineDevice_->canvasSize();
+    const auto dimensions = targetFrameBuffer ? targetFrameBuffer->dimensions() : device_->canvasSize();
 
-	currentCamera_ = camera;
-	currentRenderPass_ = targetFrameBuffer ? &targetFrameBuffer->renderPass() : &swapchain_.renderPass();
+	context_.camera = camera;
+	context_.renderPass = targetFrameBuffer ? &targetFrameBuffer->renderPass() : &swapchain_.renderPass();
 	
-    if (!renderPassContexts_.count(currentRenderPass_))
+    if (!renderPassContexts_.count(context_.renderPass))
     {
-        renderPassContexts_[currentRenderPass_].cmdBuf = VulkanCmdBuffer(device_);
-        renderPassContexts_[currentRenderPass_].completeSemaphore = vk::createSemaphore(device_);
+        renderPassContexts_[context_.renderPass].cmdBuf = VulkanCmdBuffer(driverDevice_);
+        renderPassContexts_[context_.renderPass].completeSemaphore = vk::createSemaphore(driverDevice_);
     }
 
-    auto &passContext = renderPassContexts_.at(currentRenderPass_);
-    passContext.frameOfLastUse = frame_;
+    auto &passContext = renderPassContexts_.at(context_.renderPass);
+    passContext.frameOfLastUse = frameNr_;
     
-    currentCmdBuffer_ = &passContext.cmdBuf;
-    currentCmdBuffer_->begin(false);
+    context_.cmdBuffer = &passContext.cmdBuf;
+    context_.cmdBuffer->begin(false);
 
-    currentCmdBuffer_->beginRenderPass(*currentRenderPass_, currentFrameBuffer,
+    context_.cmdBuffer->beginRenderPass(*context_.renderPass, currentFrameBuffer,
         static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()));
 
-    if (currentCamera_->hasColorClearing())
+    if (context_.camera->hasColorClearing())
     {
         const VkClearRect clearRect{{{0, 0}, {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())}}, 0, 1};
-        auto clearColor = currentCamera_->clearColor();
+        auto clearColor = context_.camera->clearColor();
         const VkClearValue clearValue{{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
         const auto clearCount = renderTarget
             ? dynamic_cast<VulkanFrameBuffer*>(renderTarget)->colorAttachmentCount()
             : 1;
         for (u32 i = 0; i < clearCount; i++)
-            currentCmdBuffer_->clearColorAttachment(i, clearValue, clearRect);
+            context_.cmdBuffer->clearColorAttachment(i, clearValue, clearRect);
     }
 
-    const auto viewport = currentCamera_->viewport();
-    currentCmdBuffer_->setViewport(viewport, 0, 1);
-    currentCmdBuffer_->setScissor(viewport);
+    const auto viewport = context_.camera->viewport();
+    context_.cmdBuffer->setViewport(viewport, 0, 1);
+    context_.cmdBuffer->setScissor(viewport);
 }
 
 void VulkanRenderer::endCamera(Camera *)
 {
-	auto &ctx = renderPassContexts_.at(currentRenderPass_);
+	auto &ctx = renderPassContexts_.at(context_.renderPass);
     ctx.cmdBuf.endRenderPass();
     ctx.cmdBuf.end();
 
-    vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &ctx.completeSemaphore, 1, ctx.cmdBuf);
-    vk::assertResult(vkQueueWaitIdle(device_.queue()));
+    vk::queueSubmit(driverDevice_.queue(), 1, &context_.waitSemaphore, 1, &ctx.completeSemaphore, 1, ctx.cmdBuf);
+    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
-    prevSemaphore_ = ctx.completeSemaphore;
+    context_.waitSemaphore = ctx.completeSemaphore;
 
-    currentCamera_ = nullptr;
+    context_.camera = nullptr;
 }
 
 void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
 {
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
     bindPipelineAndMesh(material, transform, mesh);
-    currentCmdBuffer_->draw(vkMesh->minVertexCount(), 1, 0, 0);
+    context_.cmdBuffer->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material)
@@ -127,13 +127,13 @@ void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     bindPipelineAndMesh(material, transform, mesh);
     const auto indexBuffer = vkMesh->indexBuffer(index);
 	const auto indexType = toIndexType(mesh->indexBufferElementSize(index));
-    currentCmdBuffer_->bindIndexBuffer(indexBuffer, 0, indexType);
-    currentCmdBuffer_->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
+    context_.cmdBuffer->bindIndexBuffer(indexBuffer, 0, indexType);
+    context_.cmdBuffer->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
 }
 
 void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface)
 {
-	debugInterfaceContext.debugInterface = dynamic_cast<VulkanDebugInterface*>(debugInterface);
+	context_.debugInterface.debugInterface = dynamic_cast<VulkanDebugInterface*>(debugInterface);
 }
 
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
@@ -141,71 +141,71 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
     const auto vkMaterial = dynamic_cast<VulkanMaterial*>(material);
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
 
-	const auto key = contextKey(transform, currentCamera_, vkMaterial, currentRenderPass_->handle());
+	const auto key = contextKey(transform, context_.camera, vkMaterial, context_.renderPass->handle());
 	if (!pipelineContexts_.count(key))
-		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&device_, key)));
+		pipelineContexts_.emplace(std::make_pair(key, VulkanPipelineContext(&driverDevice_, key)));
 
 	auto &context = pipelineContexts_.at(key);
-	context.setFrameOfLastUse(frame_);
+	context.setFrameOfLastUse(frameNr_);
     
-    if (currentPipelineContextKey_ != context.key())
+    if (context_.pipelineContextKey != context.key())
     {
-    	context.update(vkMaterial, vkMesh, currentRenderPass_, currentCamera_, transform);
-        currentCmdBuffer_->bindPipeline(context.pipeline());
-        currentCmdBuffer_->bindDescriptorSet(context.pipeline().layout(), context.descriptorSet());
-        currentPipelineContextKey_ = context.key();
+    	context.update(vkMaterial, vkMesh, context_.renderPass, context_.camera, transform);
+        context_.cmdBuffer->bindPipeline(context.pipeline());
+        context_.cmdBuffer->bindDescriptorSet(context.pipeline().layout(), context.descriptorSet());
+        context_.pipelineContextKey = context.key();
     }
 
     // TODO don't rebind an already bound mesh (for instance when we render mesh indexes)
     for (u32 i = 0; i < vkMesh->vertexBufferCount(); i++)
-        currentCmdBuffer_->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
+        context_.cmdBuffer->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
 }
 
 void VulkanRenderer::beginFrame()
 {
-    frame_++;
-    currentCamera_ = nullptr;
-    currentRenderPass_ = nullptr;
-    currentCmdBuffer_ = nullptr;
-    currentPipelineContextKey_ = 0;
-	debugInterfaceContext.debugInterface = nullptr;
-    prevSemaphore_ = swapchain_.moveNext();
+    frameNr_++;
+    context_.camera = nullptr;
+    context_.renderPass = nullptr;
+    context_.cmdBuffer = nullptr;
+    context_.pipelineContextKey = 0;
+	context_.debugInterface.debugInterface = nullptr;
+    context_.waitSemaphore = swapchain_.moveNext();
 }
 
 void VulkanRenderer::endFrame()
 {
 	// TODO extract function
-	if (debugInterfaceContext.debugInterface)
+	if (context_.debugInterface.debugInterface)
 	{
-		debugInterfaceContext.renderCmdBuffer.begin(false);
+		context_.debugInterface.renderCmdBuffer.begin(false);
 
-		const auto canvasSize = engineDevice_->canvasSize();
+		const auto canvasSize = device_->canvasSize();
 		
-		debugInterfaceContext.renderCmdBuffer.beginRenderPass(
-			debugInterfaceContext.debugInterface->renderPass(),
+		context_.debugInterface.renderCmdBuffer.beginRenderPass(
+			context_.debugInterface.debugInterface->renderPass(),
 			swapchain_.currentFrameBuffer(),
 			canvasSize.x(), canvasSize.y());
 		
 		const auto viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
-		debugInterfaceContext.renderCmdBuffer.setViewport(viewport, 0, 1);
-		debugInterfaceContext.renderCmdBuffer.setScissor(viewport);
+		context_.debugInterface.renderCmdBuffer.setViewport(viewport, 0, 1);
+		context_.debugInterface.renderCmdBuffer.setScissor(viewport);
 
-		debugInterfaceContext.debugInterface->renderInto(debugInterfaceContext.renderCmdBuffer);
+		context_.debugInterface.debugInterface->renderInto(context_.debugInterface.renderCmdBuffer);
 
-		debugInterfaceContext.renderCmdBuffer.endRenderPass();
-		debugInterfaceContext.renderCmdBuffer.end();
+		context_.debugInterface.renderCmdBuffer.endRenderPass();
+		context_.debugInterface.renderCmdBuffer.end();
 
-		vk::queueSubmit(device_.queue(), 1, &prevSemaphore_, 1, &debugInterfaceContext.completeSemaphore, 1, debugInterfaceContext.renderCmdBuffer);
-	    vk::assertResult(vkQueueWaitIdle(device_.queue()));
+		vk::queueSubmit(driverDevice_.queue(), 1, &context_.waitSemaphore, 1, &context_.debugInterface.completeSemaphore, 1, context_.debugInterface.renderCmdBuffer);
+	    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
-		prevSemaphore_ = debugInterfaceContext.completeSemaphore;
+		context_.waitSemaphore = context_.debugInterface.completeSemaphore;
 	}
 	
-	swapchain_.present(device_.queue(), 1, &prevSemaphore_);
-    vk::assertResult(vkQueueWaitIdle(device_.queue()));
+	swapchain_.present(driverDevice_.queue(), 1, &context_.waitSemaphore);
+    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
     // TODO Naive cleanup, need better
-    if (frame_ % 100 == 0)
+    if (frameNr_ % 100 == 0)
     {
         cleanupUnusedPipelineContexts();
         cleanupUnusedRenderPassContexts();
@@ -221,7 +221,7 @@ void VulkanRenderer::cleanupUnusedRenderPassContexts()
         VulkanRenderPass* key = nullptr;
         for (const auto &p: renderPassContexts_)
         {
-	        if (frame_ - p.second.frameOfLastUse >= 100)
+	        if (frameNr_ - p.second.frameOfLastUse >= 100)
             {
                 key = p.first;
                 removed = true;
@@ -242,7 +242,7 @@ void VulkanRenderer::cleanupUnusedPipelineContexts()
         size_t key = 0;
         for (const auto &p: pipelineContexts_)
         {
-	        if (frame_ - p.second.frameOfLastUse() >= 100)
+	        if (frameNr_ - p.second.frameOfLastUse() >= 100)
             {
                 key = p.first;
                 removed = true;

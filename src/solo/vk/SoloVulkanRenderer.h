@@ -18,70 +18,69 @@
 
 namespace solo
 {
-    class Device;
-    class Camera;
-    class VulkanMesh;
-    class VulkanMaterial;
+	class Device;
+	class Camera;
+	class VulkanMesh;
+	class VulkanMaterial;
 	class VulkanDebugInterface;
 
-    class VulkanRenderer final : public Renderer
-    {
-    public:
-        explicit VulkanRenderer(Device *device);
-        ~VulkanRenderer() = default;
+	class VulkanRenderer final: public Renderer
+	{
+	public:
+		explicit VulkanRenderer(Device *device);
+		~VulkanRenderer() = default;
 
-        void beginCamera(Camera *camera) override;
-        void endCamera(Camera *camera) override;
-        void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
-        void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
-        void renderDebugInterface(DebugInterface *debugInterface) override;
-    	
-        auto name() const -> const char* override { return "Vulkan"; }
-        auto gpuName() const -> const char* override { return device_.gpuName(); }
+		void beginCamera(Camera *camera) override;
+		void endCamera(Camera *camera) override;
+		void renderMesh(Mesh *mesh, Transform *transform, Material *material) override;
+		void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
+		void renderDebugInterface(DebugInterface *debugInterface) override;
 
-        auto device() const -> const VulkanDriverDevice& { return device_; }
-    	auto swapchain() -> VulkanSwapchain& { return swapchain_; }
+		auto name() const -> const char* override { return "Vulkan"; }
+		auto gpuName() const -> const char* override { return driverDevice_.gpuName(); }
 
-    protected:
-        void beginFrame() override;
-        void endFrame() override;
-    	
-    private:
-        Device *engineDevice_ = nullptr;
-    	
-        VulkanDriverDevice device_;
-        VulkanSwapchain swapchain_;
+		auto device() const -> const VulkanDriverDevice& { return driverDevice_; }
+		auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
-        struct RenderPassContext
-        {
-            VulkanResource<VkSemaphore> completeSemaphore;
-            VulkanCmdBuffer cmdBuf;
-            u32 frameOfLastUse = 0;
-        };
+	protected:
+		void beginFrame() override;
+		void endFrame() override;
 
-    	struct
-    	{
-    		VulkanDebugInterface *debugInterface = nullptr;
-    		VulkanCmdBuffer renderCmdBuffer;
-    		VulkanResource<VkSemaphore> completeSemaphore;
-    	} debugInterfaceContext;
+	private:
+		struct RenderPassContext
+		{
+			VulkanResource<VkSemaphore> completeSemaphore;
+			VulkanCmdBuffer cmdBuf;
+			u32 frameOfLastUse = 0;
+		};
 
-        u32 frame_ = 0;
+		struct
+		{
+			Camera *camera = nullptr;
+			VulkanRenderPass *renderPass = nullptr;
+			VulkanCmdBuffer *cmdBuffer = nullptr;
+			VkSemaphore waitSemaphore = nullptr;
+			size_t pipelineContextKey = 0;
 
-        umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
-    	umap<size_t, VulkanPipelineContext> pipelineContexts_;
+			struct
+			{
+				VulkanDebugInterface *debugInterface = nullptr;
+				VulkanCmdBuffer renderCmdBuffer;
+				VulkanResource<VkSemaphore> completeSemaphore;
+			} debugInterface;
+		} context_;
 
-    	// TODO Introduce "frame" struct serving as state
-        Camera *currentCamera_ = nullptr;
-        VulkanRenderPass *currentRenderPass_ = nullptr;
-        VulkanCmdBuffer *currentCmdBuffer_ = nullptr;
-        VkSemaphore prevSemaphore_ = nullptr;
-        size_t currentPipelineContextKey_ = 0;
+		Device *device_ = nullptr;
+		VulkanDriverDevice driverDevice_;
+		VulkanSwapchain swapchain_;
+		u32 frameNr_ = 0;
+		umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
+		umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
-        void bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh);
-        void cleanupUnusedRenderPassContexts();
-        void cleanupUnusedPipelineContexts();
-    };
+		void bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh);
+		void cleanupUnusedRenderPassContexts();
+		void cleanupUnusedPipelineContexts();
+	};
 }
 
 #endif
