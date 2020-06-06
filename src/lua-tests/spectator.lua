@@ -9,6 +9,3 @@ assert(spectator:movementSpeed() == 123)
 
 spectator:setMouseSensitivity(123)
 assert(spectator:mouseSensitivity() == 123)
-
-spectator:setRotationAcceleration(123)
-assert(spectator:rotationAcceleration() == 123)

@@ -88,8 +88,6 @@ void registerMiscApi(CppBindModule<LuaBinding> &module)
 		REG_METHOD(b, Spectator, setMovementSpeed);
 		REG_METHOD(b, Spectator, mouseSensitivity);
 		REG_METHOD(b, Spectator, setMouseSensitivity);
-		REG_METHOD(b, Spectator, rotationAcceleration);
-		REG_METHOD(b, Spectator, setRotationAcceleration);
 		REG_PTR_EQUALITY(b, Spectator);
 	}
 

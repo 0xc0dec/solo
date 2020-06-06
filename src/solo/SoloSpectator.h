@@ -26,15 +26,11 @@ namespace solo
         auto mouseSensitivity() const -> float { return mouseSensitivity_; }
         void setMouseSensitivity(float sensitivity) { mouseSensitivity_ = sensitivity; }
 
-        auto rotationAcceleration() const -> float { return rotationAcceleration_; }
-        void setRotationAcceleration(float acceleration) { rotationAcceleration_ = acceleration;  }
-
     private:
         Device *device_ = nullptr;
         Transform *transform_ = nullptr;
 
         float mouseSensitivity_ = 0.002f;
-        float rotationAcceleration_ = 20;
         float movementSpeed_ = 10;
     };
 }
