@@ -52,7 +52,7 @@ namespace solo
     template <class... Args>
     auto NodeHelper<RigidBody>::addComponent(Scene *scene, u32 nodeId, Args &&...args) -> RigidBody*
     {
-        auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
+	    const auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
         return body.get();
     }
