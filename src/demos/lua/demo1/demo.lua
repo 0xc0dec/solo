@@ -196,15 +196,20 @@ function demo()
         windowCfg.decoration = false
         windowCfg.alpha = 0.5
 
+        local canvasSize = sl.device:canvasSize()
+        local dpiIndepCanvasSize = sl.device:dpiIndependentCanvasSize()
+        local canvasSizeNote1 = 'Canvas size: (' .. canvasSize.x .. ', ' .. canvasSize.y .. ')\n'
+        local canvasSizeNote2 = 'DPI-independent canvas size: (' .. dpiIndepCanvasSize.x .. ', ' .. dpiIndepCanvasSize.y .. ')\n'
+
         ui:renderWindow(windowCfg, function()
-            ui:renderText(
-[[
+            local text = canvasSizeNote1 .. canvasSizeNote2 .. [[
 Controls:
     Hold RMB - rotate camera
     W, A, S, D, Q, E - move camera
     Space - spawn a box
     G - grab/drop an object
-]])        
+]]
+            ui:renderText(text)
         end)
     end
 
