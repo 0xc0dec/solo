@@ -42,10 +42,6 @@ namespace solo
 		auto device() const -> const VulkanDriverDevice& { return driverDevice_; }
 		auto swapchain() -> VulkanSwapchain& { return swapchain_; }
 
-	protected:
-		void beginFrame() override;
-		void endFrame() override;
-
 	private:
 		struct RenderPassContext
 		{
@@ -77,6 +73,8 @@ namespace solo
 		umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
 		umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
+		void beginFrame() override;
+		void endFrame() override;
 		void bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh);
 		void cleanupUnusedRenderPassContexts();
 		void cleanupUnusedPipelineContexts();
