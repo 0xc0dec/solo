@@ -33,21 +33,19 @@ void MeshRenderer::render()
     if (!indexCount)
     {
         const auto mat = material(0);
-        if (mat)
-            renderer_->renderMesh(mesh_.get(), transform_, mat.get());
+        renderer_->renderMesh(mesh_.get(), transform_, mat.get());
     }
     else
     {
         for (u32 index = 0; index < indexCount; ++index)
         {
             const auto mat = material(index);
-            if (mat)
-                renderer_->renderMeshIndex(mesh_.get(), index, transform_, mat.get());
+            renderer_->renderMeshIndex(mesh_.get(), index, transform_, mat.get());
         }
     }
 }
 
-void MeshRenderer::setMaterial(u32 index, sptr<Material> material)
+void MeshRenderer::setMaterial(u32 index, const sptr<Material> &material)
 {
     if (index >= materials_.size())
         materials_.resize(index + 1);
@@ -62,7 +60,7 @@ void MeshRenderer::setMaterial(u32 index, sptr<Material> material)
     // TODO compaction when tail elements are all null
 }
 
-void MeshRenderer::setDefaultMaterial(sptr<Material> material)
+void MeshRenderer::setDefaultMaterial(const sptr<Material> &material)
 {
     defaultMaterial_ = material;
 }

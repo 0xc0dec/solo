@@ -41,9 +41,14 @@ namespace solo
         void renderFrame(const std::function<void()> &render);
 
     protected:
-        Renderer() = default;
+        Renderer(Device *device);
 
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
+
+    	auto errorMaterial() const -> Material* { return errorMaterial_.get(); }
+
+    private:
+    	sptr<Material> errorMaterial_;
     };
 }

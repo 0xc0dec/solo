@@ -30,7 +30,7 @@ return function(assetCache, physics)
                 local renderer = hitNode:findComponent("MeshRenderer")
                 local material = renderer:material(0)
 
-                if material:effect() == supportedEffect then
+                if material and material:effect() == supportedEffect then
                     self.lastNode = hitNode
                     self.lastRenderer = renderer
                     self.lastMaterial = material

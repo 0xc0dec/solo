@@ -43,6 +43,7 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 }
 
 VulkanRenderer::VulkanRenderer(Device *device):
+	Renderer(device),
     device_(device)
 {
     const auto vkDevice = dynamic_cast<VulkanDevice*>(device);
@@ -116,15 +117,21 @@ void VulkanRenderer::endCamera(Camera *)
 
 void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
 {
+	material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
+	
     bindPipelineAndMesh(material, transform, mesh);
+	
     context_.cmdBuffer->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
 void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material)
 {
+	material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh*>(mesh);
+	
     bindPipelineAndMesh(material, transform, mesh);
+	
     const auto indexBuffer = vkMesh->indexBuffer(index);
 	const auto indexType = toIndexType(mesh->indexBufferElementSize(index));
     context_.cmdBuffer->bindIndexBuffer(indexBuffer, 0, indexType);
