@@ -64,7 +64,7 @@ namespace solo
 
 			struct
 			{
-				VulkanDebugInterface *debugInterface = nullptr;
+				VulkanDebugInterface *instance = nullptr;
 				VulkanCmdBuffer renderCmdBuffer;
 				VulkanResource<VkSemaphore> completeSemaphore;
 			} debugInterface;

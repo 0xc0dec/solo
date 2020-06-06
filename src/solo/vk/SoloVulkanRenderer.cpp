@@ -133,7 +133,7 @@ void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
 
 void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface)
 {
-	context_.debugInterface.debugInterface = dynamic_cast<VulkanDebugInterface*>(debugInterface);
+	context_.debugInterface.instance = dynamic_cast<VulkanDebugInterface*>(debugInterface);
 }
 
 void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
@@ -168,21 +168,21 @@ void VulkanRenderer::beginFrame()
     context_.renderPass = nullptr;
     context_.cmdBuffer = nullptr;
     context_.pipelineContextKey = 0;
-	context_.debugInterface.debugInterface = nullptr;
+	context_.debugInterface.instance = nullptr;
     context_.waitSemaphore = swapchain_.moveNext();
 }
 
 void VulkanRenderer::endFrame()
 {
 	// TODO extract function
-	if (context_.debugInterface.debugInterface)
+	if (context_.debugInterface.instance)
 	{
 		context_.debugInterface.renderCmdBuffer.begin(false);
 
 		const auto canvasSize = device_->canvasSize();
 		
 		context_.debugInterface.renderCmdBuffer.beginRenderPass(
-			context_.debugInterface.debugInterface->renderPass(),
+			context_.debugInterface.instance->renderPass(),
 			swapchain_.currentFrameBuffer(),
 			canvasSize.x(), canvasSize.y());
 		
@@ -190,7 +190,7 @@ void VulkanRenderer::endFrame()
 		context_.debugInterface.renderCmdBuffer.setViewport(viewport, 0, 1);
 		context_.debugInterface.renderCmdBuffer.setScissor(viewport);
 
-		context_.debugInterface.debugInterface->renderInto(context_.debugInterface.renderCmdBuffer);
+		context_.debugInterface.instance->renderInto(context_.debugInterface.renderCmdBuffer);
 
 		context_.debugInterface.renderCmdBuffer.endRenderPass();
 		context_.debugInterface.renderCmdBuffer.end();
