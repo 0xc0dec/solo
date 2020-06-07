@@ -9,9 +9,6 @@ sl.includeDir('../../../src/demos/lua/common')
 require 'common'
 
 function demo()
-    local fs = sl.device:fileSystem()
-    local physics = sl.device:physics()
-    local renderer = sl.device:renderer()
     local scene = sl.Scene.empty(sl.device)
     local ui = sl.device:debugInterface()
 
@@ -70,7 +67,7 @@ function demo()
         local camera, node = createMainCamera(scene)
         node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
         node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-        node:addScriptComponent(createTracer(sl.device, scene, physics, assetCache))
+        node:addScriptComponent(createTracer(scene, assetCache))
         node:addScriptComponent(createSpawner(assetCache, shadowedMat))
         node:addScriptComponent(createGrabber())
 

@@ -3,13 +3,13 @@
 -- MIT license
 -- 
 
-return function(dev, scene, physics, assetCache)
+return function(scene, assetCache)
     function createTargetMesh()
         local node = scene:createNode()
 
         local eff = assetCache.effect("color")
 
-        local mat = sl.Material.fromEffect(dev, eff)
+        local mat = sl.Material.fromEffect(sl.device, eff)
         mat:setFaceCull(sl.FaceCull.None)
         mat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
         mat:setVector4Parameter("variables:color", vec4(1, 0, 0, 1))
@@ -24,7 +24,7 @@ return function(dev, scene, physics, assetCache)
         layout:addAttribute(sl.VertexAttributeUsage.Position)
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
-        sl.Mesh.fromFileAsync(dev, assetPath("meshes/box.dae"), layout)
+        sl.Mesh.fromFileAsync(sl.device, assetPath("meshes/box.dae"), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
@@ -57,7 +57,7 @@ return function(dev, scene, physics, assetCache)
             local ray = self.camera:windowPointToWorldRay(mousePos)
             local from = ray:origin()
             local to = from + ray:direction() * 100
-            local hitResult = physics:rayTestFirst(from, to)
+            local hitResult = sl.device:physics():rayTestFirst(from, to)
             if hitResult.body then
                 self.hitNode = hitResult.body:node()
                 self.target.transform:setLocalPosition(hitResult.point)
