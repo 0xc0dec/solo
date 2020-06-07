@@ -3,19 +3,15 @@
 -- MIT license
 -- 
 
-return function(assetCache)
-    local layout = sl.VertexBufferLayout()
-    layout:addAttribute(sl.VertexAttributeUsage.Position)
-    local mesh = sl.Mesh.fromFile(sl.device, assetPath("meshes/axes.obj"), layout)
+local createRotator = require 'rotator'
+local createLookAt = require 'look-at'
 
-    local effect = assetCache.effect("color")
-
-    local createColorMaterial = function(color)
-        local mat = sl.Material.fromEffect(sl.device, effect)
+return function(assetCache, scene)
+    function createColorMaterial(color)
+        local mat = sl.Material.fromEffect(sl.device, assetCache.effect('color'))
         mat:setFaceCull(sl.FaceCull.None)
-        mat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
-        mat:setVector4Parameter("variables:color", color)
-
+        mat:bindParameter('matrices:wvp', sl.ParameterBinding.WorldViewProjectionMatrix)
+        mat:setVector4Parameter('variables:color', color)
         return mat
     end
 
@@ -26,12 +22,32 @@ return function(assetCache)
         white = createColorMaterial(vec4(1, 1, 1, 1))
     }
 
-    return function(node)
-        local renderer = node:addComponent("MeshRenderer")
-        renderer:setMesh(mesh)
+    function createAxesNode()
+        local node = scene:createNode()
+        local renderer = node:addComponent('MeshRenderer')
+        renderer:setMesh(assetCache.meshes.axes())
         renderer:setMaterial(0, materials.blue)
         renderer:setMaterial(1, materials.green)
         renderer:setMaterial(2, materials.white)
         renderer:setMaterial(3, materials.red)
+        return node
+    end
+
+    function createLookAtAxesNode(parentTransform, pos, target)
+        local node = createAxesNode()
+        local transform = node:findComponent('Transform')
+        transform:setParent(parentTransform)
+        transform:setLocalPosition(pos)
+        node:addScriptComponent(createLookAt(target))
+    end
+
+    return function()
+        local rootNode = createAxesNode()
+        local rootNodeTr = rootNode:findComponent('Transform')
+        rootNode:addScriptComponent(createRotator('world', vec3(0, 1, 0), 1))
+
+        createLookAtAxesNode(rootNodeTr, vec3(4, 4, 4), vec3(3, 0, -3))
+        createLookAtAxesNode(rootNodeTr, vec3(-4, 4, 4), vec3(-3, 1, 3))
+        createLookAtAxesNode(rootNodeTr, vec3(4, 4, -4), vec3(3, 1, 3))
     end
 end

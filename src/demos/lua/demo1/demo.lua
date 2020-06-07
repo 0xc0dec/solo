@@ -26,7 +26,7 @@ function demo()
     local createSpawner = require 'spawner'
     local createCheckerBox = require 'checker-box'
     local createDynamicQuad = require 'dynamic-quad'
-    local attachAxes = (require 'axes')(assetCache)
+    local createAxes = (require 'axes')(assetCache, scene)
     local createLookAt = require 'look-at'
     local createLightCamera = require 'light-camera'
     local createGrabber = require 'grabber'
@@ -34,26 +34,21 @@ function demo()
 
     ---
 
-    function createTracker(parentTransform, pos, target)
-        local node = scene:createNode()
-        local transform = node:findComponent('Transform')
-        transform:setParent(parentTransform)
-        transform:setLocalPosition(pos)
-        node:addScriptComponent(createLookAt(target))
-        attachAxes(node)
-    end
-
     function createBackdrop(material)
         return createStaticMesh('meshes/backdrop.obj', material)
-    end
-
-    function createHouse(material)
-        return createStaticMesh('meshes/house2.obj', material)
     end
 
     function createTeapot(material)
         local result = createStaticMesh('meshes/teapot.obj', material)
         result.transform:setLocalPosition(vec3(3, 0, -3))
+    end
+
+    function createHouse(srcMaterial)
+        local mat = srcMaterial:clone()
+        mat:setTextureParameter('colorMap', assetCache.textures.house.color)
+        mat:setTextureParameter('normalMap', assetCache.textures.house.normal)
+        local house = createStaticMesh('meshes/house.obj', mat)
+        house.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(-90), sl.TransformSpace.World)
     end
 
     function createShadowedMaterial(lightCam)
@@ -83,17 +78,6 @@ function demo()
             camera = camera,
             node = node
         }
-    end
-
-    function createAxes()
-        local rootNode = scene:createNode()
-        local rootTransform = rootNode:findComponent('Transform')
-        attachAxes(rootNode)
-        rootNode:addScriptComponent(createRotator('world', vec3(0, 1, 0), 1))
-
-        createTracker(rootTransform, vec3(4, 4, 4), vec3(3, 0, -3))
-        createTracker(rootTransform, vec3(-4, 4, 4), vec3(-3, 1, 3))
-        createTracker(rootTransform, vec3(4, 4, -4), vec3(3, 1, 3))
     end
 
     ---
