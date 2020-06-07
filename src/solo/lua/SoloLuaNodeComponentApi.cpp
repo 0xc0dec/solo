@@ -53,7 +53,7 @@ static void removeComponent(Node *node, const str &name)
 
 static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
 {
-    const auto cmp = node->scene()->findComponent(node->id(), typeId + LuaScriptComponent::MinTypeId);
+    const auto cmp = node->scene()->findComponent(node->id(), LuaScriptComponent::sanitizeTypeId(typeId));
     if (cmp)
     {
         const auto scriptCmp = dynamic_cast<LuaScriptComponent*>(cmp);
@@ -71,7 +71,7 @@ static auto addScriptComponent(Node *node, LuaRef ref) -> sptr<Component>
 
 static void removeScriptComponent(Node *node, const LuaRef& ref)
 {
-    const auto typeId = ref.get<u32>("typeId") + LuaScriptComponent::MinTypeId;
+    const auto typeId = LuaScriptComponent::sanitizeTypeId(ref.get<u32>("typeId"));
     node->scene()->removeComponent(node->id(), typeId);
 }
 

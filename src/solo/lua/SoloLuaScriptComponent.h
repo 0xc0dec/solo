@@ -15,9 +15,9 @@ namespace solo
     class LuaScriptComponent final : public ComponentBase<LuaScriptComponent>
     {
     public:
-        static const u32 MinTypeId = 1000000000; // Assume that built-in components don't ever exceed this limit
-
-        LuaScriptComponent(const Node& node, LuaRef scriptComponent);
+		static auto sanitizeTypeId(u32 typeId) -> u32 { return TYPE_ID_BASE + typeId; }
+    	
+        LuaScriptComponent(const Node& node, LuaRef ref);
 
         void init() override;
         void terminate() override;
@@ -29,6 +29,8 @@ namespace solo
         auto ref() const -> LuaRef { return ref_; }
 
     private:
+    	static const u32 TYPE_ID_BASE = 1000000000; // Assume that built-in components don't ever exceed this limit
+    	
         u32 typeId_;
         LuaRef ref_;
 

@@ -9,29 +9,29 @@
 
 using namespace solo;
 
-LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent):
+LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
     ComponentBase<LuaScriptComponent>(node),
-    ref_(scriptComponent)
+    ref_(ref)
 {
-    typeId_ = MinTypeId + scriptComponent.get<u32>("typeId");
+    typeId_ = sanitizeTypeId(ref.get<u32>("typeId"));
     
-    initFunc_ = scriptComponent.has("init")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("init")
-        : [](LuaRef) {};
+    initFunc_ = ref.has("init")
+        ? ref.get<std::function<void(LuaRef)>>("init")
+        : [](const LuaRef &) {};
     
-    updateFunc_ = scriptComponent.has("update")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("update")
-        : [](LuaRef) {};
+    updateFunc_ = ref.has("update")
+        ? ref.get<std::function<void(LuaRef)>>("update")
+        : [](const LuaRef &) {};
 
-    renderFunc_ = scriptComponent.has("render")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("render")
-        : [](LuaRef) {};
+    renderFunc_ = ref.has("render")
+        ? ref.get<std::function<void(LuaRef)>>("render")
+        : [](const LuaRef &) {};
     
-    terminateFunc_ = scriptComponent.has("terminate")
-        ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
-        : [](LuaRef) {};
+    terminateFunc_ = ref.has("terminate")
+        ? ref.get<std::function<void(LuaRef)>>("terminate")
+        : [](const LuaRef &) {};
     
-    scriptComponent.set("node", node);
+    ref.set("node", node);
 }
 
 void LuaScriptComponent::init()
