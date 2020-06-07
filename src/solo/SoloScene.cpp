@@ -108,7 +108,8 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &acce
     {
         for (const auto &cmp : node.second)
         {
-            if (!cmp.second.deleted && (cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
+            if (!cmp.second.deleted && cmp.second.component->enabled() &&
+				(cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
                 accept(cmp.second.component.get());
         }
     }

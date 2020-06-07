@@ -81,9 +81,11 @@ static void registerComponent(CppBindModule<LuaBinding> &module)
     REG_METHOD(component, Component, update);
     REG_METHOD(component, Component, render);
     REG_METHOD(component, Component, typeId);
-    REG_METHOD(component, Component, tag);
-    REG_METHOD(component, Component, setTag);
     REG_METHOD(component, Component, node);
+	REG_METHOD(component, Component, tag);
+    REG_METHOD(component, Component, setTag);
+	REG_METHOD(component, Component, enabled);
+    REG_METHOD(component, Component, setEnabled);
     component.endClass();
 }
 

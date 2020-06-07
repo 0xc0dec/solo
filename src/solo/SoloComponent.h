@@ -45,9 +45,13 @@ namespace solo
         auto tag() const -> u32 { return tag_; }
         void setTag(u32 tag) { this->tag_ = tag; }
 
+    	auto enabled() const -> bool { return enabled_; }
+    	void setEnabled(bool enabled) { enabled_ = enabled; }
+
     protected:
         Node node_;
         u32 tag_ = 1;
+    	bool enabled_ = true;
 
         explicit Component(const Node &node): node_(node)
         {
