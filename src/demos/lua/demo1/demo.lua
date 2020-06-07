@@ -28,7 +28,6 @@ function demo()
     local createDynamicQuad = require 'dynamic-quad'
     local attachAxes = (require 'axes')(assetCache)
     local createLookAt = require 'look-at'
-    local createHighlighter = require 'highlighter'
     local createLightCamera = require 'light-camera'
     local createGrabber = require 'grabber'
     local createStaticMesh = (require 'static-mesh')(scene)
@@ -60,7 +59,7 @@ function demo()
     function createShadowedMaterial(lightCam)
         local eff = assetCache.effect('shadowed')
         local mat = sl.Material.fromEffect(sl.device, eff)
-        mat:setFaceCull(sl.FaceCull.None)
+        mat:setFaceCull(sl.FaceCull.Back)
         mat:bindParameter('uniforms:wvp', sl.ParameterBinding.WorldViewProjectionMatrix)
         mat:bindParameter('uniforms:world', sl.ParameterBinding.WorldMatrix)
         mat:bindParameter('uniforms:camPos', sl.ParameterBinding.CameraWorldPosition)
@@ -69,7 +68,6 @@ function demo()
         mat:setTextureParameter('shadowMap', lightCam.depthTex)
         mat:bindMatrixParameter('uniforms:lightVp', function() return lightCam.camera:viewProjectionMatrix() end)
         mat:bindVector3Parameter('uniforms:lightDir', function() return lightCam.transform:worldForward() end)
-        mat:setFloatParameter('variables:highlighted', 0)
         return mat
     end
 
@@ -78,7 +76,6 @@ function demo()
         node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
         node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
         node:addScriptComponent(createTracer(sl.device, scene, physics, assetCache))
-        node:addScriptComponent(createHighlighter(assetCache, physics))
         node:addScriptComponent(createSpawner(assetCache, shadowedMat))
         node:addScriptComponent(createGrabber())
 

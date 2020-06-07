@@ -56,12 +56,6 @@
     },
 
     fragment = {
-        uniformBuffers = {
-            variables = {
-                highlighted = "float"
-            }
-        },
-
         samplers = {
             colorMap = "sampler2D",
             normalMap = "sampler2D",
@@ -127,13 +121,6 @@
                 vec3 specular = vec3(0.5) * min(pow(max(dot(n, halfwayDir), 0.0), 32.0), shadow);
 
                 fragColor = vec4(ambient + diffuse + specular, 1);
-
-                if (#variables:highlighted# > 0)
-                {
-                    float angleCos = abs(dot(viewDir, n));
-                    float rim = pow(1 - angleCos, 4);
-                    fragColor += vec4(1, 1, 0, 1) * rim;
-                }
             }
         ]]
     }
