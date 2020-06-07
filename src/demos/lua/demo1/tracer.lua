@@ -30,15 +30,7 @@ return function(scene, assetCache)
         return {
             node = node,
             transform = transform,
-            renderer = renderer,
-
-            show = function()
-                renderer:setMaterial(0, mat)
-            end,
-
-            hide = function()
-                renderer:setMaterial(0, nil)
-            end
+            renderer = renderer
         }
     end
 
@@ -48,7 +40,6 @@ return function(scene, assetCache)
             self.scene = self.node:scene()
             self.camera = self.node:findComponent('Camera')
             self.target = createTargetMesh()
-            self.target.hide()
         end,
 
         update = function(self)
@@ -61,10 +52,10 @@ return function(scene, assetCache)
             if hitResult.body then
                 self.hitNode = hitResult.body:node()
                 self.target.transform:setLocalPosition(hitResult.point)
-                self.target.show()
+                self.target.renderer:setEnabled(true)
             else
                 self.hitNode = nil
-                self.target.hide()
+                self.target.renderer:setEnabled(false)
             end
         end,
     });
