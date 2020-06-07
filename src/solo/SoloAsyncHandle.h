@@ -16,26 +16,19 @@ namespace solo
     public:
         void done(std::function<void(sptr<T>)> callback)
         {
-            if (callback && result_ && !invoked_)
-            {
+            if (callback && result_)
                 callback(result_);
-                invoked_ = true;
-            }
             this->callback_ = callback;
         }
 
         void resolve(sptr<T> result)
         {
             if (callback_)
-            {
                 callback_(result);
-                invoked_ = true;
-            }
             this->result_ = result;
         }
 
     private:
-        bool invoked_ = false;
         std::function<void(sptr<T>)> callback_;
         sptr<T> result_;
     };
