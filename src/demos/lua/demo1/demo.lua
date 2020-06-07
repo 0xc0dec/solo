@@ -112,7 +112,7 @@ function demo()
         mat:setTextureParameter("normalMap", assetCache.textures.texture1.normal)
         mat:setTextureParameter("shadowMap", lightCam.depthTex)
         mat:bindMatrixParameter("uniforms:lightVp", function() return lightCam.camera:viewProjectionMatrix() end)
-        mat:bindVector3Parameter("uniforms:lightPos", function() return lightCam.transform:worldPosition() end)
+        mat:bindVector3Parameter("uniforms:lightDir", function() return lightCam.transform:worldForward() end)
         mat:setFloatParameter('variables:highlighted', 0)
         return mat
     end

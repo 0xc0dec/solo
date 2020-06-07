@@ -5,7 +5,7 @@
                 wvp = "mat4",
                 world = "mat4",
                 lightVp = "mat4",
-                lightPos = "vec3",
+                lightDir = "vec3",
                 camPos = "vec3"
             }
         },
@@ -20,9 +20,9 @@
         outputs = {
             uv = "vec2",
             shadowCoord = "vec4",
-            tangentLightPos = "vec3",
             tangentPos = "vec3",
-            tangentCamPos = "vec3"
+            tangentCamPos = "vec3",
+            tangentLightDir = "vec3"
         },
 
         code = [[
@@ -48,9 +48,9 @@
                 vec3 b = cross(n, t);
                 mat3 tbn = transpose(mat3(t, b, n)); // transpose == inverse for orthogonal matrices
 
-                tangentLightPos = tbn * #uniforms:lightPos#;
                 tangentPos = tbn * vec3(worldMat * vec4(sl_Position, 1.0));
                 tangentCamPos = tbn * #uniforms:camPos#;
+                tangentLightDir = tbn * #uniforms:lightDir#;
             }
         ]]
     },
@@ -117,7 +117,7 @@
                 float shadow = samplePCF(shadowCoord / shadowCoord.w);
 
                 // diffuse
-                vec3 lightDir = normalize(tangentLightPos - tangentPos);
+                vec3 lightDir = normalize(-tangentLightDir);
                 vec3 diffuse = min(max(dot(lightDir, n), 0.0), shadow) * color * 1.2;
 
                 // specular
