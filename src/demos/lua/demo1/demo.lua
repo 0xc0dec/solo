@@ -63,46 +63,49 @@ function demo()
         return mat
     end
 
-    function createSpectatorCamera(shadowedMat)
+    function createSpectatorCamera()
         local camera, node = createMainCamera(scene)
         node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
         node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
         node:addScriptComponent(createTracer(scene, assetCache))
-        node:addScriptComponent(createSpawner(assetCache, shadowedMat))
         node:addScriptComponent(createGrabber())
-
+        
         return {
             camera = camera,
             node = node
         }
     end
 
+    function addSpawner(cameraNode, shadowedMat)
+        local spawnedObjMat = shadowedMat:clone()
+        spawnedObjMat:setTextureParameter('colorMap', assetCache.textures.texture2.color)
+        spawnedObjMat:setTextureParameter('normalMap', assetCache.textures.texture2.normal)
+        cameraNode:addScriptComponent(createSpawner(assetCache, spawnedObjMat))
+    end
+
     ---
 
     local lightCam = createLightCamera(scene)
     local shadowedMat = createShadowedMaterial(lightCam)
-    
-    local spawnedObjMat = shadowedMat:clone()
-    spawnedObjMat:setTextureParameter('colorMap', assetCache.textures.texture2.color)
-    spawnedObjMat:setTextureParameter('normalMap', assetCache.textures.texture2.normal)
-    local mainCamera = createSpectatorCamera(spawnedObjMat)
+    local mainCamera = createSpectatorCamera()
+
+    addSpawner(mainCamera.node, shadowedMat)
 
     local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
     local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)
     ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
-    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0),
-        sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
+    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
 
     mainCamera.node:addScriptComponent(ppControlPanel.cmp)
 
-    local skybox = createSkybox(scene, assetCache)
-    
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
 
     local checkerBox = createCheckerBox(scene, assetCache)
     checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
 
+    local skybox = createSkybox(scene, assetCache)
+    
     createAxes()
     createTeapot(shadowedMat)
     createBackdrop(shadowedMat)
