@@ -105,7 +105,7 @@
                 vec3 color = texture(colorMap, uv).rgb;
                 
                 // ambient
-                vec3 ambient = 0.3 * color;
+                vec3 ambient = 0.5 * color;
 
                 // shadow
                 float shadow = samplePCF(shadowCoord / shadowCoord.w);
