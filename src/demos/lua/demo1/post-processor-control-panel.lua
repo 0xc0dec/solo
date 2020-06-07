@@ -45,7 +45,7 @@ return function(assetCache, mainCameraNode, postProcessor)
         }
     end
 
-    local function createBtn(parentNode, localPos, localScale, material, ppMode, tipText)
+    function createBtn(parentNode, localPos, localScale, material, ppMode, tipText)
         local node = scene:createNode()
         
         local renderer = node:addComponent("MeshRenderer")

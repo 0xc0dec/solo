@@ -74,16 +74,21 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
     }
 }
 
+Renderer::Renderer(Device *device):
+	device_(device)
+{
+}
+
+void Renderer::loadResources()
+{
+	const auto errorEffect = Effect::fromDescription(device_, ERROR_EFFECT_SRC);
+	errorMaterial_ = Material::fromEffect(device_, errorEffect);
+	errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
+}
+
 void Renderer::renderFrame(const std::function<void()> &render)
 {
     beginFrame();
     render();
     endFrame();
-}
-
-Renderer::Renderer(Device *device)
-{
-	const auto errorEffect = Effect::fromDescription(device, ERROR_EFFECT_SRC);
-	errorMaterial_ = Material::fromEffect(device, errorEffect);
-	errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
 }

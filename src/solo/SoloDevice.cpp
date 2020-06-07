@@ -60,6 +60,8 @@ void Device::initSubsystems(const DeviceSetup &setup)
 	scriptRuntime_ = ScriptRuntime::fromDevice(this);
     renderer_ = Renderer::fromDevice(this);
 	debugInterface_ = DebugInterface::fromDevice(this);
+
+	renderer_->loadResources();
 }
 
 void Device::cleanupSubsystems()

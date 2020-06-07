@@ -29,6 +29,8 @@ namespace solo
         auto operator=(const Renderer &other) -> Renderer& = delete;
         auto operator=(Renderer &&other) -> Renderer& = delete;
 
+    	void loadResources();
+
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;
         virtual void renderMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
@@ -49,6 +51,7 @@ namespace solo
     	auto errorMaterial() const -> Material* { return errorMaterial_.get(); }
 
     private:
+    	Device *device_ = nullptr;
     	sptr<Material> errorMaterial_;
     };
 }
