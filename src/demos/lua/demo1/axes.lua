@@ -46,8 +46,8 @@ return function(assetCache, scene)
         local rootNodeTr = rootNode:findComponent('Transform')
         rootNode:addScriptComponent(createRotator('world', vec3(0, 1, 0), 1))
 
-        createLookAtAxesNode(rootNodeTr, vec3(4, 4, 4), vec3(3, 0, -3))
-        createLookAtAxesNode(rootNodeTr, vec3(-4, 4, 4), vec3(-3, 1, 3))
-        createLookAtAxesNode(rootNodeTr, vec3(4, 4, -4), vec3(3, 1, 3))
+        createLookAtAxesNode(rootNodeTr, vec3(4, 7, 4), vec3(3, 0, -3))
+        createLookAtAxesNode(rootNodeTr, vec3(-4, 7, 4), vec3(-3, 1, 3))
+        createLookAtAxesNode(rootNodeTr, vec3(4, 7, -4), vec3(3, 1, 3))
     end
 end

@@ -36,16 +36,14 @@ function demo()
     end
 
     function createTeapot(material)
-        local result = createStaticMesh('meshes/teapot.obj', material)
-        result.transform:setLocalPosition(vec3(3, 0, -3))
+        return createStaticMesh('meshes/teapot.obj', material)
     end
 
     function createHouse(srcMaterial)
         local mat = srcMaterial:clone()
         mat:setTextureParameter('colorMap', assetCache.textures.house.color)
         mat:setTextureParameter('normalMap', assetCache.textures.house.normal)
-        local house = createStaticMesh('meshes/house.obj', mat)
-        house.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(-90), sl.TransformSpace.World)
+        return createStaticMesh('meshes/house.obj', mat)
     end
 
     function createShadowedMaterial(lightCam)
@@ -99,17 +97,22 @@ function demo()
     mainCamera.node:addScriptComponent(ppControlPanel.cmp)
 
     local dynamicQuad = createDynamicQuad(scene, assetCache)
-    dynamicQuad.transform:setLocalPosition(vec3(3, 1, 3))
+    dynamicQuad.transform:setLocalPosition(vec3(3, 1, -2))
 
     local checkerBox = createCheckerBox(scene, assetCache)
-    checkerBox.transform:setLocalPosition(vec3(-3, 1, 3))
+    checkerBox.transform:setLocalPosition(vec3(-4, 1, -2))
 
     local skybox = createSkybox(scene, assetCache)
-    
+
     createAxes()
-    createTeapot(shadowedMat)
     createBackdrop(shadowedMat)
-    createHouse(shadowedMat)
+    
+    local house = createHouse(shadowedMat)
+    house.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(-90), sl.TransformSpace.World)
+    house.transform:setLocalPosition(vec3(0, 0, 4))
+
+    local teapot = createTeapot(shadowedMat)
+    teapot.transform:setLocalPosition(vec3(0, 0, -6))
 
     ---
 

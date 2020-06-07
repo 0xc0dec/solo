@@ -1,7 +1,7 @@
 ## About
 "I have no idea how to write game engines"-style game engine. A playground for my gamedev experiments.
 
-![1](/screenshots/screenshot12.png?raw=true)
+![1](/screenshots/screenshot13.png?raw=true)
 
 ## Features
 * [Unity](https://unity.com)-inspired component system.
