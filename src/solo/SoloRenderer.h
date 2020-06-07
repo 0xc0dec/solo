@@ -29,7 +29,8 @@ namespace solo
         auto operator=(const Renderer &other) -> Renderer& = delete;
         auto operator=(Renderer &&other) -> Renderer& = delete;
 
-    	void loadResources();
+    	void bootstrap();
+    	void cleanup();
 
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;

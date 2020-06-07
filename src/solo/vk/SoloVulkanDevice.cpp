@@ -83,7 +83,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
 
 VulkanDevice::~VulkanDevice()
 {
-    cleanupSubsystems();
+    shutdownSubsystems();
 }
 
 void VulkanDevice::endUpdate()

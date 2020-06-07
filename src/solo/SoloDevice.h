@@ -101,7 +101,7 @@ namespace solo
         virtual void endUpdate() = 0;
 
         void initSubsystems(const DeviceSetup &setup);
-        void cleanupSubsystems();
+        void shutdownSubsystems();
         void updateTime();
     };
 }

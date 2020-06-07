@@ -32,7 +32,7 @@ OpenGLDevice::OpenGLDevice(DeviceSetup const &setup):
 
 OpenGLDevice::~OpenGLDevice()
 {
-    cleanupSubsystems();
+    shutdownSubsystems();
     cleanup();
 }
 

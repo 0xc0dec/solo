@@ -22,7 +22,7 @@ namespace solo
     class VulkanResource
     {
     public:
-        VulkanResource() {}
+        VulkanResource() = default;
         VulkanResource(const VulkanResource<T> &other) = delete;
         VulkanResource(VulkanResource<T> &&other) noexcept
         {

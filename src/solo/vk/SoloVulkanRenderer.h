@@ -20,6 +20,7 @@ namespace solo
 {
 	class Device;
 	class Camera;
+	class VulkanDevice;
 	class VulkanMesh;
 	class VulkanMaterial;
 	class VulkanDebugInterface;
@@ -50,6 +51,13 @@ namespace solo
 			u32 frameOfLastUse = 0;
 		};
 
+		VulkanDevice *device_ = nullptr;
+		VulkanDriverDevice driverDevice_;
+		VulkanSwapchain swapchain_;
+		u32 frameNr_ = 0;
+		umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
+		umap<size_t, VulkanPipelineContext> pipelineContexts_;
+
 		struct
 		{
 			Camera *camera = nullptr;
@@ -65,13 +73,6 @@ namespace solo
 				VulkanResource<VkSemaphore> completeSemaphore;
 			} debugInterface;
 		} context_;
-
-		Device *device_ = nullptr;
-		VulkanDriverDevice driverDevice_;
-		VulkanSwapchain swapchain_;
-		u32 frameNr_ = 0;
-		umap<VulkanRenderPass*, RenderPassContext> renderPassContexts_;
-		umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
 		void beginFrame() override;
 		void endFrame() override;

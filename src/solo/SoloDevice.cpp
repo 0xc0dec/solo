@@ -61,11 +61,13 @@ void Device::initSubsystems(const DeviceSetup &setup)
     renderer_ = Renderer::fromDevice(this);
 	debugInterface_ = DebugInterface::fromDevice(this);
 
-	renderer_->loadResources();
+	renderer_->bootstrap();
 }
 
-void Device::cleanupSubsystems()
+void Device::shutdownSubsystems()
 {
+	renderer_->cleanup();
+	
     // Order matters
 	debugInterface_.reset();
     jobPool_.reset();

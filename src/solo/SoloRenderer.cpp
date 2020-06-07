@@ -79,11 +79,16 @@ Renderer::Renderer(Device *device):
 {
 }
 
-void Renderer::loadResources()
+void Renderer::bootstrap()
 {
 	const auto errorEffect = Effect::fromDescription(device_, ERROR_EFFECT_SRC);
 	errorMaterial_ = Material::fromEffect(device_, errorEffect);
 	errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
+}
+
+void Renderer::cleanup()
+{
+	errorMaterial_.reset();
 }
 
 void Renderer::renderFrame(const std::function<void()> &render)

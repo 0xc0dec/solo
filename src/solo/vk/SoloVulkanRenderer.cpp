@@ -44,16 +44,12 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 
 VulkanRenderer::VulkanRenderer(Device *device):
 	Renderer(device),
-    device_(device)
+    device_(dynamic_cast<VulkanDevice*>(device))
 {
-    const auto vkDevice = dynamic_cast<VulkanDevice*>(device);
-    const auto instance = vkDevice->instance();
-    const auto surface = vkDevice->surface();
-    const auto canvasSize = device->canvasSize();
+	const auto canvasSize = device->canvasSize();
 
-    driverDevice_ = VulkanDriverDevice(instance, surface);
-    swapchain_ = VulkanSwapchain(driverDevice_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()),
-		device->isVsync());
+    driverDevice_ = VulkanDriverDevice(device_->instance(), device_->surface());
+    swapchain_ = VulkanSwapchain(driverDevice_, static_cast<u32>(canvasSize.x()), static_cast<u32>(canvasSize.y()), device->isVsync());
 
 	context_.debugInterface.completeSemaphore = vk::createSemaphore(driverDevice_);
 	context_.debugInterface.renderCmdBuffer = VulkanCmdBuffer(driverDevice_);
