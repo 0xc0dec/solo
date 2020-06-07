@@ -17,7 +17,7 @@ function demo()
     local createMainCamera = require 'main-camera'
     local createSkybox = require 'skybox'
     local assetCache = (require 'asset-cache')()
-    local createPostProcessor = (require 'post-processor')(assetCache)
+    local createPostProcessor = require 'post-processor'
     local createPostProcessorControlPanel = require 'post-processor-control-panel'
     local createTracer = require 'tracer'
     local createSpawner = require 'spawner'
@@ -89,7 +89,12 @@ function demo()
 
     addSpawner(mainCamera.node, shadowedMat)
 
-    local postProcessor
+    local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
+    local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)
+    ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
+    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
+
+    mainCamera.node:addScriptComponent(ppControlPanel.cmp)
 
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, -2))
@@ -162,16 +167,10 @@ Controls:
     end
 
     function update()
-        updatePostProcessor()
         scene:update()
-
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
-
-        if postProcessor then
-            postProcessor:render()
-        end
-
+        postProcessor:apply()
         renderUi()
     end
 
