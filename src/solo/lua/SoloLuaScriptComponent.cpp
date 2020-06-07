@@ -15,19 +15,19 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent)
 {
     typeId_ = MinTypeId + scriptComponent.get<u32>("typeId");
     
-    initFunc = scriptComponent.has("init")
+    initFunc_ = scriptComponent.has("init")
         ? scriptComponent.get<std::function<void(LuaRef)>>("init")
         : [](LuaRef) {};
     
-    updateFunc = scriptComponent.has("update")
+    updateFunc_ = scriptComponent.has("update")
         ? scriptComponent.get<std::function<void(LuaRef)>>("update")
         : [](LuaRef) {};
 
-    renderFunc = scriptComponent.has("render")
+    renderFunc_ = scriptComponent.has("render")
         ? scriptComponent.get<std::function<void(LuaRef)>>("render")
         : [](LuaRef) {};
     
-    terminateFunc = scriptComponent.has("terminate")
+    terminateFunc_ = scriptComponent.has("terminate")
         ? scriptComponent.get<std::function<void(LuaRef)>>("terminate")
         : [](LuaRef) {};
     
@@ -36,20 +36,20 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef scriptComponent)
 
 void LuaScriptComponent::init()
 {
-    initFunc(ref_);
+    initFunc_(ref_);
 }
 
 void LuaScriptComponent::terminate()
 {
-    terminateFunc(ref_);
+    terminateFunc_(ref_);
 }
 
 void LuaScriptComponent::update()
 {
-    updateFunc(ref_);
+    updateFunc_(ref_);
 }
 
 void LuaScriptComponent::render()
 {
-    renderFunc(ref_);
+    renderFunc_(ref_);
 }

@@ -7,24 +7,24 @@ return function(scene, assetCache)
     function createTargetMesh()
         local node = scene:createNode()
 
-        local eff = assetCache.effect("color")
+        local eff = assetCache.effect('color')
 
         local mat = sl.Material.fromEffect(sl.device, eff)
         mat:setFaceCull(sl.FaceCull.None)
-        mat:bindParameter("matrices:wvp", sl.ParameterBinding.WorldViewProjectionMatrix)
-        mat:setVector4Parameter("variables:color", vec4(1, 0, 0, 1))
+        mat:bindParameter('matrices:wvp', sl.ParameterBinding.WorldViewProjectionMatrix)
+        mat:setVector4Parameter('variables:color', vec4(1, 0, 0, 1))
     
-        local renderer = node:addComponent("MeshRenderer")
+        local renderer = node:addComponent('MeshRenderer')
         renderer:setMaterial(0, mat)
     
-        local transform = node:findComponent("Transform")
+        local transform = node:findComponent('Transform')
         transform:setLocalScale(vec3(0.05, 0.05, 0.05))
     
         local layout = sl.VertexBufferLayout()
         layout:addAttribute(sl.VertexAttributeUsage.Position)
         layout:addAttribute(sl.VertexAttributeUsage.Normal)
         layout:addAttribute(sl.VertexAttributeUsage.TexCoord)
-        sl.Mesh.fromFileAsync(sl.device, assetPath("meshes/box.dae"), layout)
+        sl.Mesh.fromFileAsync(sl.device, assetPath('meshes/box.dae'), layout)
             :done(function(mesh) renderer:setMesh(mesh) end)
 
         return {
@@ -42,11 +42,11 @@ return function(scene, assetCache)
         }
     end
 
-    return sl.createComponent("Tracer", {
+    return sl.createComponent('Tracer', {
         init = function(self)
-            self.transform = self.node:findComponent("Transform") 
+            self.transform = self.node:findComponent('Transform') 
             self.scene = self.node:scene()
-            self.camera = self.node:findComponent("Camera")
+            self.camera = self.node:findComponent('Camera')
             self.target = createTargetMesh()
             self.target.hide()
         end,

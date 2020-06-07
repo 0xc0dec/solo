@@ -19,12 +19,12 @@ namespace solo
 
         LuaScriptComponent(const Node& node, LuaRef scriptComponent);
 
-        void init() override final;
-        void terminate() override final;
-        void update() override final;
-        void render() override final;
+        void init() override;
+        void terminate() override;
+        void update() override;
+        void render() override;
 
-        auto typeId() -> u32 override final { return typeId_; }
+        auto typeId() -> u32 override { return typeId_; }
 
         auto ref() const -> LuaRef { return ref_; }
 
@@ -32,9 +32,9 @@ namespace solo
         u32 typeId_;
         LuaRef ref_;
 
-        std::function<void(LuaRef)> initFunc;
-        std::function<void(LuaRef)> terminateFunc;
-        std::function<void(LuaRef)> updateFunc;
-        std::function<void(LuaRef)> renderFunc;
+        std::function<void(LuaRef)> initFunc_;
+        std::function<void(LuaRef)> terminateFunc_;
+        std::function<void(LuaRef)> updateFunc_;
+        std::function<void(LuaRef)> renderFunc_;
     };
 }

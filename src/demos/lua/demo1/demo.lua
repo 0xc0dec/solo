@@ -141,12 +141,10 @@ function demo()
         windowCfg.alpha = 0.5
 
         local canvasSize = sl.device:canvasSize()
-        local dpiIndepCanvasSize = sl.device:dpiIndependentCanvasSize()
-        local canvasSizeNote1 = 'Canvas size: (' .. canvasSize.x .. ', ' .. canvasSize.y .. ')\n'
-        local canvasSizeNote2 = 'DPI-independent canvas size: (' .. dpiIndepCanvasSize.x .. ', ' .. dpiIndepCanvasSize.y .. ')\n'
+        local canvasSizeNote = 'Canvas size: (' .. canvasSize.x .. ', ' .. canvasSize.y .. ')\n'
 
         ui:renderWindow(windowCfg, function()
-            local text = canvasSizeNote1 .. canvasSizeNote2 .. [[
+            local text = canvasSizeNote .. [[
 Controls:
     Hold RMB - rotate camera
     W, A, S, D, Q, E - move camera
