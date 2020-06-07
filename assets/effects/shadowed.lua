@@ -48,10 +48,8 @@
                 vec3 b = cross(n, t);
                 mat3 tbn = transpose(mat3(t, b, n)); // transpose == inverse for orthogonal matrices
 
-                vec3 p = vec3(worldMat * vec4(sl_Position, 1.0));
-                
                 tangentLightPos = tbn * #uniforms:lightPos#;
-                tangentPos = tbn * p;
+                tangentPos = tbn * vec3(worldMat * vec4(sl_Position, 1.0));
                 tangentCamPos = tbn * #uniforms:camPos#;
             }
         ]]
