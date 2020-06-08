@@ -15,7 +15,7 @@ function demo()
     local scene = sl.Scene.empty(dev)
 
     local createRotator = require 'rotator'
-    local createMainCamera = require 'spectator-camera'
+    local createSpectatorCamera = require 'spectator-camera'
     local assetCache = (require 'asset-cache')()
 
     local tags = {
@@ -219,9 +219,9 @@ function demo()
     deferQuadRenderer:setMesh(assetCache.meshes.quad())
     deferQuadRenderer:setMaterial(0, deferMaterial);
 
-    local mainCam, camNode = createMainCamera(scene)
-    camNode:findComponent('Transform'):setLocalPosition(vec3(5, 5, 5))
-    camNode:findComponent('Transform'):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
+    local spectatorCamera = createSpectatorCamera(scene)
+    spectatorCamera.node:findComponent('Transform'):setLocalPosition(vec3(5, 5, 5))
+    spectatorCamera.node:findComponent('Transform'):lookAt(vec3(0, 0, 0), vec3(0, 1, 0))
 
     createModel(mrtMaterial)
 
@@ -244,11 +244,11 @@ function demo()
     function update()
         scene:update()
 
-        mainCam:setRenderTarget(mrtFrameBuffer)
-        mainCam:renderFrame(renderScene)
+        spectatorCamera.camera:setRenderTarget(mrtFrameBuffer)
+        spectatorCamera.camera:renderFrame(renderScene)
 
-        mainCam:setRenderTarget(nil)
-        mainCam:renderFrame(renderQuad)
+        spectatorCamera.camera:setRenderTarget(nil)
+        spectatorCamera.camera:renderFrame(renderQuad)
     end
 
     function run()

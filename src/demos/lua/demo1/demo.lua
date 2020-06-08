@@ -14,7 +14,7 @@ function demo()
 
     local tags = require 'tags'
     local createRotator = require 'rotator'
-    local createMainCamera = require 'spectator-camera'
+    local createSpectatorCamera = require 'spectator-camera'
     local createSkybox = require 'skybox'
     local assetCache = (require 'asset-cache')()
     local createPostProcessors = require 'post-processor'
@@ -63,17 +63,14 @@ function demo()
         return mat
     end
 
-    function createSpectatorCamera()
-        local camera, node = createMainCamera(scene)
-        node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
-        node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-        node:addScriptComponent(createTracer(scene, assetCache))
-        node:addScriptComponent(createGrabber())
+    function createMainCamera()
+        local specCamera = createSpectatorCamera(scene)
+        specCamera.node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
+        specCamera.node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
+        specCamera.node:addScriptComponent(createTracer(scene, assetCache))
+        specCamera.node:addScriptComponent(createGrabber())
         
-        return {
-            camera = camera,
-            node = node
-        }
+        return specCamera
     end
 
     function addSpawner(cameraNode, shadowedMat)
@@ -87,7 +84,7 @@ function demo()
 
     local lightCam = createLightCamera(scene)
     local shadowedMat = createShadowedMaterial(lightCam)
-    local mainCamera = createSpectatorCamera()
+    local mainCamera = createMainCamera()
 
     addSpawner(mainCamera.node, shadowedMat)
 
