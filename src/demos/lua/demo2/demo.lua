@@ -15,7 +15,7 @@ function demo()
     local scene = sl.Scene.empty(dev)
 
     local createRotator = require 'rotator'
-    local createMainCamera = require 'main-camera'
+    local createMainCamera = require 'spectator-camera'
     local assetCache = (require 'asset-cache')()
 
     local tags = {

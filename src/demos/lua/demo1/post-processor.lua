@@ -13,12 +13,12 @@ return function(assetCache, camera)
 
     local node = scene:createNode()
     local renderer = node:addComponent('MeshRenderer')
-    renderer:setTag(tags.postProcessorStep)
+    renderer:setTag(tags.postProcessor)
     renderer:setMesh(assetCache.meshes.quad())
     renderer:setMaterial(0, material);
 
     function render()
-        scene:render(tags.postProcessorStep)
+        scene:render(tags.postProcessor)
     end
 
     function makeProcessor(start, steps)

@@ -14,7 +14,7 @@ function demo()
 
     local tags = require 'tags'
     local createRotator = require 'rotator'
-    local createMainCamera = require 'main-camera'
+    local createMainCamera = require 'spectator-camera'
     local createSkybox = require 'skybox'
     local assetCache = (require 'asset-cache')()
     local createPostProcessors = require 'post-processor'
@@ -121,12 +121,12 @@ function demo()
     end
 
     function renderLightCamFrame()
-        scene:render(~(skybox.tag | tags.postProcessorStep))
+        scene:render(~(skybox.tag | tags.postProcessor))
     end
 
     function renderMainCamFrame()
         scene:render(skybox.tag)
-        scene:render(~(skybox.tag | tags.postProcessorStep | tags.transparent))
+        scene:render(~(skybox.tag | tags.postProcessor | tags.transparent))
         scene:render(tags.transparent)
     end
 
