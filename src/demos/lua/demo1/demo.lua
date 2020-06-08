@@ -17,8 +17,8 @@ function demo()
     local createMainCamera = require 'main-camera'
     local createSkybox = require 'skybox'
     local assetCache = (require 'asset-cache')()
-    local createPostProcessor = require 'post-processor'
-    local createPostProcessorControlPanel = require 'post-processor-control-panel'
+    local createPostProcessors = require 'post-processor'
+    -- local createPostProcessorControlPanel = require 'post-processor-control-panel'
     local createTracer = require 'tracer'
     local createSpawner = require 'spawner'
     local createCheckerBox = require 'checker-box'
@@ -89,12 +89,8 @@ function demo()
 
     addSpawner(mainCamera.node, shadowedMat)
 
-    local postProcessor = createPostProcessor(assetCache, mainCamera.camera)
-    local ppControlPanel = createPostProcessorControlPanel(assetCache, mainCamera.node, postProcessor)
-    ppControlPanel.transform:setLocalPosition(vec3(-7, 0, -5))
-    ppControlPanel.transform:rotateByAxisAngle(vec3(0, 1, 0), sl.Radians.fromRawDegrees(90), sl.TransformSpace.World)
-
-    mainCamera.node:addScriptComponent(ppControlPanel.cmp)
+    local postProcessors = createPostProcessors(assetCache, mainCamera.camera)
+    local currentPostProcessor = nil
 
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, -2))
@@ -157,20 +153,32 @@ Controls:
 
     function updatePostProcessor()
         if sl.device:isKeyPressed(sl.KeyCode.Digit1, true) then
-            postProcessor = createPostProcessor(mainCamera.camera)
+            currentPostProcessor = postProcessors[1]
+        elseif sl.device:isKeyPressed(sl.KeyCode.Digit2, true) then
+            currentPostProcessor = postProcessors[2]
         elseif sl.device:isKeyPressed(sl.KeyCode.Digit3, true) then
-            if postProcessor then
-                postProcessor:cleanup()
+            if currentPostProcessor then
+                currentPostProcessor.cleanup()
             end
-            postProcessor = nil
+            currentPostProcessor = nil
         end
     end
 
     function update()
         scene:update()
+        updatePostProcessor()
+
+        if currentPostProcessor then
+            currentPostProcessor.begin()
+        end
+
         lightCam.camera:renderFrame(renderLightCamFrame)
         mainCamera.camera:renderFrame(renderMainCamFrame)
-        postProcessor:apply()
+
+        if currentPostProcessor then
+            currentPostProcessor.render()
+        end
+
         renderUi()
     end
 
