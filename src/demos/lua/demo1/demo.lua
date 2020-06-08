@@ -18,16 +18,15 @@ function demo()
     local createSkybox = require 'skybox'
     local assetCache = (require 'asset-cache')()
     local createPostProcessors = require 'post-processor'
-    -- local createPostProcessorControlPanel = require 'post-processor-control-panel'
     local createTracer = require 'tracer'
     local createSpawner = require 'spawner'
     local createCheckerBox = require 'checker-box'
     local createDynamicQuad = require 'dynamic-quad'
     local createAxes = (require 'axes')(assetCache, scene)
-    local createLookAt = require 'look-at'
     local createLightCamera = require 'light-camera'
     local createGrabber = require 'grabber'
     local createStaticMesh = (require 'static-mesh')(scene)
+    local createLabel = (require 'label')(assetCache)
 
     ---
 
@@ -36,7 +35,10 @@ function demo()
     end
 
     function createTeapot(material)
-        return createStaticMesh('meshes/teapot.obj', material)
+        local teapot = createStaticMesh('meshes/teapot.obj', material)
+        teapot.transform:setLocalPosition(vec3(0, 0, -6))
+        createLabel('Static mesh', teapot.node, vec3(1.3, 3.5, 0), sl.Radians.fromRawDegrees(180))
+        return teapot
     end
 
     function createHouse(srcMaterial)
@@ -94,6 +96,7 @@ function demo()
 
     local dynamicQuad = createDynamicQuad(scene, assetCache)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, -2))
+    createLabel('Dynamic mesh', dynamicQuad.node, vec3(1.3, 1.5, 0), sl.Radians.fromRawDegrees(180))
 
     local checkerBox = createCheckerBox(scene, assetCache)
     checkerBox.transform:setLocalPosition(vec3(-4, 1, -2))
@@ -108,8 +111,7 @@ function demo()
     house.transform:setLocalPosition(vec3(0, 0, 4))
 
     local teapot = createTeapot(shadowedMat)
-    teapot.transform:setLocalPosition(vec3(0, 0, -6))
-
+    
     ---
 
     function shouldStop()

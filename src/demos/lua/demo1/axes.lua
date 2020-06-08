@@ -38,7 +38,7 @@ return function(assetCache, scene)
         local transform = node:findComponent('Transform')
         transform:setParent(parentTransform)
         transform:setLocalPosition(pos)
-        node:addScriptComponent(createLookAt(target))
+        node:addScriptComponent(createLookAt(function() return target end))
     end
 
     return function()

@@ -3,16 +3,16 @@
 -- MIT license
 -- 
 
-require "common"
+require 'common'
 
-return function(targetPos)
-    return sl.createComponent("LookAt", {
+return function(getTargetPos)
+    return sl.createComponent('LookAt', {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findComponent('Transform')
         end,
 
         update = function(self)
-            self.transform:lookAt(targetPos, vec3(0, 1, 0))
+            self.transform:lookAt(getTargetPos(), vec3(0, 1, 0))
         end
     })
 end
