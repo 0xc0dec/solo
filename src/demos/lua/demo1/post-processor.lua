@@ -21,24 +21,21 @@ return function(assetCache, camera)
         scene:render(tags.postProcessorStep)
     end
 
-    function makeProcessor(input, steps)
+    function makeProcessor(start, steps)
         return {
             begin = function()
-                camera:setViewport(input.viewport and input.viewport or vec4(0, 0, canvasSize.x, canvasSize.y))
-                camera:setRenderTarget(input.target)
+                camera:setViewport(start.viewport and start.viewport or vec4(0, 0, canvasSize.x, canvasSize.y))
+                camera:setRenderTarget(start.target)
                 -- scene rendering happens AFTER this point
             end,
 
             render = function()
                 -- scene rendering happens BEFORE this point
                 for idx, step in ipairs(steps) do
-                    local nextStep = (idx ~= #steps) and steps[idx + 1] or nil
-                    local nextTarget = nextStep and nextStep.target or nil
-                    local nextViewport = nextStep and nextStep.viewport or nil
-                    nextViewport = nextViewport and nextViewport or vec4(0, 0, canvasSize.x, canvasSize.y)
+                    local viewport = step.viewport or vec4(0, 0, canvasSize.x, canvasSize.y)
                     renderer:setMaterial(0, step.material)
-                    camera:setViewport(nextViewport)
-                    camera:setRenderTarget(nextTarget)
+                    camera:setViewport(viewport)
+                    camera:setRenderTarget(step.target)
                     camera:renderFrame(render)
                 end
             end,
@@ -50,7 +47,7 @@ return function(assetCache, camera)
         }
     end
 
-    function makeProcessor1()
+    function make1()
         local createTarget = function()
             local tex = sl.Texture2D.empty(sl.device, canvasSize.x, canvasSize.y, sl.TextureFormat.RGB8)
             tex:setFilter(sl.TextureFilter.Nearest, sl.TextureFilter.Nearest, sl.TextureMipFilter.None)
@@ -99,24 +96,25 @@ return function(assetCache, camera)
             target = target1
         }, {
             [1] = {
-                material = grayscaleMat
+                material = grayscaleMat,
+                target = target2
             },
             [2] = {
-                target = target2,
-                material = saturateMat
+                material = saturateMat,
+                target = target3
             },
             [3] = {
-                target = target3,
-                material = verticalBlurMat
+                material = verticalBlurMat,
+                target = target4
             },
             [4] = {
-                target = target4,
-                material = horizontalBlurMat
+                material = horizontalBlurMat,
+                target = nil
             }
         })
     end
 
-    function makeProcessor2()
+    function make2()
         local stitchWidth = 30
         local canvasSize = sl.device:canvasSize()
 
@@ -152,13 +150,14 @@ return function(assetCache, camera)
             target = target
         }, {
             [1] = {
-                material = material
+                material = material,
+                target = nil
             }
         })
     end
 
     return {
-        [1] = makeProcessor1(),
-        [2] = makeProcessor2()
+        [1] = make1(),
+        [2] = make2()
     }
 end
