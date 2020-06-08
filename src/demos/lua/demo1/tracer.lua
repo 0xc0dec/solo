@@ -53,10 +53,12 @@ return function(scene)
             local hitResult = sl.device:physics():rayTestFirst(from, to)
             if hitResult.body then
                 self.hitNode = hitResult.body:node()
+                self.hitPoint = hitResult.point
                 self.target.transform:setLocalPosition(hitResult.point)
                 self.target.renderer:setEnabled(true)
             else
                 self.hitNode = nil
+                self.hitPoint = nil
                 self.target.renderer:setEnabled(false)
             end
         end,

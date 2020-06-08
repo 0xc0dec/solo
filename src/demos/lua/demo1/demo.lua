@@ -64,13 +64,18 @@ function demo()
     end
 
     function createMainCamera()
-        local specCamera = createSpectatorCamera(scene)
-        specCamera.node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
-        specCamera.node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-        specCamera.node:addScriptComponent(createTracer(scene))
-        specCamera.node:addScriptComponent(createGrabber())
+        local camera = createSpectatorCamera(scene)
+        local transform = camera.node:findComponent('Transform')
+        transform:setLocalPosition(vec3(10, 10, -5))
+        transform:lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
+        camera.node:addScriptComponent(createTracer(scene))
+        camera.node:addScriptComponent(createGrabber())
         
-        return specCamera
+        return {
+            camera = camera.camera,
+            node = camera.node,
+            transform = transform
+        }
     end
 
     function addSpawner(cameraNode, shadowedMat)
@@ -137,9 +142,23 @@ function demo()
 
         local canvasSize = sl.device:canvasSize()
         local canvasSizeNote = 'Canvas size: (' .. canvasSize.x .. ', ' .. canvasSize.y .. ')\n'
+        
+        local camPosition = mainCamera.transform:worldPosition()
+        local camPositionNote = 'Camera position: ('
+            .. string.format('%.2f', camPosition.x) .. ', '
+            .. string.format('%.2f', camPosition.y) .. ', '
+            .. string.format('%.2f', camPosition.z) .. ')\n'
 
-        ui:renderWindow(windowCfg, function()
-            local text = canvasSizeNote .. [[
+        local tracer = mainCamera.node:findScriptComponent(sl.cmpId('Tracer'))
+        local tracerTarget = tracer.hitPoint
+        local tracerTargetNote = 'Trace target: ('
+            .. (tracerTarget and
+                string.format('%.2f', tracerTarget.x) .. ', '
+                .. string.format('%.2f', tracerTarget.y) .. ', '
+                .. string.format('%.2f', tracerTarget.z)
+            or 'none') .. ')\n'
+        
+            local controlsNote = [[
 Controls:
     Hold RMB - rotate camera
     W, A, S, D, Q, E - move camera
@@ -148,6 +167,9 @@ Controls:
     1, 2 - switch to post-processing type 1 or 2
     3 - clear post-processing
 ]]
+
+        ui:renderWindow(windowCfg, function()
+            local text = canvasSizeNote .. camPositionNote .. tracerTargetNote .. controlsNote
             ui:renderText(text)
         end)
     end
