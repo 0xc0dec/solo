@@ -146,6 +146,8 @@ Controls:
     W, A, S, D, Q, E - move camera
     Space - spawn a box
     G - grab/drop an object
+    1, 2 - switch to post-processing type 1 or 2
+    3 - clear post-processing
 ]]
             ui:renderText(text)
         end)
