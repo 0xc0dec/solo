@@ -16,17 +16,17 @@ function demo()
     local createRotator = require 'rotator'
     local createSpectatorCamera = require 'spectator-camera'
     local createSkybox = require 'skybox'
-    local assetCache = (require 'asset-cache')()
+    local assetCache = require 'asset-cache'
     local createPostProcessors = require 'post-processor'
     local createTracer = require 'tracer'
     local createSpawner = require 'spawner'
     local createCheckerBox = require 'checker-box'
     local createDynamicQuad = require 'dynamic-quad'
-    local createAxes = (require 'axes')(assetCache, scene)
+    local createAxes = (require 'axes')(scene)
     local createLightCamera = require 'light-camera'
     local createGrabber = require 'grabber'
     local createStaticMesh = (require 'static-mesh')(scene)
-    local createLabel = (require 'label')(assetCache)
+    local createLabel = require 'label'
 
     ---
 
@@ -67,7 +67,7 @@ function demo()
         local specCamera = createSpectatorCamera(scene)
         specCamera.node:findComponent('Transform'):setLocalPosition(vec3(10, 10, -5))
         specCamera.node:findComponent('Transform'):lookAt(vec3(0, 2, 0), vec3(0, 1, 0))
-        specCamera.node:addScriptComponent(createTracer(scene, assetCache))
+        specCamera.node:addScriptComponent(createTracer(scene))
         specCamera.node:addScriptComponent(createGrabber())
         
         return specCamera
@@ -77,7 +77,7 @@ function demo()
         local spawnedObjMat = shadowedMat:clone()
         spawnedObjMat:setTextureParameter('colorMap', assetCache.textures.texture2.color)
         spawnedObjMat:setTextureParameter('normalMap', assetCache.textures.texture2.normal)
-        cameraNode:addScriptComponent(createSpawner(assetCache, spawnedObjMat))
+        cameraNode:addScriptComponent(createSpawner(spawnedObjMat))
     end
 
     ---
@@ -88,17 +88,17 @@ function demo()
 
     addSpawner(mainCamera.node, shadowedMat)
 
-    local postProcessors = createPostProcessors(assetCache, mainCamera.camera)
+    local postProcessors = createPostProcessors(mainCamera.camera)
     local currentPostProcessor = nil
 
-    local dynamicQuad = createDynamicQuad(scene, assetCache)
+    local dynamicQuad = createDynamicQuad(scene)
     dynamicQuad.transform:setLocalPosition(vec3(3, 1, -2))
     createLabel('Dynamic mesh', dynamicQuad.node, vec3(1.3, 1.5, 0), sl.Radians.fromRawDegrees(180))
 
-    local checkerBox = createCheckerBox(scene, assetCache)
+    local checkerBox = createCheckerBox(scene)
     checkerBox.transform:setLocalPosition(vec3(-4, 1, -2))
 
-    local skybox = createSkybox(scene, assetCache)
+    local skybox = createSkybox(scene)
 
     createAxes()
     createBackdrop(shadowedMat)

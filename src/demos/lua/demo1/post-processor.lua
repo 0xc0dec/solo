@@ -6,8 +6,9 @@
 require 'common'
 
 local tags = require 'tags'
+local assetCache = require 'asset-cache'
 
-return function(assetCache, camera)
+return function(camera)
     local canvasSize = sl.device:canvasSize()
     local scene = camera:node():scene()
 

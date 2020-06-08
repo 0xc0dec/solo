@@ -3,7 +3,9 @@
 -- MIT license
 -- 
 
-return function(scene, assetCache)
+local assetCache = require 'asset-cache'
+
+return function(scene)
     local createUpdater = function(data, mesh)
         local time = 0
 

@@ -3,14 +3,16 @@
 -- MIT license
 -- 
 
-return function(assetCache, material)
-    local effect = assetCache.effect("color")
+local assetCache = require 'asset-cache'
 
-    return sl.createComponent("Spawner", {
+return function(material)
+    local effect = assetCache.effect('color')
+
+    return sl.createComponent('Spawner', {
         init = function(self)
-            self.transform = self.node:findComponent("Transform")
+            self.transform = self.node:findComponent('Transform')
             self.scene = self.node:scene()
-            self.camera = self.node:findComponent("Camera")
+            self.camera = self.node:findComponent('Camera')
         end,
 
         update = function(self)
@@ -25,12 +27,12 @@ return function(assetCache, material)
 
             local node = self.scene:createNode()
             
-            local renderer = node:addComponent("MeshRenderer")
+            local renderer = node:addComponent('MeshRenderer')
             renderer:setMesh(assetCache.meshes.box())
             renderer:setMaterial(0, material)
 
             local size = 1
-            local transform = node:findComponent("Transform")
+            local transform = node:findComponent('Transform')
             transform:setLocalScale(vec3(size, size, size))
             transform:setLocalPosition(initialPos)
             transform:setLocalRotation(initialRotation)
@@ -42,7 +44,7 @@ return function(assetCache, material)
             params.linearDamping = 0.1
             params.angularDamping = 0.1
     
-            local rigidBody = node:addComponent("RigidBody", params)
+            local rigidBody = node:addComponent('RigidBody', params)
             rigidBody:setCollider(sl.BoxCollider.create(vec3(1, 1, 1)))
         end
     })

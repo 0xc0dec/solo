@@ -5,8 +5,9 @@
 
 local createRotator = require 'rotator'
 local createLookAt = require 'look-at'
+local assetCache = require 'asset-cache'
 
-return function(assetCache, scene)
+return function(scene)
     function createColorMaterial(color)
         local mat = sl.Material.fromEffect(sl.device, assetCache.effect('color'))
         mat:setFaceCull(sl.FaceCull.None)

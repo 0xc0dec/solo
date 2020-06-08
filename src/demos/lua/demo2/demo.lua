@@ -16,7 +16,7 @@ function demo()
 
     local createRotator = require 'rotator'
     local createSpectatorCamera = require 'spectator-camera'
-    local assetCache = (require 'asset-cache')()
+    local assetCache = require 'asset-cache'
 
     local tags = {
         deferredQuad = 1 << 1

@@ -3,38 +3,39 @@
 -- MIT license
 -- 
 
-local tags = require "tags"
+local tags = require 'tags'
+local assetCache = require 'asset-cache'
 
-local texturePath = function(fileName)
-    return assetPath("textures/skyboxes/deep-space/") .. fileName
+local function texturePath(fileName)
+    return assetPath('textures/skyboxes/deep-space/') .. fileName
 end
 
-return function(scene, assetCache)
+return function(scene)
     local mesh = assetCache.meshes.quad()
     local tag = tags.skybox
     
     local node = scene:createNode()
 
-    local effect = assetCache.effect("skybox")
+    local effect = assetCache.effect('skybox')
     local material = sl.Material.fromEffect(sl.device, effect)
     material:setDepthTest(true)
     material:setDepthWrite(false)
     material:setFaceCull(sl.FaceCull.None)
-    material:bindParameter("matrices:proj", sl.ParameterBinding.ProjectionMatrix)
-    material:bindParameter("matrices:worldView", sl.ParameterBinding.WorldViewMatrix)
+    material:bindParameter('matrices:proj', sl.ParameterBinding.ProjectionMatrix)
+    material:bindParameter('matrices:worldView', sl.ParameterBinding.WorldViewMatrix)
     
-    local renderer = node:addComponent("MeshRenderer")
+    local renderer = node:addComponent('MeshRenderer')
     renderer:setMesh(mesh)
     renderer:setTag(tag)
     renderer:setMaterial(0, material)
 
     sl.CubeTexture.fromFaceFilesAsync(sl.device,
-        texturePath("+x.png"), texturePath("-x.png"),
-        texturePath("+y.png"), texturePath("-y.png"),
-        texturePath("+z.png"), texturePath("-z.png")
+        texturePath('+x.png'), texturePath('-x.png'),
+        texturePath('+y.png'), texturePath('-y.png'),
+        texturePath('+z.png'), texturePath('-z.png')
     ):done(function(tex)
         tex:setWrap(sl.TextureWrap.ClampToEdge)
-        material:setTextureParameter("colorMap", tex)
+        material:setTextureParameter('colorMap', tex)
     end)
 
     return {
