@@ -141,22 +141,16 @@ function demo()
         windowCfg.alpha = 0.5
 
         local canvasSize = sl.device:canvasSize()
-        local canvasSizeNote = 'Canvas size: (' .. canvasSize.x .. ', ' .. canvasSize.y .. ')\n'
+        local canvasSizeNote = string.format('Canvas size: (%d, %d)\n', canvasSize.x, canvasSize.y)
         
         local camPosition = mainCamera.transform:worldPosition()
-        local camPositionNote = 'Camera position: ('
-            .. string.format('%.2f', camPosition.x) .. ', '
-            .. string.format('%.2f', camPosition.y) .. ', '
-            .. string.format('%.2f', camPosition.z) .. ')\n'
+        local camPositionNote = string.format('Camera position: (%.2f, %.2f, %.2f)\n',
+            camPosition.x, camPosition.y, camPosition.y)
 
         local tracer = mainCamera.node:findScriptComponent(sl.cmpId('Tracer'))
         local tracerTarget = tracer.hitPoint
-        local tracerTargetNote = 'Trace target: ('
-            .. (tracerTarget and
-                string.format('%.2f', tracerTarget.x) .. ', '
-                .. string.format('%.2f', tracerTarget.y) .. ', '
-                .. string.format('%.2f', tracerTarget.z)
-            or 'none') .. ')\n'
+        local tracerTargetNote = string.format('Trace target: (%s)\n',
+            tracerTarget and string.format('%.2f, %.2f, %.2f', tracerTarget.x, tracerTarget.y, tracerTarget.z) or 'none')
         
             local controlsNote = [[
 Controls:
