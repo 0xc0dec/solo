@@ -30,7 +30,7 @@ namespace solo
 
         virtual auto addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32;
         virtual auto addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32;
-        virtual void updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount);
+        virtual void updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) {}
         virtual void removeVertexBuffer(u32 index);
     	auto vertexBufferCount() const -> u32 { return layouts_.size(); }
     	auto vertexBufferVertexCount(u32 index) const -> u32 { return vertexCounts_.at(index); }
