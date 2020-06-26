@@ -201,7 +201,6 @@ void VulkanRenderer::endFrame()
             1, &context_.waitSemaphore,
             1, &context_.debugInterface.completeSemaphore,
             1, context_.debugInterface.renderCmdBuffer);
-	    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 	
 		context_.waitSemaphore = context_.debugInterface.completeSemaphore;
 	}
