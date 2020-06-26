@@ -26,15 +26,11 @@ namespace solo
 		~VulkanDebugInterface();
 
 		void renderInto(VkCommandBuffer targetCmdBuffer) const;
-
-		auto renderPass() const -> const VulkanRenderPass& { return renderPass_; }
 	
 	private:
 		VulkanDevice *device_;
 		VulkanRenderer *renderer_;
-		VulkanRenderPass renderPass_;
 		VulkanResource<VkDescriptorPool> descPool_;
-		// TODO remove no longer used fields
 	};
 }
 

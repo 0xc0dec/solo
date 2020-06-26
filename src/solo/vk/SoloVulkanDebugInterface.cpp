@@ -51,14 +51,7 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
 		vk::assertResult(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
 	}
 
-	// Render pass
-	{
-		const auto cfg = VulkanRenderPassConfig()
-			.addColorAttachment(renderer_->device().colorFormat(), VK_IMAGE_LAYOUT_GENERAL); // TODO proper layout
-		renderPass_ = VulkanRenderPass(renderer_->device(), cfg);
-	}
-
-    ImGui_ImplVulkan_InitInfo initInfo = {};
+    ImGui_ImplVulkan_InitInfo initInfo{};
     initInfo.Instance = device_->instance();
     initInfo.PhysicalDevice = renderer_->device().physical();
     initInfo.Device = renderer_->device();
@@ -71,7 +64,7 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
     initInfo.ImageCount = renderer_->swapchain().imageCount();
     initInfo.CheckVkResultFn = [](VkResult) {};
 
-	ImGui_ImplVulkan_Init(&initInfo, renderPass_.handle());
+	ImGui_ImplVulkan_Init(&initInfo, renderer_->swapchain().renderPass());
 
 	// Load fonts
 	auto cmdBuf = VulkanCmdBuffer(renderer_->device());

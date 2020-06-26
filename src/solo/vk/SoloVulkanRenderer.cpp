@@ -181,33 +181,36 @@ void VulkanRenderer::endFrame()
 	if (context_.debugInterface.instance)
 	{
 		context_.debugInterface.renderCmdBuffer.begin(false);
-
+	
 		const auto canvasSize = device_->canvasSize();
 		
 		context_.debugInterface.renderCmdBuffer.beginRenderPass(
-			context_.debugInterface.instance->renderPass(),
+			swapchain_.renderPass(),
 			swapchain_.currentFrameBuffer(),
 			canvasSize.x(), canvasSize.y());
 		
 		const auto viewport = Vector4(0, 0, canvasSize.x(), canvasSize.y());
 		context_.debugInterface.renderCmdBuffer.setViewport(viewport, 0, 1);
 		context_.debugInterface.renderCmdBuffer.setScissor(viewport);
-
+	
 		context_.debugInterface.instance->renderInto(context_.debugInterface.renderCmdBuffer);
-
+	
 		context_.debugInterface.renderCmdBuffer.endRenderPass();
 		context_.debugInterface.renderCmdBuffer.end();
-
-		vk::queueSubmit(driverDevice_.queue(), 1, &context_.waitSemaphore, 1, &context_.debugInterface.completeSemaphore, 1, context_.debugInterface.renderCmdBuffer);
+	
+		vk::queueSubmit(driverDevice_.queue(),
+            1, &context_.waitSemaphore,
+            1, &context_.debugInterface.completeSemaphore,
+            1, context_.debugInterface.renderCmdBuffer);
 	    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
-
+	
 		context_.waitSemaphore = context_.debugInterface.completeSemaphore;
 	}
 	
 	swapchain_.present(driverDevice_.queue(), 1, &context_.waitSemaphore);
     vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
-    // TODO Naive cleanup, need better
+    // TODO Less naive cleanup
     if (frameNr_ % 100 == 0)
     {
         cleanupUnusedPipelineContexts();
