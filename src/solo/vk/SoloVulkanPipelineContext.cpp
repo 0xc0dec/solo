@@ -54,24 +54,42 @@ static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor
     }
 }
 
-static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMaterial *material)
+static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanMaterial *material)
 {
 	switch (material->polygonMode())
     {
         case PolygonMode::Points:
-            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
             cfg.withPolygonMode(VK_POLYGON_MODE_POINT);
             break;
         case PolygonMode::Fill:
-            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
             cfg.withPolygonMode(VK_POLYGON_MODE_FILL);
             break;
         case PolygonMode::Wireframe:
-            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
             cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
             break;
         default:
             panic("Unsupported polygon mode");
+    }
+
+    switch (mesh->primitiveType())
+    {
+        case PrimitiveType::Triangles:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+            break;
+        case PrimitiveType::TriangleStrip:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP);
+            break;
+        case PrimitiveType::Lines:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
+            break;
+        case PrimitiveType::LineStrip:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_STRIP);
+            break;
+        case PrimitiveType::Points:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
+            break;
+        default:
+            panic("Unsupported primitive type");
     }
 
     switch (material->faceCull())
@@ -181,7 +199,7 @@ void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, V
 		                      .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
 		                      .withColorBlendAttachmentCount(renderPass->colorAttachmentCount());
 
-		configurePipeline(pipelineConfig, material);
+		configurePipeline(pipelineConfig, mesh, material);
 		configurePipeline(pipelineConfig, mesh, effect);
 
 		pipeline_ = VulkanPipeline(*device_, *renderPass, pipelineConfig);

@@ -44,10 +44,11 @@ namespace solo
     	auto indexBufferElementSize(u32 index) const -> IndexElementSize { return IndexElementSize::Bits32; } // TODO 16-bit support?
     	auto indexData(u32 index) const -> const vec<u32>& { return indexData_.at(index); }
 
-        virtual auto primitiveType() const -> PrimitiveType = 0;
-        virtual void setPrimitiveType(PrimitiveType type) = 0;
+        auto primitiveType() const -> PrimitiveType { return primitiveType_; }
+        void setPrimitiveType(PrimitiveType type) { primitiveType_ = type; }
 
     protected:
+        PrimitiveType primitiveType_ = PrimitiveType::Triangles;
 		vec<VertexBufferLayout> layouts_;
     	vec<u32> indexElementCounts_;
     	u32 minVertexCount_ = 0;

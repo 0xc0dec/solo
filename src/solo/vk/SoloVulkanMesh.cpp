@@ -58,17 +58,6 @@ void VulkanMesh::removeIndexBuffer(u32 index)
 	Mesh::removeIndexBuffer(index);
 }
 
-auto VulkanMesh::primitiveType() const -> PrimitiveType
-{
-    // TODO
-    return PrimitiveType::Triangles;
-}
-
-void VulkanMesh::setPrimitiveType(PrimitiveType type)
-{
-    // TODO
-}
-
 auto VulkanMesh::layoutHash() const -> size_t
 {
     size_t seed = 0;

@@ -37,9 +37,6 @@ namespace solo
     	
         auto minVertexCount() const -> u32 { return minVertexCount_; }
 
-    	auto primitiveType() const -> PrimitiveType override;
-        void setPrimitiveType(PrimitiveType type) override;
-
         auto layoutHash() const -> size_t;
 
     private:

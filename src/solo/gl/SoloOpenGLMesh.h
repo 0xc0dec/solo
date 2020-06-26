@@ -31,14 +31,10 @@ namespace solo
         auto addIndexBuffer(const vec<u32> &data, u32 indexElementCount) -> u32 override;
         void removeIndexBuffer(u32 index) override;
 
-        auto primitiveType() const -> PrimitiveType override { return primitiveType_; }
-        void setPrimitiveType(PrimitiveType type) override { primitiveType_ = type; }
-
         void render(OpenGLEffect *effect);
         void renderIndex(u32 index, OpenGLEffect *effect);
 
     private:
-        PrimitiveType primitiveType_ = PrimitiveType::Triangles;
         vec<GLuint> vertexBuffers_;
         vec<GLuint> indexBuffers_;
             
