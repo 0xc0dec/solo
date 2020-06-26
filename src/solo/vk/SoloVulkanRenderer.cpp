@@ -104,7 +104,6 @@ void VulkanRenderer::endCamera(Camera *)
     ctx.cmdBuf.end();
 
     vk::queueSubmit(driverDevice_.queue(), 1, &context_.waitSemaphore, 1, &ctx.completeSemaphore, 1, ctx.cmdBuf);
-    vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
     context_.waitSemaphore = ctx.completeSemaphore;
 
