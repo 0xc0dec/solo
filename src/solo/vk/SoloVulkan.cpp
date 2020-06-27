@@ -26,6 +26,7 @@ void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *w
     u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
     u32 commandBufferCount, const VkCommandBuffer *commandBuffers)
 {
+    // TODO this should be an array corresponding to the waitSemaphores array
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
     VkSubmitInfo info{};
