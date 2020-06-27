@@ -11,8 +11,12 @@ using namespace solo;
 
 VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config)
 {
-    const auto colorAttachments = config.colorAttachmentRefs_.empty() ? nullptr : config.colorAttachmentRefs_.data();
-    const auto depthAttachment = config.depthAttachmentRef_.layout != VK_IMAGE_LAYOUT_UNDEFINED ? &config.depthAttachmentRef_ : nullptr;
+    const auto colorAttachments = config.colorAttachmentRefs_.empty()
+        ? nullptr
+        : config.colorAttachmentRefs_.data();
+    const auto depthAttachment = config.depthAttachmentRef_.layout != VK_IMAGE_LAYOUT_UNDEFINED
+        ? &config.depthAttachmentRef_
+        : nullptr;
     clearValues_.resize(config.colorAttachmentRefs_.size() + 1);
     clearValues_.rbegin()->depthStencil = {1, 0};
 
