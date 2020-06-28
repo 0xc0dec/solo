@@ -16,8 +16,6 @@
 namespace solo
 {
     class VulkanRenderer;
-    class VulkanPipelineConfig;
-    class VulkanEffect;
 
     class VulkanMesh final: public Mesh
     {
