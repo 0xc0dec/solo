@@ -21,7 +21,7 @@ static auto toFilter(TextureFilter filter) -> VkFilter {
         return VK_FILTER_NEAREST;
     default:
         panic("Unsupported texture filter");
-        return VK_FILTER_BEGIN_RANGE;
+        return VK_FILTER_MAX_ENUM;
     }
 }
 
@@ -35,7 +35,7 @@ static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode {
         return VK_SAMPLER_MIPMAP_MODE_NEAREST;
     default:
         panic("Unsupported mip filter");
-        return VK_SAMPLER_MIPMAP_MODE_END_RANGE;
+        return VK_SAMPLER_MIPMAP_MODE_MAX_ENUM ;
     }
 }
 

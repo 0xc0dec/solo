@@ -72,7 +72,6 @@ source_group("imgui" FILES ${SL_IMGUI_SRC} ${SL_IMGUI_SDL_SRC} ${SL_IMGUI_GL_SRC
 target_include_directories(Vendor PRIVATE
     "."
     "spirv_cross"
-    "vulkan/include"
     "glew/1.13/include"
     "bullet/2.83.7"
     "SDL/2.0.12/include"
@@ -101,13 +100,16 @@ if (APPLE)
         ${SL_COREFOUNDATION_LIB}
     )
 else()
-    find_library(SL_VULKAN_LIB
-        NAMES vulkan-1
-        HINTS "vulkan/lib"
+    find_package(Vulkan REQUIRED)
+
+    target_include_directories(Vendor PRIVATE
+        ${Vulkan_INCLUDE_DIRS}
+        "${Vulkan_INCLUDE_DIRS}/spirv-headers"
+        "${Vulkan_INCLUDE_DIRS}/vulkan"
     )
 
     set(SL_PLATFORM_VENDOR_LIBS
-        ${SL_VULKAN_LIB}
+        ${Vulkan_LIBRARIES}
         shaderc
         winmm.lib
         imm32.lib

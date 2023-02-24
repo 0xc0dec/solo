@@ -33,7 +33,6 @@ target_include_directories(Solo PRIVATE
     "../../vendor/SDL/2.0.12/include"
     "../../vendor/bullet/2.83.7"
     "../../vendor/stb_truetype/1.11"
-    "../../vendor/vulkan/include"
     "../../vendor/LuaIntf"
     "../../vendor/lua/5.3.1"
     "../../vendor/stb_image/2.15"
@@ -46,6 +45,11 @@ target_include_directories(Solo PRIVATE
     "../../vendor/imgui/examples"
     "${PROJECT_BINARY_DIR}/vendor/assimp/4.1.0/include" # For assimp generated config.h
 )
+
+if (NOT APPLE)
+    find_package(Vulkan REQUIRED)
+    target_include_directories(Solo PRIVATE ${Vulkan_INCLUDE_DIRS} "${Vulkan_INCLUDE_DIRS}/vulkan")
+endif()
 
 target_link_libraries(Solo Vendor Vendor.Lua)
 

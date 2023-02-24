@@ -15,6 +15,7 @@
 #   define VK_USE_PLATFORM_WIN32_KHR
 #endif
 #include <vulkan.h>
+#include <vulkan_core.h>
 
 namespace solo {
     namespace vk {
