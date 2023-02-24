@@ -123,7 +123,6 @@ set(SL_VENDOR_LIBS
     assimp
     IrrXML
     SDL2-static
-    zlibstatic
 )
 
 target_link_libraries(Vendor ${SL_VENDOR_LIBS})
