@@ -14,8 +14,7 @@
 ## Building
 * Install Python2 (v3 not tested). Needed by some dependencies for building.
 * `cd build`.
-* `cmake -G "Visual Studio 16 2019" ..` (or other generator de
-pending on the OS/IDE).
+* `cmake -G "Visual Studio 16 2019" ..` (or other generator depending on the OS/IDE).
 * Build the generated project.
 
 ## Running Lua demos
