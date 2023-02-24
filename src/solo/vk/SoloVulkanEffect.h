@@ -12,33 +12,27 @@
 #include "SoloEffect.h"
 #include "SoloVulkan.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanRenderer;
 
-    class VulkanEffect final: public Effect
-    {
+    class VulkanEffect final: public Effect {
     public:
-        struct UniformBufferMember
-        {
+        struct UniformBufferMember {
             u32 offset;
             u32 size;
         };
 
-        struct UniformBuffer
-        {
+        struct UniformBuffer {
             umap<str, UniformBufferMember> members;
             u32 binding = 0;
             u32 size = 0;
         };
 
-        struct Sampler
-        {
+        struct Sampler {
             u32 binding;
         };
 
-        struct VertexAttribute
-        {
+        struct VertexAttribute {
             u32 location;
         };
 
@@ -48,42 +42,33 @@ namespace solo
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect() = default;
 
-        auto vsModule() const -> VkShaderModule
-        {
+        auto vsModule() const -> VkShaderModule {
             return vs_;
         }
-        auto fsModule() const -> VkShaderModule
-        {
+        auto fsModule() const -> VkShaderModule {
             return fs_;
         }
 
-        auto hasUniformBuffer(const str &name) const -> bool
-        {
+        auto hasUniformBuffer(const str &name) const -> bool {
             return uniformBuffers_.count(name);
         }
-        auto uniformBuffer(const str &name) const -> UniformBuffer
-        {
+        auto uniformBuffer(const str &name) const -> UniformBuffer {
             return uniformBuffers_.at(name);
         }
-        auto hasSampler(const str &name) const -> bool
-        {
+        auto hasSampler(const str &name) const -> bool {
             return samplers_.count(name);
         }
-        auto sampler(const str &name) const -> Sampler
-        {
+        auto sampler(const str &name) const -> Sampler {
             return samplers_.at(name);
         }
 
-        auto uniformBuffers() const -> umap<str, UniformBuffer> const &
-        {
+        auto uniformBuffers() const -> umap<str, UniformBuffer> const & {
             return uniformBuffers_;
         }
-        auto samplers() const -> umap<str, Sampler> const &
-        {
+        auto samplers() const -> umap<str, Sampler> const & {
             return samplers_;
         }
-        auto vertexAttributes() const -> umap<str, VertexAttribute> const &
-        {
+        auto vertexAttributes() const -> umap<str, VertexAttribute> const & {
             return vertexAttributes_;
         }
 

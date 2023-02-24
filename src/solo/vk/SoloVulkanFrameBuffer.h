@@ -13,24 +13,20 @@
 #include "SoloVulkanRenderPass.h"
 #include "SoloVulkanImage.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanTexture2D;
 
-    class VulkanFrameBuffer final: public FrameBuffer
-    {
+    class VulkanFrameBuffer final: public FrameBuffer {
     public:
         static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
 
         ~VulkanFrameBuffer() = default;
 
-        auto handle() const -> VkFramebuffer
-        {
+        auto handle() const -> VkFramebuffer {
             return frameBuffer_;
         }
         auto renderPass() -> VulkanRenderPass & { return renderPass_; }
-        auto colorAttachmentCount() const -> u32
-        {
+        auto colorAttachmentCount() const -> u32 {
             return static_cast<u32>(colorAttachments_.size());
         }
 

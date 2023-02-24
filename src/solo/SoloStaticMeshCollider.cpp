@@ -8,7 +8,6 @@
 
 using namespace solo;
 
-auto StaticMeshCollider::fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>
-{
+auto StaticMeshCollider::fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider> {
     return std::make_shared<BulletStaticMeshCollider>(mesh);
 }

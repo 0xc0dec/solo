@@ -12,10 +12,8 @@
 #include "SoloOpenGL.h"
 #include "SoloTexture.h"
 
-namespace solo
-{
-    class OpenGLTexture
-    {
+namespace solo {
+    class OpenGLTexture {
     public:
         OpenGLTexture();
         OpenGLTexture(const OpenGLTexture &other) = delete;
@@ -25,8 +23,7 @@ namespace solo
         auto operator=(const OpenGLTexture &other) -> OpenGLTexture & = delete;
         auto operator=(OpenGLTexture &&other) -> OpenGLTexture & = delete;
 
-        auto handle() const -> GLuint
-        {
+        auto handle() const -> GLuint {
             return handle_;
         }
 
@@ -36,8 +33,7 @@ namespace solo
         GLuint handle_ = 0;
     };
 
-    class OpenGLTexture2D final: public Texture2D, public OpenGLTexture
-    {
+    class OpenGLTexture2D final: public Texture2D, public OpenGLTexture {
     public:
         static auto empty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>;
         static auto fromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>;
@@ -48,8 +44,7 @@ namespace solo
         OpenGLTexture2D(TextureFormat format, Vector2 dimensions);
     };
 
-    class OpenGLCubeTexture final : public CubeTexture, public OpenGLTexture
-    {
+    class OpenGLCubeTexture final : public CubeTexture, public OpenGLTexture {
     public:
         static auto fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>;
 

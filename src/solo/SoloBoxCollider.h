@@ -8,12 +8,10 @@
 #include "SoloCollider.h"
 #include "SoloCommon.h"
 
-namespace solo
-{
+namespace solo {
     class Vector3;
 
-    class BoxCollider: public Collider
-    {
+    class BoxCollider: public Collider {
     public:
         static auto create(const Vector3 &size) -> sptr<BoxCollider>;
 

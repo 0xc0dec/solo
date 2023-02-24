@@ -11,12 +11,10 @@
 
 #include "SoloVulkan.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanMaterial;
 
-    class VulkanDescriptorSetConfig
-    {
+    class VulkanDescriptorSetConfig {
     public:
         void addUniformBuffer(u32 binding);
         void addSampler(u32 binding);
@@ -28,8 +26,7 @@ namespace solo
         umap<VkDescriptorType, VkDescriptorPoolSize> sizes_;
     };
 
-    class VulkanDescriptorSet
-    {
+    class VulkanDescriptorSet {
     public:
         VulkanDescriptorSet() = default;
         VulkanDescriptorSet(VkDevice device, const VulkanDescriptorSetConfig &cfg);
@@ -37,8 +34,7 @@ namespace solo
         VulkanDescriptorSet(const VulkanDescriptorSet &other) = delete;
         ~VulkanDescriptorSet() = default;
 
-        auto layout() const -> VkDescriptorSetLayout
-        {
+        auto layout() const -> VkDescriptorSetLayout {
             return layout_;
         }
 
@@ -48,12 +44,10 @@ namespace solo
         auto operator=(const VulkanDescriptorSet &other) -> VulkanDescriptorSet & = delete;
         auto operator=(VulkanDescriptorSet &&other) -> VulkanDescriptorSet & = default;
 
-        operator bool() const
-        {
+        operator bool() const {
             return set_ != VK_NULL_HANDLE;
         }
-        operator const VkDescriptorSet *() const
-        {
+        operator const VkDescriptorSet *() const {
             return &set_;
         }
 

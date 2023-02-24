@@ -14,8 +14,7 @@
 
 using namespace solo;
 
-auto STBTrueTypeFont::glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo
-{
+auto STBTrueTypeFont::glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo {
     const auto dimensions = atlas_->dimensions();
 
     stbtt_aligned_quad quad;
@@ -48,14 +47,12 @@ auto STBTrueTypeFont::glyphInfo(u32 character, float offsetX, float offsetY) -> 
     return result; // TODO move
 }
 
-bool STBTrueTypeFont::canLoadFromFile(const str &path)
-{
+bool STBTrueTypeFont::canLoadFromFile(const str &path) {
     return stringutils::endsWith(path, ".ttf");
 }
 
 auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u32 atlasWidth, u32 atlasHeight,
-                                   u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>
-{
+                                   u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont> {
     auto data = device->fileSystem()->readBytes(path);
 
     auto result = sptr<STBTrueTypeFont>(new STBTrueTypeFont());

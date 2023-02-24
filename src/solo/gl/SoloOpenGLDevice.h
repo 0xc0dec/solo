@@ -11,16 +11,13 @@
 
 #include "../sdl/SoloSDLDevice.h"
 
-namespace solo
-{
-    class OpenGLDevice final : public SDLDevice
-    {
+namespace solo {
+    class OpenGLDevice final : public SDLDevice {
     public:
         explicit OpenGLDevice(const DeviceSetup &setup);
         virtual ~OpenGLDevice();
 
-        auto context() const -> const SDL_GLContext &
-        {
+        auto context() const -> const SDL_GLContext & {
             return context_;
         }
 

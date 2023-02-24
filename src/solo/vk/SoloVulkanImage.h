@@ -12,15 +12,13 @@
 #include "math/SoloVector2.h"
 #include "SoloVulkan.h"
 
-namespace solo
-{
+namespace solo {
     class Texture2DData;
     class CubeTextureData;
     class VulkanDriverDevice;
     enum class TextureFormat;
 
-    class VulkanImage
-    {
+    class VulkanImage {
     public:
         static auto empty(const VulkanDriverDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage;
         static auto fromData(const VulkanDriverDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage;
@@ -31,43 +29,34 @@ namespace solo
         VulkanImage(const VulkanImage &other) = delete;
         VulkanImage(VulkanImage &&other) = default;
 
-        auto format() const -> VkFormat
-        {
+        auto format() const -> VkFormat {
             return format_;
         }
-        auto size() const -> Vector2
-        {
+        auto size() const -> Vector2 {
             return {static_cast<float>(width_), static_cast<float>(height_)};
         }
-        auto mipLevels() const -> u32
-        {
+        auto mipLevels() const -> u32 {
             return mipLevels_;
         }
-        auto layout() const -> VkImageLayout
-        {
+        auto layout() const -> VkImageLayout {
             return layout_;
         }
-        auto view() const -> VkImageView
-        {
+        auto view() const -> VkImageView {
             return view_;
         }
-        auto handle() const -> VkImage
-        {
+        auto handle() const -> VkImage {
             return image_;
         }
-        auto width() const -> u32
-        {
+        auto width() const -> u32 {
             return width_;
         }
-        auto height() const -> u32
-        {
+        auto height() const -> u32 {
             return height_;
         }
 
         auto operator=(const VulkanImage &other) -> VulkanImage & = delete;
         auto operator=(VulkanImage &&other) -> VulkanImage & = default;
-        operator bool() const
-        {
+        operator bool() const {
             return image_;
         }
 

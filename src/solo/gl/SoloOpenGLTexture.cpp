@@ -12,8 +12,7 @@
 
 using namespace solo;
 
-static auto getFormatKey(GLenum internalFormat, GLenum format, GLenum type) -> size_t
-{
+static auto getFormatKey(GLenum internalFormat, GLenum format, GLenum type) -> size_t {
     size_t seed = 0;
     const std::hash<GLenum> hasher;
     combineHash(seed, hasher(internalFormat));
@@ -22,8 +21,7 @@ static auto getFormatKey(GLenum internalFormat, GLenum format, GLenum type) -> s
     return seed;
 }
 
-static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum type, uset<size_t> &supportedFormats)
-{
+static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum type, uset<size_t> &supportedFormats) {
     glTexImage2D(GL_PROXY_TEXTURE_2D, 0, internalFormat, 32, 32, 0, format, type, nullptr);
     s32 width;
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
@@ -31,13 +29,11 @@ static void detectFormatSupport(GLenum internalFormat, GLenum format, GLenum typ
         supportedFormats.insert(getFormatKey(internalFormat, format, type));
 }
 
-static bool isFormatSupported(GLenum internalFormat, GLenum format, GLenum type)
-{
+static bool isFormatSupported(GLenum internalFormat, GLenum format, GLenum type) {
     static uset<size_t> supportedFormats;
     static auto initialized = false;
 
-    if (!initialized)
-    {
+    if (!initialized) {
         detectFormatSupport(GL_R8, GL_RED, GL_UNSIGNED_BYTE, supportedFormats);
 
         detectFormatSupport(GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, supportedFormats);
@@ -60,10 +56,8 @@ static bool isFormatSupported(GLenum internalFormat, GLenum format, GLenum type)
     return supportedFormats.count(getFormatKey(internalFormat, format, type));
 }
 
-static auto toType(TextureFormat format) -> GLenum
-{
-    switch (format)
-    {
+static auto toType(TextureFormat format) -> GLenum {
+    switch (format) {
     case TextureFormat::Depth24:
         return GL_FLOAT;
     default:
@@ -71,10 +65,8 @@ static auto toType(TextureFormat format) -> GLenum
     }
 }
 
-static auto toDataFormat(TextureDataFormat format) -> GLenum
-{
-    switch (format)
-    {
+static auto toDataFormat(TextureDataFormat format) -> GLenum {
+    switch (format) {
     case TextureDataFormat::Red:
         return GL_RED;
     case TextureDataFormat::RGB:
@@ -88,10 +80,8 @@ static auto toDataFormat(TextureDataFormat format) -> GLenum
     return 0;
 }
 
-static auto toDataFormat(TextureFormat format) -> GLenum
-{
-    switch (format)
-    {
+static auto toDataFormat(TextureFormat format) -> GLenum {
+    switch (format) {
     case TextureFormat::R8:
         return GL_RED;
     case TextureFormat::RGB8:
@@ -108,10 +98,8 @@ static auto toDataFormat(TextureFormat format) -> GLenum
     return 0;
 }
 
-static auto toInternalFormat(TextureFormat format) -> GLenum
-{
-    switch (format)
-    {
+static auto toInternalFormat(TextureFormat format) -> GLenum {
+    switch (format) {
     case TextureFormat::R8:
         return GL_R8;
     case TextureFormat::RGB8:
@@ -129,10 +117,8 @@ static auto toInternalFormat(TextureFormat format) -> GLenum
     return 0;
 }
 
-static auto toWrap(TextureWrap wrap) -> GLenum
-{
-    switch (wrap)
-    {
+static auto toWrap(TextureWrap wrap) -> GLenum {
+    switch (wrap) {
     case TextureWrap::MirrorRepeat:
         return GL_MIRRORED_REPEAT;
     case TextureWrap::ClampToEdge:
@@ -148,14 +134,10 @@ static auto toWrap(TextureWrap wrap) -> GLenum
     return 0;
 }
 
-static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> GLenum
-{
-    switch (minFilter)
-    {
-    case TextureFilter::Linear:
-        {
-            switch (mipFilter)
-            {
+static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> GLenum {
+    switch (minFilter) {
+    case TextureFilter::Linear: {
+            switch (mipFilter) {
             case TextureMipFilter::Linear:
                 return GL_LINEAR_MIPMAP_LINEAR;
             case TextureMipFilter::Nearest:
@@ -168,10 +150,8 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
             }
         }
 
-    case TextureFilter::Nearest:
-        {
-            switch (mipFilter)
-            {
+    case TextureFilter::Nearest: {
+            switch (mipFilter) {
             case TextureMipFilter::Linear:
                 return GL_NEAREST_MIPMAP_LINEAR;
             case TextureMipFilter::Nearest:
@@ -189,10 +169,8 @@ static auto toMinFilter(TextureFilter minFilter, TextureMipFilter mipFilter) -> 
     }
 }
 
-static auto toMagFilter(TextureFilter filter) -> GLenum
-{
-    switch (filter)
-    {
+static auto toMagFilter(TextureFilter filter) -> GLenum {
+    switch (filter) {
     case TextureFilter::Linear:
         return GL_LINEAR;
     case TextureFilter::Nearest:
@@ -204,24 +182,20 @@ static auto toMagFilter(TextureFilter filter) -> GLenum
     return 0;
 }
 
-OpenGLTexture::OpenGLTexture()
-{
+OpenGLTexture::OpenGLTexture() {
     glGenTextures(1, &handle_);
     panicIf(!handle_, "Unable to create texture handle");
 }
 
-OpenGLTexture::~OpenGLTexture()
-{
+OpenGLTexture::~OpenGLTexture() {
     glDeleteTextures(1, &handle_);
 }
 
 OpenGLTexture2D::OpenGLTexture2D(TextureFormat format, Vector2 dimensions):
-    Texture2D(format, dimensions)
-{
+    Texture2D(format, dimensions) {
 }
 
-auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D>
-{
+auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -> sptr<OpenGLTexture2D> {
     const auto dimensions = data->dimensions();
     const auto internalFormat = toInternalFormat(data->textureFormat());
     const auto dataFormat = toDataFormat(data->format());
@@ -239,8 +213,7 @@ auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels);
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x(), dimensions.y(), 0, dataFormat, GL_UNSIGNED_BYTE, data->data());
 
-    if (generateMipmaps && data->textureFormat() != TextureFormat::Depth24)
-    {
+    if (generateMipmaps && data->textureFormat() != TextureFormat::Depth24) {
         glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -250,8 +223,7 @@ auto OpenGLTexture2D::fromData(sptr<Texture2DData> data, bool generateMipmaps) -
     return result;
 }
 
-auto OpenGLTexture2D::empty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D>
-{
+auto OpenGLTexture2D::empty(u32 width, u32 height, TextureFormat format) -> sptr<OpenGLTexture2D> {
     const auto internalFormat = toInternalFormat(format);
     const auto type = toType(format);
     const auto dataFormat = toDataFormat(format);
@@ -272,8 +244,7 @@ auto OpenGLTexture2D::empty(u32 width, u32 height, TextureFormat format) -> sptr
     return result;
 }
 
-void OpenGLTexture2D::bind()
-{
+void OpenGLTexture2D::bind() {
     glBindTexture(GL_TEXTURE_2D, handle_);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter_, mipFilter_));
@@ -284,16 +255,14 @@ void OpenGLTexture2D::bind()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyLevel_);
 }
 
-auto OpenGLCubeTexture::fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture>
-{
+auto OpenGLCubeTexture::fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeTexture> {
     const auto result = sptr<OpenGLCubeTexture>(new OpenGLCubeTexture(data->textureFormat(), data->dimension()));
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, result->handle_);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, 0);
 
-    for (s32 i = 0; i < 6; ++i)
-    {
+    for (s32 i = 0; i < 6; ++i) {
         const auto glFace = static_cast<u32>(GL_TEXTURE_CUBE_MAP_POSITIVE_X) + i;
         const auto internalFormat = toInternalFormat(data->textureFormat());
         const auto dataFormat = toDataFormat(data->format());
@@ -308,12 +277,10 @@ auto OpenGLCubeTexture::fromData(sptr<CubeTextureData> data) -> sptr<OpenGLCubeT
 }
 
 OpenGLCubeTexture::OpenGLCubeTexture(TextureFormat format, u32 dimension):
-    CubeTexture(format, dimension)
-{
+    CubeTexture(format, dimension) {
 }
 
-void OpenGLCubeTexture::bind()
-{
+void OpenGLCubeTexture::bind() {
     glBindTexture(GL_TEXTURE_CUBE_MAP, handle_);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, toMinFilter(minFilter_, mipFilter_));

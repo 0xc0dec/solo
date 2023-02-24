@@ -14,24 +14,20 @@
 #include "SoloVulkanBuffer.h"
 #include "SoloVulkanEffect.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Effect;
     class Camera;
     class VulkanTexture;
     class VulkanPipelineConfig;
 
-    class VulkanMaterial final: public Material
-    {
+    class VulkanMaterial final: public Material {
     public:
-        struct UniformBufferItem
-        {
+        struct UniformBufferItem {
             std::function<void(VulkanBuffer &, const Camera *, const Transform *)> write;
         };
 
-        struct Sampler
-        {
+        struct Sampler {
             u32 binding = 0;
             sptr<VulkanTexture> texture;
         };
@@ -40,13 +36,11 @@ namespace solo
         VulkanMaterial(const VulkanMaterial &other) = default;
         ~VulkanMaterial() = default;
 
-        auto effect() const -> sptr<Effect> override
-        {
+        auto effect() const -> sptr<Effect> override {
             return effect_;
         }
 
-        auto clone() const -> sptr<Material> override
-        {
+        auto clone() const -> sptr<Material> override {
             return std::make_shared<VulkanMaterial>(*this);
         }
 
@@ -65,12 +59,10 @@ namespace solo
 
         void bindParameter(const str &name, ParameterBinding binding) override;
 
-        auto samplers() const -> umap<str, Sampler> const &
-        {
+        auto samplers() const -> umap<str, Sampler> const & {
             return samplers_;
         }
-        auto bufferItems() const -> umap<str, umap<str, UniformBufferItem>> const &
-        {
+        auto bufferItems() const -> umap<str, umap<str, UniformBufferItem>> const & {
             return bufferItems_;    // TODO rename
         }
         auto stateHash() const -> size_t;

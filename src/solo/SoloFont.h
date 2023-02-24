@@ -9,22 +9,19 @@
 #include "math/SoloVector2.h"
 #include "math/SoloVector3.h"
 
-namespace solo
-{
+namespace solo {
     class Texture2D;
     class Device;
 
     // As class because script binding doesn't like structs
-    class GlyphInfo
-    {
+    class GlyphInfo {
     public:
         vec<Vector3> positions;
         vec<Vector2> uvs;
         float offsetX, offsetY;
     };
 
-    class Font
-    {
+    class Font {
     public:
         static auto loadFromFile(Device *device, const str &path,
                                  u32 size, u32 atlasWidth, u32 atlasHeight,

@@ -12,20 +12,16 @@
 #include "../sdl/SoloSDLDevice.h"
 #include "SoloVulkan.h"
 
-namespace solo
-{
-    class VulkanDevice final : public SDLDevice
-    {
+namespace solo {
+    class VulkanDevice final : public SDLDevice {
     public:
         explicit VulkanDevice(const DeviceSetup &setup);
         ~VulkanDevice();
 
-        auto instance() const -> VkInstance
-        {
+        auto instance() const -> VkInstance {
             return instance_;
         }
-        auto surface() const -> VkSurfaceKHR
-        {
+        auto surface() const -> VkSurfaceKHR {
             return surface_;
         }
 

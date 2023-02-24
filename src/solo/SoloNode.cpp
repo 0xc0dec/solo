@@ -9,6 +9,5 @@
 using namespace solo;
 
 Node::Node(Scene *scene, u32 nodeId):
-    scene_(scene), id_(nodeId)
-{
+    scene_(scene), id_(nodeId) {
 }

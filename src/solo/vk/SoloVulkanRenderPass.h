@@ -11,10 +11,8 @@
 
 #include "SoloVulkan.h"
 
-namespace solo
-{
-    class VulkanRenderPassConfig
-    {
+namespace solo {
+    class VulkanRenderPassConfig {
     public:
         VulkanRenderPassConfig();
 
@@ -29,8 +27,7 @@ namespace solo
         VkAttachmentReference depthAttachmentRef_;
     };
 
-    class VulkanRenderPass
-    {
+    class VulkanRenderPass {
     public:
         VulkanRenderPass() = default;
         VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config);
@@ -39,8 +36,7 @@ namespace solo
         ~VulkanRenderPass() = default;
 
         auto clearValues() const -> const vec<VkClearValue> & { return clearValues_; }
-        auto colorAttachmentCount() const -> u32
-        {
+        auto colorAttachmentCount() const -> u32 {
             return colorAttachmentCount_;
         }
 
@@ -50,13 +46,11 @@ namespace solo
         auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass & = delete;
         auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass & = default;
 
-        auto handle() const -> VkRenderPass
-        {
+        auto handle() const -> VkRenderPass {
             return pass_;
         }
 
-        operator const VkRenderPass() const
-        {
+        operator const VkRenderPass() const {
             return pass_;
         }
 

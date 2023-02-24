@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-static void registerFont(CppBindModule<LuaBinding> &module)
-{
+static void registerFont(CppBindModule<LuaBinding> &module) {
     auto gi = BEGIN_CLASS(module, GlyphInfo);
     REG_CTOR(gi);
     REG_FIELD(gi, GlyphInfo, positions);
@@ -27,8 +26,7 @@ static void registerFont(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-static void registerFontMesh(CppBindModule<LuaBinding> &module)
-{
+static void registerFontMesh(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS(module, FontMesh);
     REG_STATIC_METHOD(binding, FontMesh, fromFont);
     REG_METHOD(binding, FontMesh, setText);
@@ -37,8 +35,7 @@ static void registerFontMesh(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-void registerFontApi(CppBindModule<LuaBinding> &module)
-{
+void registerFontApi(CppBindModule<LuaBinding> &module) {
     registerFont(module);
     registerFontMesh(module);
 }

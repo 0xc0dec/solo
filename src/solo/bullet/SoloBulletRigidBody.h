@@ -8,14 +8,12 @@
 #include "SoloRigidBody.h"
 #include <btBulletDynamicsCommon.h>
 
-namespace solo
-{
+namespace solo {
     class Transform;
     class Collider;
     class BulletCollider;
 
-    class BulletRigidBody final : public RigidBody
-    {
+    class BulletRigidBody final : public RigidBody {
     public:
         BulletRigidBody(const Node &node, const RigidBodyParams &params);
         virtual ~BulletRigidBody();

@@ -17,10 +17,8 @@
 
 using namespace solo;
 
-static auto toBlendFactor(BlendFactor factor) -> GLenum
-{
-    switch (factor)
-    {
+static auto toBlendFactor(BlendFactor factor) -> GLenum {
+    switch (factor) {
     case BlendFactor::Zero:
         return GL_ZERO;
     case BlendFactor::One:
@@ -54,34 +52,28 @@ static auto toBlendFactor(BlendFactor factor) -> GLenum
     return 0;
 }
 
-static void clear(bool color, const Vector4 &clearColor)
-{
+static void clear(bool color, const Vector4 &clearColor) {
     if (color)
         glClearColor(clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w());
     const GLbitfield flags = (color ? GL_COLOR_BUFFER_BIT : 0) | GL_DEPTH_BUFFER_BIT;
     glClear(flags);
 }
 
-static void setViewport(const Vector4 &viewport)
-{
+static void setViewport(const Vector4 &viewport) {
     glViewport(viewport.x(), viewport.y(), viewport.z(), viewport.w());
 }
 
-static void setDepthWrite(bool enabled)
-{
+static void setDepthWrite(bool enabled) {
     glDepthMask(enabled ? GL_TRUE : GL_FALSE);
 }
 
-static void setDepthTest(bool enabled)
-{
+static void setDepthTest(bool enabled) {
     enabled ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
-static void setDepthFunction(DepthFunction func)
-{
+static void setDepthFunction(DepthFunction func) {
     GLenum glfunc = 0;
-    switch (func)
-    {
+    switch (func) {
     case DepthFunction::Never:
         glfunc = GL_NEVER;
         break;
@@ -113,11 +105,9 @@ static void setDepthFunction(DepthFunction func)
         glDepthFunc(glfunc);
 }
 
-static void setPolygonMode(PolygonMode mode)
-{
+static void setPolygonMode(PolygonMode mode) {
     GLenum glMode;
-    switch (mode)
-    {
+    switch (mode) {
     case PolygonMode::Fill:
         glMode = GL_FILL;
         break;
@@ -134,10 +124,8 @@ static void setPolygonMode(PolygonMode mode)
     glPolygonMode(GL_FRONT_AND_BACK, glMode);
 }
 
-static void setFaceCull(FaceCull cull)
-{
-    switch (cull)
-    {
+static void setFaceCull(FaceCull cull) {
+    switch (cull) {
     case FaceCull::None:
         glDisable(GL_CULL_FACE);
         break;
@@ -154,26 +142,22 @@ static void setFaceCull(FaceCull cull)
     }
 }
 
-static void setBlend(bool enabled)
-{
+static void setBlend(bool enabled) {
     enabled ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
 }
 
-static void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor)
-{
+static void setBlendFactor(BlendFactor srcFactor, BlendFactor dstFactor) {
     glBlendFunc(toBlendFactor(srcFactor), toBlendFactor(dstFactor));
 }
 
-static auto version() -> std::pair<GLint, GLint>
-{
+static auto version() -> std::pair<GLint, GLint> {
     GLint major, minor;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     return {major, minor};
 }
 
-void applyMaterial(Material *material)
-{
+void applyMaterial(Material *material) {
     const auto effect = dynamic_cast<OpenGLEffect *>(material->effect().get());
     glUseProgram(static_cast<const GLuint>(effect->handle()));
     setFaceCull(material->faceCull());
@@ -186,23 +170,19 @@ void applyMaterial(Material *material)
 }
 
 OpenGLRenderer::OpenGLRenderer(Device *device):
-    Renderer(device)
-{
+    Renderer(device) {
     const auto ver = version();
     name_ = fmt("OpenGL ", ver.first, ".", ver.second);
     panicIf(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
 }
 
-auto OpenGLRenderer::gpuName() const -> const char *
-{
+auto OpenGLRenderer::gpuName() const -> const char * {
     return reinterpret_cast<const char *>(glGetString(GL_RENDERER));
 }
 
-void OpenGLRenderer::beginCamera(Camera *camera)
-{
+void OpenGLRenderer::beginCamera(Camera *camera) {
     const auto renderTarget = camera->renderTarget();
-    if (renderTarget)
-    {
+    if (renderTarget) {
         const auto fb = dynamic_cast<OpenGLFrameBuffer *>(renderTarget.get())->handle();
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
     }
@@ -215,16 +195,14 @@ void OpenGLRenderer::beginCamera(Camera *camera)
     currentCamera_ = camera;
 }
 
-void OpenGLRenderer::endCamera(Camera *camera)
-{
+void OpenGLRenderer::endCamera(Camera *camera) {
     const auto renderTarget = camera->renderTarget();
     if (renderTarget)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     currentCamera_ = nullptr;
 }
 
-void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
-{
+void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material) {
     material = material ? material : errorMaterial();
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect *>(material->effect().get());
@@ -232,8 +210,7 @@ void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
     dynamic_cast<OpenGLMesh *>(mesh)->render(effect);
 }
 
-void OpenGLRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material)
-{
+void OpenGLRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) {
     material = material ? material : errorMaterial();
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect *>(material->effect().get());
@@ -241,19 +218,16 @@ void OpenGLRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     dynamic_cast<OpenGLMesh *>(mesh)->renderIndex(index, effect);
 }
 
-void OpenGLRenderer::renderDebugInterface(DebugInterface *debugInterface)
-{
+void OpenGLRenderer::renderDebugInterface(DebugInterface *debugInterface) {
     currentDebugInterface_ = dynamic_cast<OpenGLDebugInterface *>(debugInterface);
 }
 
-void OpenGLRenderer::beginFrame()
-{
+void OpenGLRenderer::beginFrame() {
     currentCamera_ = nullptr;
     currentDebugInterface_ = nullptr;
 }
 
-void OpenGLRenderer::endFrame()
-{
+void OpenGLRenderer::endFrame() {
     if (currentDebugInterface_)
         currentDebugInterface_->render();
 }

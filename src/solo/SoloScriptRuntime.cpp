@@ -9,12 +9,10 @@
 
 using namespace solo;
 
-auto ScriptRuntime::empty() -> sptr<ScriptRuntime>
-{
+auto ScriptRuntime::empty() -> sptr<ScriptRuntime> {
     return std::make_shared<LuaScriptRuntime>();
 }
 
-auto ScriptRuntime::fromDevice(Device *device) -> sptr<ScriptRuntime>
-{
+auto ScriptRuntime::fromDevice(Device *device) -> sptr<ScriptRuntime> {
     return std::make_shared<LuaScriptRuntime>(device);
 }

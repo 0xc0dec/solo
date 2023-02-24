@@ -13,16 +13,14 @@
 #include "SoloVulkanPipeline.h"
 #include "SoloVulkanDescriptorSet.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanMaterial;
     class VulkanMesh;
     class VulkanRenderPass;
     class Camera;
     class Transform;
 
-    class VulkanPipelineContext
-    {
+    class VulkanPipelineContext {
     public:
         VulkanPipelineContext(VulkanDriverDevice *device, size_t key);
         VulkanPipelineContext(const VulkanPipelineContext &other) = delete;
@@ -31,26 +29,21 @@ namespace solo
         auto operator=(const VulkanPipelineContext &other) -> VulkanPipelineContext & = delete;
         auto operator=(VulkanPipelineContext &&other) noexcept -> VulkanPipelineContext & = delete;
 
-        auto frameOfLastUse() const -> u32
-        {
+        auto frameOfLastUse() const -> u32 {
             return frameOfLastUse_;
         }
-        void setFrameOfLastUse(u32 frame)
-        {
+        void setFrameOfLastUse(u32 frame) {
             frameOfLastUse_ = frame;
         }
 
-        auto key() const -> size_t
-        {
+        auto key() const -> size_t {
             return key_;
         }
 
-        auto pipeline() const -> const VulkanPipeline &
-        {
+        auto pipeline() const -> const VulkanPipeline & {
             return pipeline_;
         }
-        auto descriptorSet() const -> const VulkanDescriptorSet &
-        {
+        auto descriptorSet() const -> const VulkanDescriptorSet & {
             return descSet_;
         }
 

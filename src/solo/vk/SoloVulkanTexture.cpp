@@ -13,10 +13,8 @@
 
 using namespace solo;
 
-static auto toFilter(TextureFilter filter) -> VkFilter
-{
-    switch (filter)
-    {
+static auto toFilter(TextureFilter filter) -> VkFilter {
+    switch (filter) {
     case TextureFilter::Linear:
         return VK_FILTER_LINEAR;
     case TextureFilter::Nearest:
@@ -27,10 +25,8 @@ static auto toFilter(TextureFilter filter) -> VkFilter
     }
 }
 
-static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode
-{
-    switch (mipFilter)
-    {
+static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode {
+    switch (mipFilter) {
     case TextureMipFilter::Linear:
         return VK_SAMPLER_MIPMAP_MODE_LINEAR;
     case TextureMipFilter::Nearest:
@@ -43,10 +39,8 @@ static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode
     }
 }
 
-static auto toAddressMode(TextureWrap wrap) -> VkSamplerAddressMode
-{
-    switch (wrap)
-    {
+static auto toAddressMode(TextureWrap wrap) -> VkSamplerAddressMode {
+    switch (wrap) {
     case TextureWrap::ClampToEdge:
         return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     case TextureWrap::ClampToBorder:
@@ -65,8 +59,7 @@ static auto createSampler(
     VkDevice device, VkPhysicalDeviceFeatures physicalFeatures, VkPhysicalDeviceProperties physicalProps,
     TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter, u32 mipLevels,
     TextureWrap horizontalWrap, TextureWrap verticalWrap, TextureWrap depthWrap,
-    bool anisotropic, float anisotropyLevel) -> VulkanResource<VkSampler>
-{
+    bool anisotropic, float anisotropyLevel) -> VulkanResource<VkSampler> {
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.flags = 0;
     samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -95,20 +88,17 @@ static auto createSampler(
 }
 
 VulkanTexture::VulkanTexture(Device *device):
-    renderer_(static_cast<VulkanRenderer *>(device->renderer()))
-{
+    renderer_(static_cast<VulkanRenderer *>(device->renderer())) {
 }
 
-auto VulkanTexture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<VulkanTexture2D>
-{
+auto VulkanTexture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<VulkanTexture2D> {
     auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, data->textureFormat(), data->dimensions()));
     result->image_ = VulkanImage::fromData(result->renderer_->device(), data.get(), generateMipmaps);
     result->rebuildSampler();
     return result;
 }
 
-auto VulkanTexture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D>
-{
+auto VulkanTexture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D> {
     auto result = sptr<VulkanTexture2D>(new VulkanTexture2D(device, format,
     Vector2(static_cast<float>(width), static_cast<float>(height))));
     result->image_ = VulkanImage::empty(result->renderer_->device(), width, height, format);
@@ -118,18 +108,15 @@ auto VulkanTexture2D::empty(Device *device, u32 width, u32 height, TextureFormat
 
 VulkanTexture2D::VulkanTexture2D(Device *device, TextureFormat format, Vector2 dimensions):
     Texture2D(format, dimensions),
-    VulkanTexture(device)
-{
+    VulkanTexture(device) {
 }
 
-void VulkanTexture2D::rebuild()
-{
+void VulkanTexture2D::rebuild() {
     Texture2D::rebuild();
     rebuildSampler();
 }
 
-void VulkanTexture2D::rebuildSampler()
-{
+void VulkanTexture2D::rebuildSampler() {
     sampler_ = createSampler(
                    renderer_->device(),
                    renderer_->device().physicalFeatures(),
@@ -139,8 +126,7 @@ void VulkanTexture2D::rebuildSampler()
                    anisotropyLevel_ > 1, anisotropyLevel_);
 }
 
-auto VulkanCubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture>
-{
+auto VulkanCubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture> {
     auto result = sptr<VulkanCubeTexture>(new VulkanCubeTexture(device, data->textureFormat(), data->dimension()));
     result->image_ = VulkanImage::fromCubeData(result->renderer_->device(), data.get());
     result->rebuildSampler();
@@ -149,18 +135,15 @@ auto VulkanCubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> 
 
 VulkanCubeTexture::VulkanCubeTexture(Device *device, TextureFormat format, u32 dimension):
     CubeTexture(format, dimension),
-    VulkanTexture(device)
-{
+    VulkanTexture(device) {
 }
 
-void VulkanCubeTexture::rebuild()
-{
+void VulkanCubeTexture::rebuild() {
     CubeTexture::rebuild();
     rebuildSampler();
 }
 
-void VulkanCubeTexture::rebuildSampler()
-{
+void VulkanCubeTexture::rebuildSampler() {
     sampler_ = createSampler(
                    renderer_->device(),
                    renderer_->device().physicalFeatures(),

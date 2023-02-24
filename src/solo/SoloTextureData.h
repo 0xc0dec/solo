@@ -9,12 +9,10 @@
 #include "math/SoloVector2.h"
 #include "SoloEnums.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
 
-    class Texture2DData
-    {
+    class Texture2DData {
     public:
         static auto fromFile(Device *device, const str &path) -> sptr<Texture2DData>;
         static auto fromMemory(u32 width, u32 height, TextureDataFormat format, const vec<u8> &data) -> sptr<Texture2DData>;
@@ -30,15 +28,13 @@ namespace solo
         virtual auto size() const -> u32 = 0;
         virtual auto data() const -> const void * = 0;
 
-        auto dimensions() const -> Vector2
-        {
+        auto dimensions() const -> Vector2 {
             return dimensions_;
         }
 
         /// Returns "best suited" texture format for this data
         auto textureFormat() const -> TextureFormat;
-        auto format() const -> TextureDataFormat
-        {
+        auto format() const -> TextureDataFormat {
             return format_;
         }
 
@@ -49,8 +45,7 @@ namespace solo
         explicit Texture2DData(TextureDataFormat format, Vector2 dimensions);
     };
 
-    class CubeTextureData
-    {
+    class CubeTextureData {
     public:
         static auto fromFaceFiles(
             Device *device,
@@ -70,15 +65,13 @@ namespace solo
         virtual auto faceSize(u32 face) const -> u32 = 0; // TODO use TextureFace enum
         virtual auto faceData(u32 face) const -> const void * = 0;
 
-        auto dimension() const -> u32
-        {
+        auto dimension() const -> u32 {
             return dimension_;
         }
 
         /// Returns "best suited" texture format for this data
         auto textureFormat() const -> TextureFormat;
-        auto format() const -> TextureDataFormat
-        {
+        auto format() const -> TextureDataFormat {
             return format_;
         }
 

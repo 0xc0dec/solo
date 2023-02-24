@@ -11,8 +11,7 @@
 
 using namespace solo;
 
-static void registerDevice(CppBindModule<LuaBinding> &module)
-{
+static void registerDevice(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS(module, Device);
     REG_METHOD(binding, Device, windowTitle);
     REG_METHOD(binding, Device, setWindowTitle);
@@ -41,8 +40,7 @@ static void registerDevice(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-void registerDeviceSetup(CppBindModule<LuaBinding> &module)
-{
+void registerDeviceSetup(CppBindModule<LuaBinding> &module) {
     auto setup = BEGIN_CLASS(module, DeviceSetup);
     REG_CTOR(setup);
     REG_FIELD(setup, DeviceSetup, mode);
@@ -55,8 +53,7 @@ void registerDeviceSetup(CppBindModule<LuaBinding> &module)
     setup.endClass();
 }
 
-void registerDeviceApi(CppBindModule<LuaBinding> &module)
-{
+void registerDeviceApi(CppBindModule<LuaBinding> &module) {
     registerDeviceSetup(module);
     registerDevice(module);
 }

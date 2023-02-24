@@ -11,8 +11,7 @@
 
 using namespace solo;
 
-static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec<VkImage>
-{
+static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec<VkImage> {
     u32 imageCount = 0;
     vk::assertResult(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
 
@@ -23,8 +22,7 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
     return images;
 }
 
-static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPresentModeKHR
-{
+static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPresentModeKHR {
     u32 presentModeCount;
     vk::assertResult(vkGetPhysicalDeviceSurfacePresentModesKHR(dev.physical(), dev.surface(), &presentModeCount, nullptr));
 
@@ -33,14 +31,11 @@ static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPr
 
     auto presentMode = VK_PRESENT_MODE_FIFO_KHR; // "vsync"
 
-    if (!vsync)
-    {
-        for (const auto mode : presentModes)
-        {
+    if (!vsync) {
+        for (const auto mode : presentModes) {
             if (mode == VK_PRESENT_MODE_IMMEDIATE_KHR)
                 presentMode = mode;
-            if (mode == VK_PRESENT_MODE_MAILBOX_KHR)
-            {
+            if (mode == VK_PRESENT_MODE_MAILBOX_KHR) {
                 presentMode = mode;
                 break;
             }
@@ -50,13 +45,11 @@ static auto selectPresentMode(const VulkanDriverDevice &dev, bool vsync) -> VkPr
     return presentMode;
 }
 
-static auto createSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR>
-{
+static auto createSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync) -> VulkanResource<VkSwapchainKHR> {
     VkSurfaceCapabilitiesKHR capabilities;
     vk::assertResult(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(dev.physical(), dev.surface(), &capabilities));
 
-    if (capabilities.currentExtent.width != std::numeric_limits<u32>::max())
-    {
+    if (capabilities.currentExtent.width != std::numeric_limits<u32>::max()) {
         width = capabilities.currentExtent.width;
         height = capabilities.currentExtent.height;
     }
@@ -99,8 +92,7 @@ static auto createSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height
 }
 
 VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync):
-    device_(dev.handle())
-{
+    device_(dev.handle()) {
     const auto colorFormat = dev.colorFormat();
     const auto depthFormat = dev.depthFormat();
 
@@ -124,8 +116,7 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 h
     auto images = getSwapchainImages(this->device_, swapchain_);
     steps_.resize(images.size());
 
-    for (u32 i = 0; i < images.size(); i++)
-    {
+    for (u32 i = 0; i < images.size(); i++) {
         // TODO Use FrameBuffer class here?
         steps_[i].imageView = vk::createImageView(this->device_, colorFormat, VK_IMAGE_VIEW_TYPE_2D, 1, 1, images[i], VK_IMAGE_ASPECT_COLOR_BIT);
         steps_[i].framebuffer = vk::createFrameBuffer(this->device_, {steps_[i].imageView, depthStencil_.view()}, renderPass_, width, height);
@@ -147,14 +138,12 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 h
     presentCompleteSem_ = vk::createSemaphore(this->device_);
 }
 
-auto VulkanSwapchain::moveNext() -> VkSemaphore
-{
+auto VulkanSwapchain::moveNext() -> VkSemaphore {
     vk::assertResult(vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, presentCompleteSem_, VK_NULL_HANDLE, &currentStep_));
     return presentCompleteSem_;
 }
 
-void VulkanSwapchain::present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores)
-{
+void VulkanSwapchain::present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores) {
     VkPresentInfoKHR presentInfo{};
     presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.pNext = nullptr;

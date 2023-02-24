@@ -9,10 +9,8 @@
 #include "SoloMath.h"
 #include <glm/vec3.hpp>
 
-namespace solo
-{
-    class Vector3 final
-    {
+namespace solo {
+    class Vector3 final {
     public:
         Vector3() = default;
         Vector3(const glm::vec3 &data);
@@ -20,18 +18,15 @@ namespace solo
         Vector3(float x, float y, float z);
 
         auto x() -> float & { return data_.x; }
-        auto x() const -> float
-        {
+        auto x() const -> float {
             return data_.x;
         }
         auto y() -> float & { return data_.y; }
-        auto y() const -> float
-        {
+        auto y() const -> float {
             return data_.y;
         }
         auto z() -> float & { return data_.z; }
-        auto z() const -> float
-        {
+        auto z() const -> float {
             return data_.z;
         }
 
@@ -47,8 +42,7 @@ namespace solo
         auto dot(const Vector3 &v) const -> float;
         auto cross(const Vector3 &v) const -> Vector3;
 
-        operator glm::vec3() const
-        {
+        operator glm::vec3() const {
             return data_;
         }
 

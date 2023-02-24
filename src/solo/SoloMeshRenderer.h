@@ -9,29 +9,25 @@
 #include "SoloComponent.h"
 #include "SoloNode.h"
 
-namespace solo
-{
+namespace solo {
     class Material;
     class Mesh;
     class Transform;
     class Renderer;
 
-    class MeshRenderer final: public ComponentBase<MeshRenderer>
-    {
+    class MeshRenderer final: public ComponentBase<MeshRenderer> {
     public:
         explicit MeshRenderer(const Node &node);
 
         void render() override;
 
         auto mesh() const -> sptr<Mesh> { return mesh_; }
-        void setMesh(const sptr<Mesh> &mesh)
-        {
+        void setMesh(const sptr<Mesh> &mesh) {
             this->mesh_ = mesh;
         }
 
         auto material(u32 index) const -> sptr<Material>;
-        auto materialCount() const -> u32
-        {
+        auto materialCount() const -> u32 {
             return materialCount_;
         }
         void setMaterial(u32 index, const sptr<Material> &material);

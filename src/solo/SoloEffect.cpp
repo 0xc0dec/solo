@@ -13,28 +13,24 @@
 
 using namespace solo;
 
-auto Effect::fromSourceFile(Device *device, const str &path) -> sptr<Effect>
-{
+auto Effect::fromSourceFile(Device *device, const str &path) -> sptr<Effect> {
     const auto source = device->fileSystem()->readText(path);
     return fromSource(device, source);
 }
 
-auto Effect::fromDescriptionFile(Device *device, const str &path) -> sptr<Effect>
-{
+auto Effect::fromDescriptionFile(Device *device, const str &path) -> sptr<Effect> {
     const auto desc = device->fileSystem()->readText(path);
     return fromDescription(device, desc);
 }
 
-auto Effect::fromDescription(Device *device, const str &description) -> sptr<Effect>
-{
+auto Effect::fromDescription(Device *device, const str &description) -> sptr<Effect> {
     // This doesn't seem to restrict us to Lua scripting only. It seems quite possible to
     // provide the same script method in other possible scripting languages in the future.
     const auto source = device->scriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
     return fromSource(device, source);
 }
 
-auto Effect::fromSource(Device *device, const str &source) -> sptr<Effect>
-{
+auto Effect::fromSource(Device *device, const str &source) -> sptr<Effect> {
     const auto vertTagStartIdx = source.find("// VERTEX");
     panicIf(vertTagStartIdx == std::string::npos, "Vertex shader not found in ", source);
 
@@ -51,8 +47,7 @@ auto Effect::fromSource(Device *device, const str &source) -> sptr<Effect>
     const auto fsBytes = source.c_str() + fragShaderStartIdx;
     const auto fsSize = fragShaderEndIdx - fragShaderStartIdx + 1;
 
-    switch (device->mode())
-    {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return std::make_shared<OpenGLEffect>(vsBytes, vsSize, fsBytes, fsSize);

@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-void registerCameraApi(CppBindModule<LuaBinding> &module)
-{
+void registerCameraApi(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS_EXTEND(module, Camera, Component);
     REG_METHOD(binding, Camera, renderFrame);
     REG_METHOD(binding, Camera, transform);

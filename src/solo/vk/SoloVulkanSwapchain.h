@@ -13,12 +13,10 @@
 #include "SoloVulkanImage.h"
 #include "SoloVulkanRenderPass.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanDriverDevice;
 
-    class VulkanSwapchain final
-    {
+    class VulkanSwapchain final {
     public:
         VulkanSwapchain() = default;
         VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 height, bool vsync);
@@ -29,12 +27,10 @@ namespace solo
         auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain & = delete;
         auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain & = default;
 
-        operator VkSwapchainKHR()
-        {
+        operator VkSwapchainKHR() {
             return swapchain_;
         }
-        operator VkSwapchainKHR() const
-        {
+        operator VkSwapchainKHR() const {
             return swapchain_;
         }
 
@@ -44,14 +40,12 @@ namespace solo
         auto moveNext() -> VkSemaphore;
         void present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
-        auto imageCount() const -> u32
-        {
+        auto imageCount() const -> u32 {
             return steps_.size();
         }
 
     private:
-        struct Step
-        {
+        struct Step {
             VulkanResource<VkImageView> imageView;
             VulkanResource<VkFramebuffer> framebuffer;
         };

@@ -8,10 +8,8 @@
 #include "SoloDevice.h"
 #include <SDL.h>
 
-namespace solo
-{
-    class SDLDevice : public Device
-    {
+namespace solo {
+    class SDLDevice : public Device {
     public:
         virtual ~SDLDevice();
 
@@ -25,14 +23,12 @@ namespace solo
         auto canvasSize() const -> Vector2 override final;
         auto dpiIndependentCanvasSize() const -> Vector2 override final;
 
-        auto window() const -> SDL_Window *
-        {
+        auto window() const -> SDL_Window * {
             return window_;
         }
 
         // TODO Better replacement
-        void onEvent(const std::function<void(SDL_Event)> &onEvent)
-        {
+        void onEvent(const std::function<void(SDL_Event)> &onEvent) {
             onEvent_ = onEvent;
         }
 

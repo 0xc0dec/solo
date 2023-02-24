@@ -8,8 +8,7 @@
 #include "SoloCommon.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Camera;
     class Mesh;
@@ -17,8 +16,7 @@ namespace solo
     class Material;
     class DebugInterface;
 
-    class Renderer
-    {
+    class Renderer {
     public:
         static auto fromDevice(Device *device) -> sptr<Renderer>;
 
@@ -49,8 +47,7 @@ namespace solo
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
 
-        auto errorMaterial() const -> Material *
-        {
+        auto errorMaterial() const -> Material * {
             return errorMaterial_.get();
         }
 

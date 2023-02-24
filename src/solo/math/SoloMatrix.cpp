@@ -13,22 +13,19 @@
 
 using namespace solo;
 
-Matrix::Matrix()
-{
+Matrix::Matrix() {
     *this = identity();
 }
 
 Matrix::Matrix(const glm::mat4x4 &data):
-    data_(data)
-{
+    data_(data) {
 }
 
 Matrix::Matrix(
     float m11, float m12, float m13, float m14,
     float m21, float m22, float m23, float m24,
     float m31, float m32, float m33, float m34,
-    float m41, float m42, float m43, float m44)
-{
+    float m41, float m42, float m43, float m44) {
     data_[0][0] = m11;
     data_[0][1] = m21;
     data_[0][2] = m31;
@@ -47,13 +44,11 @@ Matrix::Matrix(
     data_[3][3] = m44;
 }
 
-Matrix::Matrix(const Matrix &copy)
-{
+Matrix::Matrix(const Matrix &copy) {
     data_ = copy.data_;
 }
 
-auto Matrix::identity() -> Matrix
-{
+auto Matrix::identity() -> Matrix {
     static Matrix m(
         1, 0, 0, 0,
         0, 1, 0, 0,
@@ -62,23 +57,19 @@ auto Matrix::identity() -> Matrix
     return m;
 }
 
-auto Matrix::getDeterminant() const -> float
-{
+auto Matrix::getDeterminant() const -> float {
     return glm::determinant(data_);
 }
 
-void Matrix::invert()
-{
+void Matrix::invert() {
     data_ = glm::inverse(data_);
 }
 
-auto Matrix::inverted() const -> Matrix
-{
+auto Matrix::inverted() const -> Matrix {
     return glm::inverse(data_);
 }
 
-bool Matrix::isIdentity() const
-{
+bool Matrix::isIdentity() const {
     return
         glm::all(glm::epsilonEqual(data_[0], {1.0f, 0.0f, 0.0f, 0.0}, glm::epsilon<float>())) &&
         glm::all(glm::epsilonEqual(data_[1], {0.0f, 1.0f, 0.0f, 0.0}, glm::epsilon<float>())) &&
@@ -86,19 +77,16 @@ bool Matrix::isIdentity() const
         glm::all(glm::epsilonEqual(data_[3], {0.0f, 0.0f, 0.0f, 1.0}, glm::epsilon<float>()));
 }
 
-auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix
-{
+auto Matrix::createLookAt(const Vector3 &eye, const Vector3 &target, const Vector3 &up) -> Matrix {
     const auto m = glm::lookAt(glm::vec3{eye}, glm::vec3{target}, glm::vec3{up});
     return Matrix(glm::transpose(m));
 }
 
-auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix
-{
+auto Matrix::createPerspective(const Radians &fieldOfView, float aspectRatio, float znear, float zfar) -> Matrix {
     return glm::perspective(fieldOfView.toRawRadians(), aspectRatio, znear, zfar);
 }
 
-auto Matrix::createOrthographic(float width, float height, float near, float far) -> Matrix
-{
+auto Matrix::createOrthographic(float width, float height, float near, float far) -> Matrix {
     const auto halfWidth = width / 2.0f;
     const auto halfHeight = height / 2.0f;
     const auto left = -halfWidth;
@@ -108,8 +96,7 @@ auto Matrix::createOrthographic(float width, float height, float near, float far
     return glm::ortho(left, right, bottom, top, near, far);
 }
 
-auto Matrix::createScale(const Vector3 &scale) -> Matrix
-{
+auto Matrix::createScale(const Vector3 &scale) -> Matrix {
     Matrix result;
     result.data_[0][0] = scale.x();
     result.data_[1][1] = scale.y();
@@ -117,18 +104,15 @@ auto Matrix::createScale(const Vector3 &scale) -> Matrix
     return result;
 }
 
-auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix
-{
+auto Matrix::createRotationFromQuaternion(const Quaternion &q) -> Matrix {
     return glm::mat4_cast(static_cast<glm::quat>(q));
 }
 
-auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix
-{
+auto Matrix::createRotationFromAxisAngle(const Vector3 &axis, const Radians &angle) -> Matrix {
     return glm::mat4_cast(static_cast<glm::quat>(Quaternion::fromAxisAngle(axis, angle)));
 }
 
-auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
-{
+auto Matrix::createTranslation(const Vector3 &translation) -> Matrix {
     Matrix result;
     result.data_[3][0] = translation.x();
     result.data_[3][1] = translation.y();
@@ -136,51 +120,43 @@ auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
     return result;
 }
 
-auto Matrix::columns() const -> const float *
-{
+auto Matrix::columns() const -> const float * {
     return glm::value_ptr(data_);
 }
 
-auto Matrix::scale() const -> Vector3
-{
+auto Matrix::scale() const -> Vector3 {
     Quaternion rotation;
     Vector3 scale, translation;
     decompose(scale, rotation, translation);
     return scale;
 }
 
-auto Matrix::rotation() const -> Quaternion
-{
+auto Matrix::rotation() const -> Quaternion {
     Quaternion rotation;
     Vector3 scale, translation;
     decompose(scale, rotation, translation);
     return rotation;
 }
 
-auto Matrix::translation() const -> Vector3
-{
+auto Matrix::translation() const -> Vector3 {
     return glm::vec3(data_[3]);
 }
 
-auto Matrix::transformPoint(const Vector3 &point) const -> Vector3
-{
+auto Matrix::transformPoint(const Vector3 &point) const -> Vector3 {
     return static_cast<glm::vec3>(data_ * glm::vec4(static_cast<glm::vec3>(point), 1.0f));
 }
 
-auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3
-{
+auto Matrix::transformDirection(const Vector3 &dir) const -> Vector3 {
     return static_cast<glm::vec3>(data_ * glm::vec4(static_cast<glm::vec3>(dir), 0.0f));
 }
 
-auto Matrix::transformRay(const Ray &ray) const -> Ray
-{
+auto Matrix::transformRay(const Ray &ray) const -> Ray {
     const auto origin = transformPoint(ray.origin());
     const auto direction = transformDirection(ray.direction()).normalized();
     return {origin, direction};
 }
 
-void Matrix::decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translation) const
-{
+void Matrix::decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translation) const {
     glm::vec3 rawScale;
     glm::quat rawRotation;
     glm::vec3 rawTranslation;
@@ -194,108 +170,88 @@ void Matrix::decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translatio
     translation = rawTranslation;
 }
 
-auto Matrix::operator+=(float scalar) -> Matrix &
-{
+auto Matrix::operator+=(float scalar) -> Matrix & {
     data_ += scalar;
     return *this;
 }
 
-auto Matrix::operator+=(const Matrix &other) -> Matrix &
-{
+auto Matrix::operator+=(const Matrix &other) -> Matrix & {
     data_ += other.data_;
     return *this;
 }
 
-void Matrix::transpose()
-{
+void Matrix::transpose() {
     data_ = glm::transpose(data_);
 }
 
-auto Matrix::transposed() const -> Matrix
-{
+auto Matrix::transposed() const -> Matrix {
     return glm::transpose(data_);
 }
 
-auto Matrix::operator*=(float scalar) -> Matrix &
-{
+auto Matrix::operator*=(float scalar) -> Matrix & {
     data_ *= scalar;
     return *this;
 }
 
-auto Matrix::operator*=(const Matrix &m2) -> Matrix &
-{
+auto Matrix::operator*=(const Matrix &m2) -> Matrix & {
     data_ *= m2.data_;
     return *this;
 }
 
-auto Matrix::operator-=(float scalar) -> Matrix &
-{
+auto Matrix::operator-=(float scalar) -> Matrix & {
     data_ -= scalar;
     return *this;
 }
 
-auto Matrix::operator-=(const Matrix &m2) -> Matrix &
-{
+auto Matrix::operator-=(const Matrix &m2) -> Matrix & {
     data_ -= m2.data_;
     return *this;
 }
 
-auto Matrix::operator-() const -> Matrix
-{
+auto Matrix::operator-() const -> Matrix {
     return -data_;
 }
 
-void Matrix::scaleByScalar(float value)
-{
+void Matrix::scaleByScalar(float value) {
     scaleByVector({value, value, value});
 }
 
-void Matrix::rotateByQuaternion(const Quaternion &q)
-{
+void Matrix::rotateByQuaternion(const Quaternion &q) {
     *this *= createRotationFromQuaternion(q);
 }
 
-void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radians &angle)
-{
+void Matrix::rotateByAxisAngle(const Vector3 &axis, const Radians &angle) {
     *this *= createRotationFromAxisAngle(axis, angle);
 }
 
-void Matrix::scaleByVector(const Vector3 &s)
-{
+void Matrix::scaleByVector(const Vector3 &s) {
     data_ = glm::scale(data_, static_cast<glm::vec3>(s));
 }
 
-void Matrix::translate(const Vector3 &t)
-{
+void Matrix::translate(const Vector3 &t) {
     data_ = glm::translate(data_, static_cast<glm::vec3>(t));
 }
 
-auto Matrix::operator+(float scalar) const -> Matrix
-{
+auto Matrix::operator+(float scalar) const -> Matrix {
     return data_ + scalar;
 }
 
-auto Matrix::operator+(const Matrix &m) const -> Matrix
-{
+auto Matrix::operator+(const Matrix &m) const -> Matrix {
     return data_ + m.data_;
 }
 
-auto Matrix::operator-(float scalar) const -> Matrix
-{
+auto Matrix::operator-(float scalar) const -> Matrix {
     return data_ - scalar;
 }
 
-auto Matrix::operator-(const Matrix &m) const -> Matrix
-{
+auto Matrix::operator-(const Matrix &m) const -> Matrix {
     return data_ - m.data_;
 }
 
-auto Matrix::operator*(float scalar) const -> Matrix
-{
+auto Matrix::operator*(float scalar) const -> Matrix {
     return data_ * scalar;
 }
 
-auto Matrix::operator*(const Matrix &m) const -> Matrix
-{
+auto Matrix::operator*(const Matrix &m) const -> Matrix {
     return data_ * m.data_;
 }

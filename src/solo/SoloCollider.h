@@ -5,10 +5,8 @@
 
 #pragma once
 
-namespace solo
-{
-    class Collider
-    {
+namespace solo {
+    class Collider {
     public:
         Collider(const Collider &other) = delete;
         Collider(Collider &&other) = delete;

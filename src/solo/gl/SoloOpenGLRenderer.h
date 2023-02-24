@@ -11,13 +11,11 @@
 
 #include "SoloRenderer.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class OpenGLDebugInterface;
 
-    class OpenGLRenderer final : public Renderer
-    {
+    class OpenGLRenderer final : public Renderer {
     public:
         explicit OpenGLRenderer(Device *device);
         ~OpenGLRenderer() = default;
@@ -28,8 +26,7 @@ namespace solo
         void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
         void renderDebugInterface(DebugInterface *debugInterface) override;
 
-        auto name() const -> const char *override
-        {
+        auto name() const -> const char *override {
             return name_.c_str();
         }
         auto gpuName() const -> const char *override;

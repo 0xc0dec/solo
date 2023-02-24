@@ -10,14 +10,12 @@
 using namespace solo;
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-        u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
-{
+        u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData) {
     Logger::global().logDebug(fmt("Vulkan: ", msg));
     return VK_FALSE;
 }
 
-static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VulkanResource<VkDebugReportCallbackEXT>
-{
+static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEXT callbackFunc) -> VulkanResource<VkDebugReportCallbackEXT> {
     VkDebugReportCallbackCreateInfoEXT createInfo;
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
     createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
@@ -35,8 +33,7 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     return result;
 }
 
-static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR>
-{
+static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -> std::tuple<VkFormat, VkColorSpaceKHR> {
     u32 count;
     vk::assertResult(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &count, nullptr));
 
@@ -48,8 +45,7 @@ static auto selectSurfaceFormat(VkPhysicalDevice device, VkSurfaceKHR surface) -
     return {formats[0].format, formats[0].colorSpace};
 }
 
-static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32
-{
+static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u32 {
     u32 count;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
 
@@ -62,8 +58,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
         vk::assertResult(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
 
     // TODO support for separate rendering and presenting queues
-    for (u32 i = 0; i < count; i++)
-    {
+    for (u32 i = 0; i < count; i++) {
         if (queueProps[i].queueFlags & VK_QUEUE_GRAPHICS_BIT && presentSupported[i] == VK_TRUE)
             return i;
     }
@@ -73,8 +68,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
     return 0;
 }
 
-static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> VulkanResource<VkDevice>
-{
+static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> VulkanResource<VkDevice> {
     vec<float> queuePriorities = {0.0f};
     VkDeviceQueueCreateInfo queueCreateInfo{};
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -101,8 +95,7 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
     return result;
 }
 
-static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource<VkCommandPool>
-{
+static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource<VkCommandPool> {
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.queueFamilyIndex = queueIndex;
@@ -115,8 +108,7 @@ static auto createCommandPool(VkDevice device, u32 queueIndex) -> VulkanResource
 }
 
 VulkanDriverDevice::VulkanDriverDevice(VkInstance instance, VkSurfaceKHR surface):
-    surface_(surface)
-{
+    surface_(surface) {
 #ifdef SL_DEBUG
     debugCallback_ = createDebugCallback(instance, debugCallbackFunc);
 #endif
@@ -144,13 +136,11 @@ VulkanDriverDevice::VulkanDriverDevice(VkInstance instance, VkSurfaceKHR surface
     commandPool_ = createCommandPool(handle_, queueIndex_);
 }
 
-bool VulkanDriverDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const
-{
+bool VulkanDriverDevice::isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const {
     return supportedFormats_.count(format) && (supportedFormats_.at(format) & features) == features;
 }
 
-void VulkanDriverDevice::detectFormatSupport(VkFormat format)
-{
+void VulkanDriverDevice::detectFormatSupport(VkFormat format) {
     // TODO Check for linear tiling as well
     VkFormatProperties formatProps;
     vkGetPhysicalDeviceFormatProperties(physical_, format, &formatProps);
@@ -158,10 +148,8 @@ void VulkanDriverDevice::detectFormatSupport(VkFormat format)
         supportedFormats_[format] = formatProps.optimalTilingFeatures;
 }
 
-auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
-{
-    vec<VkFormat> depthFormats =
-    {
+auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat {
+    vec<VkFormat> depthFormats = {
         VK_FORMAT_D32_SFLOAT_S8_UINT,
         VK_FORMAT_D32_SFLOAT,
         VK_FORMAT_D24_UNORM_S8_UINT,
@@ -169,8 +157,7 @@ auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
         VK_FORMAT_D16_UNORM
     };
 
-    for (auto &format : depthFormats)
-    {
+    for (auto &format : depthFormats) {
         if (isFormatSupported(format, VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT))
             return format;
     }
@@ -180,16 +167,14 @@ auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
     return VK_FORMAT_UNDEFINED;
 }
 
-void VulkanDriverDevice::selectPhysicalDevice(VkInstance instance)
-{
+void VulkanDriverDevice::selectPhysicalDevice(VkInstance instance) {
     u32 gpuCount = 0;
     vk::assertResult(vkEnumeratePhysicalDevices(instance, &gpuCount, nullptr));
 
     vec<VkPhysicalDevice> devices(gpuCount);
     vk::assertResult(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
 
-    for (const auto &device : devices)
-    {
+    for (const auto &device : devices) {
         vkGetPhysicalDeviceProperties(device, &physicalProperties_);
         vkGetPhysicalDeviceFeatures(device, &physicalFeatures_);
         vkGetPhysicalDeviceMemoryProperties(device, &physicalMemoryFeatures_);

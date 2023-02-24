@@ -8,10 +8,8 @@
 #include "SoloScriptRuntime.h"
 #include "SoloLuaCommon.h"
 
-namespace solo
-{
-    class LuaScriptRuntime final : public ScriptRuntime
-    {
+namespace solo {
+    class LuaScriptRuntime final : public ScriptRuntime {
     public:
         LuaScriptRuntime();
         explicit LuaScriptRuntime(Device *device);

@@ -9,12 +9,10 @@
 #include "SoloDeviceSetup.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Device;
 
-    class ScriptRuntime
-    {
+    class ScriptRuntime {
     public:
         static auto empty() -> sptr<ScriptRuntime>;
         static auto fromDevice(Device *device) -> sptr<ScriptRuntime>;

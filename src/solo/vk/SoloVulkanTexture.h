@@ -12,20 +12,16 @@
 #include "SoloTexture.h"
 #include "SoloVulkanImage.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class VulkanRenderer;
 
-    class VulkanTexture
-    {
+    class VulkanTexture {
     public:
-        auto image() const -> VulkanImage const &
-        {
+        auto image() const -> VulkanImage const & {
             return image_;
         }
-        auto sampler() const -> VkSampler
-        {
+        auto sampler() const -> VkSampler {
             return sampler_;
         }
 
@@ -37,8 +33,7 @@ namespace solo
         explicit VulkanTexture(Device *device);
     };
 
-    class VulkanTexture2D final: public Texture2D, public VulkanTexture
-    {
+    class VulkanTexture2D final: public Texture2D, public VulkanTexture {
     public:
         static auto fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<VulkanTexture2D>;
         static auto empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<VulkanTexture2D>;
@@ -49,8 +44,7 @@ namespace solo
         void rebuildSampler();
     };
 
-    class VulkanCubeTexture final: public CubeTexture, public VulkanTexture
-    {
+    class VulkanCubeTexture final: public CubeTexture, public VulkanTexture {
     public:
         static auto fromData(Device *device, sptr<CubeTextureData> data) -> sptr<VulkanCubeTexture>;
 

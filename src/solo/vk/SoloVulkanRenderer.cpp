@@ -19,8 +19,7 @@
 
 using namespace solo;
 
-static auto contextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass)
-{
+static auto contextKey(Transform *transform, Camera *camera, VulkanMaterial *material, VkRenderPass renderPass) {
     size_t seed = 0;
     const std::hash<void *> hasher;
     combineHash(seed, hasher(transform));
@@ -30,10 +29,8 @@ static auto contextKey(Transform *transform, Camera *camera, VulkanMaterial *mat
     return seed;
 }
 
-static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
-{
-    switch (elementSize)
-    {
+static auto toIndexType(IndexElementSize elementSize) -> VkIndexType {
+    switch (elementSize) {
     case IndexElementSize::Bits16:
         return VK_INDEX_TYPE_UINT16;
     case IndexElementSize::Bits32:
@@ -46,8 +43,7 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType
 
 VulkanRenderer::VulkanRenderer(Device *device):
     Renderer(device),
-    device_(dynamic_cast<VulkanDevice *>(device))
-{
+    device_(dynamic_cast<VulkanDevice *>(device)) {
     const auto canvasSize = device->canvasSize();
 
     driverDevice_ = VulkanDriverDevice(device_->instance(), device_->surface());
@@ -57,8 +53,7 @@ VulkanRenderer::VulkanRenderer(Device *device):
     context_.debugInterface.renderCmdBuffer = VulkanCmdBuffer(driverDevice_);
 }
 
-void VulkanRenderer::beginCamera(Camera *camera)
-{
+void VulkanRenderer::beginCamera(Camera *camera) {
     const auto renderTarget = camera->renderTarget().get();
     const auto targetFrameBuffer = dynamic_cast<VulkanFrameBuffer *>(renderTarget);
     const auto currentFrameBuffer = targetFrameBuffer ? targetFrameBuffer->handle() : swapchain_.currentFrameBuffer();
@@ -67,8 +62,7 @@ void VulkanRenderer::beginCamera(Camera *camera)
     context_.camera = camera;
     context_.renderPass = targetFrameBuffer ? &targetFrameBuffer->renderPass() : &swapchain_.renderPass();
 
-    if (!renderPassContexts_.count(context_.renderPass))
-    {
+    if (!renderPassContexts_.count(context_.renderPass)) {
         renderPassContexts_[context_.renderPass].cmdBuf = VulkanCmdBuffer(driverDevice_);
         renderPassContexts_[context_.renderPass].completeSemaphore = vk::createSemaphore(driverDevice_);
     }
@@ -82,8 +76,7 @@ void VulkanRenderer::beginCamera(Camera *camera)
     context_.cmdBuffer->beginRenderPass(*context_.renderPass, currentFrameBuffer,
                                         static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()));
 
-    if (context_.camera->hasColorClearing())
-    {
+    if (context_.camera->hasColorClearing()) {
         const VkClearRect clearRect{{{0, 0}, {static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y())}}, 0, 1};
         auto clearColor = context_.camera->clearColor();
         const VkClearValue clearValue{{clearColor.x(), clearColor.y(), clearColor.z(), clearColor.w()}};
@@ -99,8 +92,7 @@ void VulkanRenderer::beginCamera(Camera *camera)
     context_.cmdBuffer->setScissor(viewport);
 }
 
-void VulkanRenderer::endCamera(Camera *)
-{
+void VulkanRenderer::endCamera(Camera *) {
     auto &ctx = renderPassContexts_.at(context_.renderPass);
     ctx.cmdBuf.endRenderPass();
     ctx.cmdBuf.end();
@@ -112,8 +104,7 @@ void VulkanRenderer::endCamera(Camera *)
     context_.camera = nullptr;
 }
 
-void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material)
-{
+void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material) {
     material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh *>(mesh);
 
@@ -122,8 +113,7 @@ void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
     context_.cmdBuffer->draw(vkMesh->minVertexCount(), 1, 0, 0);
 }
 
-void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material)
-{
+void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) {
     material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh *>(mesh);
 
@@ -135,13 +125,11 @@ void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform
     context_.cmdBuffer->drawIndexed(vkMesh->indexBufferElementCount(index), 1, 0, 0, 0);
 }
 
-void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface)
-{
+void VulkanRenderer::renderDebugInterface(DebugInterface *debugInterface) {
     context_.debugInterface.instance = dynamic_cast<VulkanDebugInterface *>(debugInterface);
 }
 
-void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh)
-{
+void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transform, Mesh *mesh) {
     const auto vkMaterial = dynamic_cast<VulkanMaterial *>(material);
     const auto vkMesh = dynamic_cast<VulkanMesh *>(mesh);
 
@@ -152,8 +140,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
     auto &context = pipelineContexts_.at(key);
     context.setFrameOfLastUse(frameNr_);
 
-    if (context_.pipelineContextKey != context.key())
-    {
+    if (context_.pipelineContextKey != context.key()) {
         context.update(vkMaterial, vkMesh, context_.renderPass, context_.camera, transform);
         context_.cmdBuffer->bindPipeline(context.pipeline());
         context_.cmdBuffer->bindDescriptorSet(context.pipeline().layout(), context.descriptorSet());
@@ -165,8 +152,7 @@ void VulkanRenderer::bindPipelineAndMesh(Material *material, Transform *transfor
         context_.cmdBuffer->bindVertexBuffer(i, vkMesh->vertexBuffer(i));
 }
 
-void VulkanRenderer::beginFrame()
-{
+void VulkanRenderer::beginFrame() {
     frameNr_++;
     context_.camera = nullptr;
     context_.renderPass = nullptr;
@@ -176,11 +162,9 @@ void VulkanRenderer::beginFrame()
     context_.waitSemaphore = swapchain_.moveNext();
 }
 
-void VulkanRenderer::endFrame()
-{
+void VulkanRenderer::endFrame() {
     // TODO extract function
-    if (context_.debugInterface.instance)
-    {
+    if (context_.debugInterface.instance) {
         context_.debugInterface.renderCmdBuffer.begin(false);
 
         const auto canvasSize = device_->canvasSize();
@@ -211,53 +195,42 @@ void VulkanRenderer::endFrame()
     vk::assertResult(vkQueueWaitIdle(driverDevice_.queue()));
 
     // TODO Less naive cleanup
-    if (frameNr_ % 100 == 0)
-    {
+    if (frameNr_ % 100 == 0) {
         cleanupUnusedPipelineContexts();
         cleanupUnusedRenderPassContexts();
     }
 }
 
-void VulkanRenderer::cleanupUnusedRenderPassContexts()
-{
+void VulkanRenderer::cleanupUnusedRenderPassContexts() {
     bool removed;
-    do
-    {
+    do {
         removed = false;
         VulkanRenderPass *key = nullptr;
-        for (const auto &p : renderPassContexts_)
-        {
-            if (frameNr_ - p.second.frameOfLastUse >= 100)
-            {
+        for (const auto &p : renderPassContexts_) {
+            if (frameNr_ - p.second.frameOfLastUse >= 100) {
                 key = p.first;
                 removed = true;
             }
         }
         if (removed)
             renderPassContexts_.erase(key);
-    }
-    while (removed);
+    } while (removed);
 }
 
-void VulkanRenderer::cleanupUnusedPipelineContexts()
-{
+void VulkanRenderer::cleanupUnusedPipelineContexts() {
     bool removed;
-    do
-    {
+    do {
         removed = false;
         size_t key = 0;
-        for (const auto &p : pipelineContexts_)
-        {
-            if (frameNr_ - p.second.frameOfLastUse() >= 100)
-            {
+        for (const auto &p : pipelineContexts_) {
+            if (frameNr_ - p.second.frameOfLastUse() >= 100) {
                 key = p.first;
                 removed = true;
             }
         }
         if (removed)
             pipelineContexts_.erase(key);
-    }
-    while (removed);
+    } while (removed);
 }
 
 #endif

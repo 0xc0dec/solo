@@ -12,13 +12,11 @@
 #include "SoloMesh.h"
 #include "SoloOpenGL.h"
 
-namespace solo
-{
+namespace solo {
     class Effect;
     class OpenGLEffect;
 
-    class OpenGLMesh final : public Mesh
-    {
+    class OpenGLMesh final : public Mesh {
     public:
         OpenGLMesh() = default;
         ~OpenGLMesh();
@@ -38,8 +36,7 @@ namespace solo
         vec<GLuint> vertexBuffers_;
         vec<GLuint> indexBuffers_;
 
-        struct VertexArrayCacheEntry
-        {
+        struct VertexArrayCacheEntry {
             GLuint handle;
             u32 age;
         };

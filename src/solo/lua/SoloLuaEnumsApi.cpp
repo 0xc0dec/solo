@@ -10,8 +10,7 @@
 
 using namespace solo;
 
-void registerEnums(CppBindModule<LuaBinding> &module)
-{
+void registerEnums(CppBindModule<LuaBinding> &module) {
     {
         auto m = module.beginModule("TransformSpace");
         REG_MODULE_CONSTANT(m, TransformSpace, Parent);

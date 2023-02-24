@@ -10,16 +10,14 @@
 #include "SoloAsyncHandle.h"
 #include "SoloEnums.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Texture2D;
     class Texture2DData;
     class CubeTexture;
     class CubeTextureData;
 
-    class Texture
-    {
+    class Texture {
     public:
         Texture() = delete;
         Texture(const Texture &other) = delete;
@@ -29,39 +27,32 @@ namespace solo
         auto operator=(const Texture &other) -> Texture & = delete;
         auto operator=(Texture &&other) -> Texture & = delete;
 
-        auto format() const -> TextureFormat
-        {
+        auto format() const -> TextureFormat {
             return format_;
         }
 
-        auto horizontalWrap() const -> TextureWrap
-        {
+        auto horizontalWrap() const -> TextureWrap {
             return horizontalWrap_;
         }
-        auto verticalWrap() const -> TextureWrap
-        {
+        auto verticalWrap() const -> TextureWrap {
             return verticalWrap_;
         }
         void setHorizontalWrap(TextureWrap wrap);
         void setVerticalWrap(TextureWrap wrap);
         virtual void setWrap(TextureWrap wrap);
 
-        auto minFilter() const -> TextureFilter
-        {
+        auto minFilter() const -> TextureFilter {
             return minFilter_;
         }
-        auto magFilter() const -> TextureFilter
-        {
+        auto magFilter() const -> TextureFilter {
             return magFilter_;
         }
-        auto mipFilter() const -> TextureMipFilter
-        {
+        auto mipFilter() const -> TextureMipFilter {
             return mipFilter_;
         }
         void setFilter(TextureFilter minFilter, TextureFilter magFilter, TextureMipFilter mipFilter);
 
-        auto anisotropyLevel() const -> float
-        {
+        auto anisotropyLevel() const -> float {
             return anisotropyLevel_;
         }
         void setAnisotropyLevel(float level);
@@ -83,16 +74,14 @@ namespace solo
         virtual void rebuild() {}
     };
 
-    class Texture2D: public Texture
-    {
+    class Texture2D: public Texture {
     public:
         static auto fromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>;
         static auto fromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>;
         static auto fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>;
         static auto empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>;
 
-        auto dimensions() const -> Vector2
-        {
+        auto dimensions() const -> Vector2 {
             return dimensions_;
         }
 
@@ -102,8 +91,7 @@ namespace solo
         explicit Texture2D(TextureFormat format, Vector2 dimensions);
     };
 
-    class CubeTexture: public Texture
-    {
+    class CubeTexture: public Texture {
     public:
         static auto fromFaceFiles(Device *device,
                                   const str &positiveXPath, const str &negativeXPath,
@@ -115,8 +103,7 @@ namespace solo
                                        const str &positiveZPath, const str &negativeZPath) -> sptr<AsyncHandle<CubeTexture>>;
         static auto fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>;
 
-        auto depthWrap() const -> TextureWrap
-        {
+        auto depthWrap() const -> TextureWrap {
             return depthWrap_;
         }
         void setDepthWrap(TextureWrap wrap);

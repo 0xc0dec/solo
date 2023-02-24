@@ -12,21 +12,17 @@
 
 using namespace solo;
 
-auto Scene::empty(Device *device) -> sptr<Scene>
-{
+auto Scene::empty(Device *device) -> sptr<Scene> {
     return sptr<Scene>(new Scene(device));
 }
 
 Scene::Scene(Device *device):
-    device_(device)
-{
+    device_(device) {
 }
 
-void Scene::cleanupDeleted()
-{
+void Scene::cleanupDeleted() {
     // "Garbage collect" deleted stuff
-    for (auto &nodeComponents : deletedComponents_)
-    {
+    for (auto &nodeComponents : deletedComponents_) {
         auto nodeId = nodeComponents.first;
         for (auto cmpId : nodeComponents.second)
             nodes_.at(nodeId).erase(cmpId);
@@ -37,33 +33,27 @@ void Scene::cleanupDeleted()
     deletedComponents_.clear();
 }
 
-auto Scene::createNode() -> sptr<Node>
-{
+auto Scene::createNode() -> sptr<Node> {
     auto node = std::make_shared<Node>(this, nodeCounter_++);
     node->addComponent<Transform>();
     return node;
 }
 
-void Scene::removeNodeById(u32 nodeId)
-{
-    if (nodes_.count(nodeId))
-    {
+void Scene::removeNodeById(u32 nodeId) {
+    if (nodes_.count(nodeId)) {
         for (auto &component : nodes_.at(nodeId))
             removeComponent(nodeId, component.second.component->typeId());
     }
 }
 
-void Scene::removeNode(Node *node)
-{
+void Scene::removeNode(Node *node) {
     removeNodeById(node->id());
 }
 
-void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
-{
+void Scene::addComponent(u32 nodeId, sptr<Component> cmp) {
     const auto typeId = cmp->typeId();
 
-    asrt([this, nodeId, typeId]()
-    {
+    asrt([this, nodeId, typeId]() {
         const auto node = nodes_.find(nodeId);
         return node != nodes_.end() ? node->second.find(typeId) == node->second.end() : true;
     }, "Node already contains component with same id");
@@ -75,8 +65,7 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
         cameras_.push_back(dynamic_cast<Camera *>(cmp.get()));
 }
 
-void Scene::removeComponent(u32 nodeId, u32 typeId)
-{
+void Scene::removeComponent(u32 nodeId, u32 typeId) {
     auto node = nodes_.find(nodeId);
     if (node == nodes_.end())
         return;
@@ -97,17 +86,13 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
         cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), cmp.component.get()));
 }
 
-void Scene::visit(const std::function<void(Component *)> &accept)
-{
+void Scene::visit(const std::function<void(Component *)> &accept) {
     return visitByTags(~0, accept);
 }
 
-void Scene::visitByTags(u32 tagMask, const std::function<void(Component *)> &accept)
-{
-    for (const auto &node : nodes_)
-    {
-        for (const auto &cmp : node.second)
-        {
+void Scene::visitByTags(u32 tagMask, const std::function<void(Component *)> &accept) {
+    for (const auto &node : nodes_) {
+        for (const auto &cmp : node.second) {
             if (!cmp.second.deleted && cmp.second.component->enabled() &&
                     (cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
                 accept(cmp.second.component.get());
@@ -117,24 +102,19 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component *)> &acc
     cleanupDeleted();
 }
 
-void Scene::update()
-{
-    visit([](auto cmp)
-    {
+void Scene::update() {
+    visit([](auto cmp) {
         cmp->update();
     });
 }
 
-void Scene::render(u32 tagMask)
-{
-    visitByTags(tagMask, [](auto cmp)
-    {
+void Scene::render(u32 tagMask) {
+    visitByTags(tagMask, [](auto cmp) {
         cmp->render();
     });
 }
 
-auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component *
-{
+auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component * {
     const auto node = nodes_.find(nodeId);
     if (node == nodes_.end())
         return nullptr;

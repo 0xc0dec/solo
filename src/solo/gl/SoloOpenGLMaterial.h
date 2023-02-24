@@ -14,8 +14,7 @@
 #include "SoloOpenGLEffect.h"
 #include "SoloOpenGL.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Camera;
     class Transform;
@@ -23,20 +22,17 @@ namespace solo
     class OpenGLEffect;
     class OpenGLTexture;
 
-    class OpenGLMaterial final : public Material
-    {
+    class OpenGLMaterial final : public Material {
     public:
         explicit OpenGLMaterial(const sptr<Effect> &effect);
         OpenGLMaterial(const OpenGLMaterial &other) = default;
         virtual ~OpenGLMaterial() = default;
 
-        auto effect() const -> sptr<Effect> override
-        {
+        auto effect() const -> sptr<Effect> override {
             return effect_;
         }
 
-        auto clone() const -> sptr<Material> override
-        {
+        auto clone() const -> sptr<Material> override {
             return std::make_shared<OpenGLMaterial>(*this);
         }
 
@@ -60,8 +56,7 @@ namespace solo
     protected:
         using ParameterWriter = std::function<void(GLuint, GLuint, const Camera *, const Transform *)>;
 
-        struct ParameterDescriptor
-        {
+        struct ParameterDescriptor {
             GLuint location;
             GLuint samplerIndex;
             ParameterWriter write;

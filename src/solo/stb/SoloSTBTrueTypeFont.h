@@ -8,10 +8,8 @@
 #include "SoloFont.h"
 #include <stb_truetype.h>
 
-namespace solo
-{
-    class STBTrueTypeFont final : public Font
-    {
+namespace solo {
+    class STBTrueTypeFont final : public Font {
     public:
         static bool canLoadFromFile(const str &path);
         static auto loadFromFile(Device *device, const str &path,
@@ -19,8 +17,7 @@ namespace solo
                                  u32 firstChar, u32 charCount,
                                  u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
 
-        auto atlas() const -> sptr<Texture2D> override final
-        {
+        auto atlas() const -> sptr<Texture2D> override final {
             return atlas_;
         }
         auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;

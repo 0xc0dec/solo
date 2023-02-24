@@ -8,8 +8,7 @@
 
 using namespace solo;
 
-void registerTransformApi(CppBindModule<LuaBinding> &module)
-{
+void registerTransformApi(CppBindModule<LuaBinding> &module) {
     // TODO script transform callbacks
 
     auto transform = BEGIN_CLASS_EXTEND(module, Transform, Component);

@@ -16,8 +16,7 @@
 #include "SoloVulkanDriverDevice.h"
 #include "SoloVulkanPipelineContext.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Camera;
     class VulkanDevice;
@@ -25,8 +24,7 @@ namespace solo
     class VulkanMaterial;
     class VulkanDebugInterface;
 
-    class VulkanRenderer final: public Renderer
-    {
+    class VulkanRenderer final: public Renderer {
     public:
         explicit VulkanRenderer(Device *device);
         ~VulkanRenderer() = default;
@@ -37,24 +35,20 @@ namespace solo
         void renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) override;
         void renderDebugInterface(DebugInterface *debugInterface) override;
 
-        auto name() const -> const char *override
-        {
+        auto name() const -> const char *override {
             return "Vulkan";
         }
-        auto gpuName() const -> const char *override
-        {
+        auto gpuName() const -> const char *override {
             return driverDevice_.gpuName();
         }
 
-        auto device() const -> const VulkanDriverDevice &
-        {
+        auto device() const -> const VulkanDriverDevice & {
             return driverDevice_;
         }
         auto swapchain() -> VulkanSwapchain & { return swapchain_; }
 
     private:
-        struct RenderPassContext
-        {
+        struct RenderPassContext {
             VulkanResource<VkSemaphore> completeSemaphore;
             VulkanCmdBuffer cmdBuf;
             u32 frameOfLastUse = 0;
@@ -67,16 +61,14 @@ namespace solo
         umap<VulkanRenderPass *, RenderPassContext> renderPassContexts_;
         umap<size_t, VulkanPipelineContext> pipelineContexts_;
 
-        struct
-        {
+        struct {
             Camera *camera = nullptr;
             VulkanRenderPass *renderPass = nullptr;
             VulkanCmdBuffer *cmdBuffer = nullptr;
             VkSemaphore waitSemaphore = nullptr;
             size_t pipelineContextKey = 0;
 
-            struct
-            {
+            struct {
                 VulkanDebugInterface *instance = nullptr;
                 VulkanCmdBuffer renderCmdBuffer;
                 VulkanResource<VkSemaphore> completeSemaphore;

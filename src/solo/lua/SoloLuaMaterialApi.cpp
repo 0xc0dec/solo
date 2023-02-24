@@ -8,8 +8,7 @@
 
 using namespace solo;
 
-void registerMaterialApi(CppBindModule<LuaBinding> &module)
-{
+void registerMaterialApi(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS(module, Material);
     REG_STATIC_METHOD(binding, Material, fromEffect);
     REG_METHOD(binding, Material, setFloatParameter);

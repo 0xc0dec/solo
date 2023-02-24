@@ -9,10 +9,8 @@
 #include "SoloDevice.h"
 #include "SoloEnums.h"
 
-namespace solo
-{
-    static const umap<SDL_Keycode, KeyCode> SDLKeyMap =
-    {
+namespace solo {
+    static const umap<SDL_Keycode, KeyCode> SDLKeyMap = {
         {SDLK_0, KeyCode::Digit0},
         {SDLK_1, KeyCode::Digit1},
         {SDLK_2, KeyCode::Digit2},
@@ -73,8 +71,7 @@ namespace solo
         // ...
     };
 
-    static const umap<Uint8, MouseButton> SDLMouseButtonsMap =
-    {
+    static const umap<Uint8, MouseButton> SDLMouseButtonsMap = {
         {SDL_BUTTON_LEFT, MouseButton::Left},
         {SDL_BUTTON_MIDDLE, MouseButton::Middle},
         {SDL_BUTTON_RIGHT, MouseButton::Right},

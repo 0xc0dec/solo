@@ -15,10 +15,8 @@
 
 using namespace solo;
 
-static auto toVulkanFormat(TextureFormat format) -> VkFormat
-{
-    switch (format)
-    {
+static auto toVulkanFormat(TextureFormat format) -> VkFormat {
+    switch (format) {
     case TextureFormat::R8:
         return VK_FORMAT_R8_UNORM;
     case TextureFormat::RGB8: // TODO real 24-bit? They crash my driver...
@@ -36,8 +34,7 @@ static auto toVulkanFormat(TextureFormat format) -> VkFormat
 }
 
 static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height, u32 mipLevels,
-                        u32 arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> VulkanResource<VkImage>
-{
+                        u32 arrayLayers, VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags) -> VulkanResource<VkImage> {
     VkImageCreateInfo imageCreateInfo{};
     imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -58,8 +55,7 @@ static auto createImage(VkDevice device, VkFormat format, u32 width, u32 height,
     return image;
 }
 
-static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryProperties memProps, VkImage image) -> VulkanResource<VkDeviceMemory>
-{
+static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryProperties memProps, VkImage image) -> VulkanResource<VkDeviceMemory> {
     VkMemoryRequirements memReqs{};
     vkGetImageMemoryRequirements(device, image, &memReqs);
 
@@ -76,8 +72,7 @@ static auto allocateImageMemory(VkDevice device, VkPhysicalDeviceMemoryPropertie
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::empty(const VulkanDriverDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage
-{
+auto VulkanImage::empty(const VulkanDriverDevice &dev, u32 width, u32 height, TextureFormat format) -> VulkanImage {
     const auto isDepth = format == TextureFormat::Depth24;
     const auto layout = VK_IMAGE_LAYOUT_GENERAL; // TODO better
     const auto usage = VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -121,8 +116,7 @@ auto VulkanImage::empty(const VulkanDriverDevice &dev, u32 width, u32 height, Te
 }
 
 // TODO Refactor, reduce copy-paste
-auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage
-{
+auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, bool generateMipmaps) -> VulkanImage {
     const auto width = static_cast<u32>(data->dimensions().x());
     const auto height = static_cast<u32>(data->dimensions().y());
     const auto format = toVulkanFormat(data->textureFormat());
@@ -140,8 +134,7 @@ auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, b
            );
 
     u32 mipLevels = 1;
-    if (generateMipmaps)
-    {
+    if (generateMipmaps) {
         panicIf(!dev.isFormatSupported(format, VK_FORMAT_FEATURE_BLIT_SRC_BIT | VK_FORMAT_FEATURE_BLIT_DST_BIT),
         "Image format/features not supported"
                );
@@ -178,8 +171,7 @@ auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, b
 
     initCmdBuf.copyBuffer(srcBuf, image);
 
-    if (generateMipmaps)
-    {
+    if (generateMipmaps) {
         initCmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TRANSFER_BIT,
             VK_PIPELINE_STAGE_TRANSFER_BIT,
@@ -195,8 +187,7 @@ auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, b
         auto blitCmdBuf = VulkanCmdBuffer(dev);
         blitCmdBuf.begin(true);
 
-        for (u32 i = 1; i < mipLevels; i++)
-        {
+        for (u32 i = 1; i < mipLevels; i++) {
             VkImageBlit imageBlit{};
 
             // Source
@@ -267,8 +258,7 @@ auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, b
         );
 
         blitCmdBuf.endAndFlush();
-    }
-    else
+    } else
     {
         initCmdBuf.putImagePipelineBarrier(
             VK_PIPELINE_STAGE_TRANSFER_BIT,
@@ -286,8 +276,7 @@ auto VulkanImage::fromData(const VulkanDriverDevice &dev, Texture2DData *data, b
     return image;
 }
 
-auto VulkanImage::fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *data) -> VulkanImage
-{
+auto VulkanImage::fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *data) -> VulkanImage {
     const u32 mipLevels = 1; // TODO proper support
     const auto layers = 6;
     const auto width = data->dimension();
@@ -339,12 +328,10 @@ auto VulkanImage::fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *d
     u32 offset = 0;
     constexpr auto copyRegionCount = layers * mipLevels;
     VkBufferImageCopy copyRegions[copyRegionCount];
-    for (u32 layer = 0; layer < layers; layer++)
-    {
+    for (u32 layer = 0; layer < layers; layer++) {
         srcBuf.updatePart(data->faceData(layerFaceMapping[layer]), offset, data->faceSize(layerFaceMapping[layer]));
 
-        for (u32 level = 0; level < mipLevels; level++)
-        {
+        for (u32 level = 0; level < mipLevels; level++) {
             VkBufferImageCopy region{};
             region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
             region.imageSubresource.mipLevel = level;
@@ -384,8 +371,7 @@ auto VulkanImage::fromCubeData(const VulkanDriverDevice &dev, CubeTextureData *d
     return image;
 }
 
-auto VulkanImage::swapchainDepthStencil(const VulkanDriverDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage
-{
+auto VulkanImage::swapchainDepthStencil(const VulkanDriverDevice &dev, u32 width, u32 height, VkFormat format) -> VulkanImage {
     return VulkanImage(dev, width, height, 1, 1, format,
     VK_IMAGE_LAYOUT_UNDEFINED,
     0,
@@ -401,8 +387,7 @@ VulkanImage::VulkanImage(const VulkanDriverDevice &dev, u32 width, u32 height, u
     mipLevels_(mipLevels),
     width_(width),
     height_(height),
-    aspectMask_(aspectMask)
-{
+    aspectMask_(aspectMask) {
     image_ = createImage(dev.handle(), format, width, height, mipLevels, layers, createFlags, usageFlags);
     memory_ = allocateImageMemory(dev.handle(), dev.physicalMemoryFeatures(), image_);
     view_ = vk::createImageView(dev.handle(), format, viewType, mipLevels, layers, image_, aspectMask);

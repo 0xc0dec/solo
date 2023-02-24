@@ -8,10 +8,8 @@
 #include "SoloRadians.h"
 #include "SoloMath.h"
 
-namespace solo
-{
-    class Vector4 final
-    {
+namespace solo {
+    class Vector4 final {
     public:
         Vector4() = default;
         Vector4(const glm::vec4 &data);
@@ -19,23 +17,19 @@ namespace solo
         Vector4(float x, float y, float z, float w);
 
         auto x() -> float & { return data_.x; }
-        auto x() const -> float
-        {
+        auto x() const -> float {
             return data_.x;
         }
         auto y() -> float & { return data_.y; }
-        auto y() const -> float
-        {
+        auto y() const -> float {
             return data_.y;
         }
         auto z() -> float & { return data_.z; }
-        auto z() const -> float
-        {
+        auto z() const -> float {
             return data_.z;
         }
         auto w() -> float & { return data_.w; }
-        auto w() const -> float
-        {
+        auto w() const -> float {
             return data_.w;
         }
 

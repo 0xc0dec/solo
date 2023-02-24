@@ -10,8 +10,7 @@
 #include "SoloDeviceSetup.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Scene;
     class FileSystem;
     class Renderer;
@@ -22,8 +21,7 @@ namespace solo
     enum class KeyCode;
     enum class MouseButton;
 
-    class Device
-    {
+    class Device {
     public:
         static auto create(const DeviceSetup &setup) -> uptr<Device>;
 
@@ -43,17 +41,14 @@ namespace solo
         virtual void setCursorCaptured(bool captured) = 0;
 
         virtual auto lifetime() const -> float = 0;
-        auto timeDelta() const -> float
-        {
+        auto timeDelta() const -> float {
             return timeDelta_;
         }
 
-        bool isWindowCloseRequested() const
-        {
+        bool isWindowCloseRequested() const {
             return windowCloseRequested_;
         }
-        bool isQuitRequested() const
-        {
+        bool isQuitRequested() const {
             return quitRequested_;
         }
         bool hasActiveBackgroundJobs() const;
@@ -61,12 +56,10 @@ namespace solo
         bool isKeyPressed(KeyCode code, bool firstTime = false) const;
         bool isKeyReleased(KeyCode code) const;
 
-        auto mouseMotion() const -> Vector2
-        {
+        auto mouseMotion() const -> Vector2 {
             return mouseDelta_;
         }
-        auto mousePosition() const -> Vector2
-        {
+        auto mousePosition() const -> Vector2 {
             return mousePos_;
         }
         bool isMouseButtonDown(MouseButton button, bool firstTime = false) const;
@@ -74,37 +67,29 @@ namespace solo
 
         void update(const std::function<void()> &update);
 
-        auto mode() const -> DeviceMode
-        {
+        auto mode() const -> DeviceMode {
             return mode_;
         }
-        bool isVsync() const
-        {
+        bool isVsync() const {
             return vsync_;
         }
 
-        auto fileSystem() const -> FileSystem *
-        {
+        auto fileSystem() const -> FileSystem * {
             return fs_.get();
         }
-        auto renderer() const -> Renderer *
-        {
+        auto renderer() const -> Renderer * {
             return renderer_.get();
         }
-        auto debugInterface() const -> DebugInterface *
-        {
+        auto debugInterface() const -> DebugInterface * {
             return debugInterface_.get();
         }
-        auto physics() const -> Physics *
-        {
+        auto physics() const -> Physics * {
             return physics_.get();
         }
-        auto scriptRuntime() const -> ScriptRuntime *
-        {
+        auto scriptRuntime() const -> ScriptRuntime * {
             return scriptRuntime_.get();
         }
-        auto jobPool() const -> JobPool *
-        {
+        auto jobPool() const -> JobPool * {
             return jobPool_.get();
         }
 

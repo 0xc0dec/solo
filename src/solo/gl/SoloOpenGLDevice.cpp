@@ -12,8 +12,7 @@
 using namespace solo;
 
 OpenGLDevice::OpenGLDevice(DeviceSetup const &setup):
-    SDLDevice(setup)
-{
+    SDLDevice(setup) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -30,23 +29,19 @@ OpenGLDevice::OpenGLDevice(DeviceSetup const &setup):
     SDL_GL_SetSwapInterval(setup.vsync ? -1 : 0);
 }
 
-OpenGLDevice::~OpenGLDevice()
-{
+OpenGLDevice::~OpenGLDevice() {
     shutdownSubsystems();
     cleanup();
 }
 
-void OpenGLDevice::cleanup()
-{
-    if (context_)
-    {
+void OpenGLDevice::cleanup() {
+    if (context_) {
         SDL_GL_DeleteContext(context_);
         context_ = nullptr;
     }
 }
 
-void OpenGLDevice::endUpdate()
-{
+void OpenGLDevice::endUpdate() {
     SDL_GL_SwapWindow(window());
 }
 

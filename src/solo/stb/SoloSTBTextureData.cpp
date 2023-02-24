@@ -13,10 +13,8 @@
 
 using namespace solo;
 
-static auto toFormat(int components) -> TextureDataFormat
-{
-    switch (components)
-    {
+static auto toFormat(int components) -> TextureDataFormat {
+    switch (components) {
     case 1:
         return TextureDataFormat::Red;
     case 3:
@@ -29,24 +27,20 @@ static auto toFormat(int components) -> TextureDataFormat
     }
 }
 
-bool STBTexture2DData::canLoadFromFile(const str &path)
-{
+bool STBTexture2DData::canLoadFromFile(const str &path) {
     static vec<str> supportedFormats = {".bmp", ".jpg", ".jpeg", ".png"};
     return std::find_if(supportedFormats.begin(), supportedFormats.end(),
-                        [&](const str & ext)
-    {
+    [&](const str & ext) {
         return stringutils::endsWith(path, ext);
     }) != supportedFormats.end();
 }
 
-STBTexture2DData::~STBTexture2DData()
-{
+STBTexture2DData::~STBTexture2DData() {
     if (data_)
         stbi_image_free(data_);
 }
 
-auto STBTexture2DData::fromFile(Device *device, const str &path) -> sptr<STBTexture2DData>
-{
+auto STBTexture2DData::fromFile(Device *device, const str &path) -> sptr<STBTexture2DData> {
     auto bytes = device->fileSystem()->readBytes(path);
     int width, height, channels;
     stbi_set_flip_vertically_on_load(device->mode() == DeviceMode::OpenGL);
@@ -61,15 +55,13 @@ auto STBTexture2DData::fromFile(Device *device, const str &path) -> sptr<STBText
 }
 
 STBTexture2DData::STBTexture2DData(TextureDataFormat format, Vector2 dimensions):
-    Texture2DData(format, dimensions)
-{
+    Texture2DData(format, dimensions) {
 }
 
 bool STBCubeTextureData::canLoadFromFaceFiles(
     const str &positiveXPath, const str &negativeXPath,
     const str &positiveYPath, const str &negativeYPath,
-    const str &positiveZPath, const str &negativeZPath)
-{
+    const str &positiveZPath, const str &negativeZPath) {
     return STBTexture2DData::canLoadFromFile(positiveXPath) &&
            STBTexture2DData::canLoadFromFile(negativeXPath) &&
            STBTexture2DData::canLoadFromFile(positiveYPath) &&
@@ -82,8 +74,7 @@ auto STBCubeTextureData::fromFaceFiles(
     Device *device,
     const str &positiveXPath, const str &negativeXPath,
     const str &positiveYPath, const str &negativeYPath,
-    const str &positiveZPath, const str &negativeZPath) -> sptr<STBCubeTextureData>
-{
+    const str &positiveZPath, const str &negativeZPath) -> sptr<STBCubeTextureData> {
     vec<sptr<STBTexture2DData>> faces;
     faces.push_back(STBTexture2DData::fromFile(device, positiveXPath));
     faces.push_back(STBTexture2DData::fromFile(device, negativeXPath));
@@ -92,17 +83,14 @@ auto STBCubeTextureData::fromFaceFiles(
     faces.push_back(STBTexture2DData::fromFile(device, positiveZPath));
     faces.push_back(STBTexture2DData::fromFile(device, negativeZPath));
 
-    asrt([&faces]()
-    {
+    asrt([&faces]() {
         const auto dim = faces[0]->dimensions();
         return dim.x() == dim.y();
     }, "Cube texture width must be equal to height");
 
-    asrt([&faces]()
-    {
+    asrt([&faces]() {
         const auto dim = faces[0]->dimensions();
-        for (const auto &face : faces)
-        {
+        for (const auto &face : faces) {
             if (face->dimensions() != dim)
                 return false;
         }
@@ -116,12 +104,10 @@ auto STBCubeTextureData::fromFaceFiles(
 }
 
 STBCubeTextureData::STBCubeTextureData(TextureDataFormat format, u32 dimension):
-    CubeTextureData(format, dimension)
-{
+    CubeTextureData(format, dimension) {
 }
 
-auto STBCubeTextureData::size() const -> u32
-{
+auto STBCubeTextureData::size() const -> u32 {
     return faces_[0]->size() +
            faces_[1]->size() +
            faces_[2]->size() +

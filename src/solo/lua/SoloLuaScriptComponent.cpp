@@ -11,8 +11,7 @@ using namespace solo;
 
 LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
     ComponentBase<LuaScriptComponent>(node),
-    ref_(ref)
-{
+    ref_(ref) {
     typeId_ = sanitizeTypeId(ref.get<u32>("typeId"));
 
     initFunc_ = ref.has("init")
@@ -34,22 +33,18 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
     ref.set("node", node);
 }
 
-void LuaScriptComponent::init()
-{
+void LuaScriptComponent::init() {
     initFunc_(ref_);
 }
 
-void LuaScriptComponent::terminate()
-{
+void LuaScriptComponent::terminate() {
     terminateFunc_(ref_);
 }
 
-void LuaScriptComponent::update()
-{
+void LuaScriptComponent::update() {
     updateFunc_(ref_);
 }
 
-void LuaScriptComponent::render()
-{
+void LuaScriptComponent::render() {
     renderFunc_(ref_);
 }

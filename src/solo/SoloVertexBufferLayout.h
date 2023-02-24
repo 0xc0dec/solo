@@ -8,10 +8,8 @@
 #include "SoloCommon.h"
 #include "SoloEnums.h"
 
-namespace solo
-{
-    class VertexAttribute final
-    {
+namespace solo {
+    class VertexAttribute final {
     public:
         str name;
         u32 elementCount;
@@ -20,27 +18,22 @@ namespace solo
         VertexAttributeUsage usage;
     };
 
-    class VertexBufferLayout final
-    {
+    class VertexBufferLayout final {
     public:
         void addAttribute(VertexAttributeUsage usage);
 
-        auto attributeCount() const -> u32
-        {
+        auto attributeCount() const -> u32 {
             return static_cast<u32>(attributes_.size());
         }
-        auto attribute(u32 index) const -> VertexAttribute
-        {
+        auto attribute(u32 index) const -> VertexAttribute {
             return attributes_.at(index);
         }
         auto attributeIndex(VertexAttributeUsage usage) const -> s32;
 
-        auto size() const -> u32
-        {
+        auto size() const -> u32 {
             return size_;
         }
-        auto elementCount() const -> u32
-        {
+        auto elementCount() const -> u32 {
             return elementCount_;
         }
 

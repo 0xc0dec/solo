@@ -20,14 +20,12 @@ using namespace solo;
 VulkanDebugInterface::VulkanDebugInterface(Device *device):
     SDLDebugInterface(device),
     device_(dynamic_cast<VulkanDevice *>(device)),
-    renderer_(dynamic_cast<VulkanRenderer *>(device->renderer()))
-{
+    renderer_(dynamic_cast<VulkanRenderer *>(device->renderer())) {
     ImGui_ImplSDL2_InitForVulkan(device_->window());
 
     // Desc pool
     {
-        std::vector<VkDescriptorPoolSize> poolSizes =
-        {
+        std::vector<VkDescriptorPoolSize> poolSizes = {
             { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
             { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
             { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
@@ -75,13 +73,11 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
     ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
-VulkanDebugInterface::~VulkanDebugInterface()
-{
+VulkanDebugInterface::~VulkanDebugInterface() {
     ImGui_ImplVulkan_Shutdown();
 }
 
-void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
-{
+void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const {
     ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);
 }
 

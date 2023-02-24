@@ -10,50 +10,40 @@
 
 using namespace solo;
 
-namespace solo
-{
-    class LoggerImpl : public Logger
-    {
+namespace solo {
+    class LoggerImpl : public Logger {
     public:
-        ~LoggerImpl()
-        {
+        ~LoggerImpl() {
             if (file.is_open())
                 file.close();
         }
 
-        void setOutputFile(const str &path) override final
-        {
+        void setOutputFile(const str &path) override final {
             if (file.is_open())
                 file.close();
-            if (!path.empty())
-            {
+            if (!path.empty()) {
                 file.open(path, std::ios_base::trunc);
                 panicIf(!file.is_open(), "Unable to open log file ", path);
             }
         }
 
-        void logDebug(const str &msg) override final
-        {
+        void logDebug(const str &msg) override final {
             log(msg, "debug");
         }
 
-        void logInfo(const str &msg) override final
-        {
+        void logInfo(const str &msg) override final {
             log(msg, "info");
         }
 
-        void logWarning(const str &msg) override final
-        {
+        void logWarning(const str &msg) override final {
             log(msg, "warn");
         }
 
-        void logError(const str &msg) override final
-        {
+        void logError(const str &msg) override final {
             log(msg, "error");
         }
 
-        void logCritical(const str &msg) override final
-        {
+        void logCritical(const str &msg) override final {
             log(msg, "crit");
         }
 
@@ -61,8 +51,7 @@ namespace solo
         std::ofstream file;
         SpinLock lock;
 
-        void log(const str &msg, const str &level)
-        {
+        void log(const str &msg, const str &level) {
             volatile auto lt = lock.acquire();
             const auto fullMsg = fmt("[", level, "] ", msg);
             std::cout << fullMsg << std::endl;
@@ -72,8 +61,7 @@ namespace solo
     };
 }
 
-auto Logger::global() -> Logger &
-{
+auto Logger::global() -> Logger & {
     static LoggerImpl instance;
     return instance;
 }

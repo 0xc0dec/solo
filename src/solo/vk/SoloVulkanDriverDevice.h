@@ -11,10 +11,8 @@
 
 #include "SoloVulkan.h"
 
-namespace solo
-{
-    class VulkanDriverDevice
-    {
+namespace solo {
+    class VulkanDriverDevice {
     public:
         VulkanDriverDevice() = default;
         VulkanDriverDevice(VkInstance instance, VkSurfaceKHR surface);
@@ -23,65 +21,51 @@ namespace solo
         ~VulkanDriverDevice() = default;
 
         bool isFormatSupported(VkFormat format, VkFormatFeatureFlags features) const;
-        auto gpuName() const -> const char *
-        {
+        auto gpuName() const -> const char * {
             return physicalProperties_.deviceName;
         }
 
         auto operator=(const VulkanDriverDevice &other) -> VulkanDriverDevice & = delete;
         auto operator=(VulkanDriverDevice &&other) -> VulkanDriverDevice & = default;
 
-        operator VkDevice() const
-        {
+        operator VkDevice() const {
             return handle_;
         }
 
-        auto handle() const -> VkDevice
-        {
+        auto handle() const -> VkDevice {
             return handle_;
         }
-        auto surface() const -> VkSurfaceKHR
-        {
+        auto surface() const -> VkSurfaceKHR {
             return surface_;
         }
-        auto physical() const -> VkPhysicalDevice
-        {
+        auto physical() const -> VkPhysicalDevice {
             return physical_;
         }
-        auto physicalFeatures() const -> VkPhysicalDeviceFeatures
-        {
+        auto physicalFeatures() const -> VkPhysicalDeviceFeatures {
             return physicalFeatures_;
         }
-        auto physicalProperties() const -> VkPhysicalDeviceProperties
-        {
+        auto physicalProperties() const -> VkPhysicalDeviceProperties {
             return physicalProperties_;
         }
-        auto physicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties
-        {
+        auto physicalMemoryFeatures() const -> VkPhysicalDeviceMemoryProperties {
             return physicalMemoryFeatures_;
         }
-        auto colorFormat() const -> VkFormat
-        {
+        auto colorFormat() const -> VkFormat {
             return colorFormat_;
         }
-        auto depthFormat() const -> VkFormat
-        {
+        auto depthFormat() const -> VkFormat {
             return depthFormat_;
         }
-        auto colorSpace() const -> VkColorSpaceKHR
-        {
+        auto colorSpace() const -> VkColorSpaceKHR {
             return colorSpace_;
         }
-        auto commandPool() const -> VkCommandPool
-        {
+        auto commandPool() const -> VkCommandPool {
             return commandPool_;
         }
-        auto queue() const -> VkQueue
-        {
+        auto queue() const -> VkQueue {
             return queue_;
         }
-        auto queueIndex() const -> u32
-        {
+        auto queueIndex() const -> u32 {
             return queueIndex_;
         }
 

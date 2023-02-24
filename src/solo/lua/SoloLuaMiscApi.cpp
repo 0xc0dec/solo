@@ -15,8 +15,7 @@
 
 using namespace solo;
 
-void registerMiscApi(CppBindModule<LuaBinding> &module)
-{
+void registerMiscApi(CppBindModule<LuaBinding> &module) {
     {
         auto b = BEGIN_CLASS(module, FileSystem);
         REG_METHOD(b, FileSystem, readBytes);

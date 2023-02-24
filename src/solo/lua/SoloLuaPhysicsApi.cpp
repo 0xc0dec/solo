@@ -11,8 +11,7 @@
 
 using namespace solo;
 
-static void registerRigidBodyParams(CppBindModule<LuaBinding> &module)
-{
+static void registerRigidBodyParams(CppBindModule<LuaBinding> &module) {
     auto params = BEGIN_CLASS(module, RigidBodyParams);
     REG_CTOR(params);
     REG_FIELD(params, RigidBodyParams, mass);
@@ -26,8 +25,7 @@ static void registerRigidBodyParams(CppBindModule<LuaBinding> &module)
     params.endClass();
 }
 
-static void registerRigidBody(CppBindModule<LuaBinding> &module)
-{
+static void registerRigidBody(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS_EXTEND(module, RigidBody, Component);
     REG_METHOD_NULLABLE_1ST_ARG(binding, RigidBody, setCollider, sptr<Collider>);
     REG_METHOD(binding, RigidBody, isKinematic);
@@ -38,8 +36,7 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-static void registerRayTestResult(CppBindModule<LuaBinding> &module)
-{
+static void registerRayTestResult(CppBindModule<LuaBinding> &module) {
     auto rcr = BEGIN_CLASS(module, RayTestResult);
     REG_FIELD(rcr, RayTestResult, body);
     REG_FIELD(rcr, RayTestResult, point);
@@ -47,8 +44,7 @@ static void registerRayTestResult(CppBindModule<LuaBinding> &module)
     rcr.endClass();
 }
 
-static void registerPhysics(CppBindModule<LuaBinding> &module)
-{
+static void registerPhysics(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS(module, Physics);
     REG_METHOD(binding, Physics, setGravity);
     REG_METHOD(binding, Physics, rayTestFirst);
@@ -57,8 +53,7 @@ static void registerPhysics(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-static void registerColliders(CppBindModule<LuaBinding> &module)
-{
+static void registerColliders(CppBindModule<LuaBinding> &module) {
     {
         auto binding = BEGIN_CLASS(module, Collider);
         binding.endClass();
@@ -79,8 +74,7 @@ static void registerColliders(CppBindModule<LuaBinding> &module)
     }
 }
 
-void registerPhysicsApi(CppBindModule<LuaBinding> &module)
-{
+void registerPhysicsApi(CppBindModule<LuaBinding> &module) {
     registerRigidBodyParams(module);
     registerRigidBody(module);
     registerRayTestResult(module);

@@ -14,23 +14,19 @@
 
 using namespace solo;
 
-class MotionState final: public btMotionState
-{
+class MotionState final: public btMotionState {
 public:
-    explicit MotionState(Transform *transform): transform_(transform)
-    {
+    explicit MotionState(Transform *transform): transform_(transform) {
     }
 
-    void getWorldTransform(btTransform &worldTransform) const override
-    {
+    void getWorldTransform(btTransform &worldTransform) const override {
         const auto worldPos = transform_->worldPosition();
         const auto rotation = transform_->worldRotation();
         worldTransform.setOrigin(SL_TOBTVEC3(worldPos));
         worldTransform.setRotation(SL_TOBTQTRN(rotation));
     }
 
-    void setWorldTransform(const btTransform &worldTransform) override
-    {
+    void setWorldTransform(const btTransform &worldTransform) override {
         panicIf(transform_->parent(), "Rigid body transform must not have a parent");
         transform_->setLocalPosition(SL_FROMBTVEC3(worldTransform.getOrigin()));
         transform_->setLocalRotation(SL_FROMBTQTRN(worldTransform.getRotation()));
@@ -43,8 +39,7 @@ private:
 BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyParams &params):
     RigidBody(node),
     mass_(params.mass),
-    shape_(nullptr)
-{
+    shape_(nullptr) {
     world_ = dynamic_cast<BulletPhysics *>(node.scene()->device()->physics())->world();
     transformCmp_ = node.findComponent<Transform>();
     motionState_ = std::make_unique<MotionState>(transformCmp_);
@@ -59,15 +54,12 @@ BulletRigidBody::BulletRigidBody(const Node &node, const RigidBodyParams &params
     body_->setUserPointer(this);
 }
 
-BulletRigidBody::~BulletRigidBody()
-{
+BulletRigidBody::~BulletRigidBody() {
     world_->removeRigidBody(body_.get());
 }
 
-void BulletRigidBody::update()
-{
-    if (lastTransformVersion_ != transformCmp_->version())
-    {
+void BulletRigidBody::update() {
+    if (lastTransformVersion_ != transformCmp_->version()) {
         lastTransformVersion_ = transformCmp_->version();
         if (isStatic())
             syncPosition();
@@ -76,10 +68,8 @@ void BulletRigidBody::update()
     }
 }
 
-void BulletRigidBody::setCollider(sptr<Collider> newCollider)
-{
-    if (newCollider)
-    {
+void BulletRigidBody::setCollider(sptr<Collider> newCollider) {
+    if (newCollider) {
         collider_ = newCollider; // store ownership
         shape_ = std::dynamic_pointer_cast<BulletCollider>(collider_)->shape();
 
@@ -93,43 +83,34 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         body_->setMassProps(mass_, inertia);
 
         world_->addRigidBody(body_.get());
-    }
-    else
-    {
+    } else {
         world_->removeRigidBody(body_.get());
         collider_.reset();
         shape_ = nullptr;
     }
 }
 
-bool BulletRigidBody::isKinematic()
-{
+bool BulletRigidBody::isKinematic() {
     return body_->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT;
 }
 
-void BulletRigidBody::setKinematic(bool kinematic)
-{
+void BulletRigidBody::setKinematic(bool kinematic) {
     auto flags = body_->getCollisionFlags();
-    if (kinematic)
-    {
+    if (kinematic) {
         flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
         body_->setActivationState(DISABLE_DEACTIVATION);
-    }
-    else
-    {
+    } else {
         flags &= ~btCollisionObject::CF_KINEMATIC_OBJECT;
         body_->setActivationState(WANTS_DEACTIVATION); // TODO not sure the right flag
     }
     body_->setCollisionFlags(flags);
 }
 
-bool BulletRigidBody::isStatic()
-{
+bool BulletRigidBody::isStatic() {
     return body_->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT;
 }
 
-void BulletRigidBody::setStatic(bool isStatic)
-{
+void BulletRigidBody::setStatic(bool isStatic) {
     auto flags = body_->getCollisionFlags();
     if (isStatic)
         flags |= btCollisionObject::CF_STATIC_OBJECT;
@@ -138,14 +119,12 @@ void BulletRigidBody::setStatic(bool isStatic)
     body_->setCollisionFlags(flags);
 }
 
-void BulletRigidBody::syncScale() const
-{
+void BulletRigidBody::syncScale() const {
     const auto scale = transformCmp_->worldScale();
     shape_->setLocalScaling(SL_TOBTVEC3(scale));
 }
 
-void BulletRigidBody::syncPosition() const
-{
+void BulletRigidBody::syncPosition() const {
     const auto pos = transformCmp_->worldPosition();
     const auto rot = transformCmp_->worldRotation();
     const auto transform = btTransform(SL_TOBTQTRN(rot), SL_TOBTVEC3(pos));

@@ -8,12 +8,10 @@
 #include "SoloCommon.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Device;
 
-    class FileSystem
-    {
+    class FileSystem {
     public:
         static auto fromDevice(Device *device) -> sptr<FileSystem>;
 

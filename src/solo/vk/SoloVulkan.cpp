@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
-{
+auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore> {
     VkSemaphoreCreateInfo info{};
     info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     info.pNext = nullptr;
@@ -24,8 +23,7 @@ auto vk::createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>
 
 void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
                      u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
-                     u32 commandBufferCount, const VkCommandBuffer *commandBuffers)
-{
+                     u32 commandBufferCount, const VkCommandBuffer *commandBuffers) {
     // TODO this should be an array corresponding to the waitSemaphores array
     VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 
@@ -42,12 +40,9 @@ void vk::queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *w
 }
 
 auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties, u32 typeBits,
-                        VkMemoryPropertyFlags properties) -> s32
-{
-    for (u32 i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++)
-    {
-        if ((typeBits & 1) == 1)
-        {
+                        VkMemoryPropertyFlags properties) -> s32 {
+    for (u32 i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; i++) {
+        if ((typeBits & 1) == 1) {
             if ((physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
                 return i;
         }
@@ -57,8 +52,7 @@ auto vk::findMemoryType(VkPhysicalDeviceMemoryProperties physicalDeviceMemoryPro
 }
 
 auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
-                           VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer>
-{
+                           VkRenderPass renderPass, u32 width, u32 height) -> VulkanResource<VkFramebuffer> {
     VkFramebufferCreateInfo info{};
     info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
     info.pNext = nullptr;
@@ -76,8 +70,7 @@ auto vk::createFrameBuffer(VkDevice device, const vec<VkImageView> &attachments,
 }
 
 auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type, u32 mipLevels, u32 layers,
-                         VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView>
-{
+                         VkImage image, VkImageAspectFlags aspectMask) -> VulkanResource<VkImageView> {
     VkImageViewCreateInfo viewInfo{};
     viewInfo.viewType = type;
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -98,8 +91,7 @@ auto vk::createImageView(VkDevice device, VkFormat format, VkImageViewType type,
 }
 
 auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
-                                  VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier
-{
+                                  VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier {
     VkImageMemoryBarrier barrier{};
     barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
@@ -109,8 +101,7 @@ auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, V
     barrier.image = image;
     barrier.subresourceRange = subresourceRange;
 
-    switch (oldImageLayout)
-    {
+    switch (oldImageLayout) {
     case VK_IMAGE_LAYOUT_UNDEFINED:
         barrier.srcAccessMask = 0;
         break;
@@ -142,8 +133,7 @@ auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, V
         break;
     }
 
-    switch (newImageLayout)
-    {
+    switch (newImageLayout) {
     case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
         barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
         break;

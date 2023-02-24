@@ -12,20 +12,17 @@
 #include "SoloFrameBuffer.h"
 #include "SoloOpenGL.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class OpenGLTexture2D;
 
-    class OpenGLFrameBuffer final : public FrameBuffer
-    {
+    class OpenGLFrameBuffer final : public FrameBuffer {
     public:
         static auto fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>;
 
         ~OpenGLFrameBuffer();
 
-        auto handle() const -> GLuint
-        {
+        auto handle() const -> GLuint {
             return handle_;
         }
 

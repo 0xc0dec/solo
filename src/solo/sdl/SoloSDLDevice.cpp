@@ -9,13 +9,11 @@
 using namespace solo;
 
 SDLDevice::SDLDevice(const DeviceSetup &setup) :
-    Device(setup)
-{
+    Device(setup) {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS);
 }
 
-void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags)
-{
+void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags) {
     auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI | additionalFlags);
     if (fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
@@ -25,10 +23,8 @@ void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, 
     panicIf(!window_, "Failed to create device window");
 }
 
-SDLDevice::~SDLDevice()
-{
-    if (window_)
-    {
+SDLDevice::~SDLDevice() {
+    if (window_) {
         SDL_DestroyWindow(window_);
         window_ = nullptr;
     }
@@ -36,42 +32,35 @@ SDLDevice::~SDLDevice()
     SDL_Quit();
 }
 
-auto SDLDevice::windowTitle() const -> str
-{
+auto SDLDevice::windowTitle() const -> str {
     return str(SDL_GetWindowTitle(window_));
 }
 
-void SDLDevice::setWindowTitle(const str &title)
-{
+void SDLDevice::setWindowTitle(const str &title) {
     SDL_SetWindowTitle(window_, title.c_str());
 }
 
-void SDLDevice::setCursorCaptured(bool captured)
-{
+void SDLDevice::setCursorCaptured(bool captured) {
     SDL_SetRelativeMouseMode(captured ? SDL_TRUE : SDL_FALSE);
 }
 
-auto SDLDevice::lifetime() const -> float
-{
+auto SDLDevice::lifetime() const -> float {
     return SDL_GetTicks() / 1000.0f;
 }
 
-auto SDLDevice::canvasSize() const -> Vector2
-{
+auto SDLDevice::canvasSize() const -> Vector2 {
     s32 width, height;
     SDL_GL_GetDrawableSize(window_, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-auto SDLDevice::dpiIndependentCanvasSize() const -> Vector2
-{
+auto SDLDevice::dpiIndependentCanvasSize() const -> Vector2 {
     s32 width, height;
     SDL_GetWindowSize(window_, &width, &height);
     return {static_cast<float>(width), static_cast<float>(height)};
 }
 
-void SDLDevice::beginUpdate()
-{
+void SDLDevice::beginUpdate() {
     windowCloseRequested_ = false;
     quitRequested_ = false;
     readWindowState();
@@ -81,24 +70,19 @@ void SDLDevice::beginUpdate()
     updateTime();
 }
 
-void SDLDevice::prepareKeyboardState()
-{
+void SDLDevice::prepareKeyboardState() {
     releasedKeys_.clear();
-    if (hasKeyboardFocus_)
-    {
+    if (hasKeyboardFocus_) {
         for (auto &pair : pressedKeys_)
             pair.second = false; // not "pressed for the first time" anymore
-    }
-    else
-    {
+    } else {
         for (const auto &pair : pressedKeys_)
             releasedKeys_.insert(pair.first);
         pressedKeys_.clear();
     }
 }
 
-void SDLDevice::prepareMouseState()
-{
+void SDLDevice::prepareMouseState() {
     int x, y;
     SDL_GetMouseState(&x, &y);
     mousePos_.x() = x;
@@ -106,47 +90,37 @@ void SDLDevice::prepareMouseState()
 
     mouseDelta_.x() = mouseDelta_.y() = 0;
     releasedMouseButtons_.clear();
-    if (hasMouseFocus_)
-    {
+    if (hasMouseFocus_) {
         for (const auto &pair : pressedMouseButtons_)
             pressedMouseButtons_[pair.first] = false;
-    }
-    else
-    {
+    } else {
         for (const auto &pair : pressedMouseButtons_)
             releasedMouseButtons_.insert(pair.first);
         pressedMouseButtons_.clear();
     }
 }
 
-void SDLDevice::readWindowState()
-{
+void SDLDevice::readWindowState() {
     const auto flags = SDL_GetWindowFlags(window_);
     hasKeyboardFocus_ = (flags & SDL_WINDOW_INPUT_FOCUS) != 0;
     hasMouseFocus_ = (flags & SDL_WINDOW_MOUSE_FOCUS) != 0;
 }
 
-void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
-{
+void SDLDevice::processKeyboardEvent(const SDL_Event &evt) {
     if (!hasKeyboardFocus_)
         return;
 
-    switch (evt.type)
-    {
+    switch (evt.type) {
     case SDL_KEYUP:
-    case SDL_KEYDOWN:
-        {
+    case SDL_KEYDOWN: {
             const auto it = SDLKeyMap.find(evt.key.keysym.sym);
             if (it == SDLKeyMap.end())
                 break;
             const auto code = it->second;
-            if (evt.type == SDL_KEYUP)
-            {
+            if (evt.type == SDL_KEYUP) {
                 releasedKeys_.insert(code);
                 pressedKeys_.erase(code);
-            }
-            else
-            {
+            } else {
                 pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end();
                 releasedKeys_.erase(code);
             }
@@ -157,33 +131,27 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
     }
 }
 
-void SDLDevice::processMouseEvent(const SDL_Event &evt)
-{
+void SDLDevice::processMouseEvent(const SDL_Event &evt) {
     if (!hasMouseFocus_)
         return;
 
-    switch (evt.type)
-    {
-    case SDL_MOUSEMOTION:
-        {
+    switch (evt.type) {
+    case SDL_MOUSEMOTION: {
             mouseDelta_.x() += evt.motion.xrel;
             mouseDelta_.y() += evt.motion.yrel;
             mousePos_.x() = evt.motion.x;
             mousePos_.y() = evt.motion.y;
             break;
         }
-    case SDL_MOUSEBUTTONDOWN:
-        {
+    case SDL_MOUSEBUTTONDOWN: {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
             pressedMouseButtons_[button] = true; // pressed for the first time
             releasedMouseButtons_.erase(button);
             break;
         }
-    case SDL_MOUSEBUTTONUP:
-        {
+    case SDL_MOUSEBUTTONUP: {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
-            if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end())
-            {
+            if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end()) {
                 releasedMouseButtons_.insert(button);
                 pressedMouseButtons_.erase(button);
             }
@@ -194,10 +162,8 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
     }
 }
 
-void SDLDevice::processWindowEvent(const SDL_Event &evt)
-{
-    switch (evt.window.event)
-    {
+void SDLDevice::processWindowEvent(const SDL_Event &evt) {
+    switch (evt.window.event) {
     case SDL_WINDOWEVENT_CLOSE:
         windowCloseRequested_ = true;
         break;
@@ -206,17 +172,14 @@ void SDLDevice::processWindowEvent(const SDL_Event &evt)
     }
 }
 
-void SDLDevice::readEvents()
-{
+void SDLDevice::readEvents() {
     static auto firstTime = true;
     SDL_Event evt;
-    while (SDL_PollEvent(&evt))
-    {
+    while (SDL_PollEvent(&evt)) {
         if (onEvent_)
             onEvent_(evt);
 
-        switch (evt.type)
-        {
+        switch (evt.type) {
         case SDL_QUIT:
             quitRequested_ = true;
             break;
@@ -226,8 +189,7 @@ void SDLDevice::readEvents()
         default:
             break;
         }
-        if (!firstTime)
-        {
+        if (!firstTime) {
             processKeyboardEvent(evt);
             processMouseEvent(evt);
         }

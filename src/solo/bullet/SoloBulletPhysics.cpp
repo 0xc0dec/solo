@@ -10,8 +10,7 @@
 using namespace solo;
 
 BulletPhysics::BulletPhysics(Device *device):
-    Physics(device)
-{
+    Physics(device) {
     broadPhase_ = std::make_unique<btDbvtBroadphase>();
     collisionConfig_ = std::make_unique<btDefaultCollisionConfiguration>();
     collisionDispatcher_ = std::make_unique<btCollisionDispatcher>(collisionConfig_.get());
@@ -20,18 +19,15 @@ BulletPhysics::BulletPhysics(Device *device):
     world_->setGravity(btVector3(0, -10, 0));
 }
 
-void BulletPhysics::update()
-{
+void BulletPhysics::update() {
     world_->stepSimulation(device_->timeDelta(), 7); // 7 is debatable, but good enough. See docs
 }
 
-void BulletPhysics::setGravity(const Vector3 &gravity)
-{
+void BulletPhysics::setGravity(const Vector3 &gravity) {
     world_->setGravity(SL_TOBTVEC3(gravity));
 }
 
-auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult
-{
+auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult {
     const auto btFrom = SL_TOBTVEC3(from);
     const auto btTo = SL_TOBTVEC3(to);
 
@@ -48,8 +44,7 @@ auto BulletPhysics::rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayT
     return RayTestResult(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld), SL_FROMBTVEC3(callback.m_hitNormalWorld));
 }
 
-auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult>
-{
+auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> {
     const auto btFrom = SL_TOBTVEC3(from);
     const auto btTo = SL_TOBTVEC3(to);
 
@@ -60,11 +55,9 @@ auto BulletPhysics::rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<Ra
         return {};
 
     auto result = vec<RayTestResult>();
-    for (size_t i = 0; i < count; i++)
-    {
+    for (size_t i = 0; i < count; i++) {
         const auto body = dynamic_cast<const btRigidBody *>(callback.m_collisionObjects[i]);
-        if (body)
-        {
+        if (body) {
             const auto rigidBody = static_cast<RigidBody *>(body->getUserPointer());
             result.emplace_back(rigidBody, SL_FROMBTVEC3(callback.m_hitPointWorld[i]), SL_FROMBTVEC3(callback.m_hitNormalWorld[i]));
         }

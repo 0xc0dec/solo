@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-static void registerTexture(CppBindModule<LuaBinding> &module)
-{
+static void registerTexture(CppBindModule<LuaBinding> &module) {
     auto binding = BEGIN_CLASS(module, Texture);
     REG_METHOD(binding, Texture, format);
     REG_METHOD(binding, Texture, horizontalWrap);
@@ -28,8 +27,7 @@ static void registerTexture(CppBindModule<LuaBinding> &module)
     binding.endClass();
 }
 
-static void registerTexture2D(CppBindModule<LuaBinding> &module)
-{
+static void registerTexture2D(CppBindModule<LuaBinding> &module) {
     {
         auto binding = BEGIN_CLASS_EXTEND(module, Texture2D, Texture);
         REG_STATIC_METHOD(binding, Texture2D, fromFile);
@@ -46,8 +44,7 @@ static void registerTexture2D(CppBindModule<LuaBinding> &module)
     }
 }
 
-static void registerCubeTexture(CppBindModule<LuaBinding> &module)
-{
+static void registerCubeTexture(CppBindModule<LuaBinding> &module) {
     {
         auto binding = BEGIN_CLASS_EXTEND(module, CubeTexture, Texture);
         REG_STATIC_METHOD(binding, CubeTexture, fromFaceFiles);
@@ -64,8 +61,7 @@ static void registerCubeTexture(CppBindModule<LuaBinding> &module)
     }
 }
 
-void registerTextureApi(CppBindModule<LuaBinding> &module)
-{
+void registerTextureApi(CppBindModule<LuaBinding> &module) {
     registerTexture(module);
     registerTexture2D(module);
     registerCubeTexture(module);

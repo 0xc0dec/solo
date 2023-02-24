@@ -13,8 +13,7 @@
 #include "math/SoloRadians.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Transform;
     class Node;
     class FrameBuffer;
@@ -23,8 +22,7 @@ namespace solo
     class Ray;
     struct Radians;
 
-    class Camera: public ComponentBase<Camera>
-    {
+    class Camera: public ComponentBase<Camera> {
     public:
         static auto create(const Node &node) -> sptr<Camera>;
 
@@ -35,76 +33,62 @@ namespace solo
 
         auto windowPointToWorldRay(const Vector2 &pt) const -> Ray;
 
-        auto transform() const -> Transform *
-        {
+        auto transform() const -> Transform * {
             return transform_;
         }
 
         auto renderTarget() const -> sptr<FrameBuffer> { return renderTarget_; }
-        void setRenderTarget(sptr<FrameBuffer> target)
-        {
+        void setRenderTarget(sptr<FrameBuffer> target) {
             renderTarget_ = target;
         }
 
-        auto clearColor() const -> Vector4
-        {
+        auto clearColor() const -> Vector4 {
             return clearColor_;
         }
-        void setClearColor(const Vector4 &color)
-        {
+        void setClearColor(const Vector4 &color) {
             clearColor_ = color;
         }
 
-        bool hasColorClearing() const
-        {
+        bool hasColorClearing() const {
             return colorClearing_;
         }
-        void setColorClearing(bool enabled)
-        {
+        void setColorClearing(bool enabled) {
             this->colorClearing_ = enabled;
         }
 
-        auto viewport() const -> Vector4
-        {
+        auto viewport() const -> Vector4 {
             return viewport_;
         }
-        void setViewport(const Vector4 &rect)
-        {
+        void setViewport(const Vector4 &rect) {
             viewport_ = rect;
         }
 
-        bool isPerspective() const
-        {
+        bool isPerspective() const {
             return !ortho_;
         }
         void setPerspective(bool perspective);
 
-        auto zNear() const -> float
-        {
+        auto zNear() const -> float {
             return zNear_;
         }
         void setZNear(float near);
 
-        auto zFar() const -> float
-        {
+        auto zFar() const -> float {
             return zFar_;
         }
         void setZFar(float far);
 
-        auto fieldOfView() const -> Radians
-        {
+        auto fieldOfView() const -> Radians {
             return fov_;
         }
         void setFieldOfView(const Radians &fov);
 
-        auto orthoSize() const -> Vector2
-        {
+        auto orthoSize() const -> Vector2 {
             return orthoSize_;
         }
         void setOrthoSize(const Vector2 &size);
 
-        auto aspectRatio() const -> float
-        {
+        auto aspectRatio() const -> float {
             return aspectRatio_;
         }
 
@@ -145,8 +129,7 @@ namespace solo
 
     template <>
     template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera *
-    {
+    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera * {
         const auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
         return body.get();

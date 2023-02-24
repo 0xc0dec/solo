@@ -13,14 +13,12 @@
 #include "SoloVulkanRenderPass.h"
 #include "../sdl/SoloSDLDebugInterface.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanDevice;
     class VulkanRenderer;
     class Device;
 
-    class VulkanDebugInterface final: public SDLDebugInterface
-    {
+    class VulkanDebugInterface final: public SDLDebugInterface {
     public:
         explicit VulkanDebugInterface(Device *device);
         ~VulkanDebugInterface();

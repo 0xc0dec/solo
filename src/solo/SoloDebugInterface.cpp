@@ -13,10 +13,8 @@
 
 using namespace solo;
 
-auto DebugInterface::fromDevice(Device *device) -> sptr<DebugInterface>
-{
-    switch (device->mode())
-    {
+auto DebugInterface::fromDevice(Device *device) -> sptr<DebugInterface> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return std::make_shared<OpenGLDebugInterface>(device);
@@ -32,15 +30,13 @@ auto DebugInterface::fromDevice(Device *device) -> sptr<DebugInterface>
     }
 }
 
-void DebugInterface::renderFrame(const std::function<void()> &render)
-{
+void DebugInterface::renderFrame(const std::function<void()> &render) {
     beginFrame();
     render();
     endFrame();
 }
 
-void DebugInterface::renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside)
-{
+void DebugInterface::renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside) {
     const ImVec2 pos = ImVec2(cfg.position.x(), cfg.position.y());
     const ImVec2 pivot = ImVec2(cfg.pivot.x(), cfg.pivot.y());
 
@@ -63,18 +59,15 @@ void DebugInterface::renderWindow(const WindowConfig &cfg, const std::function<v
     ImGui::End();
 }
 
-void DebugInterface::renderText(const str &text)
-{
+void DebugInterface::renderText(const str &text) {
     ImGui::Text(text.c_str());
 }
 
 DebugInterface::DebugInterface(Device *device):
-    renderer_(device->renderer())
-{
+    renderer_(device->renderer()) {
 }
 
-void DebugInterface::endFrame()
-{
+void DebugInterface::endFrame() {
     ImGui::Render();
     renderer_->renderDebugInterface(this);
 }

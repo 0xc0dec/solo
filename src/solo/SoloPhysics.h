@@ -8,26 +8,22 @@
 #include "SoloCommon.h"
 #include "math/SoloVector3.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class RigidBody;
 
-    class RayTestResult
-    {
+    class RayTestResult {
     public:
         RigidBody *body;
         Vector3 point;
         Vector3 normal;
 
         explicit RayTestResult(RigidBody *body = nullptr, const Vector3 &point = Vector3(), const Vector3 &normal = Vector3()):
-            body(body), point(point), normal(normal)
-        {
+            body(body), point(point), normal(normal) {
         }
     };
 
-    class Physics
-    {
+    class Physics {
     public:
         static auto fromDevice(Device *device) -> sptr<Physics>;
 

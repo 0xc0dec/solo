@@ -8,10 +8,8 @@
 #include "SoloRadians.h"
 #include "SoloMath.h"
 
-namespace solo
-{
-    class Vector2 final
-    {
+namespace solo {
+    class Vector2 final {
     public:
         Vector2() = default;
         Vector2(const glm::vec2 &data);
@@ -19,13 +17,11 @@ namespace solo
         Vector2(float x, float y);
 
         auto x() -> float & { return data_.x; }
-        auto x() const -> float
-        {
+        auto x() const -> float {
             return data_.x;
         }
         auto y() -> float & { return data_.y; }
-        auto y() const -> float
-        {
+        auto y() const -> float {
             return data_.y;
         }
 

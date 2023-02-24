@@ -7,14 +7,12 @@
 
 #include "SoloCommon.h"
 
-namespace solo
-{
+namespace solo {
     class Font;
     class Device;
     class Mesh;
 
-    class FontMesh
-    {
+    class FontMesh {
     public:
         static auto fromFont(Device *device, sptr<Font> font) -> sptr<FontMesh>;
 

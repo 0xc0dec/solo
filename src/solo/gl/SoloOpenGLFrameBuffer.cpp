@@ -12,11 +12,9 @@
 
 using namespace solo;
 
-static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
-{
+static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments) {
     auto colorAttachmentsCount = 0;
-    for (const auto &attachment : attachments)
-    {
+    for (const auto &attachment : attachments) {
         const auto isDepthAttachment = attachment->format() == TextureFormat::Depth24;
         colorAttachmentsCount += isDepthAttachment ? 0 : 1;
     }
@@ -24,21 +22,17 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
     panicIf(colorAttachmentsCount > GL_MAX_COLOR_ATTACHMENTS, "Too many color attachments");
 }
 
-auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
-{
-    asrt([&attachments]()
-    {
+auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer> {
+    asrt([&attachments]() {
         validateNewAttachments(attachments);
     });
-    asrt([&attachments]()
-    {
+    asrt([&attachments]() {
         ::validateNewAttachments(attachments);
     });
 
     auto result = sptr<OpenGLFrameBuffer>(new OpenGLFrameBuffer());
 
-    for (const auto &tex : attachments)
-    {
+    for (const auto &tex : attachments) {
         const auto glTex = std::static_pointer_cast<OpenGLTexture2D>(tex);
         if (tex->format() == TextureFormat::Depth24)
             result->depthAttachment_ = glTex;
@@ -52,8 +46,7 @@ auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments)
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle_);
 
     vec<GLenum> drawBuffers;
-    for (u32 i = 0; i < result->colorAttachments_.size(); i++)
-    {
+    for (u32 i = 0; i < result->colorAttachments_.size(); i++) {
         const auto tex = result->colorAttachments_.at(i);
         const auto attachment = GL_COLOR_ATTACHMENT0 + i;
         glFramebufferTexture(GL_FRAMEBUFFER, attachment, tex->handle(), 0);
@@ -64,8 +57,7 @@ auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments)
 
     result->dimensions_ = attachments[0]->dimensions();
 
-    if (!result->depthAttachment_)
-    {
+    if (!result->depthAttachment_) {
         result->depthAttachment_ = OpenGLTexture2D::empty(
             result->dimensions_.x(), result->dimensions_.y(), TextureFormat::Depth24);
     }
@@ -79,8 +71,7 @@ auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments)
     return result;
 }
 
-OpenGLFrameBuffer::~OpenGLFrameBuffer()
-{
+OpenGLFrameBuffer::~OpenGLFrameBuffer() {
     glDeleteFramebuffers(1, &handle_);
 }
 

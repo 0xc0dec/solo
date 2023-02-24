@@ -23,8 +23,7 @@ void registerMeshApi(CppBindModule<LuaBinding> &module);
 void registerFontApi(CppBindModule<LuaBinding> &module);
 void registerLibrary(LuaState &state);
 
-static void registerApi(CppBindModule<LuaBinding> &module)
-{
+static void registerApi(CppBindModule<LuaBinding> &module) {
     registerEnums(module);
     registerMathApi(module);
     registerNodeAndComponentApi(module);
@@ -39,8 +38,7 @@ static void registerApi(CppBindModule<LuaBinding> &module)
     registerFontApi(module);
 }
 
-LuaScriptRuntime::LuaScriptRuntime()
-{
+LuaScriptRuntime::LuaScriptRuntime() {
     lua_ = LuaState::newState();
     lua_.openLibs();
 
@@ -51,22 +49,18 @@ LuaScriptRuntime::LuaScriptRuntime()
 }
 
 LuaScriptRuntime::LuaScriptRuntime(Device *device):
-    LuaScriptRuntime()
-{
+    LuaScriptRuntime() {
     auto module = LuaBinding(lua_).beginModule("sl");
     module.addConstant("device", device);
     module.endModule();
 }
 
-LuaScriptRuntime::~LuaScriptRuntime()
-{
+LuaScriptRuntime::~LuaScriptRuntime() {
     lua_.close();
 }
 
-void LuaScriptRuntime::execFile(const str &path)
-{
-    if (lua_.loadFile(path.c_str()))
-    {
+void LuaScriptRuntime::execFile(const str &path) {
+    if (lua_.loadFile(path.c_str())) {
         const auto msg = lua_.getString(-1);
         Logger::global().logError(fmt("Script failed to load: ", msg));
     }
@@ -75,17 +69,14 @@ void LuaScriptRuntime::execFile(const str &path)
     lua_.doFile(path.c_str());
 }
 
-auto LuaScriptRuntime::eval(const str &code) -> str
-{
+auto LuaScriptRuntime::eval(const str &code) -> str {
     return lua_.eval<str>(code.c_str());
 }
 
-auto LuaScriptRuntime::fetchString(const str &name) -> str
-{
+auto LuaScriptRuntime::fetchString(const str &name) -> str {
     return LuaRef(lua_, name.c_str()).toValue<str>();
 }
 
-auto LuaScriptRuntime::fetchDeviceSetup(const str &name) -> DeviceSetup
-{
+auto LuaScriptRuntime::fetchDeviceSetup(const str &name) -> DeviceSetup {
     return LuaRef(lua_, name.c_str()).toValue<DeviceSetup>();
 }

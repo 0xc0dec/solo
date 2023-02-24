@@ -5,8 +5,7 @@
 
 #include "SoloLuaCommon.h"
 
-void registerLibrary(LuaState &state)
-{
+void registerLibrary(LuaState &state) {
     state.doString(R"(
         sl.includeDir = function(path)
             package.path = path .. "/?.lua;" .. package.path

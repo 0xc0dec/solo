@@ -15,12 +15,10 @@
 #include "math/SoloVector4.h"
 #include "SoloVulkanImage.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanRenderPass;
 
-    class VulkanCmdBuffer
-    {
+    class VulkanCmdBuffer {
     public:
         VulkanCmdBuffer() = default;
         VulkanCmdBuffer(const VulkanDriverDevice &dev);
@@ -65,16 +63,13 @@ namespace solo
         auto operator=(const VulkanCmdBuffer &other) -> VulkanCmdBuffer & = delete;
         auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer & = default;
 
-        operator bool() const
-        {
+        operator bool() const {
             return handle_;
         }
-        operator VkCommandBuffer() const
-        {
+        operator VkCommandBuffer() const {
             return handle_;
         }
-        operator const VkCommandBuffer *()
-        {
+        operator const VkCommandBuffer *() {
             return &handle_;
         }
 

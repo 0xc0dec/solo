@@ -9,8 +9,7 @@ using namespace solo;
 
 auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*;
 
-auto createMainCamera(Scene *scene) -> Camera *
-{
+auto createMainCamera(Scene *scene) -> Camera * {
     const auto node = scene->createNode();
     node->addComponent<Spectator>();
     const auto camera = node->addComponent<Camera>();
@@ -19,21 +18,17 @@ auto createMainCamera(Scene *scene) -> Camera *
     return camera;
 }
 
-int main()
-{
+int main() {
     const auto device = Device::create({DeviceMode::OpenGL, 1366, 768, false, false, "Demo 1"});
     const auto scene = Scene::empty(device.get());
 
     createSkybox(device.get(), scene.get());
     const auto camera = createMainCamera(scene.get());
 
-    while (true)
-    {
-        device->update([&]()
-        {
+    while (true) {
+        device->update([&]() {
             scene->update();
-            camera->renderFrame([&]()
-            {
+            camera->renderFrame([&]() {
                 scene->render(~0);
             });
         });

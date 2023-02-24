@@ -14,16 +14,14 @@
 #include "SoloEffect.h"
 #include "SoloEnums.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Effect;
     class Texture;
     class Camera;
     class Transform;
 
-    class Material
-    {
+    class Material {
     public:
         static auto fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>;
 
@@ -52,67 +50,53 @@ namespace solo
 
         virtual auto clone() const -> sptr<Material> = 0;
 
-        auto polygonMode() const -> PolygonMode
-        {
+        auto polygonMode() const -> PolygonMode {
             return polygonMode_;
         }
-        void setPolygonMode(PolygonMode mode)
-        {
+        void setPolygonMode(PolygonMode mode) {
             polygonMode_ = mode;
         }
 
-        bool hasBlend() const
-        {
+        bool hasBlend() const {
             return blend_;
         }
-        void setBlend(bool enabled)
-        {
+        void setBlend(bool enabled) {
             blend_ = enabled;
         }
 
-        auto srcBlendFactor() const -> BlendFactor
-        {
+        auto srcBlendFactor() const -> BlendFactor {
             return srcBlendFactor_;
         }
-        auto dstBlendFactor() const -> BlendFactor
-        {
+        auto dstBlendFactor() const -> BlendFactor {
             return dstBlendFactor_;
         }
         void setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor);
 
-        auto faceCull() const -> FaceCull
-        {
+        auto faceCull() const -> FaceCull {
             return faceCull_;
         }
-        void setFaceCull(FaceCull face)
-        {
+        void setFaceCull(FaceCull face) {
             faceCull_ = face;
         }
 
-        bool hasDepthWrite() const
-        {
+        bool hasDepthWrite() const {
             return depthWrite_;
         }
-        void setDepthWrite(bool enabled)
-        {
+        void setDepthWrite(bool enabled) {
             depthWrite_ = enabled;
         }
 
-        bool hasDepthTest() const
-        {
+        bool hasDepthTest() const {
             return depthTest_;
         }
-        void setDepthTest(bool enabled)
-        {
+        void setDepthTest(bool enabled) {
             depthTest_ = enabled;
         }
 
-        auto depthFunction() const -> DepthFunction
-        {
+        auto depthFunction() const -> DepthFunction {
             return depthFunc_;
         }
-        void setDepthFunction(DepthFunction func)
-        {
+        void setDepthFunction(DepthFunction func) {
             depthFunc_ = func;
         }
 

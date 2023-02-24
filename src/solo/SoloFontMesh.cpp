@@ -9,13 +9,11 @@
 
 using namespace solo;
 
-auto FontMesh::fromFont(Device *device, sptr<Font> font) -> sptr<FontMesh>
-{
+auto FontMesh::fromFont(Device *device, sptr<Font> font) -> sptr<FontMesh> {
     return sptr<FontMesh>(new FontMesh(device, font));
 }
 
-void FontMesh::setText(const str &newText)
-{
+void FontMesh::setText(const str &newText) {
     if (newText == text_)
         return;
 
@@ -23,33 +21,28 @@ void FontMesh::setText(const str &newText)
     const auto newLength = newText.size();
     text_ = newText;
 
-    if (font_ && newLength > 0)
-    {
+    if (font_ && newLength > 0) {
         if (newLength == oldLength && mesh_)
             updateMesh();
         else
             rebuildMesh();
-    }
-    else
+    } else
         mesh_ = nullptr;
 }
 
 FontMesh::FontMesh(Device *device, sptr<Font> font):
     device_(device),
-    font_(font)
-{
+    font_(font) {
 }
 
-void FontMesh::rebuildMesh()
-{
+void FontMesh::rebuildMesh() {
     vertices_.clear();
     uvs_.clear();
     indexes_.clear();
 
     u32 lastIndex = 0;
     float offsetX = 0, offsetY = 0;
-    for (auto c : text_)
-    {
+    for (auto c : text_) {
         auto glyphInfo = font_->glyphInfo(c, offsetX, offsetY);
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;
@@ -98,14 +91,12 @@ void FontMesh::rebuildMesh()
     mesh_->setPrimitiveType(PrimitiveType::Triangles);
 }
 
-void FontMesh::updateMesh()
-{
+void FontMesh::updateMesh() {
     vertices_.clear();
     uvs_.clear();
 
     float offsetX = 0, offsetY = 0;
-    for (auto c : text_)
-    {
+    for (auto c : text_) {
         auto glyphInfo = font_->glyphInfo(c, offsetX, offsetY);
         offsetX = glyphInfo.offsetX;
         offsetY = glyphInfo.offsetY;

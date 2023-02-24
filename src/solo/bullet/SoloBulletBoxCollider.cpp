@@ -9,7 +9,6 @@
 
 using namespace solo;
 
-BulletBoxCollider::BulletBoxCollider(const Vector3 &halfExtents)
-{
+BulletBoxCollider::BulletBoxCollider(const Vector3 &halfExtents) {
     shape_ = std::make_unique<btBoxShape>(SL_TOBTVEC3(halfExtents));
 }

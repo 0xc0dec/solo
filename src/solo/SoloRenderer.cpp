@@ -56,10 +56,8 @@ static const auto ERROR_EFFECT_SRC = R"(
     }
 })";
 
-auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
-{
-    switch (device->mode())
-    {
+auto Renderer::fromDevice(Device *device) -> sptr<Renderer> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return std::make_shared<OpenGLRenderer>(device);
@@ -75,24 +73,20 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
 }
 
 Renderer::Renderer(Device *device):
-    device_(device)
-{
+    device_(device) {
 }
 
-void Renderer::bootstrap()
-{
+void Renderer::bootstrap() {
     const auto errorEffect = Effect::fromDescription(device_, ERROR_EFFECT_SRC);
     errorMaterial_ = Material::fromEffect(device_, errorEffect);
     errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
 }
 
-void Renderer::cleanup()
-{
+void Renderer::cleanup() {
     errorMaterial_.reset();
 }
 
-void Renderer::renderFrame(const std::function<void()> &render)
-{
+void Renderer::renderFrame(const std::function<void()> &render) {
     beginFrame();
     render();
     endFrame();

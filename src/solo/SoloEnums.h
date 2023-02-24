@@ -7,10 +7,8 @@
 
 #include "SoloCommon.h"
 
-namespace solo
-{
-    enum class KeyCode
-    {
+namespace solo {
+    enum class KeyCode {
         Digit0,
         Digit1,
         Digit2,
@@ -41,35 +39,30 @@ namespace solo
         // ...
     };
 
-    enum class MouseButton
-    {
+    enum class MouseButton {
         Left,
         Middle,
         Right
     };
 
-    enum class DeviceMode
-    {
+    enum class DeviceMode {
         OpenGL,
         Vulkan
     };
 
-    enum class FaceCull
-    {
+    enum class FaceCull {
         None = 0,
         Front,
         Back
     };
 
-    enum class PolygonMode
-    {
+    enum class PolygonMode {
         Fill,
         Wireframe,
         Points
     };
 
-    enum class DepthFunction
-    {
+    enum class DepthFunction {
         Never = 0,
         Less,
         Equal,
@@ -80,8 +73,7 @@ namespace solo
         Always
     };
 
-    enum class BlendFactor
-    {
+    enum class BlendFactor {
         Zero = 0,
         One,
         SrcColor,
@@ -97,8 +89,7 @@ namespace solo
         SrcAlphaSaturate
     };
 
-    enum class ParameterBinding
-    {
+    enum class ParameterBinding {
         WorldMatrix,
         ViewMatrix,
         ProjectionMatrix,
@@ -110,8 +101,7 @@ namespace solo
         CameraWorldPosition
     };
 
-    enum class PrimitiveType
-    {
+    enum class PrimitiveType {
         Triangles,
         TriangleStrip,
         Lines,
@@ -119,35 +109,30 @@ namespace solo
         Points
     };
 
-    enum class IndexElementSize
-    {
+    enum class IndexElementSize {
         Bits16 = sizeof(u16),
         Bits32 = sizeof(u32)
     };
 
-    enum class TextureWrap
-    {
+    enum class TextureWrap {
         ClampToEdge = 0,
         ClampToBorder,
         Repeat,
         MirrorRepeat
     };
 
-    enum class TextureFilter
-    {
+    enum class TextureFilter {
         Nearest = 0,
         Linear
     };
 
-    enum class TextureMipFilter
-    {
+    enum class TextureMipFilter {
         None = 0,
         Nearest,
         Linear
     };
 
-    enum class TextureFormat
-    {
+    enum class TextureFormat {
         Depth24,
         R8,
         RGB8,
@@ -155,22 +140,19 @@ namespace solo
         RGBA16F
     };
 
-    enum class TextureDataFormat
-    {
+    enum class TextureDataFormat {
         Red,
         RGB,
         RGBA
     };
 
-    enum class TransformSpace
-    {
+    enum class TransformSpace {
         Self,
         Parent,
         World
     };
 
-    enum class VertexAttributeUsage
-    {
+    enum class VertexAttributeUsage {
         Unknown,
         Position,
         Normal,

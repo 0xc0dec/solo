@@ -8,23 +8,19 @@
 
 using namespace solo;
 
-static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
-{
+static auto addVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 {
     return mesh->addVertexBuffer(layout, data, vertexCount);
 }
 
-static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
-{
+static auto addDynamicVertexBuffer(Mesh *mesh, const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 {
     return mesh->addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
-static void updateVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount)
-{
+static void updateVertexBuffer(Mesh *mesh, u32 index, u32 vertexOffset, const vec<float> &data, u32 vertexCount) {
     mesh->updateVertexBuffer(index, vertexOffset, data.data(), vertexCount);
 }
 
-static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
-{
+static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module) {
     auto el = BEGIN_CLASS(module, VertexAttribute);
     REG_FIELD(el, VertexAttribute, name);
     REG_FIELD(el, VertexAttribute, elementCount);
@@ -44,8 +40,7 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
     layout.endClass();
 }
 
-static void registerMesh(CppBindModule<LuaBinding> &module)
-{
+static void registerMesh(CppBindModule<LuaBinding> &module) {
     {
         auto binding = BEGIN_CLASS(module, Mesh);
         REG_STATIC_METHOD(binding, Mesh, empty);
@@ -77,8 +72,7 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
     }
 }
 
-void registerMeshApi(CppBindModule<LuaBinding> &module)
-{
+void registerMeshApi(CppBindModule<LuaBinding> &module) {
     registerMesh(module);
     registerVertexBufferLayout(module);
 }

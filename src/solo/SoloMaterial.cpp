@@ -11,10 +11,8 @@
 
 using namespace solo;
 
-auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
-{
-    switch (device->mode())
-    {
+auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return std::make_shared<OpenGLMaterial>(effect);
@@ -29,8 +27,7 @@ auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material>
     }
 }
 
-void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor)
-{
+void Material::setBlendFactors(BlendFactor srcFactor, BlendFactor dstFactor) {
     srcBlendFactor_ = srcFactor;
     dstBlendFactor_ = dstFactor;
 }

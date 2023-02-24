@@ -7,12 +7,10 @@
 
 #include "SoloDebugInterface.h"
 
-namespace solo
-{
+namespace solo {
     class SDLDevice;
 
-    class SDLDebugInterface: public DebugInterface
-    {
+    class SDLDebugInterface: public DebugInterface {
     public:
         explicit SDLDebugInterface(Device *device);
         ~SDLDebugInterface();

@@ -7,13 +7,11 @@
 
 #include <glm/gtc/quaternion.hpp>
 
-namespace solo
-{
+namespace solo {
     struct Radians;
     class Vector3;
 
-    class Quaternion final
-    {
+    class Quaternion final {
     public:
         Quaternion() = default;
         Quaternion(const glm::quat &data);
@@ -25,23 +23,19 @@ namespace solo
         static auto slerp(const Quaternion &q1, const Quaternion &q2, float t) -> Quaternion;
 
         auto x() -> float & { return data_.x; }
-        auto x() const -> float
-        {
+        auto x() const -> float {
             return data_.x;
         }
         auto y() -> float & { return data_.y; }
-        auto y() const -> float
-        {
+        auto y() const -> float {
             return data_.y;
         }
         auto z() -> float & { return data_.z; }
-        auto z() const -> float
-        {
+        auto z() const -> float {
             return data_.z;
         }
         auto w() -> float & { return data_.w; }
-        auto w() const -> float
-        {
+        auto w() const -> float {
             return data_.w;
         }
 
@@ -58,8 +52,7 @@ namespace solo
 
         auto toAxisAngle(Vector3 &axis) const -> Radians;
 
-        operator glm::quat() const
-        {
+        operator glm::quat() const {
             return data_;
         }
 

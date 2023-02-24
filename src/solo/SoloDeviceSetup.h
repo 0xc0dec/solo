@@ -7,13 +7,11 @@
 
 #include "SoloCommon.h"
 
-namespace solo
-{
+namespace solo {
     enum class DeviceMode;
 
     // "class" because binding to lua seems to not support structs
-    class DeviceSetup
-    {
+    class DeviceSetup {
     public:
         DeviceMode mode;
 

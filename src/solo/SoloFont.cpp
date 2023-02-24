@@ -11,8 +11,7 @@ using namespace solo;
 auto Font::loadFromFile(Device *device, const str &path,
                         u32 size, u32 atlasWidth,
                         u32 atlasHeight, u32 firstChar, u32 charCount,
-                        u32 oversampleX, u32 oversampleY) -> sptr<Font>
-{
+                        u32 oversampleX, u32 oversampleY) -> sptr<Font> {
     if (STBTrueTypeFont::canLoadFromFile(path))
         return STBTrueTypeFont::loadFromFile(device, path, size, atlasWidth, atlasHeight, firstChar, charCount, oversampleX, oversampleY);
 

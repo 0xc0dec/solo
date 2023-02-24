@@ -31,8 +31,7 @@
 #   define SL_VULKAN_RENDERER
 #endif
 
-namespace solo
-{
+namespace solo {
     template <typename T> using sptr = std::shared_ptr<T>;
     template <typename T> using uptr = std::unique_ptr<T>;
 
@@ -53,8 +52,7 @@ namespace solo
 
     class Device;
 
-    class Logger
-    {
+    class Logger {
     public:
         static auto global() -> Logger&;
 
@@ -78,11 +76,9 @@ namespace solo
     };
 
     template <class... TArgs>
-    constexpr void asrt(bool condition, TArgs ... msgArgs)
-    {
+    constexpr void asrt(bool condition, TArgs ... msgArgs) {
 #ifdef SL_DEBUG
-        if (!condition)
-        {
+        if (!condition) {
             const auto msg = fmt(msgArgs...);
             Logger::global().logDebug(msg);
             exit(1);
@@ -91,52 +87,45 @@ namespace solo
     }
 
     template <class T>
-    constexpr auto fmt(std::ostringstream &out, T &&arg) -> str
-    {
+    constexpr auto fmt(std::ostringstream &out, T &&arg) -> str {
         out << arg << std::endl;
         return out.str();
     }
 
     template <class TFirst, class... TArgs>
-    constexpr auto fmt(std::ostringstream &out, TFirst &&first, TArgs &&...args) -> str
-    {
+    constexpr auto fmt(std::ostringstream &out, TFirst &&first, TArgs &&...args) -> str {
         out << first;
         return fmt(out, std::forward<TArgs>(args)...);
     }
 
     template <class... TArgs>
-    constexpr auto fmt(TArgs &&...args) -> str
-    {
+    constexpr auto fmt(TArgs &&...args) -> str {
         std::ostringstream out;
         return fmt(out, std::forward<TArgs>(args)...);
     }
 
     template <class... TArgs>
-    constexpr void asrt(const std::function<bool()> &condition, TArgs &&...msgArgs)
-    {
+    constexpr void asrt(const std::function<bool()> &condition, TArgs &&...msgArgs) {
 #ifdef SL_DEBUG
         asrt(condition(), std::forward<TArgs>(msgArgs)...);
 #endif
     }
 
-    inline void asrt(const std::function<void()> &check)
-    {
+    inline void asrt(const std::function<void()> &check) {
 #ifdef SL_DEBUG
         check();
 #endif
     }
 
     template <class... TArgs>
-    constexpr void panic(TArgs &&...args)
-    {
+    constexpr void panic(TArgs &&...args) {
         const auto msg = fmt(std::forward<TArgs>(args)...);
         Logger::global().logCritical(msg);
         exit(1);
     }
 
     template <class... TArgs>
-    constexpr void panicIf(bool condition, TArgs &&...args)
-    {
+    constexpr void panicIf(bool condition, TArgs &&...args) {
         if (condition)
             panic(std::forward<TArgs>(args)...);
     }

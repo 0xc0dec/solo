@@ -7,14 +7,12 @@
 
 #include "SoloVector3.h"
 
-namespace solo
-{
+namespace solo {
     struct Radians;
     class Ray;
     class Quaternion;
 
-    class Matrix
-    {
+    class Matrix {
     public:
         Matrix();
         Matrix(const Matrix &copy);
@@ -46,28 +44,22 @@ namespace solo
         auto rotation() const -> Quaternion;
         auto translation() const -> Vector3;
 
-        auto upVector() const -> Vector3
-        {
+        auto upVector() const -> Vector3 {
             return {data_[1][0], data_[1][1], data_[1][2]};
         }
-        auto downVector() const -> Vector3
-        {
+        auto downVector() const -> Vector3 {
             return { -data_[1][0], -data_[1][1], -data_[1][2]};
         }
-        auto leftVector() const -> Vector3
-        {
+        auto leftVector() const -> Vector3 {
             return { -data_[0][0], -data_[0][1], -data_[0][2]};
         }
-        auto rightVector() const -> Vector3
-        {
+        auto rightVector() const -> Vector3 {
             return {data_[0][0], data_[0][1], data_[0][2]};
         }
-        auto forwardVector() const -> Vector3
-        {
+        auto forwardVector() const -> Vector3 {
             return { -data_[2][0], -data_[2][1], -data_[2][2]};
         }
-        auto backVector() const -> Vector3
-        {
+        auto backVector() const -> Vector3 {
             return {data_[2][0], data_[2][1], data_[2][2]};
         }
 

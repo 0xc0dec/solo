@@ -9,15 +9,12 @@
 #include "SoloBulletCommon.h"
 #include "SoloStaticMeshCollider.h"
 
-namespace solo
-{
-    class BulletStaticMeshCollider final: public BulletCollider, public StaticMeshCollider
-    {
+namespace solo {
+    class BulletStaticMeshCollider final: public BulletCollider, public StaticMeshCollider {
     public:
         explicit BulletStaticMeshCollider(sptr<Mesh> mesh);
 
-        auto shape() -> btCollisionShape *override
-        {
+        auto shape() -> btCollisionShape *override {
             return shape_.get();
         }
 

@@ -7,34 +7,28 @@
 
 #include "SoloComponent.h"
 
-namespace solo
-{
+namespace solo {
     class Transform;
     class Device;
 
-    class Spectator final: public ComponentBase<Spectator>
-    {
+    class Spectator final: public ComponentBase<Spectator> {
     public:
         explicit Spectator(const Node &node);
 
         void init() override final;
         void update() override final;
 
-        auto movementSpeed() const -> float
-        {
+        auto movementSpeed() const -> float {
             return movementSpeed_;
         }
-        void setMovementSpeed(float speed)
-        {
+        void setMovementSpeed(float speed) {
             movementSpeed_ = speed;
         }
 
-        auto mouseSensitivity() const -> float
-        {
+        auto mouseSensitivity() const -> float {
             return mouseSensitivity_;
         }
-        void setMouseSensitivity(float sensitivity)
-        {
+        void setMouseSensitivity(float sensitivity) {
             mouseSensitivity_ = sensitivity;
         }
 

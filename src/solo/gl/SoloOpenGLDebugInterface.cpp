@@ -16,25 +16,21 @@ using namespace solo;
 
 OpenGLDebugInterface::OpenGLDebugInterface(Device *device):
     SDLDebugInterface(device),
-    device_(dynamic_cast<OpenGLDevice *>(device))
-{
+    device_(dynamic_cast<OpenGLDevice *>(device)) {
     ImGui_ImplSDL2_InitForOpenGL(device_->window(), device_->window());
     ImGui_ImplOpenGL3_Init("#version 130"); // GL 3.0 + GLSL 130
 }
 
-OpenGLDebugInterface::~OpenGLDebugInterface()
-{
+OpenGLDebugInterface::~OpenGLDebugInterface() {
     ImGui_ImplOpenGL3_Shutdown();
 }
 
-void OpenGLDebugInterface::beginFrame()
-{
+void OpenGLDebugInterface::beginFrame() {
     ImGui_ImplOpenGL3_NewFrame();
     SDLDebugInterface::beginFrame();
 }
 
-void OpenGLDebugInterface::render() const
-{
+void OpenGLDebugInterface::render() const {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

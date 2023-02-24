@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
-{
+static auto compileShader(GLuint type, const void *src, u32 length) -> GLint {
     static umap<GLuint, str> typeNames =
     {
         {GL_VERTEX_SHADER, "vertex"},
@@ -25,8 +24,7 @@ static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
 
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
+    if (status == GL_FALSE) {
         GLint logLength;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
         vec<GLchar> log(logLength);
@@ -38,8 +36,7 @@ static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
     return shader;
 }
 
-static auto linkProgram(GLuint vs, GLuint fs) -> GLint
-{
+static auto linkProgram(GLuint vs, GLuint fs) -> GLint {
     const auto program = glCreateProgram();
     glAttachShader(program, vs);
     glAttachShader(program, fs);
@@ -47,8 +44,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
 
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
-    if (status == GL_FALSE)
-    {
+    if (status == GL_FALSE) {
         GLint logLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
         vec<GLchar> log(logLength);
@@ -60,8 +56,7 @@ static auto linkProgram(GLuint vs, GLuint fs) -> GLint
     return program;
 }
 
-OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
-{
+OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) {
     const auto vs = compileShader(GL_VERTEX_SHADER, vsSrc, vsSrcLen);
     const auto fs = compileShader(GL_FRAGMENT_SHADER, fsSrc, fsSrcLen);
     handle_ = linkProgram(vs, fs);
@@ -75,13 +70,11 @@ OpenGLEffect::OpenGLEffect(const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u
     introspectAttributes();
 }
 
-OpenGLEffect::~OpenGLEffect()
-{
+OpenGLEffect::~OpenGLEffect() {
     glDeleteProgram(handle_);
 }
 
-void OpenGLEffect::introspectUniforms()
-{
+void OpenGLEffect::introspectUniforms() {
     GLint activeUniforms;
     glGetProgramiv(handle_, GL_ACTIVE_UNIFORMS, &activeUniforms);
     if (activeUniforms <= 0)
@@ -94,8 +87,7 @@ void OpenGLEffect::introspectUniforms()
 
     vec<GLchar> nameArr(nameMaxLength + 1);
     u32 samplerIndex = 0;
-    for (GLint i = 0; i < activeUniforms; ++i)
-    {
+    for (GLint i = 0; i < activeUniforms; ++i) {
         GLint size;
         GLenum type;
         glGetActiveUniform(handle_, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
@@ -113,8 +105,7 @@ void OpenGLEffect::introspectUniforms()
         uniforms_.at(name).samplerIndex = 0;
 
         u32 idx = 0;
-        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) // TODO other types of samplers
-        {
+        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE) { // TODO other types of samplers
             idx = samplerIndex;
             samplerIndex += size;
             uniforms_.at(name).samplerIndex = idx;
@@ -122,8 +113,7 @@ void OpenGLEffect::introspectUniforms()
     }
 }
 
-void OpenGLEffect::introspectAttributes()
-{
+void OpenGLEffect::introspectAttributes() {
     GLint activeAttributes;
     glGetProgramiv(handle_, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 
@@ -133,8 +123,7 @@ void OpenGLEffect::introspectAttributes()
         return;
 
     vec<GLchar> nameArr(nameMaxLength + 1);
-    for (GLint i = 0; i < activeAttributes; ++i)
-    {
+    for (GLint i = 0; i < activeAttributes; ++i) {
         GLint size;
         GLenum type;
         glGetActiveAttrib(handle_, i, nameMaxLength, nullptr, &size, &type, nameArr.data());

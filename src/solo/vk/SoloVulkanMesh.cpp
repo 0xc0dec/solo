@@ -14,63 +14,53 @@
 
 using namespace solo;
 
-VulkanMesh::VulkanMesh(Device *device)
-{
+VulkanMesh::VulkanMesh(Device *device) {
     renderer_ = dynamic_cast<VulkanRenderer *>(device->renderer());
 }
 
-auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
-{
+auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 {
     vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
-auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
-{
+auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32 {
     vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
-void VulkanMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount)
-{
+void VulkanMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *data, u32 vertexCount) {
     const auto vertexSize = layouts_[index].size();
     vertexBuffers_[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
     Mesh::updateVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
-void VulkanMesh::removeVertexBuffer(u32 index)
-{
+void VulkanMesh::removeVertexBuffer(u32 index) {
     vertexBuffers_.erase(vertexBuffers_.begin() + index);
     Mesh::removeVertexBuffer(index);
 }
 
-auto VulkanMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
-{
+auto VulkanMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32 {
     const auto size = static_cast<VkDeviceSize>(IndexElementSize::Bits32) * elementCount; // TODO 16-bit support?
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data.data());
     indexBuffers_.push_back(std::move(buf));
     return Mesh::addIndexBuffer(data, elementCount);
 }
 
-void VulkanMesh::removeIndexBuffer(u32 index)
-{
+void VulkanMesh::removeIndexBuffer(u32 index) {
     indexBuffers_.erase(indexBuffers_.begin() + index);
     Mesh::removeIndexBuffer(index);
 }
 
-auto VulkanMesh::layoutHash() const -> size_t
-{
+auto VulkanMesh::layoutHash() const -> size_t {
     size_t seed = 0;
     const std::hash<u32> unsignedHasher;
     const std::hash<str> strHasher;
 
-    for (u32 i = 0; i < vertexBufferCount(); i++)
-    {
+    for (u32 i = 0; i < vertexBufferCount(); i++) {
         auto layout = vertexBufferLayout(i);
         combineHash(seed, unsignedHasher(i));
 
-        for (u32 j = 0; j < layout.attributeCount(); j++)
-        {
+        for (u32 j = 0; j < layout.attributeCount(); j++) {
             const auto attr = layout.attribute(j);
             combineHash(seed, unsignedHasher(j));
             combineHash(seed, strHasher(attr.name));

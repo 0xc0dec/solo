@@ -9,13 +9,11 @@
 
 using namespace solo;
 
-int main(int argc, s8 *argv[])
-{
+int main(int argc, s8 *argv[]) {
     if (argc <= 1)
         return 1;
 
-    try
-    {
+    try {
         const auto cfgScript = argv[1];
         auto transientRuntime = ScriptRuntime::empty();
         transientRuntime->execFile(cfgScript);
@@ -25,9 +23,7 @@ int main(int argc, s8 *argv[])
 
         const auto device = Device::create(setup);
         device->scriptRuntime()->execFile(runScript);
-    }
-    catch (const std::exception &e)
-    {
+    } catch (const std::exception &e) {
         Logger::global().logCritical(e.what());
         return 2;
     }

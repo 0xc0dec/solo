@@ -7,10 +7,8 @@
 
 #include <btBulletCollisionCommon.h>
 
-namespace solo
-{
-    class BulletCollider
-    {
+namespace solo {
+    class BulletCollider {
     public:
         BulletCollider(const BulletCollider &other) = delete;
         BulletCollider(BulletCollider &&other) = delete;

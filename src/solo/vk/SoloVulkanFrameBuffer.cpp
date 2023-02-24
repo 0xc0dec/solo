@@ -13,10 +13,8 @@
 
 using namespace solo;
 
-auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
-{
-    asrt([&attachments]()
-    {
+auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer> {
+    asrt([&attachments]() {
         validateNewAttachments(attachments);
     });
 
@@ -25,13 +23,11 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
     vec<VkImageView> views;
     VulkanRenderPassConfig config;
 
-    for (const auto &attachment : attachments)
-    {
+    for (const auto &attachment : attachments) {
         const auto texture = std::static_pointer_cast<VulkanTexture2D>(attachment);
         if (attachment->format() == TextureFormat::Depth24)
             result->depthAttachment_ = texture;
-        else
-        {
+        else {
             result->colorAttachments_.push_back(texture);
             config.addColorAttachment(texture->image().format(), VK_IMAGE_LAYOUT_GENERAL); // TODO better layout
             views.push_back(texture->image().view());
@@ -40,8 +36,7 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
 
     result->dimensions_ = attachments[0]->dimensions();
 
-    if (!result->depthAttachment_)
-    {
+    if (!result->depthAttachment_) {
         result->depthAttachment_ = VulkanTexture2D::empty(device,
                                    static_cast<u32>(result->dimensions_.x()), static_cast<u32>(result->dimensions_.y()), TextureFormat::Depth24);
     }

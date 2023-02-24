@@ -8,15 +8,13 @@
 #include "SoloCommon.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Component;
     class Node;
     class Camera;
 
-    class Scene final
-    {
+    class Scene final {
     public:
         static auto empty(Device *device) -> sptr<Scene>;
 
@@ -28,8 +26,7 @@ namespace solo
         auto operator=(const Scene &other) -> Scene & = delete;
         auto operator=(Scene &&other) -> Scene & = delete;
 
-        auto device() const -> Device *
-        {
+        auto device() const -> Device * {
             return device_;
         }
 
@@ -51,8 +48,7 @@ namespace solo
         using NodeComponents = umap<u32, sptr<Component>>;
         using NodesWithComponents = umap<u32, NodeComponents>;
 
-        struct ComponentContext
-        {
+        struct ComponentContext {
             bool deleted = false;
             sptr<Component> component;
         };

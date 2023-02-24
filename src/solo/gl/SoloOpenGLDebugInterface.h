@@ -11,13 +11,11 @@
 
 #include "../sdl/SoloSDLDebugInterface.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class OpenGLDevice;
 
-    class OpenGLDebugInterface final: public SDLDebugInterface
-    {
+    class OpenGLDebugInterface final: public SDLDebugInterface {
     public:
         explicit OpenGLDebugInterface(Device *device);
         ~OpenGLDebugInterface();

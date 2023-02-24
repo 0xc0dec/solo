@@ -8,13 +8,11 @@
 #include "SoloCollider.h"
 #include "SoloAsyncHandle.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Mesh;
 
-    class StaticMeshCollider: public Collider
-    {
+    class StaticMeshCollider: public Collider {
     public:
         static auto fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>;
 

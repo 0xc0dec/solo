@@ -8,13 +8,11 @@
 #include "SoloCommon.h"
 #include "math/SoloVector2.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Renderer;
 
-    class WindowConfig
-    {
+    class WindowConfig {
     public:
         str title;
         Vector2 position;
@@ -25,8 +23,7 @@ namespace solo
         bool decoration = true;
     };
 
-    class DebugInterface
-    {
+    class DebugInterface {
     public:
         static auto fromDevice(Device *device) -> sptr<DebugInterface>;
 

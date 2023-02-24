@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config)
-{
+VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config) {
     const auto colorAttachments = config.colorAttachmentRefs_.empty()
                                   ? nullptr
                                   : config.colorAttachmentRefs_.data();
@@ -61,8 +60,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     vk::assertResult(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass_.cleanRef()));
 }
 
-void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
-{
+void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight) {
     VkRenderPassBeginInfo info{};
     info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
     info.pNext = nullptr;
@@ -78,19 +76,16 @@ void VulkanRenderPass::begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, 
     vkCmdBeginRenderPass(cmdBuf, &info, VK_SUBPASS_CONTENTS_INLINE);
 }
 
-void VulkanRenderPass::end(VkCommandBuffer cmdBuf)
-{
+void VulkanRenderPass::end(VkCommandBuffer cmdBuf) {
     vkCmdEndRenderPass(cmdBuf);
 }
 
 VulkanRenderPassConfig::VulkanRenderPassConfig():
-    depthAttachmentRef_{0, VK_IMAGE_LAYOUT_UNDEFINED}
-{
+    depthAttachmentRef_{0, VK_IMAGE_LAYOUT_UNDEFINED} {
 }
 
 auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout finalLayout)
--> VulkanRenderPassConfig &
-{
+-> VulkanRenderPassConfig & {
     VkAttachmentDescription desc{};
     desc.format = format;
     desc.flags = 0;
@@ -111,8 +106,7 @@ auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout f
     return *this;
 }
 
-auto VulkanRenderPassConfig::setDepthAttachment(VkFormat format) -> VulkanRenderPassConfig &
-{
+auto VulkanRenderPassConfig::setDepthAttachment(VkFormat format) -> VulkanRenderPassConfig & {
     VkAttachmentDescription desc{};
     desc.format = format;
     desc.flags = 0;

@@ -10,10 +10,8 @@
 #include <functional>
 #include <future>
 
-namespace solo
-{
-    class Job
-    {
+namespace solo {
+    class Job {
     public:
         Job(const Job &other) = delete;
         Job(Job &&other) = delete;
@@ -22,8 +20,7 @@ namespace solo
         auto operator=(const Job &other) -> Job & = delete;
         auto operator=(Job &&other) -> Job & = delete;
 
-        bool isDone() const
-        {
+        bool isDone() const {
             return done_;
         }
 
@@ -36,46 +33,37 @@ namespace solo
     };
 
     template <class T>
-    class JobBase final: public Job
-    {
+    class JobBase final: public Job {
     public:
         using Producer = std::function<sptr<T>()>;
         using Producers = vec<Producer>;
         using Consumer = std::function<void(const vec<sptr<T>> &)>;
 
         JobBase(const vec<Producer> &funcs, const Consumer &onDone):
-            callback_(onDone)
-        {
-            for (auto &func : funcs)
-            {
+            callback_(onDone) {
+            for (auto &func : funcs) {
                 auto future = std::async(std::launch::async, func);
                 futures_.push_back(std::move(future));
                 results_.push_back(nullptr);
             }
         }
 
-        void update() override final
-        {
+        void update() override final {
             auto readyCount = 0;
             auto i = 0;
-            for (auto &future : futures_)
-            {
-                if (future.valid())
-                {
+            for (auto &future : futures_) {
+                if (future.valid()) {
                     const auto status = future.wait_for(std::chrono::nanoseconds(0));
                     if (status == std::future_status::ready)
                         results_[i] = future.get();
-                }
-                else
-                {
+                } else {
                     panicIf(!results_[i], "Unable to obtain job result");
                     readyCount++;
                 }
                 i++;
             }
 
-            if (readyCount == futures_.size())
-            {
+            if (readyCount == futures_.size()) {
                 callback_(results_);
                 done_ = true;
             }
@@ -87,8 +75,7 @@ namespace solo
         Consumer callback_;
     };
 
-    class JobPool
-    {
+    class JobPool {
     public:
         JobPool() = default;
         JobPool(const JobPool &other) = delete;
@@ -98,8 +85,7 @@ namespace solo
         auto operator=(const JobPool &other) -> JobPool & = delete;
         auto operator=(JobPool &&other) -> JobPool & = delete;
 
-        bool hasActiveJobs() const
-        {
+        bool hasActiveJobs() const {
             return anyActiveJobs_;
         }
         void addJob(sptr<Job> job);

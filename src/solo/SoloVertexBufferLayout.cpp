@@ -7,8 +7,7 @@
 
 using namespace solo;
 
-void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage)
-{
+void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexAttributeUsage usage) {
     const auto size = static_cast<u32>(sizeof(float) * elementCount);
     const auto offset = attributes_.empty() ? 0 : attributes_.crbegin()->offset + attributes_.crbegin()->size;
     attributes_.push_back(VertexAttribute{name, elementCount, size, offset, usage});
@@ -16,10 +15,8 @@ void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexA
     this->size_ += size;
 }
 
-void VertexBufferLayout::addAttribute(VertexAttributeUsage usage)
-{
-    switch (usage)
-    {
+void VertexBufferLayout::addAttribute(VertexAttributeUsage usage) {
+    switch (usage) {
     case VertexAttributeUsage::Position:
         addAttribute(3, "sl_Position", VertexAttributeUsage::Position);
         break;
@@ -40,10 +37,8 @@ void VertexBufferLayout::addAttribute(VertexAttributeUsage usage)
     }
 }
 
-auto VertexBufferLayout::attributeIndex(VertexAttributeUsage usage) const -> s32
-{
-    for (s32 i = 0; i < attributes_.size(); i++)
-    {
+auto VertexBufferLayout::attributeIndex(VertexAttributeUsage usage) const -> s32 {
+    for (s32 i = 0; i < attributes_.size(); i++) {
         if (attributes_[i].usage == usage)
             return i;
     }

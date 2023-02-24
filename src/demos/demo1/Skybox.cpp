@@ -2,8 +2,7 @@
 
 using namespace solo;
 
-auto createSkybox(Device *device, Scene *scene) -> MeshRenderer *
-{
+auto createSkybox(Device *device, Scene *scene) -> MeshRenderer * {
     auto layout = VertexBufferLayout();
     layout.addAttribute(VertexAttributeUsage::Position);
     layout.addAttribute(VertexAttributeUsage::Normal);

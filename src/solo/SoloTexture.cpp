@@ -12,61 +12,52 @@
 
 using namespace solo;
 
-void Texture::setWrap(TextureWrap wrap)
-{
+void Texture::setWrap(TextureWrap wrap) {
     horizontalWrap_ = wrap;
     verticalWrap_ = wrap;
     rebuild();
 }
 
-void Texture::setVerticalWrap(TextureWrap wrap)
-{
+void Texture::setVerticalWrap(TextureWrap wrap) {
     verticalWrap_ = wrap;
     rebuild();
 }
 
-void Texture::setHorizontalWrap(TextureWrap wrap)
-{
+void Texture::setHorizontalWrap(TextureWrap wrap) {
     horizontalWrap_ = wrap;
     rebuild();
 }
 
-void Texture::setFilter(TextureFilter minFiltering, TextureFilter magFiltering, TextureMipFilter mipFiltering)
-{
+void Texture::setFilter(TextureFilter minFiltering, TextureFilter magFiltering, TextureMipFilter mipFiltering) {
     this->minFilter_ = minFiltering;
     this->magFilter_ = magFiltering;
     this->mipFilter_ = mipFiltering;
     rebuild();
 }
 
-void Texture::setAnisotropyLevel(float level)
-{
+void Texture::setAnisotropyLevel(float level) {
     anisotropyLevel_ = level;
     rebuild();
 }
 
 Texture::Texture(TextureFormat format):
-    format_(format)
-{
+    format_(format) {
     rebuild(); // yes, virtual call
 }
 
-auto Texture2D::fromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D>
-{
+auto Texture2D::fromFile(Device *device, const str &path, bool generateMipmaps) -> sptr<Texture2D> {
     const auto data = Texture2DData::fromFile(device, path);
     return fromData(device, data, generateMipmaps);
 }
 
-auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>>
-{
+auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipmaps) -> sptr<AsyncHandle<Texture2D>> {
     auto handle = std::make_shared<AsyncHandle<Texture2D>>();
 
-    auto producers = JobBase<Texture2DData>::Producers{[ = ]()
-        {
+    auto producers = JobBase<Texture2DData>::Producers{
+        [ = ]() {
             return Texture2DData::fromFile(device, path);
         }};
-    auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results)
-    {
+    auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results) {
         const auto texture = fromData(device, results[0], generateMipmaps);
         handle->resolve(texture);
     };
@@ -76,10 +67,8 @@ auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipm
     return handle;
 }
 
-auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D>
-{
-    switch (device->mode())
-    {
+auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return OpenGLTexture2D::empty(width, height, format);
@@ -94,10 +83,8 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
     }
 }
 
-auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D>
-{
-    switch (device->mode())
-    {
+auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return OpenGLTexture2D::fromData(data, generateMipmaps);
@@ -114,16 +101,14 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
 
 Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
     Texture(format),
-    dimensions_(dimensions)
-{
+    dimensions_(dimensions) {
 }
 
 auto CubeTexture::fromFaceFiles(
     Device *device,
     const str &positiveXPath, const str &negativeXPath,
     const str &positiveYPath, const str &negativeYPath,
-    const str &positiveZPath, const str &negativeZPath) -> sptr<CubeTexture>
-{
+    const str &positiveZPath, const str &negativeZPath) -> sptr<CubeTexture> {
     const auto data = CubeTextureData::fromFaceFiles(
         device,
         positiveXPath, negativeXPath,
@@ -136,13 +121,11 @@ auto CubeTexture::fromFaceFilesAsync(
     Device *device,
     const str &positiveXPath, const str &negativeXPath,
     const str &positiveYPath, const str &negativeYPath,
-    const str &positiveZPath, const str &negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
-{
+const str &positiveZPath, const str &negativeZPath) -> sptr<AsyncHandle<CubeTexture>> {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
 
     auto producers = JobBase<CubeTextureData>::Producers{
-        [ = ]()
-        {
+        [ = ]() {
             // TODO run each face loading in separate jobs
             return CubeTextureData::fromFaceFiles(
                 device,
@@ -150,8 +133,7 @@ auto CubeTexture::fromFaceFilesAsync(
                 positiveYPath, negativeYPath,
                 positiveZPath, negativeZPath);
         }};
-    auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
-    {
+    auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results) {
         const auto texture = fromData(device, results[0]);
         handle->resolve(texture);
     };
@@ -161,10 +143,8 @@ auto CubeTexture::fromFaceFilesAsync(
     return handle;
 }
 
-auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture>
-{
-    switch (device->mode())
-    {
+auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture> {
+    switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
     case DeviceMode::OpenGL:
         return OpenGLCubeTexture::fromData(data);
@@ -181,21 +161,18 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
 
 CubeTexture::CubeTexture(TextureFormat format, u32 dimension):
     Texture(format),
-    dimension_(dimension)
-{
+    dimension_(dimension) {
     rebuild(); // yes, virtual call
 }
 
-void CubeTexture::setWrap(TextureWrap wrap)
-{
+void CubeTexture::setWrap(TextureWrap wrap) {
     verticalWrap_ = wrap;
     horizontalWrap_ = wrap;
     depthWrap_ = wrap;
     rebuild();
 }
 
-void CubeTexture::setDepthWrap(TextureWrap wrap)
-{
+void CubeTexture::setDepthWrap(TextureWrap wrap) {
     this->depthWrap_ = wrap;
     rebuild();
 }

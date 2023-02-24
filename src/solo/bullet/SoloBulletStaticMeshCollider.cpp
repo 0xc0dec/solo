@@ -9,10 +9,8 @@
 
 using namespace solo;
 
-static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType
-{
-    switch (indexElementSize)
-    {
+static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType {
+    switch (indexElementSize) {
     case IndexElementSize::Bits16:
         return PHY_SHORT;
     case IndexElementSize::Bits32:
@@ -26,8 +24,7 @@ static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType
 
 // TODO Support meshes with multiple parts/non-indexed meshes
 BulletStaticMeshCollider::BulletStaticMeshCollider(sptr<Mesh> mesh):
-    inputMesh_(mesh)
-{
+    inputMesh_(mesh) {
     panicIf(mesh->vertexBufferCount() != 1, "Only single-buffer meshes are supported for now");
     panicIf(mesh->indexBufferCount() != 1, "Only single-index meshes are supported for now");
 

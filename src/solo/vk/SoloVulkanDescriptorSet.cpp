@@ -9,8 +9,7 @@
 
 using namespace solo;
 
-void VulkanDescriptorSetConfig::addUniformBuffer(u32 binding)
-{
+void VulkanDescriptorSetConfig::addUniformBuffer(u32 binding) {
     VkDescriptorSetLayoutBinding b{};
     b.binding = binding;
     b.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -23,8 +22,7 @@ void VulkanDescriptorSetConfig::addUniformBuffer(u32 binding)
     sizes_[VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER].descriptorCount++;
 }
 
-void VulkanDescriptorSetConfig::addSampler(u32 binding)
-{
+void VulkanDescriptorSetConfig::addSampler(u32 binding) {
     VkDescriptorSetLayoutBinding b{};
     b.binding = binding;
     b.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -38,8 +36,7 @@ void VulkanDescriptorSetConfig::addSampler(u32 binding)
 }
 
 VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptorSetConfig &cfg):
-    device_(device)
-{
+    device_(device) {
     // Layout
     VkDescriptorSetLayoutCreateInfo layoutInfo {};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
@@ -50,8 +47,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     vk::assertResult(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     vec<VkDescriptorPoolSize> sizes;
-    for (const auto &s : cfg.sizes_)
-    {
+    for (const auto &s : cfg.sizes_) {
         if (s.second.descriptorCount > 0)
             sizes.push_back(s.second);
     }
@@ -78,8 +74,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
 }
 
 // TODO do updates in batch using single vkUpdateDescriptorSets call
-void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range) const
-{
+void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize range) const {
     VkDescriptorBufferInfo bufferInfo = {buffer, offset, range};
 
     VkWriteDescriptorSet write{};
@@ -97,8 +92,7 @@ void VulkanDescriptorSet::updateUniformBuffer(u32 binding, VkBuffer buffer, VkDe
 }
 
 // TODO do updates in batch using single vkUpdateDescriptorSets call
-void VulkanDescriptorSet::updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout) const
-{
+void VulkanDescriptorSet::updateSampler(u32 binding, VkImageView view, VkSampler sampler, VkImageLayout layout) const {
     VkDescriptorImageInfo imageInfo = {sampler, view, layout};
 
     VkWriteDescriptorSet write{};

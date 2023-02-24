@@ -17,10 +17,8 @@
 
 using namespace solo;
 
-static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat
-{
-    switch (attr.elementCount)
-    {
+static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat {
+    switch (attr.elementCount) {
     case 1:
         return VK_FORMAT_R32_SFLOAT;
     case 2:
@@ -35,10 +33,8 @@ static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat
     }
 }
 
-static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor
-{
-    switch (factor)
-    {
+static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor {
+    switch (factor) {
     case BlendFactor::Zero:
         return VK_BLEND_FACTOR_ZERO;
     case BlendFactor::One:
@@ -71,10 +67,8 @@ static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor
     }
 }
 
-static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanMaterial *material)
-{
-    switch (material->polygonMode())
-    {
+static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanMaterial *material) {
+    switch (material->polygonMode()) {
     case PolygonMode::Points:
         cfg.withPolygonMode(VK_POLYGON_MODE_POINT);
         break;
@@ -88,8 +82,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
         panic("Unsupported polygon mode");
     }
 
-    switch (mesh->primitiveType())
-    {
+    switch (mesh->primitiveType()) {
     case PrimitiveType::Triangles:
         cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
         break;
@@ -109,8 +102,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
         panic("Unsupported primitive type");
     }
 
-    switch (material->faceCull())
-    {
+    switch (material->faceCull()) {
     case FaceCull::None:
         cfg.withCullMode(VK_CULL_MODE_NONE);
         break;
@@ -134,26 +126,22 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
         toBlendFactor(material->dstBlendFactor()));
 }
 
-static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanEffect *effect)
-{
+static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanEffect *effect) {
     const auto &effectVertexAttrs = effect->vertexAttributes();
 
-    for (u32 binding = 0; binding < mesh->vertexBufferCount(); binding++)
-    {
+    for (u32 binding = 0; binding < mesh->vertexBufferCount(); binding++) {
         const auto &layout = mesh->vertexBufferLayout(binding);
 
         cfg.withVertexBinding(binding, layout.size(), VK_VERTEX_INPUT_RATE_VERTEX);
 
         u32 offset = 0;
-        for (u32 attrIndex = 0; attrIndex < layout.attributeCount(); attrIndex++)
-        {
+        for (u32 attrIndex = 0; attrIndex < layout.attributeCount(); attrIndex++) {
             const auto attr = layout.attribute(attrIndex);
             const auto format = toVertexFormat(attr);
 
             u32 location = 0;
             auto found = true;
-            if (!attr.name.empty())
-            {
+            if (!attr.name.empty()) {
                 if (effectVertexAttrs.count(attr.name))
                     location = effectVertexAttrs.at(attr.name).location;
                 else
@@ -168,8 +156,7 @@ static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, Vulka
 }
 
 VulkanPipelineContext::VulkanPipelineContext(VulkanDriverDevice *device, size_t key):
-    device_(device), key_(key)
-{
+    device_(device), key_(key) {
 }
 
 VulkanPipelineContext::VulkanPipelineContext(VulkanPipelineContext &&other) noexcept:
@@ -180,21 +167,17 @@ VulkanPipelineContext::VulkanPipelineContext(VulkanPipelineContext &&other) noex
     lastMaterialStateHash_(other.lastMaterialStateHash_),
     lastMeshLayoutHash_(other.lastMeshLayoutHash_),
     key_(other.key_),
-    frameOfLastUse_(other.frameOfLastUse_)
-{
+    frameOfLastUse_(other.frameOfLastUse_) {
 }
 
 void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, VulkanRenderPass *renderPass,
-                                   Camera *camera, Transform *transform)
-{
+                                   Camera *camera, Transform *transform) {
     const auto effect = dynamic_cast<VulkanEffect *>(material->effect().get());
 
-    if (!descSet_)
-    {
+    if (!descSet_) {
         VulkanDescriptorSetConfig cfg;
 
-        for (const auto &pair : effect->uniformBuffers())
-        {
+        for (const auto &pair : effect->uniformBuffers()) {
             const auto bufferName = pair.first;
             uniformBuffers_[bufferName] = VulkanBuffer::uniformHostVisible(*device_, pair.second.size);
             cfg.addUniformBuffer(pair.second.binding);
@@ -209,8 +192,7 @@ void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, V
     const auto materialStateHash = material->stateHash();
     const auto meshLayoutHash = mesh->layoutHash();
 
-    if (!pipeline_ || materialStateHash != lastMaterialStateHash_ || meshLayoutHash != lastMeshLayoutHash_)
-    {
+    if (!pipeline_ || materialStateHash != lastMaterialStateHash_ || meshLayoutHash != lastMeshLayoutHash_) {
         auto pipelineConfig = VulkanPipelineConfig(effect->vsModule(), effect->fsModule())
                               .withDescriptorSetLayout(descSet_.layout())
                               .withFrontFace(VK_FRONT_FACE_COUNTER_CLOCKWISE)
@@ -227,14 +209,12 @@ void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, V
     // TODO Run set updater not so often - only when something really changes
 
     // TODO Not necessary (?), buffers don't change anyway, only their content
-    for (auto &pair : uniformBuffers_)
-    {
+    for (auto &pair : uniformBuffers_) {
         const auto &info = effect->uniformBuffers().at(pair.first);
         descSet_.updateUniformBuffer(info.binding, pair.second, 0, info.size); // TODO use single large buffer?
     }
 
-    for (const auto &pair : material->samplers())
-    {
+    for (const auto &pair : material->samplers()) {
         const auto &info = pair.second;
         descSet_.updateSampler(
             info.binding,
@@ -243,8 +223,7 @@ void VulkanPipelineContext::update(VulkanMaterial *material, VulkanMesh *mesh, V
             info.texture->image().layout());
     }
 
-    for (const auto &p : material->bufferItems())
-    {
+    for (const auto &p : material->bufferItems()) {
         auto &buffer = uniformBuffers_[p.first];
         for (const auto &pp : p.second)
             pp.second.write(buffer, camera, transform);

@@ -8,17 +8,14 @@
 #include "SoloBulletCollider.h"
 #include "SoloBoxCollider.h"
 
-namespace solo
-{
+namespace solo {
     class Vector3;
 
-    class BulletBoxCollider final : public BulletCollider, public BoxCollider
-    {
+    class BulletBoxCollider final : public BulletCollider, public BoxCollider {
     public:
         explicit BulletBoxCollider(const Vector3 &halfExtents);
 
-        auto shape() -> btCollisionShape *override final
-        {
+        auto shape() -> btCollisionShape *override final {
             return shape_.get();
         }
 

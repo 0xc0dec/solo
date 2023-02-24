@@ -12,8 +12,7 @@
 
 using namespace solo;
 
-auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer
-{
+auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer {
     auto buffer = VulkanBuffer(dev, size,
     VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
@@ -24,23 +23,20 @@ auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, con
     return buffer;
 }
 
-auto VulkanBuffer::uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer
-{
+auto VulkanBuffer::uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer {
     return VulkanBuffer(dev, size,
     VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-auto VulkanBuffer::deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
-{
+auto VulkanBuffer::deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer {
     const auto stagingBuffer = staging(dev, size, data);
     auto buffer = VulkanBuffer(dev, size, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageFlags, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     stagingBuffer.transferTo(buffer);
     return buffer;
 }
 
-auto VulkanBuffer::hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer
-{
+auto VulkanBuffer::hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer {
     auto buffer = VulkanBuffer(dev, size, usageFlags, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     buffer.updateAll(data);
     return buffer;
@@ -48,8 +44,7 @@ auto VulkanBuffer::hostVisible(const VulkanDriverDevice &dev, VkDeviceSize size,
 
 VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memPropertyFlags):
     device_(&dev),
-    size_(size)
-{
+    size_(size) {
     VkBufferCreateInfo bufferInfo {};
     bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     bufferInfo.size = size;
@@ -75,24 +70,21 @@ VulkanBuffer::VulkanBuffer(const VulkanDriverDevice &dev, VkDeviceSize size, VkB
     vk::assertResult(vkBindBufferMemory(dev.handle(), buffer_, memory_, 0));
 }
 
-void VulkanBuffer::updateAll(const void *newData) const
-{
+void VulkanBuffer::updateAll(const void *newData) const {
     void *ptr = nullptr;
     vk::assertResult(vkMapMemory(device_->handle(), memory_, 0, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size_);
     vkUnmapMemory(device_->handle(), memory_);
 }
 
-void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size) const
-{
+void VulkanBuffer::updatePart(const void *newData, u32 offset, u32 size) const {
     void *ptr = nullptr;
     vk::assertResult(vkMapMemory(device_->handle(), memory_, offset, VK_WHOLE_SIZE, 0, &ptr));
     memcpy(ptr, newData, size);
     vkUnmapMemory(device_->handle(), memory_);
 }
 
-void VulkanBuffer::transferTo(const VulkanBuffer &dst) const
-{
+void VulkanBuffer::transferTo(const VulkanBuffer &dst) const {
     VulkanCmdBuffer(*device_)
     .begin(true)
     .copyBuffer(*this, dst)

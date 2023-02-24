@@ -7,12 +7,10 @@
 
 #include "SoloCommon.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
 
-    class Effect
-    {
+    class Effect {
     public:
         static auto fromSourceFile(Device *device, const str &path) -> sptr<Effect>;
         static auto fromDescriptionFile(Device *device, const str &path) -> sptr<Effect>;

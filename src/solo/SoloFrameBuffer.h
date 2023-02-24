@@ -8,13 +8,11 @@
 #include "SoloCommon.h"
 #include "math/SoloVector2.h"
 
-namespace solo
-{
+namespace solo {
     class Device;
     class Texture2D;
 
-    class FrameBuffer
-    {
+    class FrameBuffer {
     public:
         static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer>;
 
@@ -25,8 +23,7 @@ namespace solo
         auto operator=(const FrameBuffer &other) -> FrameBuffer & = delete;
         auto operator=(FrameBuffer &&other) -> FrameBuffer & = delete;
 
-        auto dimensions() const -> Vector2
-        {
+        auto dimensions() const -> Vector2 {
             return dimensions_;
         }
 

@@ -8,21 +8,17 @@
 #include "SoloCommon.h"
 #include <functional>
 
-namespace solo
-{
+namespace solo {
     template <class T>
-    class AsyncHandle
-    {
+    class AsyncHandle {
     public:
-        void done(std::function<void(sptr<T>)> callback)
-        {
+        void done(std::function<void(sptr<T>)> callback) {
             if (callback && result_)
                 callback(result_);
             this->callback_ = callback;
         }
 
-        void resolve(sptr<T> result)
-        {
+        void resolve(sptr<T> result) {
             if (callback_)
                 callback_(result);
             this->result_ = result;

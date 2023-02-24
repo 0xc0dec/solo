@@ -15,8 +15,7 @@
 using namespace solo;
 
 VulkanDevice::VulkanDevice(const DeviceSetup &setup):
-    SDLDevice(setup)
-{
+    SDLDevice(setup) {
     initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
 
     VkApplicationInfo appInfo {};
@@ -25,8 +24,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    vec<const s8 *> enabledExtensions
-    {
+    vec<const s8 *> enabledExtensions {
         VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
         VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
@@ -36,8 +34,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
 #endif
     };
 
-    vec<const s8 *> enabledLayers
-    {
+    vec<const s8 *> enabledLayers {
 #ifdef SL_DEBUG
         "VK_LAYER_LUNARG_standard_validation",
 #endif
@@ -48,14 +45,12 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     instanceInfo.pNext = nullptr;
     instanceInfo.pApplicationInfo = &appInfo;
 
-    if (!enabledLayers.empty())
-    {
+    if (!enabledLayers.empty()) {
         instanceInfo.enabledLayerCount = enabledLayers.size();
         instanceInfo.ppEnabledLayerNames = enabledLayers.data();
     }
 
-    if (!enabledExtensions.empty())
-    {
+    if (!enabledExtensions.empty()) {
         instanceInfo.enabledExtensionCount = static_cast<u32>(enabledExtensions.size());
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
@@ -83,13 +78,11 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
 #endif
 }
 
-VulkanDevice::~VulkanDevice()
-{
+VulkanDevice::~VulkanDevice() {
     shutdownSubsystems();
 }
 
-void VulkanDevice::endUpdate()
-{
+void VulkanDevice::endUpdate() {
 }
 
 #endif

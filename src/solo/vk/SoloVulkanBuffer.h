@@ -11,12 +11,10 @@
 
 #include "SoloVulkan.h"
 
-namespace solo
-{
+namespace solo {
     class VulkanDriverDevice;
 
-    class VulkanBuffer
-    {
+    class VulkanBuffer {
     public:
         static auto staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData = nullptr) -> VulkanBuffer;
         static auto uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer;
@@ -32,17 +30,14 @@ namespace solo
         auto operator=(const VulkanBuffer &other) -> VulkanBuffer & = delete;
         auto operator=(VulkanBuffer &&other) -> VulkanBuffer & = default;
 
-        operator VkBuffer() const
-        {
+        operator VkBuffer() const {
             return buffer_;
         }
 
-        auto handle() const -> VkBuffer
-        {
+        auto handle() const -> VkBuffer {
             return buffer_;
         }
-        auto size() const -> VkDeviceSize
-        {
+        auto size() const -> VkDeviceSize {
             return size_;
         }
 

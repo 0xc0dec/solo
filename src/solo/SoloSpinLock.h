@@ -7,20 +7,15 @@
 
 #include <atomic>
 
-namespace solo
-{
-    class SpinLock final
-    {
+namespace solo {
+    class SpinLock final {
     public:
-        class LockToken final
-        {
+        class LockToken final {
         public:
-            explicit LockToken(std::atomic_flag &flag) : flag(flag)
-            {
+            explicit LockToken(std::atomic_flag &flag) : flag(flag) {
             }
 
-            ~LockToken()
-            {
+            ~LockToken() {
                 flag.clear();
             }
 
@@ -28,13 +23,11 @@ namespace solo
             std::atomic_flag &flag;
         };
 
-        ~SpinLock()
-        {
+        ~SpinLock() {
             flag_.clear(std::memory_order_release);
         }
 
-        auto acquire()
-        {
+        auto acquire() {
             while (flag_.test_and_set(std::memory_order_acquire)) {}
             return LockToken(flag_);
         }

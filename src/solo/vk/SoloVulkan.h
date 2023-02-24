@@ -16,10 +16,8 @@
 #endif
 #include <vulkan.h>
 
-namespace solo
-{
-    namespace vk
-    {
+namespace solo {
+    namespace vk {
         auto createSemaphore(VkDevice device) -> VulkanResource<VkSemaphore>;
         void queueSubmit(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores,
                          u32 signalSemaphoreCount, const VkSemaphore *signalSemaphores,
@@ -33,8 +31,7 @@ namespace solo
         auto makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout,
                                       VkImageLayout newImageLayout, VkImageSubresourceRange subresourceRange) -> VkImageMemoryBarrier;
 
-        constexpr void assertResult(VkResult result)
-        {
+        constexpr void assertResult(VkResult result) {
 #ifdef SL_DEBUG
             asrt(result == VK_SUCCESS, "Vulkan API call failed");
 #endif

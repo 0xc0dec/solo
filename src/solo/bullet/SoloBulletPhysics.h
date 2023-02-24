@@ -8,10 +8,8 @@
 #include "SoloPhysics.h"
 #include <btBulletDynamicsCommon.h>
 
-namespace solo
-{
-    class BulletPhysics final : public Physics
-    {
+namespace solo {
+    class BulletPhysics final : public Physics {
     public:
         BulletPhysics(Device *device);
 
@@ -22,8 +20,7 @@ namespace solo
         auto rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult override final;
         auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> override final;
 
-        auto world() const -> btDiscreteDynamicsWorld *
-        {
+        auto world() const -> btDiscreteDynamicsWorld * {
             return world_.get();
         }
 
