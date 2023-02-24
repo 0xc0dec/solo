@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloMaterial.h"
@@ -18,11 +18,11 @@ void registerMaterialApi(CppBindModule<LuaBinding> &module)
     REG_METHOD(binding, Material, setVector4Parameter);
     REG_METHOD(binding, Material, setMatrixParameter);
     REG_METHOD(binding, Material, setTextureParameter);
-	REG_METHOD(binding, Material, bindFloatParameter);
-	REG_METHOD(binding, Material, bindVector2Parameter);
-	REG_METHOD(binding, Material, bindVector3Parameter);
-	REG_METHOD(binding, Material, bindVector4Parameter);
-	REG_METHOD(binding, Material, bindMatrixParameter);
+    REG_METHOD(binding, Material, bindFloatParameter);
+    REG_METHOD(binding, Material, bindVector2Parameter);
+    REG_METHOD(binding, Material, bindVector3Parameter);
+    REG_METHOD(binding, Material, bindVector4Parameter);
+    REG_METHOD(binding, Material, bindMatrixParameter);
     REG_METHOD(binding, Material, bindParameter);
     REG_METHOD(binding, Material, effect);
     REG_METHOD(binding, Material, clone);

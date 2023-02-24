@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloOpenGLEffect.h"
@@ -20,7 +20,7 @@ static auto compileShader(GLuint type, const void *src, u32 length) -> GLint
     const auto shader = glCreateShader(type);
 
     GLint len = length;
-    glShaderSource(shader, 1, reinterpret_cast<const GLchar* const*>(&src), &len);
+    glShaderSource(shader, 1, reinterpret_cast<const GLchar *const *>(&src), &len);
     glCompileShader(shader);
 
     GLint status;
@@ -99,7 +99,7 @@ void OpenGLEffect::introspectUniforms()
         GLint size;
         GLenum type;
         glGetActiveUniform(handle_, i, nameMaxLength, nullptr, &size, &type, nameArr.data());
-        
+
         nameArr[nameMaxLength] = '\0';
         str name = nameArr.data();
 

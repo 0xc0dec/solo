@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -31,13 +31,13 @@ namespace solo
     public:
         static auto fromDevice(Device *device) -> sptr<Physics>;
 
-    	Physics() = delete;
+        Physics() = delete;
         Physics(const Physics &other) = delete;
         Physics(Physics &&other) = delete;
         virtual ~Physics() = default;
 
-        auto operator=(const Physics &other) -> Physics& = delete;
-        auto operator=(Physics &&other) -> Physics& = delete;
+        auto operator=(const Physics &other) -> Physics & = delete;
+        auto operator=(Physics &&other) -> Physics & = delete;
 
         virtual void update() = 0;
 

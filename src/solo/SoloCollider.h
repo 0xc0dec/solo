@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -14,8 +14,8 @@ namespace solo
         Collider(Collider &&other) = delete;
         virtual ~Collider() = default;
 
-        auto operator=(const Collider &other) -> Collider& = delete;
-        auto operator=(Collider &&other) -> Collider& = delete;
+        auto operator=(const Collider &other) -> Collider & = delete;
+        auto operator=(Collider &&other) -> Collider & = delete;
 
     protected:
         Collider() = default;

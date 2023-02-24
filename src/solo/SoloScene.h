@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -20,15 +20,18 @@ namespace solo
     public:
         static auto empty(Device *device) -> sptr<Scene>;
 
-		Scene() = delete;
+        Scene() = delete;
         Scene(const Scene &other) = delete;
         Scene(Scene &&other) = delete;
         ~Scene() = default;
-    	
-        auto operator=(const Scene &other) -> Scene& = delete;
-        auto operator=(Scene &&other) -> Scene& = delete;
 
-        auto device() const -> Device* { return device_; }
+        auto operator=(const Scene &other) -> Scene & = delete;
+        auto operator=(Scene &&other) -> Scene & = delete;
+
+        auto device() const -> Device *
+        {
+            return device_;
+        }
 
         auto createNode() -> sptr<Node>;
         void removeNodeById(u32 nodeId);
@@ -38,11 +41,11 @@ namespace solo
         void addComponent(u32 nodeId, sptr<Component> cmp);
         void removeComponent(u32 nodeId, u32 typeId);
 
-        void visit(const std::function<void(Component*)> &accept);
-        void visitByTags(u32 tagMask, const std::function<void(Component*)> &accept);
+        void visit(const std::function<void(Component *)> &accept);
+        void visitByTags(u32 tagMask, const std::function<void(Component *)> &accept);
 
-    	void update();
-    	void render(u32 tagMask);
+        void update();
+        void render(u32 tagMask);
 
     private:
         using NodeComponents = umap<u32, sptr<Component>>;
@@ -58,7 +61,7 @@ namespace solo
         u32 nodeCounter_ = 0;
         umap<u32, umap<u32, ComponentContext>> nodes_;
         umap<u32, uset<u32>> deletedComponents_;
-        vec<Camera*> cameras_;
+        vec<Camera *> cameras_;
 
         explicit Scene(Device *device);
 

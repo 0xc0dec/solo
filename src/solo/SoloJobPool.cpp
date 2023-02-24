@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloJobPool.h"
@@ -38,7 +38,10 @@ void JobPool::update()
         if (anyDone)
         {
             auto token = lock_.acquire();
-            jobs_.remove_if([](sptr<Job> job) { return job->isDone(); });
+            jobs_.remove_if([](sptr<Job> job)
+            {
+                return job->isDone();
+            });
             if (jobs_.empty())
                 anyActiveJobs_ = false;
         }

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -20,9 +20,9 @@ namespace solo
         FileSystem(const FileSystem &other) = delete;
         FileSystem(FileSystem &&other) = delete;
         virtual ~FileSystem() = default;
-    	
-        auto operator=(const FileSystem &other) -> FileSystem& = delete;
-        auto operator=(FileSystem &&other) -> FileSystem& = delete;
+
+        auto operator=(const FileSystem &other) -> FileSystem & = delete;
+        auto operator=(FileSystem &&other) -> FileSystem & = delete;
 
         virtual auto stream(const str &path) -> sptr<std::istream>;
 

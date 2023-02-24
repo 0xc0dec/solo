@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloCommon.h"
@@ -21,7 +21,7 @@ namespace solo
                 file.close();
         }
 
-        void setOutputFile(const str& path) override final
+        void setOutputFile(const str &path) override final
         {
             if (file.is_open())
                 file.close();
@@ -32,27 +32,27 @@ namespace solo
             }
         }
 
-        void logDebug(const str& msg) override final
+        void logDebug(const str &msg) override final
         {
             log(msg, "debug");
         }
 
-        void logInfo(const str& msg) override final
+        void logInfo(const str &msg) override final
         {
             log(msg, "info");
         }
 
-        void logWarning(const str& msg) override final
+        void logWarning(const str &msg) override final
         {
             log(msg, "warn");
         }
 
-        void logError(const str& msg) override final
+        void logError(const str &msg) override final
         {
             log(msg, "error");
         }
 
-        void logCritical(const str& msg) override final
+        void logCritical(const str &msg) override final
         {
             log(msg, "crit");
         }
@@ -72,7 +72,7 @@ namespace solo
     };
 }
 
-auto Logger::global() -> Logger&
+auto Logger::global() -> Logger &
 {
     static LoggerImpl instance;
     return instance;

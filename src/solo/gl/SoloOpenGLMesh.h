@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -37,14 +37,14 @@ namespace solo
     private:
         vec<GLuint> vertexBuffers_;
         vec<GLuint> indexBuffers_;
-            
+
         struct VertexArrayCacheEntry
         {
             GLuint handle;
             u32 age;
         };
 
-        umap<OpenGLEffect*, VertexArrayCacheEntry> vertexArrayCache_;
+        umap<OpenGLEffect *, VertexArrayCacheEntry> vertexArrayCache_;
 
         void addVertexBuffer(const VertexBufferLayout &layout, const void *data, u32 vertexCount, bool dynamic);
 

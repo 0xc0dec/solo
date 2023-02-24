@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -19,7 +19,10 @@ namespace solo
         explicit OpenGLDevice(const DeviceSetup &setup);
         virtual ~OpenGLDevice();
 
-    	auto context() const -> const SDL_GLContext& { return context_; }
+        auto context() const -> const SDL_GLContext &
+        {
+            return context_;
+        }
 
     private:
         SDL_GLContext context_ = nullptr;

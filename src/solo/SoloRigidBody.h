@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -23,7 +23,7 @@ namespace solo
         float restitution = 0;
         float linearDamping = 0;
         float angularDamping = 0;
-        
+
         bool kinematic = false;
 
         Vector3 linearFactor;
@@ -36,13 +36,13 @@ namespace solo
         static auto create(const Node &node, const RigidBodyParams &params) -> sptr<RigidBody>;
 
         virtual void setCollider(sptr<Collider> collider) = 0;
-    	// TODO add collider() method
+        // TODO add collider() method
 
         virtual bool isKinematic() = 0;
         virtual void setKinematic(bool kinematic) = 0;
 
-    	virtual bool isStatic() = 0;
-    	virtual void setStatic(bool isStatic) = 0;
+        virtual bool isStatic() = 0;
+        virtual void setStatic(bool isStatic) = 0;
 
     protected:
         explicit RigidBody(const Node &node);
@@ -50,9 +50,9 @@ namespace solo
 
     template <>
     template <class... Args>
-    auto NodeHelper<RigidBody>::addComponent(Scene *scene, u32 nodeId, Args &&...args) -> RigidBody*
+    auto NodeHelper<RigidBody>::addComponent(Scene *scene, u32 nodeId, Args &&...args) -> RigidBody *
     {
-	    const auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
+        const auto body = std::shared_ptr<RigidBody>(RigidBody::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
         return body.get();
     }

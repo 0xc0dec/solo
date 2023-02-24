@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanSwapchain.h"
@@ -15,7 +15,7 @@ static auto getSwapchainImages(VkDevice device, VkSwapchainKHR swapchain) -> vec
 {
     u32 imageCount = 0;
     vk::assertResult(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, nullptr));
-    
+
     vec<VkImage> images;
     images.resize(imageCount);
     vk::assertResult(vkGetSwapchainImagesKHR(device, swapchain, &imageCount, images.data()));
@@ -107,9 +107,9 @@ VulkanSwapchain::VulkanSwapchain(const VulkanDriverDevice &dev, u32 width, u32 h
     swapchain_ = createSwapchain(dev, width, height, vsync);
 
     renderPass_ = VulkanRenderPass(this->device_, VulkanRenderPassConfig()
-        .addColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
-        .setDepthAttachment(depthFormat));
-    
+                                   .addColorAttachment(colorFormat, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR)
+                                   .setDepthAttachment(depthFormat));
+
     depthStencil_ = VulkanImage::swapchainDepthStencil(dev, width, height, depthFormat);
 
     auto cmdBuf = VulkanCmdBuffer(dev);

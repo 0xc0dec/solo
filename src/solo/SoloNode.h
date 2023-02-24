@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,8 +15,14 @@ namespace solo
     public:
         Node(Scene *scene, u32 nodeId);
 
-        auto id() const -> u32 { return id_; }
-        auto scene() const -> Scene* { return scene_; }
+        auto id() const -> u32
+        {
+            return id_;
+        }
+        auto scene() const -> Scene *
+        {
+            return scene_;
+        }
 
         template <typename T>
         static auto findComponent(Scene *scene, u32 nodeId) -> T*;
@@ -47,7 +53,7 @@ namespace solo
     struct NodeHelper
     {
         template <class... Args>
-        static auto addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T*
+        static auto addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T *
         {
             auto cmp = std::make_shared<T>(Node(scene, nodeId), std::forward<Args>(args)...);
             auto base = std::static_pointer_cast<Component>(cmp);
@@ -57,27 +63,27 @@ namespace solo
     };
 
     template <typename T, typename... Args>
-    auto Node::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T*
+    auto Node::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> T *
     {
         return NodeHelper<T>::addComponent(scene, nodeId, std::forward<Args>(args)...);
     }
 
     template <typename T, typename... Args>
-    auto Node::addComponent(Args &&... args) -> T*
+    auto Node::addComponent(Args &&... args) -> T *
     {
         return addComponent<T>(scene_, id_, std::forward<Args>(args)...);
     }
 
     template <typename T>
-    auto Node::findComponent(Scene *scene, u32 nodeId) -> T*
+    auto Node::findComponent(Scene *scene, u32 nodeId) -> T *
     {
         auto typeId = T::getId();
         auto cmp = scene->findComponent(nodeId, typeId);
-        return static_cast<T*>(cmp);
+        return static_cast<T *>(cmp);
     }
 
     template <typename T>
-    auto Node::findComponent() const -> T*
+    auto Node::findComponent() const -> T *
     {
         return findComponent<T>(scene_, id_);
     }

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -16,10 +16,10 @@ namespace solo
         BulletCollider(BulletCollider &&other) = delete;
         virtual ~BulletCollider() = default;
 
-    	auto operator=(const BulletCollider &other) -> BulletCollider& = delete;
-        auto operator=(BulletCollider &&other) -> BulletCollider& = delete;
+        auto operator=(const BulletCollider &other) -> BulletCollider & = delete;
+        auto operator=(BulletCollider &&other) -> BulletCollider & = delete;
 
-        virtual auto shape() -> btCollisionShape* = 0;
+        virtual auto shape() -> btCollisionShape * = 0;
 
     protected:
         BulletCollider() = default;

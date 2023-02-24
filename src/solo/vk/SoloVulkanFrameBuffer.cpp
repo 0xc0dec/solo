@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanFrameBuffer.h"
@@ -15,14 +15,17 @@ using namespace solo;
 
 auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>
 {
-	asrt([&attachments]() { validateNewAttachments(attachments); });
+    asrt([&attachments]()
+    {
+        validateNewAttachments(attachments);
+    });
 
     auto result = sptr<VulkanFrameBuffer>(new VulkanFrameBuffer());
 
     vec<VkImageView> views;
     VulkanRenderPassConfig config;
 
-    for (const auto &attachment: attachments)
+    for (const auto &attachment : attachments)
     {
         const auto texture = std::static_pointer_cast<VulkanTexture2D>(attachment);
         if (attachment->format() == TextureFormat::Depth24)
@@ -40,13 +43,13 @@ auto VulkanFrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D
     if (!result->depthAttachment_)
     {
         result->depthAttachment_ = VulkanTexture2D::empty(device,
-            static_cast<u32>(result->dimensions_.x()), static_cast<u32>(result->dimensions_.y()), TextureFormat::Depth24);
+                                   static_cast<u32>(result->dimensions_.x()), static_cast<u32>(result->dimensions_.y()), TextureFormat::Depth24);
     }
 
     views.push_back(result->depthAttachment_->image().view());
     config.setDepthAttachment(result->depthAttachment_->image().format());
 
-	const auto renderer = dynamic_cast<VulkanRenderer*>(device->renderer());
+    const auto renderer = dynamic_cast<VulkanRenderer *>(device->renderer());
     result->renderPass_ = VulkanRenderPass(renderer->device(), config);
     result->frameBuffer_ = vk::createFrameBuffer(renderer->device(), views, result->renderPass_, result->dimensions_.x(), result->dimensions_.y());
 

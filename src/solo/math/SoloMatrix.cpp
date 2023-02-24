@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloMatrix.h"
@@ -74,7 +74,7 @@ void Matrix::invert()
 
 auto Matrix::inverted() const -> Matrix
 {
-	return glm::inverse(data_);
+    return glm::inverse(data_);
 }
 
 bool Matrix::isIdentity() const
@@ -136,7 +136,7 @@ auto Matrix::createTranslation(const Vector3 &translation) -> Matrix
     return result;
 }
 
-auto Matrix::columns() const -> const float*
+auto Matrix::columns() const -> const float *
 {
     return glm::value_ptr(data_);
 }
@@ -186,7 +186,7 @@ void Matrix::decompose(Vector3 &scale, Quaternion &rotation, Vector3 &translatio
     glm::vec3 rawTranslation;
     glm::vec3 rawSkew;
     glm::vec4 rawPerspective;
-    
+
     glm::decompose(data_, rawScale, rawRotation, rawTranslation, rawSkew, rawPerspective);
 
     scale = rawScale;
@@ -213,7 +213,7 @@ void Matrix::transpose()
 
 auto Matrix::transposed() const -> Matrix
 {
-	return glm::transpose(data_);
+    return glm::transpose(data_);
 }
 
 auto Matrix::operator*=(float scalar) -> Matrix &

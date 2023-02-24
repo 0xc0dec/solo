@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloFileSystem.h"
@@ -29,7 +29,7 @@ auto FileSystem::readBytes(const str &path) -> vec<u8>
     const auto size = file.tellg();
     file.seekg(0, std::ios::beg);
     auto result = vec<u8>(size);
-    file.read(reinterpret_cast<s8*>(&result[0]), size);
+    file.read(reinterpret_cast<s8 *>(&result[0]), size);
     file.close();
 
     return result;
@@ -39,7 +39,7 @@ void FileSystem::writeBytes(const str &path, const vec<u8> &data)
 {
     std::ofstream file(path, std::ios::binary | std::ios::trunc);
     panicIf(!file.is_open(), "Unable to open file ", path);
-    file.write(reinterpret_cast<const s8*>(&data[0]), data.size());
+    file.write(reinterpret_cast<const s8 *>(&data[0]), data.size());
     file.close();
 }
 

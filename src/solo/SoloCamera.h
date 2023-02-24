@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -35,36 +35,78 @@ namespace solo
 
         auto windowPointToWorldRay(const Vector2 &pt) const -> Ray;
 
-        auto transform() const -> Transform* { return transform_; }
+        auto transform() const -> Transform *
+        {
+            return transform_;
+        }
 
         auto renderTarget() const -> sptr<FrameBuffer> { return renderTarget_; }
-        void setRenderTarget(sptr<FrameBuffer> target) { renderTarget_ = target; }
+        void setRenderTarget(sptr<FrameBuffer> target)
+        {
+            renderTarget_ = target;
+        }
 
-        auto clearColor() const -> Vector4 { return clearColor_; }
-        void setClearColor(const Vector4 &color) { clearColor_ = color; }
+        auto clearColor() const -> Vector4
+        {
+            return clearColor_;
+        }
+        void setClearColor(const Vector4 &color)
+        {
+            clearColor_ = color;
+        }
 
-        bool hasColorClearing() const { return colorClearing_; }
-        void setColorClearing(bool enabled) { this->colorClearing_ = enabled; }
+        bool hasColorClearing() const
+        {
+            return colorClearing_;
+        }
+        void setColorClearing(bool enabled)
+        {
+            this->colorClearing_ = enabled;
+        }
 
-        auto viewport() const -> Vector4 { return viewport_; }
-        void setViewport(const Vector4 &rect) { viewport_ = rect; }
+        auto viewport() const -> Vector4
+        {
+            return viewport_;
+        }
+        void setViewport(const Vector4 &rect)
+        {
+            viewport_ = rect;
+        }
 
-        bool isPerspective() const { return !ortho_; }
+        bool isPerspective() const
+        {
+            return !ortho_;
+        }
         void setPerspective(bool perspective);
 
-        auto zNear() const -> float { return zNear_; }
+        auto zNear() const -> float
+        {
+            return zNear_;
+        }
         void setZNear(float near);
 
-        auto zFar() const -> float { return zFar_; }
+        auto zFar() const -> float
+        {
+            return zFar_;
+        }
         void setZFar(float far);
 
-        auto fieldOfView() const -> Radians { return fov_; }
+        auto fieldOfView() const -> Radians
+        {
+            return fov_;
+        }
         void setFieldOfView(const Radians &fov);
 
-        auto orthoSize() const -> Vector2 { return orthoSize_; }
+        auto orthoSize() const -> Vector2
+        {
+            return orthoSize_;
+        }
         void setOrthoSize(const Vector2 &size);
 
-        auto aspectRatio() const -> float { return aspectRatio_; }
+        auto aspectRatio() const -> float
+        {
+            return aspectRatio_;
+        }
 
         auto viewMatrix() const -> Matrix;
         auto invViewMatrix() const -> Matrix;
@@ -103,9 +145,9 @@ namespace solo
 
     template <>
     template <class... Args>
-    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera*
+    auto NodeHelper<Camera>::addComponent(Scene *scene, u32 nodeId, Args &&... args) -> Camera *
     {
-	    const auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
+        const auto body = std::shared_ptr<Camera>(Camera::create(Node(scene, nodeId), std::forward<Args>(args)...));
         scene->addComponent(nodeId, body);
         return body.get();
     }

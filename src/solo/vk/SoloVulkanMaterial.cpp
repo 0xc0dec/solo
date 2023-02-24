@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanMaterial.h"
@@ -46,7 +46,7 @@ auto VulkanMaterial::stateHash() const -> size_t
 
 void VulkanMaterial::setFloatParameter(const str &name, float value)
 {
-    setParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [value](auto & buffer, auto offset, auto size, auto, auto)
     {
         buffer.updatePart(&value, offset, size);
     });
@@ -54,7 +54,7 @@ void VulkanMaterial::setFloatParameter(const str &name, float value)
 
 void VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 {
-    setParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [value](auto & buffer, auto offset, auto size, auto, auto)
     {
         buffer.updatePart(&value, offset, size);
     });
@@ -62,7 +62,7 @@ void VulkanMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 
 void VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
-    setParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [value](auto & buffer, auto offset, auto size, auto, auto)
     {
         buffer.updatePart(&value, offset, size);
     });
@@ -70,7 +70,7 @@ void VulkanMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 
 void VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 {
-    setParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [value](auto & buffer, auto offset, auto size, auto, auto)
     {
         buffer.updatePart(&value, offset, size);
     });
@@ -79,7 +79,7 @@ void VulkanMaterial::setVector4Parameter(const str &name, const Vector4 &value)
 void VulkanMaterial::setMatrixParameter(const str &name, const Matrix &value)
 {
     // TODO avoid copy-paste
-    setParameter(name, [value](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [value](auto & buffer, auto offset, auto size, auto, auto)
     {
         buffer.updatePart(&value, offset, size);
     });
@@ -91,31 +91,31 @@ void VulkanMaterial::setParameter(const str &name, const ParameterWriteFunc &wri
     const auto &bufferName = std::get<0>(parsedName);
     const auto &fieldName = std::get<1>(parsedName);
 
-	panicIf(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
+    panicIf(bufferName.empty() || fieldName.empty(), "Invalid material parameter name ", name);
 
-	if (effect_->hasUniformBuffer(bufferName))
-	{
-		auto bufferInfo = effect_->uniformBuffer(bufferName);
-		if (bufferInfo.members.count(fieldName))
-		{
-			const auto itemInfo = bufferInfo.members.at(fieldName);
-		    auto &item = bufferItems_[bufferName][fieldName];
-			
-		    item.write = [itemInfo, write](VulkanBuffer &buffer, const Camera *camera, const Transform *transform)
-		    {
-		        write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
-		    };
+    if (effect_->hasUniformBuffer(bufferName))
+    {
+        auto bufferInfo = effect_->uniformBuffer(bufferName);
+        if (bufferInfo.members.count(fieldName))
+        {
+            const auto itemInfo = bufferInfo.members.at(fieldName);
+            auto &item = bufferItems_[bufferName][fieldName];
 
-			return;
-		}
-	}
-	
-	panic("Unknown material parameter ", name);
+            item.write = [itemInfo, write](VulkanBuffer & buffer, const Camera * camera, const Transform * transform)
+            {
+                write(buffer, itemInfo.offset, itemInfo.size, camera, transform);
+            };
+
+            return;
+        }
+    }
+
+    panic("Unknown material parameter ", name);
 }
 
 void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 {
-	panicIf(!effect_->hasSampler(name), "Unknown material parameter ", name);
+    panicIf(!effect_->hasSampler(name), "Unknown material parameter ", name);
     const auto samplerInfo = effect_->sampler(name);
     auto &sampler = samplers_[name];
     sampler.binding = samplerInfo.binding;
@@ -125,45 +125,45 @@ void VulkanMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 
 void VulkanMaterial::bindFloatParameter(const str &name, const std::function<float()> &valueGetter)
 {
-	setParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [valueGetter](auto & buffer, auto offset, auto size, auto, auto)
     {
-		const auto val = valueGetter();
+        const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
     });
 }
 
 void VulkanMaterial::bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter)
 {
-	setParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [valueGetter](auto & buffer, auto offset, auto size, auto, auto)
     {
-		const auto val = valueGetter();
+        const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
     });
 }
 
 void VulkanMaterial::bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter)
 {
-	setParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [valueGetter](auto & buffer, auto offset, auto size, auto, auto)
     {
-		const auto val = valueGetter();
+        const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
     });
 }
 
 void VulkanMaterial::bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter)
 {
-	setParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [valueGetter](auto & buffer, auto offset, auto size, auto, auto)
     {
-		const auto val = valueGetter();
+        const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
     });
 }
 
 void VulkanMaterial::bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter)
 {
-    setParameter(name, [valueGetter](auto &buffer, auto offset, auto size, auto, auto)
+    setParameter(name, [valueGetter](auto & buffer, auto offset, auto size, auto, auto)
     {
-    	const auto val = valueGetter();
+        const auto val = valueGetter();
         buffer.updatePart(&val, offset, size);
     });
 }
@@ -172,9 +172,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
     switch (binding)
     {
-        case ParameterBinding::WorldMatrix:
+    case ParameterBinding::WorldMatrix:
         {
-			setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -185,9 +185,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ViewMatrix:
+    case ParameterBinding::ViewMatrix:
         {
-            setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -198,9 +198,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ProjectionMatrix:
+    case ParameterBinding::ProjectionMatrix:
         {
-            setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -211,9 +211,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::WorldViewMatrix:
+    case ParameterBinding::WorldViewMatrix:
         {
-			setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform)
             {
                 if (camera && nodeTransform)
                 {
@@ -224,9 +224,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ViewProjectionMatrix:
+    case ParameterBinding::ViewProjectionMatrix:
         {
-        	setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform)
             {
                 if (camera)
                 {
@@ -237,9 +237,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::WorldViewProjectionMatrix:
+    case ParameterBinding::WorldViewProjectionMatrix:
         {
-        	setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -250,9 +250,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::InverseTransposedWorldMatrix:
+    case ParameterBinding::InverseTransposedWorldMatrix:
         {
-            setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -263,9 +263,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::InverseTransposedWorldViewMatrix:
+    case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
-        	setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -276,9 +276,9 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::CameraWorldPosition:
+    case ParameterBinding::CameraWorldPosition:
         {
-        	setParameter(name, [](VulkanBuffer &buffer, u32 offset, u32 size, const Camera *camera, const Transform *)
+            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -289,8 +289,8 @@ void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        default:
-    		panic("Unsupported parameter binding");
+    default:
+        panic("Unsupported parameter binding");
     }
 }
 

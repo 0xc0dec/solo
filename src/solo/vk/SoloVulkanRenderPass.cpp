@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanRenderPass.h"
@@ -12,11 +12,11 @@ using namespace solo;
 VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig &config)
 {
     const auto colorAttachments = config.colorAttachmentRefs_.empty()
-        ? nullptr
-        : config.colorAttachmentRefs_.data();
+                                  ? nullptr
+                                  : config.colorAttachmentRefs_.data();
     const auto depthAttachment = config.depthAttachmentRef_.layout != VK_IMAGE_LAYOUT_UNDEFINED
-        ? &config.depthAttachmentRef_
-        : nullptr;
+                                 ? &config.depthAttachmentRef_
+                                 : nullptr;
     clearValues_.resize(config.colorAttachmentRefs_.size() + 1);
     clearValues_.rbegin()->depthStencil = {1, 0};
 
@@ -43,7 +43,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     dependencies[0].srcAccessMask = 0;
     dependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
     dependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
-        VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+                                    VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
     dependencies[0].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
     VkRenderPassCreateInfo renderPassInfo{};
@@ -57,7 +57,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice device, const VulkanRenderPassConfig
     renderPassInfo.dependencyCount = dependencies.size();
     renderPassInfo.pDependencies = dependencies.data();
 
-    pass_ = VulkanResource<VkRenderPass>{device, vkDestroyRenderPass};
+    pass_ = VulkanResource<VkRenderPass> {device, vkDestroyRenderPass};
     vk::assertResult(vkCreateRenderPass(device, &renderPassInfo, nullptr, pass_.cleanRef()));
 }
 
@@ -89,7 +89,7 @@ VulkanRenderPassConfig::VulkanRenderPassConfig():
 }
 
 auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout finalLayout)
-    -> VulkanRenderPassConfig&
+-> VulkanRenderPassConfig &
 {
     VkAttachmentDescription desc{};
     desc.format = format;
@@ -111,7 +111,7 @@ auto VulkanRenderPassConfig::addColorAttachment(VkFormat format, VkImageLayout f
     return *this;
 }
 
-auto VulkanRenderPassConfig::setDepthAttachment(VkFormat format) -> VulkanRenderPassConfig&
+auto VulkanRenderPassConfig::setDepthAttachment(VkFormat format) -> VulkanRenderPassConfig &
 {
     VkAttachmentDescription desc{};
     desc.format = format;

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloLuaCommon.h"
@@ -38,7 +38,7 @@ static void registerVertexBufferLayout(CppBindModule<LuaBinding> &module)
     REG_METHOD_OVERLOADED(layout, VertexBufferLayout, addAttribute, "addAttribute", void, , VertexAttributeUsage);
     REG_METHOD(layout, VertexBufferLayout, attribute);
     REG_METHOD(layout, VertexBufferLayout, attributeCount);
-	REG_METHOD(layout, VertexBufferLayout, attributeIndex);
+    REG_METHOD(layout, VertexBufferLayout, attributeIndex);
     REG_METHOD(layout, VertexBufferLayout, size);
     REG_METHOD(layout, VertexBufferLayout, elementCount);
     layout.endClass();
@@ -55,16 +55,16 @@ static void registerMesh(CppBindModule<LuaBinding> &module)
         REG_FREE_FUNC_AS_METHOD(binding, addDynamicVertexBuffer);
         REG_FREE_FUNC_AS_METHOD(binding, updateVertexBuffer);
         REG_METHOD(binding, Mesh, removeVertexBuffer);
-    	REG_METHOD(binding, Mesh, vertexBufferCount);
-    	REG_METHOD(binding, Mesh, vertexBufferVertexCount);
-    	REG_METHOD(binding, Mesh, vertexBufferLayout);
-    	REG_METHOD(binding, Mesh, vertexBufferData);
-    	REG_METHOD(binding, Mesh, addIndexBuffer);
+        REG_METHOD(binding, Mesh, vertexBufferCount);
+        REG_METHOD(binding, Mesh, vertexBufferVertexCount);
+        REG_METHOD(binding, Mesh, vertexBufferLayout);
+        REG_METHOD(binding, Mesh, vertexBufferData);
+        REG_METHOD(binding, Mesh, addIndexBuffer);
         REG_METHOD(binding, Mesh, removeIndexBuffer);
         REG_METHOD(binding, Mesh, indexBufferCount);
-    	REG_METHOD(binding, Mesh, indexBufferElementCount);
-    	REG_METHOD(binding, Mesh, indexBufferElementSize);
-    	REG_METHOD(binding, Mesh, indexData);
+        REG_METHOD(binding, Mesh, indexBufferElementCount);
+        REG_METHOD(binding, Mesh, indexBufferElementSize);
+        REG_METHOD(binding, Mesh, indexData);
         REG_METHOD(binding, Mesh, primitiveType);
         REG_METHOD(binding, Mesh, setPrimitiveType);
         REG_PTR_EQUALITY(binding, Mesh);

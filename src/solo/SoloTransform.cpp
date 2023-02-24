@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloTransform.h"
@@ -33,8 +33,8 @@ void Transform::setParent(Transform *parent)
     if (parent == this || parent == this->parent_)
         return;
 
-	const auto worldPos = worldPosition();
-	const auto worldRot = worldRotation();
+    const auto worldPos = worldPosition();
+    const auto worldRot = worldRotation();
 
     if (this->parent_)
     {
@@ -43,12 +43,12 @@ void Transform::setParent(Transform *parent)
     }
 
     this->parent_ = parent;
-	if (parent)
-    	parent->children_.push_back(this);
+    if (parent)
+        parent->children_.push_back(this);
 
-	setDirtyWithChildren();
-	setWorldPosition(worldPos);
-	setWorldRotation(worldRot);
+    setDirtyWithChildren();
+    setWorldPosition(worldPos);
+    setWorldRotation(worldRot);
 }
 
 void Transform::clearChildren()
@@ -115,24 +115,24 @@ void Transform::translateLocal(const Vector3 &translation)
 
 void Transform::rotate(const Quaternion &rotation, TransformSpace space)
 {
-	const auto normalizedRotation = rotation.normalized();
+    const auto normalizedRotation = rotation.normalized();
 
     switch (space)
     {
-        case TransformSpace::Self:
-            localRotation_ = localRotation_ * normalizedRotation;
-            break;
-        case TransformSpace::Parent:
-            localRotation_ = normalizedRotation * localRotation_;
-            break;
-        case TransformSpace::World:
+    case TransformSpace::Self:
+        localRotation_ = localRotation_ * normalizedRotation;
+        break;
+    case TransformSpace::Parent:
+        localRotation_ = normalizedRotation * localRotation_;
+        break;
+    case TransformSpace::World:
         {
-	        const auto invWorldRotation = worldRotation().inverted();
+            const auto invWorldRotation = worldRotation().inverted();
             localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * worldRotation();
             break;
         }
-        default:
-            break;
+    default:
+        break;
     }
 
     setDirtyWithChildren();
@@ -154,9 +154,9 @@ void Transform::scaleLocal(const Vector3 &scale)
 
 void Transform::setWorldRotation(const Quaternion &rotation)
 {
-	const auto normalizedRotation = rotation.normalized();
-	const auto invWorldRotation = worldRotation().inverted();
-	setLocalRotation(localRotation_ * invWorldRotation * normalizedRotation);
+    const auto normalizedRotation = rotation.normalized();
+    const auto invWorldRotation = worldRotation().inverted();
+    setLocalRotation(localRotation_ * invWorldRotation * normalizedRotation);
 }
 
 void Transform::setLocalScale(const Vector3 &scale)
@@ -172,7 +172,7 @@ void Transform::lookAt(const Vector3 &target, const Vector3 &up)
 
     if (parent_)
     {
-	    const auto m = parent_->worldMatrix().inverted();
+        const auto m = parent_->worldMatrix().inverted();
         localTarget = m.transformPoint(target);
         localUp = m.transformDirection(up);
     }
@@ -205,13 +205,13 @@ void Transform::setLocalAxisAngleRotation(const Vector3 &axis, const Radians &an
 
 void Transform::setWorldPosition(const Vector3 &position)
 {
-	auto localPos = position;
-	if (parent_)
-	{
-		const auto worldMat = parent_->worldMatrix().inverted();
-		localPos = worldMat.transformPoint(position);
-	}
-	setLocalPosition(localPos);
+    auto localPos = position;
+    if (parent_)
+    {
+        const auto worldMat = parent_->worldMatrix().inverted();
+        localPos = worldMat.transformPoint(position);
+    }
+    setLocalPosition(localPos);
 }
 
 void Transform::setLocalPosition(const Vector3 &position)
@@ -222,7 +222,7 @@ void Transform::setLocalPosition(const Vector3 &position)
 
 void Transform::setDirtyWithChildren() const
 {
-	dirty_ = true;
+    dirty_ = true;
     version_++;
     for (auto child : children_)
         child->setDirtyWithChildren();

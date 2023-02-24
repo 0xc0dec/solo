@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -18,10 +18,16 @@ namespace solo
         Vector2(float all);
         Vector2(float x, float y);
 
-        auto x() -> float& { return data_.x; }
-        auto x() const -> float { return data_.x; }
-        auto y() -> float& { return data_.y; }
-        auto y() const -> float { return data_.y; }
+        auto x() -> float & { return data_.x; }
+        auto x() const -> float
+        {
+            return data_.x;
+        }
+        auto y() -> float & { return data_.y; }
+        auto y() const -> float
+        {
+            return data_.y;
+        }
 
         bool isZero() const;
         bool isUnit() const;

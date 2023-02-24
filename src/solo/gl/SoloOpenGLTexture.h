@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -18,14 +18,17 @@ namespace solo
     {
     public:
         OpenGLTexture();
-    	OpenGLTexture(const OpenGLTexture &other) = delete;
+        OpenGLTexture(const OpenGLTexture &other) = delete;
         OpenGLTexture(OpenGLTexture &&other) = delete;
         virtual ~OpenGLTexture();
-        
-        auto operator=(const OpenGLTexture &other) -> OpenGLTexture& = delete;
-        auto operator=(OpenGLTexture &&other) -> OpenGLTexture& = delete;
 
-        auto handle() const -> GLuint { return handle_; }
+        auto operator=(const OpenGLTexture &other) -> OpenGLTexture & = delete;
+        auto operator=(OpenGLTexture &&other) -> OpenGLTexture & = delete;
+
+        auto handle() const -> GLuint
+        {
+            return handle_;
+        }
 
         virtual void bind() = 0;
 

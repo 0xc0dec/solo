@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -21,11 +21,14 @@ namespace solo
         FrameBuffer(const FrameBuffer &other) = delete;
         FrameBuffer(FrameBuffer &&other) = delete;
         virtual ~FrameBuffer() = default;
-    	
-        auto operator=(const FrameBuffer &other) -> FrameBuffer& = delete;
-        auto operator=(FrameBuffer &&other) -> FrameBuffer& = delete;
 
-        auto dimensions() const -> Vector2 { return dimensions_; }
+        auto operator=(const FrameBuffer &other) -> FrameBuffer & = delete;
+        auto operator=(FrameBuffer &&other) -> FrameBuffer & = delete;
+
+        auto dimensions() const -> Vector2
+        {
+            return dimensions_;
+        }
 
     protected:
         Vector2 dimensions_;

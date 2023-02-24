@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -29,7 +29,7 @@ namespace solo
 
         bool isStatic() override;
         void setStatic(bool isStatic) override;
-    	
+
     private:
         float mass_ = 0;
         sptr<Collider> collider_;
@@ -41,6 +41,6 @@ namespace solo
         u32 lastTransformVersion_ = ~0;
 
         void syncScale() const;
-    	void syncPosition() const;
+        void syncPosition() const;
     };
 }

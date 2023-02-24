@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -9,18 +9,18 @@
 
 namespace solo
 {
-	class SDLDevice;
-	
-	class SDLDebugInterface: public DebugInterface
-	{
-	public:
-		explicit SDLDebugInterface(Device *device);
-		~SDLDebugInterface();
+    class SDLDevice;
 
-	protected:
-		void beginFrame() override;
-		
-	private:
-		SDLDevice *device_ = nullptr;
-	};
+    class SDLDebugInterface: public DebugInterface
+    {
+    public:
+        explicit SDLDebugInterface(Device *device);
+        ~SDLDebugInterface();
+
+    protected:
+        void beginFrame() override;
+
+    private:
+        SDLDevice *device_ = nullptr;
+    };
 }

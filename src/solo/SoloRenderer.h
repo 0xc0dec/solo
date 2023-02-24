@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,7 +15,7 @@ namespace solo
     class Mesh;
     class Transform;
     class Material;
-	class DebugInterface;
+    class DebugInterface;
 
     class Renderer
     {
@@ -25,21 +25,21 @@ namespace solo
         Renderer(const Renderer &other) = delete;
         Renderer(Renderer &&other) = delete;
         virtual ~Renderer() = default;
-    	
-        auto operator=(const Renderer &other) -> Renderer& = delete;
-        auto operator=(Renderer &&other) -> Renderer& = delete;
 
-    	void bootstrap();
-    	void cleanup();
+        auto operator=(const Renderer &other) -> Renderer & = delete;
+        auto operator=(Renderer &&other) -> Renderer & = delete;
+
+        void bootstrap();
+        void cleanup();
 
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;
         virtual void renderMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
         virtual void renderMeshIndex(Mesh *mesh, u32 part, Transform *transform, Material *material) = 0;
-    	virtual void renderDebugInterface(DebugInterface *debugInterface) = 0;
+        virtual void renderDebugInterface(DebugInterface *debugInterface) = 0;
 
-        virtual auto name() const -> const char* = 0;
-        virtual auto gpuName() const -> const char* = 0;
+        virtual auto name() const -> const char * = 0;
+        virtual auto gpuName() const -> const char * = 0;
 
         void renderFrame(const std::function<void()> &render);
 
@@ -49,10 +49,13 @@ namespace solo
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
 
-    	auto errorMaterial() const -> Material* { return errorMaterial_.get(); }
+        auto errorMaterial() const -> Material *
+        {
+            return errorMaterial_.get();
+        }
 
     private:
-    	Device *device_ = nullptr;
-    	sptr<Material> errorMaterial_;
+        Device *device_ = nullptr;
+        sptr<Material> errorMaterial_;
     };
 }

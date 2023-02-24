@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -24,7 +24,10 @@ namespace solo
 
         ~OpenGLFrameBuffer();
 
-        auto handle() const -> GLuint { return handle_; }
+        auto handle() const -> GLuint
+        {
+            return handle_;
+        }
 
     private:
         GLuint handle_ = 0;

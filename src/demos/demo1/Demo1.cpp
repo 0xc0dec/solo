@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include <Solo.h>
@@ -9,7 +9,7 @@ using namespace solo;
 
 auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*;
 
-auto createMainCamera(Scene *scene) -> Camera*
+auto createMainCamera(Scene *scene) -> Camera *
 {
     const auto node = scene->createNode();
     node->addComponent<Spectator>();
@@ -32,15 +32,15 @@ int main()
         device->update([&]()
         {
             scene->update();
-        	camera->renderFrame([&]()
-        	{
-        		scene->render(~0);
-        	});
+            camera->renderFrame([&]()
+            {
+                scene->render(~0);
+            });
         });
 
         if (device->isQuitRequested() ||
-            device->isKeyPressed(KeyCode::Escape, true) ||
-            device->isWindowCloseRequested())
+                device->isKeyPressed(KeyCode::Escape, true) ||
+                device->isWindowCloseRequested())
             break;
     }
 

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -16,13 +16,13 @@ namespace solo
     {
     public:
         DeviceMode mode;
-        
+
         u32 canvasWidth = 800;
         u32 canvasHeight = 600;
-        
+
         bool fullScreen = false;
         bool vsync = false;
-        
+
         str windowTitle;
         str logFilePath = "";
     };

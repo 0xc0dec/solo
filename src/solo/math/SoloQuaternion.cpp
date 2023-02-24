@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloQuaternion.h"
@@ -60,7 +60,7 @@ void Quaternion::invert()
 
 auto Quaternion::inverted() const -> Quaternion
 {
-	return glm::inverse(data_);
+    return glm::inverse(data_);
 }
 
 void Quaternion::normalize()

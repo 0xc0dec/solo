@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanMesh.h"
@@ -16,18 +16,18 @@ using namespace solo;
 
 VulkanMesh::VulkanMesh(Device *device)
 {
-    renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
+    renderer_ = dynamic_cast<VulkanRenderer *>(device->renderer());
 }
 
 auto VulkanMesh::addVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
+    vertexBuffers_.push_back(VulkanBuffer::deviceLocal(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addVertexBuffer(layout, data, vertexCount);
 }
 
 auto VulkanMesh::addDynamicVertexBuffer(const VertexBufferLayout &layout, const vec<float> &data, u32 vertexCount) -> u32
 {
-	vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
+    vertexBuffers_.push_back(VulkanBuffer::hostVisible(renderer_->device(), layout.size() * vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, data.data()));
     return Mesh::addDynamicVertexBuffer(layout, data, vertexCount);
 }
 
@@ -35,7 +35,7 @@ void VulkanMesh::updateVertexBuffer(u32 index, u32 vertexOffset, const void *dat
 {
     const auto vertexSize = layouts_[index].size();
     vertexBuffers_[index].updatePart(data, vertexOffset * vertexSize, vertexCount * vertexSize);
-	Mesh::updateVertexBuffer(index, vertexOffset, data, vertexCount);
+    Mesh::updateVertexBuffer(index, vertexOffset, data, vertexCount);
 }
 
 void VulkanMesh::removeVertexBuffer(u32 index)
@@ -49,13 +49,13 @@ auto VulkanMesh::addIndexBuffer(const vec<u32> &data, u32 elementCount) -> u32
     const auto size = static_cast<VkDeviceSize>(IndexElementSize::Bits32) * elementCount; // TODO 16-bit support?
     auto buf = VulkanBuffer::deviceLocal(renderer_->device(), size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, data.data());
     indexBuffers_.push_back(std::move(buf));
-	return Mesh::addIndexBuffer(data, elementCount);
+    return Mesh::addIndexBuffer(data, elementCount);
 }
 
 void VulkanMesh::removeIndexBuffer(u32 index)
 {
     indexBuffers_.erase(indexBuffers_.begin() + index);
-	Mesh::removeIndexBuffer(index);
+    Mesh::removeIndexBuffer(index);
 }
 
 auto VulkanMesh::layoutHash() const -> size_t

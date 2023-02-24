@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloOpenGLDebugInterface.h"
@@ -15,27 +15,27 @@
 using namespace solo;
 
 OpenGLDebugInterface::OpenGLDebugInterface(Device *device):
-	SDLDebugInterface(device),
-	device_(dynamic_cast<OpenGLDevice*>(device))
+    SDLDebugInterface(device),
+    device_(dynamic_cast<OpenGLDevice *>(device))
 {
-	ImGui_ImplSDL2_InitForOpenGL(device_->window(), device_->window());
-	ImGui_ImplOpenGL3_Init("#version 130"); // GL 3.0 + GLSL 130
+    ImGui_ImplSDL2_InitForOpenGL(device_->window(), device_->window());
+    ImGui_ImplOpenGL3_Init("#version 130"); // GL 3.0 + GLSL 130
 }
 
 OpenGLDebugInterface::~OpenGLDebugInterface()
 {
-	ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
 }
 
 void OpenGLDebugInterface::beginFrame()
 {
-	ImGui_ImplOpenGL3_NewFrame();
-	SDLDebugInterface::beginFrame();
+    ImGui_ImplOpenGL3_NewFrame();
+    SDLDebugInterface::beginFrame();
 }
 
 void OpenGLDebugInterface::render() const
 {
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 #endif

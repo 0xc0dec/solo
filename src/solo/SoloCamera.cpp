@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloCamera.h"
@@ -65,7 +65,7 @@ void Camera::setFieldOfView(const Radians &fov)
     dirtyFlags_ |= DIRTY_BIT_ALL_PROJECTION;
 }
 
-void Camera::setOrthoSize(const Vector2& size)
+void Camera::setOrthoSize(const Vector2 &size)
 {
     orthoSize_ = size;
     dirtyFlags_ |= DIRTY_BIT_ALL_PROJECTION;

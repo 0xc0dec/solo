@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -19,12 +19,21 @@ namespace solo
         Vector3(float all);
         Vector3(float x, float y, float z);
 
-        auto x() -> float& { return data_.x; }
-        auto x() const -> float { return data_.x; }
-        auto y() -> float& { return data_.y; }
-        auto y() const -> float { return data_.y; }
-        auto z() -> float& { return data_.z; }
-        auto z() const -> float { return data_.z; }
+        auto x() -> float & { return data_.x; }
+        auto x() const -> float
+        {
+            return data_.x;
+        }
+        auto y() -> float & { return data_.y; }
+        auto y() const -> float
+        {
+            return data_.y;
+        }
+        auto z() -> float & { return data_.z; }
+        auto z() const -> float
+        {
+            return data_.z;
+        }
 
         bool isZero() const;
         bool isUnit() const;
@@ -38,7 +47,10 @@ namespace solo
         auto dot(const Vector3 &v) const -> float;
         auto cross(const Vector3 &v) const -> Vector3;
 
-        operator glm::vec3() const { return data_; }
+        operator glm::vec3() const
+        {
+            return data_;
+        }
 
         auto operator=(const glm::vec3 &other) -> Vector3&;
 

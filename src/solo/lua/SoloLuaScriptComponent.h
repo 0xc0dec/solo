@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,22 +15,28 @@ namespace solo
     class LuaScriptComponent final : public ComponentBase<LuaScriptComponent>
     {
     public:
-		static auto sanitizeTypeId(u32 typeId) -> u32 { return TYPE_ID_BASE + typeId; }
-    	
-        LuaScriptComponent(const Node& node, LuaRef ref);
+        static auto sanitizeTypeId(u32 typeId) -> u32 { return TYPE_ID_BASE + typeId; }
+
+        LuaScriptComponent(const Node &node, LuaRef ref);
 
         void init() override;
         void terminate() override;
         void update() override;
         void render() override;
 
-        auto typeId() -> u32 override { return typeId_; }
+        auto typeId() -> u32 override
+        {
+            return typeId_;
+        }
 
-        auto ref() const -> LuaRef { return ref_; }
+        auto ref() const -> LuaRef
+        {
+            return ref_;
+        }
 
     private:
-    	static const u32 TYPE_ID_BASE = 1000000000; // Assume that built-in components don't ever exceed this limit
-    	
+        static const u32 TYPE_ID_BASE = 1000000000; // Assume that built-in components don't ever exceed this limit
+
         u32 typeId_;
         LuaRef ref_;
 

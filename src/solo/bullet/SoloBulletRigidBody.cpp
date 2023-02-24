@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloBulletRigidBody.h"
@@ -69,8 +69,8 @@ void BulletRigidBody::update()
     if (lastTransformVersion_ != transformCmp_->version())
     {
         lastTransformVersion_ = transformCmp_->version();
-    	if (isStatic())
-			syncPosition();
+        if (isStatic())
+            syncPosition();
         if (shape_)
             syncScale();
     }
@@ -86,7 +86,7 @@ void BulletRigidBody::setCollider(sptr<Collider> newCollider)
         btVector3 inertia;
         if (!shape_->isNonMoving())
             shape_->calculateLocalInertia(mass_, inertia);
-    	
+
         syncScale();
 
         body_->setCollisionShape(shape_);
@@ -125,12 +125,12 @@ void BulletRigidBody::setKinematic(bool kinematic)
 
 bool BulletRigidBody::isStatic()
 {
-	return body_->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT;
+    return body_->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT;
 }
 
 void BulletRigidBody::setStatic(bool isStatic)
 {
-	auto flags = body_->getCollisionFlags();
+    auto flags = body_->getCollisionFlags();
     if (isStatic)
         flags |= btCollisionObject::CF_STATIC_OBJECT;
     else
@@ -146,8 +146,8 @@ void BulletRigidBody::syncScale() const
 
 void BulletRigidBody::syncPosition() const
 {
-	const auto pos = transformCmp_->worldPosition();
-	const auto rot = transformCmp_->worldRotation();
-	const auto transform = btTransform(SL_TOBTQTRN(rot), SL_TOBTVEC3(pos));
-	body_->setWorldTransform(transform);
+    const auto pos = transformCmp_->worldPosition();
+    const auto rot = transformCmp_->worldRotation();
+    const auto transform = btTransform(SL_TOBTQTRN(rot), SL_TOBTVEC3(pos));
+    body_->setWorldTransform(transform);
 }

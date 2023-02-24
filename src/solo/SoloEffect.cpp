@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloEffect.h"
@@ -19,21 +19,21 @@ auto Effect::fromSourceFile(Device *device, const str &path) -> sptr<Effect>
     return fromSource(device, source);
 }
 
-auto Effect::fromDescriptionFile(Device* device, const str& path) -> sptr<Effect>
+auto Effect::fromDescriptionFile(Device *device, const str &path) -> sptr<Effect>
 {
     const auto desc = device->fileSystem()->readText(path);
     return fromDescription(device, desc);
 }
 
-auto Effect::fromDescription(Device* device, const str& description) -> sptr<Effect>
+auto Effect::fromDescription(Device *device, const str &description) -> sptr<Effect>
 {
-    // This doesn't seem to restrict us to Lua scripting only. It seems quite possible to 
+    // This doesn't seem to restrict us to Lua scripting only. It seems quite possible to
     // provide the same script method in other possible scripting languages in the future.
     const auto source = device->scriptRuntime()->eval("sl.generateEffectSource(" + description + ")");
     return fromSource(device, source);
 }
 
-auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
+auto Effect::fromSource(Device *device, const str &source) -> sptr<Effect>
 {
     const auto vertTagStartIdx = source.find("// VERTEX");
     panicIf(vertTagStartIdx == std::string::npos, "Vertex shader not found in ", source);
@@ -54,16 +54,16 @@ auto Effect::fromSource(Device* device, const str& source) -> sptr<Effect>
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLEffect>(vsBytes, vsSize, fsBytes, fsSize);
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLEffect>(vsBytes, vsSize, fsBytes, fsSize);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
+    case DeviceMode::Vulkan:
+        return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
 #endif
-    	default:
-    		panic("Unknown device mode");
-    		return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -11,12 +11,12 @@
 namespace solo
 {
     class Device;
-	class Mesh;
+    class Mesh;
 
     class StaticMeshCollider: public Collider
     {
     public:
-    	static auto fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>;
+        static auto fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>;
 
     protected:
         StaticMeshCollider() = default;

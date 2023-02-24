@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -33,13 +33,13 @@ namespace solo
         void endAndFlush();
 
         auto beginRenderPass(const VulkanRenderPass &pass, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight)
-            -> VulkanCmdBuffer&;
+        -> VulkanCmdBuffer&;
         auto endRenderPass() -> VulkanCmdBuffer&;
 
         auto bindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) -> VulkanCmdBuffer&;
         auto bindVertexBuffer(u32 binding, VkBuffer buffer) -> VulkanCmdBuffer&;
         auto drawIndexed(u32 indexCount, u32 instanceCount, u32 firstIndex, u32 vertexOffset, u32 firstInstance)
-            -> VulkanCmdBuffer&;
+        -> VulkanCmdBuffer&;
         auto draw(u32 vertexCount, u32 instanceCount, u32 firstVertex, u32 firstInstance) -> VulkanCmdBuffer&;
 
         auto bindPipeline(VkPipeline pipeline) -> VulkanCmdBuffer&;
@@ -49,25 +49,34 @@ namespace solo
         auto setScissor(const Vector4 &dimentions) -> VulkanCmdBuffer&;
 
         auto putImagePipelineBarrier(VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask,
-            const VkImageMemoryBarrier &barrier) -> VulkanCmdBuffer&;
+                                     const VkImageMemoryBarrier &barrier) -> VulkanCmdBuffer&;
 
         auto clearColorAttachment(u32 attachment, const VkClearValue &clearValue, const VkClearRect &clearRect)
-            -> VulkanCmdBuffer&;
+        -> VulkanCmdBuffer&;
 
         auto copyBuffer(const VulkanBuffer &src, const VulkanBuffer &dst) -> VulkanCmdBuffer&;
         auto copyBuffer(const VulkanBuffer &src, const VulkanImage &dst) -> VulkanCmdBuffer&;
-        auto copyBuffer(const VulkanBuffer &src, const VulkanImage &dst, 
-            const VkBufferImageCopy *regions, u32 regionCount) -> VulkanCmdBuffer&;
+        auto copyBuffer(const VulkanBuffer &src, const VulkanImage &dst,
+                        const VkBufferImageCopy *regions, u32 regionCount) -> VulkanCmdBuffer&;
 
         auto blit(VkImage src, VkImage dst, VkImageLayout srcLayout, VkImageLayout dstLayout,
-            const VkImageBlit &blit, VkFilter filter) -> VulkanCmdBuffer&;
+                  const VkImageBlit &blit, VkFilter filter) -> VulkanCmdBuffer&;
 
-        auto operator=(const VulkanCmdBuffer &other) -> VulkanCmdBuffer& = delete;
-        auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer& = default;
+        auto operator=(const VulkanCmdBuffer &other) -> VulkanCmdBuffer & = delete;
+        auto operator=(VulkanCmdBuffer &&other) -> VulkanCmdBuffer & = default;
 
-        operator bool() const { return handle_; }
-    	operator VkCommandBuffer() const { return handle_; }
-        operator const VkCommandBuffer*() { return &handle_; }
+        operator bool() const
+        {
+            return handle_;
+        }
+        operator VkCommandBuffer() const
+        {
+            return handle_;
+        }
+        operator const VkCommandBuffer *()
+        {
+            return &handle_;
+        }
 
     private:
         const VulkanDriverDevice *device_ = nullptr;

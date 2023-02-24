@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -27,16 +27,16 @@ namespace solo
     {
     public:
         static auto loadFromFile(Device *device, const str &path,
-            u32 size, u32 atlasWidth, u32 atlasHeight,
-            u32 firstChar, u32 charCount,
-            u32 oversampleX, u32 oversampleY) -> sptr<Font>;
+                                 u32 size, u32 atlasWidth, u32 atlasHeight,
+                                 u32 firstChar, u32 charCount,
+                                 u32 oversampleX, u32 oversampleY) -> sptr<Font>;
 
         Font(const Font &other) = delete;
         Font(Font &&other) = delete;
-    	virtual ~Font() = default;
-    	
-        auto operator=(const Font &other) -> Font& = delete;
-        auto operator=(Font &&other) -> Font& = delete;
+        virtual ~Font() = default;
+
+        auto operator=(const Font &other) -> Font & = delete;
+        auto operator=(Font &&other) -> Font & = delete;
 
         virtual auto atlas() const -> sptr<Texture2D> = 0;
         virtual auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo = 0;

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloStaticMeshCollider.h"
@@ -10,5 +10,5 @@ using namespace solo;
 
 auto StaticMeshCollider::fromMesh(sptr<Mesh> mesh) -> sptr<StaticMeshCollider>
 {
-	return std::make_shared<BulletStaticMeshCollider>(mesh);
+    return std::make_shared<BulletStaticMeshCollider>(mesh);
 }

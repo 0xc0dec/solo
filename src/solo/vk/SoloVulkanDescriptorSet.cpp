@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanDescriptorSet.h"
@@ -46,11 +46,11 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     layoutInfo.bindingCount = cfg.bindings_.size();
     layoutInfo.pBindings = cfg.bindings_.data();
 
-    layout_ = VulkanResource<VkDescriptorSetLayout>{device, vkDestroyDescriptorSetLayout};
+    layout_ = VulkanResource<VkDescriptorSetLayout> {device, vkDestroyDescriptorSetLayout};
     vk::assertResult(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     vec<VkDescriptorPoolSize> sizes;
-    for (const auto &s: cfg.sizes_)
+    for (const auto &s : cfg.sizes_)
     {
         if (s.second.descriptorCount > 0)
             sizes.push_back(s.second);
@@ -64,7 +64,7 @@ VulkanDescriptorSet::VulkanDescriptorSet(VkDevice device, const VulkanDescriptor
     poolInfo.pPoolSizes = sizes.data();
     poolInfo.maxSets = 1;
 
-    pool_ = VulkanResource<VkDescriptorPool>{device, vkDestroyDescriptorPool};
+    pool_ = VulkanResource<VkDescriptorPool> {device, vkDestroyDescriptorPool};
     vk::assertResult(vkCreateDescriptorPool(device, &poolInfo, nullptr, pool_.cleanRef()));
 
     // Set

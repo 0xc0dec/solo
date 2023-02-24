@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -27,7 +27,7 @@ namespace solo
         auto withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&;
         auto withDepthTest(bool write, bool test) -> VulkanPipelineConfig&;
         auto withBlend(bool enabled, VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
-            VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&;
+                       VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&;
         auto withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&;
         auto withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&;
 
@@ -56,44 +56,53 @@ namespace solo
         VulkanPipeline(VulkanPipeline &&other) = default;
         ~VulkanPipeline() = default;
 
-        auto operator=(const VulkanPipeline &other) -> VulkanPipeline& = delete;
-        auto operator=(VulkanPipeline &&other) -> VulkanPipeline& = default;
+        auto operator=(const VulkanPipeline &other) -> VulkanPipeline & = delete;
+        auto operator=(VulkanPipeline &&other) -> VulkanPipeline & = default;
 
-        operator VkPipeline() const { return pipeline_; }
+        operator VkPipeline() const
+        {
+            return pipeline_;
+        }
 
-        auto handle() const -> VkPipeline { return pipeline_; }
-        auto layout() const -> VkPipelineLayout { return layout_; }
+        auto handle() const -> VkPipeline
+        {
+            return pipeline_;
+        }
+        auto layout() const -> VkPipelineLayout
+        {
+            return layout_;
+        }
 
     private:
         VulkanResource<VkPipeline> pipeline_;
         VulkanResource<VkPipelineLayout> layout_;
     };
 
-    inline auto VulkanPipelineConfig::withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig&
+    inline auto VulkanPipelineConfig::withTopology(VkPrimitiveTopology topology) -> VulkanPipelineConfig &
     {
         this->topology_ = topology;
         return *this;
     }
 
-    inline auto VulkanPipelineConfig::withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig&
+    inline auto VulkanPipelineConfig::withPolygonMode(VkPolygonMode mode) -> VulkanPipelineConfig &
     {
         rasterStateInfo_.polygonMode = mode;
         return *this;
     }
 
-    inline auto VulkanPipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig&
+    inline auto VulkanPipelineConfig::withDescriptorSetLayout(VkDescriptorSetLayout layout) -> VulkanPipelineConfig &
     {
         descSetLayouts_.push_back(layout);
         return *this;
     }
 
-    inline auto VulkanPipelineConfig::withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig&
+    inline auto VulkanPipelineConfig::withFrontFace(VkFrontFace frontFace) -> VulkanPipelineConfig &
     {
         rasterStateInfo_.frontFace = frontFace;
         return *this;
     }
 
-    inline auto VulkanPipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig&
+    inline auto VulkanPipelineConfig::withCullMode(VkCullModeFlags cullFlags) -> VulkanPipelineConfig &
     {
         rasterStateInfo_.cullMode = cullFlags;
         return *this;

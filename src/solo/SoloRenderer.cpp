@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloRenderer.h"
@@ -61,34 +61,34 @@ auto Renderer::fromDevice(Device *device) -> sptr<Renderer>
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return std::make_shared<OpenGLRenderer>(device);
+    case DeviceMode::OpenGL:
+        return std::make_shared<OpenGLRenderer>(device);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return std::make_shared<VulkanRenderer>(device);
+    case DeviceMode::Vulkan:
+        return std::make_shared<VulkanRenderer>(device);
 #endif
-    	default:
-    		panic("Unknown device mode");
-    		return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 
 Renderer::Renderer(Device *device):
-	device_(device)
+    device_(device)
 {
 }
 
 void Renderer::bootstrap()
 {
-	const auto errorEffect = Effect::fromDescription(device_, ERROR_EFFECT_SRC);
-	errorMaterial_ = Material::fromEffect(device_, errorEffect);
-	errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
+    const auto errorEffect = Effect::fromDescription(device_, ERROR_EFFECT_SRC);
+    errorMaterial_ = Material::fromEffect(device_, errorEffect);
+    errorMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
 }
 
 void Renderer::cleanup()
 {
-	errorMaterial_.reset();
+    errorMaterial_.reset();
 }
 
 void Renderer::renderFrame(const std::function<void()> &render)

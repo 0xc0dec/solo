@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloOpenGLDevice.h"
@@ -18,7 +18,7 @@ OpenGLDevice::OpenGLDevice(DeviceSetup const &setup):
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, SDL_WINDOW_OPENGL);
+    initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, SDL_WINDOW_OPENGL);
 
     context_ = SDL_GL_CreateContext(window());
     panicIf(!context_, "Unable to create OpenGL context");

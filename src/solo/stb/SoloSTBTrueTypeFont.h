@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,11 +15,14 @@ namespace solo
     public:
         static bool canLoadFromFile(const str &path);
         static auto loadFromFile(Device *device, const str &path,
-            u32 size, u32 atlasWidth, u32 atlasHeight,
-            u32 firstChar, u32 charCount,
-            u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
+                                 u32 size, u32 atlasWidth, u32 atlasHeight,
+                                 u32 firstChar, u32 charCount,
+                                 u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>;
 
-        auto atlas() const -> sptr<Texture2D> override final { return atlas_; }
+        auto atlas() const -> sptr<Texture2D> override final
+        {
+            return atlas_;
+        }
         auto glyphInfo(u32 character, float offsetX, float offsetY) -> GlyphInfo override final;
 
     private:

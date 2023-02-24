@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloTextureData.h"
@@ -17,8 +17,14 @@ namespace solo
         {
         }
 
-        auto size() const -> u32 override final { return data_.size(); }
-        auto data() const -> const void* override final { return data_.data(); }
+        auto size() const -> u32 override final
+        {
+            return data_.size();
+        }
+        auto data() const -> const void *override final
+        {
+            return data_.data();
+        }
 
     private:
         vec<u8> data_;
@@ -31,12 +37,15 @@ static auto toTextureFormat(TextureDataFormat format) -> TextureFormat
 {
     switch (format)
     {
-        case TextureDataFormat::Red: return TextureFormat::R8;
-        case TextureDataFormat::RGB: return TextureFormat::RGB8;
-        case TextureDataFormat::RGBA: return TextureFormat::RGBA8;
-        default:
-    		panic("Texture data format not convertible to texture format");
-            return TextureFormat::RGBA8;
+    case TextureDataFormat::Red:
+        return TextureFormat::R8;
+    case TextureDataFormat::RGB:
+        return TextureFormat::RGB8;
+    case TextureDataFormat::RGBA:
+        return TextureFormat::RGBA8;
+    default:
+        panic("Texture data format not convertible to texture format");
+        return TextureFormat::RGBA8;
     }
 }
 
@@ -64,13 +73,13 @@ Texture2DData::Texture2DData(TextureDataFormat format, Vector2 dimensions):
 
 auto CubeTextureData::fromFaceFiles(
     Device *device,
-    const str& positiveXPath, const str& negativeXPath,
-    const str& positiveYPath, const str& negativeYPath,
-    const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTextureData>
+    const str &positiveXPath, const str &negativeXPath,
+    const str &positiveYPath, const str &negativeYPath,
+    const str &positiveZPath, const str &negativeZPath) -> sptr<CubeTextureData>
 {
     panicIf(!STBCubeTextureData::canLoadFromFaceFiles(
         positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath),
-        "Unsupported cube texture face files ", positiveXPath, ", ...");
+    "Unsupported cube texture face files ", positiveXPath, ", ...");
     return STBCubeTextureData::fromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
 }
 

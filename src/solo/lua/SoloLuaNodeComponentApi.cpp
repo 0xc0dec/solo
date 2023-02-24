@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloLuaScriptComponent.h"
@@ -13,7 +13,8 @@
 
 using namespace solo;
 
-static umap<str, u32> builtInComponents = {
+static umap<str, u32> builtInComponents =
+{
     {"Transform", Transform::getId()},
     {"MeshRenderer", MeshRenderer::getId()},
     {"Camera", Camera::getId()},
@@ -21,13 +22,13 @@ static umap<str, u32> builtInComponents = {
     {"RigidBody", RigidBody::getId()}
 };
 
-static auto findComponent(Node *node, const str &name) -> Component*
+static auto findComponent(Node *node, const str &name) -> Component *
 {
     panicIf(!builtInComponents.count(name), "Not found built-in component ", name);
     return node->scene()->findComponent(node->id(), builtInComponents.at(name));
 }
 
-static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Component*
+static auto addComponent(Node *node, const str &name, const LuaRef &arg) -> Component *
 {
     if (name == "Transform")
         return node->addComponent<Transform>();
@@ -41,7 +42,7 @@ static auto addComponent(Node *node, const str &name, const LuaRef& arg) -> Comp
         return node->addComponent<RigidBody>(arg.toValue<RigidBodyParams>());
 
     panic("Unknown built-in component ", name);
-	
+
     return nullptr;
 }
 
@@ -56,7 +57,7 @@ static auto findScriptComponent(Node *node, u32 typeId) -> LuaRef
     const auto cmp = node->scene()->findComponent(node->id(), LuaScriptComponent::sanitizeTypeId(typeId));
     if (cmp)
     {
-        const auto scriptCmp = dynamic_cast<LuaScriptComponent*>(cmp);
+        const auto scriptCmp = dynamic_cast<LuaScriptComponent *>(cmp);
         return scriptCmp->ref();
     }
     return {};
@@ -69,7 +70,7 @@ static auto addScriptComponent(Node *node, LuaRef ref) -> sptr<Component>
     return cmp;
 }
 
-static void removeScriptComponent(Node *node, const LuaRef& ref)
+static void removeScriptComponent(Node *node, const LuaRef &ref)
 {
     const auto typeId = LuaScriptComponent::sanitizeTypeId(ref.get<u32>("typeId"));
     node->scene()->removeComponent(node->id(), typeId);
@@ -82,9 +83,9 @@ static void registerComponent(CppBindModule<LuaBinding> &module)
     REG_METHOD(component, Component, render);
     REG_METHOD(component, Component, typeId);
     REG_METHOD(component, Component, node);
-	REG_METHOD(component, Component, tag);
+    REG_METHOD(component, Component, tag);
     REG_METHOD(component, Component, setTag);
-	REG_METHOD(component, Component, enabled);
+    REG_METHOD(component, Component, enabled);
     REG_METHOD(component, Component, setEnabled);
     component.endClass();
 }
@@ -100,8 +101,10 @@ static void registerNode(CppBindModule<LuaBinding> &module)
     REG_FREE_FUNC_AS_METHOD(binding, findComponent);
     REG_FREE_FUNC_AS_METHOD(binding, addComponent);
     REG_FREE_FUNC_AS_METHOD(binding, removeComponent);
-    binding.addMetaFunction("__eq", [](const Node &first, const Node &second)
-        { return first.id() == second.id(); });
+    binding.addMetaFunction("__eq", [](const Node & first, const Node & second)
+    {
+        return first.id() == second.id();
+    });
     binding.endClass();
 }
 

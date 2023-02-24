@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanEffect.h"
@@ -24,7 +24,7 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
     info.pNext = nullptr;
     info.flags = 0;
     info.codeSize = size;
-    info.pCode = static_cast<const u32*>(data);
+    info.pCode = static_cast<const u32 *>(data);
 
     VulkanResource<VkShaderModule> module{device, vkDestroyShaderModule};
     vk::assertResult(vkCreateShaderModule(device, &info, nullptr, module.cleanRef()));
@@ -34,15 +34,15 @@ static auto createShaderModule(VkDevice device, const void *data, u32 size) -> V
 
 static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool vertex) -> shaderc::SpvCompilationResult
 {
-	const shaderc::Compiler compiler{};
+    const shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
     auto result = compiler.CompileGlslToSpv(
-        static_cast<const s8*>(src),
-        srcLen,
-        vertex ? shaderc_glsl_vertex_shader : shaderc_glsl_fragment_shader,
-        fileName.c_str(),
-        options
-    );
+                      static_cast<const s8 *>(src),
+                      srcLen,
+                      vertex ? shaderc_glsl_vertex_shader : shaderc_glsl_fragment_shader,
+                      fileName.c_str(),
+                      options
+                  );
 
     const auto compilationStatus = result.GetCompilationStatus();
     const auto errorMessage = result.GetErrorMessage();
@@ -52,7 +52,7 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
 }
 
 auto VulkanEffect::fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
-    -> sptr<VulkanEffect>
+-> sptr<VulkanEffect>
 {
     const auto vsCompilationResult = compileToSpv(vsSrc, vsSrcLen, "<memory>", true);
     const auto fsCompilationResult = compileToSpv(fsSrc, fsSrcLen, "<memory>", false);
@@ -67,26 +67,26 @@ auto VulkanEffect::fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, 
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
 {
-    renderer_ = dynamic_cast<VulkanRenderer*>(device->renderer());
+    renderer_ = dynamic_cast<VulkanRenderer *>(device->renderer());
     vs_ = createShaderModule(renderer_->device(), vsSrc, vsSrcLen);
     fs_ = createShaderModule(renderer_->device(), fsSrc, fsSrcLen);
-    introspectShader(static_cast<const u32*>(vsSrc), vsSrcLen / sizeof(u32), true);
-    introspectShader(static_cast<const u32*>(fsSrc), fsSrcLen / sizeof(u32), false);
+    introspectShader(static_cast<const u32 *>(vsSrc), vsSrcLen / sizeof(u32), true);
+    introspectShader(static_cast<const u32 *>(fsSrc), fsSrcLen / sizeof(u32), false);
 }
 
 void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
 {
-	const spirv_cross::CompilerGLSL compiler{src, len};
+    const spirv_cross::CompilerGLSL compiler{src, len};
     const auto resources = compiler.get_shader_resources();
 
-    for (auto &buffer: resources.uniform_buffers)
+    for (auto &buffer : resources.uniform_buffers)
     {
-        const auto& name = compiler.get_name(buffer.id);
+        const auto &name = compiler.get_name(buffer.id);
         uniformBuffers_[name].binding = compiler.get_decoration(buffer.id, spv::DecorationBinding);
 
         u32 size = 0;
         const auto ranges = compiler.get_active_buffer_ranges(buffer.id);
-        for (auto &range: ranges)
+        for (auto &range : ranges)
         {
             auto memberName = compiler.get_member_name(buffer.base_type_id, range.index);
             if (memberName.empty())
@@ -99,7 +99,7 @@ void VulkanEffect::introspectShader(const u32 *src, u32 len, bool vertex)
         uniformBuffers_[name].size = size;
     }
 
-    for (auto &sampler: resources.sampled_images)
+    for (auto &sampler : resources.sampled_images)
     {
         const auto binding = compiler.get_decoration(sampler.id, spv::DecorationBinding);
         samplers_[sampler.name].binding = binding;

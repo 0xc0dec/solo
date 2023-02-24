@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,14 +15,17 @@ namespace solo
     class Job
     {
     public:
-    	Job(const Job &other) = delete;
+        Job(const Job &other) = delete;
         Job(Job &&other) = delete;
         virtual ~Job() = default;
-        
-        auto operator=(const Job &other) -> Job& = delete;
-        auto operator=(Job &&other) -> Job& = delete;
 
-        bool isDone() const { return done_; }
+        auto operator=(const Job &other) -> Job & = delete;
+        auto operator=(Job &&other) -> Job & = delete;
+
+        bool isDone() const
+        {
+            return done_;
+        }
 
         virtual void update() = 0;
 
@@ -88,14 +91,17 @@ namespace solo
     {
     public:
         JobPool() = default;
-    	JobPool(const JobPool &other) = delete;
+        JobPool(const JobPool &other) = delete;
         JobPool(JobPool &&other) = delete;
         virtual ~JobPool() = default;
-        
-        auto operator=(const JobPool &other) -> JobPool& = delete;
-        auto operator=(JobPool &&other) -> JobPool& = delete;
 
-        bool hasActiveJobs() const { return anyActiveJobs_; }
+        auto operator=(const JobPool &other) -> JobPool & = delete;
+        auto operator=(JobPool &&other) -> JobPool & = delete;
+
+        bool hasActiveJobs() const
+        {
+            return anyActiveJobs_;
+        }
         void addJob(sptr<Job> job);
         void update();
 

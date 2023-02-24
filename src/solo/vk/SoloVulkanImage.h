@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -31,18 +31,45 @@ namespace solo
         VulkanImage(const VulkanImage &other) = delete;
         VulkanImage(VulkanImage &&other) = default;
 
-        auto format() const -> VkFormat { return format_;  }
-        auto size() const -> Vector2 { return {static_cast<float>(width_), static_cast<float>(height_)}; }
-        auto mipLevels() const -> u32 { return mipLevels_; }
-        auto layout() const -> VkImageLayout { return layout_; }
-        auto view() const -> VkImageView { return view_; }
-        auto handle() const -> VkImage { return image_; }
-        auto width() const -> u32 { return width_; }
-        auto height() const -> u32 { return height_; }
+        auto format() const -> VkFormat
+        {
+            return format_;
+        }
+        auto size() const -> Vector2
+        {
+            return {static_cast<float>(width_), static_cast<float>(height_)};
+        }
+        auto mipLevels() const -> u32
+        {
+            return mipLevels_;
+        }
+        auto layout() const -> VkImageLayout
+        {
+            return layout_;
+        }
+        auto view() const -> VkImageView
+        {
+            return view_;
+        }
+        auto handle() const -> VkImage
+        {
+            return image_;
+        }
+        auto width() const -> u32
+        {
+            return width_;
+        }
+        auto height() const -> u32
+        {
+            return height_;
+        }
 
-        auto operator=(const VulkanImage &other) -> VulkanImage& = delete;
-        auto operator=(VulkanImage &&other) -> VulkanImage& = default;
-        operator bool() const { return image_; }
+        auto operator=(const VulkanImage &other) -> VulkanImage & = delete;
+        auto operator=(VulkanImage &&other) -> VulkanImage & = default;
+        operator bool() const
+        {
+            return image_;
+        }
 
     private:
         VulkanResource<VkImage> image_;
@@ -56,7 +83,7 @@ namespace solo
         VkImageAspectFlags aspectMask_ = VK_IMAGE_ASPECT_COLOR_BIT;
 
         VulkanImage(const VulkanDriverDevice &dev, u32 width, u32 height, u32 mipLevels, u32 layers, VkFormat format, VkImageLayout layout,
-            VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
+                    VkImageCreateFlags createFlags, VkImageUsageFlags usageFlags, VkImageViewType viewType, VkImageAspectFlags aspectMask);
     };
 }
 

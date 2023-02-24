@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -18,14 +18,26 @@ namespace solo
         Vector4(float all);
         Vector4(float x, float y, float z, float w);
 
-        auto x() -> float& { return data_.x; }
-        auto x() const -> float { return data_.x; }
-        auto y() -> float& { return data_.y; }
-        auto y() const -> float { return data_.y; }
-        auto z() -> float& { return data_.z; }
-        auto z() const -> float { return data_.z; }
-        auto w() -> float& { return data_.w; }
-        auto w() const -> float { return data_.w; }
+        auto x() -> float & { return data_.x; }
+        auto x() const -> float
+        {
+            return data_.x;
+        }
+        auto y() -> float & { return data_.y; }
+        auto y() const -> float
+        {
+            return data_.y;
+        }
+        auto z() -> float & { return data_.z; }
+        auto z() const -> float
+        {
+            return data_.z;
+        }
+        auto w() -> float & { return data_.w; }
+        auto w() const -> float
+        {
+            return data_.w;
+        }
 
         bool isZero() const;
         bool isUnit() const;

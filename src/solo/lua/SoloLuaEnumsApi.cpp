@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloTransform.h"
@@ -177,7 +177,7 @@ void registerEnums(CppBindModule<LuaBinding> &module)
         REG_MODULE_CONSTANT(m, MouseButton, Right);
         m.endModule();
     }
-    
+
     {
         auto m = module.beginModule("DeviceMode");
         REG_MODULE_CONSTANT(m, DeviceMode, OpenGL);
@@ -206,9 +206,9 @@ void registerEnums(CppBindModule<LuaBinding> &module)
     }
 
     {
-	    auto m = module.beginModule("IndexElementSize");
-    	REG_MODULE_CONSTANT(m, IndexElementSize, Bits16);
-    	REG_MODULE_CONSTANT(m, IndexElementSize, Bits32);
-    	m.endModule();
+        auto m = module.beginModule("IndexElementSize");
+        REG_MODULE_CONSTANT(m, IndexElementSize, Bits16);
+        REG_MODULE_CONSTANT(m, IndexElementSize, Bits32);
+        m.endModule();
     }
 }

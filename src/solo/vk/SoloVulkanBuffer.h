@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -29,17 +29,26 @@ namespace solo
         VulkanBuffer(const VulkanBuffer &other) = delete;
         ~VulkanBuffer() = default;
 
-        auto operator=(const VulkanBuffer &other) -> VulkanBuffer& = delete;
-        auto operator=(VulkanBuffer &&other) -> VulkanBuffer& = default;
+        auto operator=(const VulkanBuffer &other) -> VulkanBuffer & = delete;
+        auto operator=(VulkanBuffer &&other) -> VulkanBuffer & = default;
 
-        operator VkBuffer() const { return buffer_; }
+        operator VkBuffer() const
+        {
+            return buffer_;
+        }
 
-        auto handle() const -> VkBuffer { return buffer_; }
-        auto size() const -> VkDeviceSize { return size_; }
+        auto handle() const -> VkBuffer
+        {
+            return buffer_;
+        }
+        auto size() const -> VkDeviceSize
+        {
+            return size_;
+        }
 
         void updateAll(const void *newData) const;
         void updatePart(const void *newData, u32 offset, u32 size) const;
-        void transferTo(const VulkanBuffer& dst) const;
+        void transferTo(const VulkanBuffer &dst) const;
 
     private:
         const VulkanDriverDevice *device_ = nullptr;

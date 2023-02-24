@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -10,46 +10,46 @@
 
 namespace solo
 {
-	class Device;
-	class Renderer;
+    class Device;
+    class Renderer;
 
-	class WindowConfig
-	{
-	public:
-		str title;
-		Vector2 position;
-		Vector2 pivot;
-		float alpha = 0;
-		bool autoResize = false;
-		bool movable = true;
-		bool decoration = true;
-	};
-	
-	class DebugInterface
-	{
-	public:
-		static auto fromDevice(Device *device) -> sptr<DebugInterface>;
-		
-		DebugInterface(const DebugInterface &other) = delete;
-		DebugInterface(const DebugInterface &&other) = delete;
-		virtual ~DebugInterface() = default;
+    class WindowConfig
+    {
+    public:
+        str title;
+        Vector2 position;
+        Vector2 pivot;
+        float alpha = 0;
+        bool autoResize = false;
+        bool movable = true;
+        bool decoration = true;
+    };
 
-		auto operator=(const DebugInterface &other) -> DebugInterface& = delete;
-		auto operator=(const DebugInterface &&other) -> DebugInterface& = delete;
+    class DebugInterface
+    {
+    public:
+        static auto fromDevice(Device *device) -> sptr<DebugInterface>;
 
-		void renderFrame(const std::function<void()> &render);
+        DebugInterface(const DebugInterface &other) = delete;
+        DebugInterface(const DebugInterface &&other) = delete;
+        virtual ~DebugInterface() = default;
 
-		void renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside);
-		void renderText(const str &text);
+        auto operator=(const DebugInterface &other) -> DebugInterface & = delete;
+        auto operator=(const DebugInterface &&other) -> DebugInterface & = delete;
 
-	protected:
-		explicit DebugInterface(Device *device);
-		
-		virtual void beginFrame() = 0;
+        void renderFrame(const std::function<void()> &render);
 
-	private:
-		Renderer *renderer_ = nullptr;
-		
-		void endFrame();
-	};
+        void renderWindow(const WindowConfig &cfg, const std::function<void()> &renderInside);
+        void renderText(const str &text);
+
+    protected:
+        explicit DebugInterface(Device *device);
+
+        virtual void beginFrame() = 0;
+
+    private:
+        Renderer *renderer_ = nullptr;
+
+        void endFrame();
+    };
 }

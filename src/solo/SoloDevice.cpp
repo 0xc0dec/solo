@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloDevice.h"
@@ -19,27 +19,27 @@ using namespace solo;
 auto Device::create(const DeviceSetup &setup) -> uptr<Device>
 {
     uptr<Device> device;
-    
+
     switch (setup.mode)
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            device = std::make_unique<OpenGLDevice>(setup);
-            break;
+    case DeviceMode::OpenGL:
+        device = std::make_unique<OpenGLDevice>(setup);
+        break;
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            device = std::make_unique<VulkanDevice>(setup);
-            break;
+    case DeviceMode::Vulkan:
+        device = std::make_unique<VulkanDevice>(setup);
+        break;
 #endif
-        default:
-            panic("Unknown device mode");
-            break;
+    default:
+        panic("Unknown device mode");
+        break;
     }
 
     if (device)
         device->initSubsystems(setup);
-    
+
     return device;
 }
 
@@ -54,25 +54,25 @@ void Device::initSubsystems(const DeviceSetup &setup)
     if (!setup.logFilePath.empty())
         Logger::global().setOutputFile(setup.logFilePath);
 
-	jobPool_ = std::make_shared<JobPool>();
-	physics_ = Physics::fromDevice(this);
+    jobPool_ = std::make_shared<JobPool>();
+    physics_ = Physics::fromDevice(this);
     fs_ = FileSystem::fromDevice(this);
-	scriptRuntime_ = ScriptRuntime::fromDevice(this);
+    scriptRuntime_ = ScriptRuntime::fromDevice(this);
     renderer_ = Renderer::fromDevice(this);
-	debugInterface_ = DebugInterface::fromDevice(this);
+    debugInterface_ = DebugInterface::fromDevice(this);
 
-	renderer_->bootstrap();
+    renderer_->bootstrap();
 }
 
 void Device::shutdownSubsystems()
 {
-	renderer_->cleanup();
-	
+    renderer_->cleanup();
+
     // Order matters
-	debugInterface_.reset();
+    debugInterface_.reset();
     jobPool_.reset();
-	scriptRuntime_.reset();
-	physics_.reset();
+    scriptRuntime_.reset();
+    physics_.reset();
     fs_.reset();
     renderer_.reset();
 }
@@ -110,9 +110,9 @@ void Device::update(const std::function<void()> &update)
     jobPool_->update(); // TODO add smth like waitForFinish() to Device and wait in it for background tasks to finish
     physics_->update();
     renderer_->renderFrame([&]()
-	{
-    	debugInterface_->renderFrame(update);
-	});
+    {
+        debugInterface_->renderFrame(update);
+    });
     endUpdate();
 }
 

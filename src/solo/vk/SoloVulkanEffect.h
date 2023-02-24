@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -43,28 +43,55 @@ namespace solo
         };
 
         static auto fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen)
-            -> sptr<VulkanEffect>;
+        -> sptr<VulkanEffect>;
 
         VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen);
         ~VulkanEffect() = default;
 
-        auto vsModule() const -> VkShaderModule { return vs_; }
-        auto fsModule() const -> VkShaderModule { return fs_; }
+        auto vsModule() const -> VkShaderModule
+        {
+            return vs_;
+        }
+        auto fsModule() const -> VkShaderModule
+        {
+            return fs_;
+        }
 
-    	auto hasUniformBuffer(const str &name) const -> bool { return uniformBuffers_.count(name); }
-        auto uniformBuffer(const str &name) const -> UniformBuffer { return uniformBuffers_.at(name); }
-    	auto hasSampler(const str &name) const -> bool { return samplers_.count(name); }
-        auto sampler(const str &name) const -> Sampler { return samplers_.at(name); }
+        auto hasUniformBuffer(const str &name) const -> bool
+        {
+            return uniformBuffers_.count(name);
+        }
+        auto uniformBuffer(const str &name) const -> UniformBuffer
+        {
+            return uniformBuffers_.at(name);
+        }
+        auto hasSampler(const str &name) const -> bool
+        {
+            return samplers_.count(name);
+        }
+        auto sampler(const str &name) const -> Sampler
+        {
+            return samplers_.at(name);
+        }
 
-        auto uniformBuffers() const -> umap<str, UniformBuffer> const& { return uniformBuffers_; }
-        auto samplers() const -> umap<str, Sampler> const& { return samplers_; }
-        auto vertexAttributes() const -> umap<str, VertexAttribute> const& { return vertexAttributes_; }
+        auto uniformBuffers() const -> umap<str, UniformBuffer> const &
+        {
+            return uniformBuffers_;
+        }
+        auto samplers() const -> umap<str, Sampler> const &
+        {
+            return samplers_;
+        }
+        auto vertexAttributes() const -> umap<str, VertexAttribute> const &
+        {
+            return vertexAttributes_;
+        }
 
     private:
         VulkanRenderer *renderer_ = nullptr;
         VulkanResource<VkShaderModule> vs_;
         VulkanResource<VkShaderModule> fs_;
-            
+
         umap<str, UniformBuffer> uniformBuffers_;
         umap<str, Sampler> samplers_;
         umap<str, VertexAttribute> vertexAttributes_;

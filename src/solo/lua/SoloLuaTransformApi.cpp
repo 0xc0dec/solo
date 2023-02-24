@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloTransform.h"
@@ -14,7 +14,7 @@ void registerTransformApi(CppBindModule<LuaBinding> &module)
 
     auto transform = BEGIN_CLASS_EXTEND(module, Transform, Component);
     REG_METHOD(transform, Transform, parent);
-    REG_METHOD_NULLABLE_1ST_ARG(transform, Transform, setParent, Transform*);
+    REG_METHOD_NULLABLE_1ST_ARG(transform, Transform, setParent, Transform *);
     REG_METHOD(transform, Transform, child);
     REG_METHOD(transform, Transform, childrenCount);
     REG_METHOD(transform, Transform, clearChildren);

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -21,10 +21,10 @@ namespace solo
 
         Effect(const Effect &other) = delete;
         Effect(Effect &&other) = delete;
-    	virtual ~Effect() = default;
-    	
-        auto operator=(const Effect &other) -> Effect& = delete;
-        auto operator=(Effect &&other) -> Effect& = delete;
+        virtual ~Effect() = default;
+
+        auto operator=(const Effect &other) -> Effect & = delete;
+        auto operator=(Effect &&other) -> Effect & = delete;
 
     protected:
         Effect() = default;

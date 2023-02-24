@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -20,8 +20,14 @@ namespace solo
         explicit VulkanDevice(const DeviceSetup &setup);
         ~VulkanDevice();
 
-        auto instance() const -> VkInstance { return instance_; }
-        auto surface() const -> VkSurfaceKHR { return surface_; }
+        auto instance() const -> VkInstance
+        {
+            return instance_;
+        }
+        auto surface() const -> VkSurfaceKHR
+        {
+            return surface_;
+        }
 
     protected:
         void endUpdate() override;

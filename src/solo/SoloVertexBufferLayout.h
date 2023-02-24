@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -25,12 +25,24 @@ namespace solo
     public:
         void addAttribute(VertexAttributeUsage usage);
 
-        auto attributeCount() const -> u32 { return static_cast<u32>(attributes_.size()); }
-        auto attribute(u32 index) const -> VertexAttribute { return attributes_.at(index); }
-    	auto attributeIndex(VertexAttributeUsage usage) const -> s32;
+        auto attributeCount() const -> u32
+        {
+            return static_cast<u32>(attributes_.size());
+        }
+        auto attribute(u32 index) const -> VertexAttribute
+        {
+            return attributes_.at(index);
+        }
+        auto attributeIndex(VertexAttributeUsage usage) const -> s32;
 
-        auto size() const -> u32 { return size_; }
-        auto elementCount() const -> u32 { return elementCount_; }
+        auto size() const -> u32
+        {
+            return size_;
+        }
+        auto elementCount() const -> u32
+        {
+            return elementCount_;
+        }
 
     private:
         vec<VertexAttribute> attributes_;

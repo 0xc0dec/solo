@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -25,10 +25,16 @@ namespace solo
         auto canvasSize() const -> Vector2 override final;
         auto dpiIndependentCanvasSize() const -> Vector2 override final;
 
-    	auto window() const -> SDL_Window* { return window_; }
+        auto window() const -> SDL_Window *
+        {
+            return window_;
+        }
 
-    	// TODO Better replacement
-    	void onEvent(const std::function<void(SDL_Event)> &onEvent) { onEvent_ = onEvent; }
+        // TODO Better replacement
+        void onEvent(const std::function<void(SDL_Event)> &onEvent)
+        {
+            onEvent_ = onEvent;
+        }
 
     protected:
         bool hasMouseFocus_ = false;
@@ -36,13 +42,13 @@ namespace solo
 
         explicit SDLDevice(const DeviceSetup &setup);
 
-    	void initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags);
-    	void beginUpdate() override final;
+        void initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags);
+        void beginUpdate() override final;
 
     private:
-		SDL_Window *window_ = nullptr;
+        SDL_Window *window_ = nullptr;
 
-    	std::function<void(SDL_Event)> onEvent_;
+        std::function<void(SDL_Event)> onEvent_;
         void prepareKeyboardState();
         void prepareMouseState();
         void readWindowState();

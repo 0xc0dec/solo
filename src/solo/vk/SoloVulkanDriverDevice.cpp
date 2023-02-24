@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanDriverDevice.h"
@@ -10,9 +10,9 @@
 using namespace solo;
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallbackFunc(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
-    u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
+        u64 obj, size_t location, s32 code, const s8 *layerPrefix, const s8 *msg, void *userData)
 {
-	Logger::global().logDebug(fmt("Vulkan: ", msg));
+    Logger::global().logDebug(fmt("Vulkan: ", msg));
     return VK_FALSE;
 }
 
@@ -59,7 +59,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
 
     vec<VkBool32> presentSupported(count);
     for (u32 i = 0; i < count; i++)
-    vk::assertResult(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
+        vk::assertResult(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupported[i]));
 
     // TODO support for separate rendering and presenting queues
     for (u32 i = 0; i < count; i++)
@@ -69,7 +69,7 @@ static auto selectQueueIndex(VkPhysicalDevice device, VkSurfaceKHR surface) -> u
     }
 
     panic("Failed to find queue index");
-	
+
     return 0;
 }
 
@@ -82,7 +82,7 @@ static auto createDevice(VkPhysicalDevice physicalDevice, u32 queueIndex) -> Vul
     queueCreateInfo.queueCount = 1;
     queueCreateInfo.pQueuePriorities = queuePriorities.data();
 
-    vec<const s8*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    vec<const s8 *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
     VkPhysicalDeviceFeatures enabledFeatures{};
     enabledFeatures.samplerAnisotropy = true;
@@ -176,7 +176,7 @@ auto VulkanDriverDevice::selectDepthFormat() const -> VkFormat
     }
 
     panic("Failed to pick depth format");
-	
+
     return VK_FORMAT_UNDEFINED;
 }
 
@@ -188,7 +188,7 @@ void VulkanDriverDevice::selectPhysicalDevice(VkInstance instance)
     vec<VkPhysicalDevice> devices(gpuCount);
     vk::assertResult(vkEnumeratePhysicalDevices(instance, &gpuCount, devices.data()));
 
-    for (const auto &device: devices)
+    for (const auto &device : devices)
     {
         vkGetPhysicalDeviceProperties(device, &physicalProperties_);
         vkGetPhysicalDeviceFeatures(device, &physicalFeatures_);

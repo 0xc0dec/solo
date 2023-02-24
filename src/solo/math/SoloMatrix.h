@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -38,20 +38,38 @@ namespace solo
         bool isIdentity() const;
         auto getDeterminant() const -> float;
         void invert();
-    	auto inverted() const -> Matrix;
+        auto inverted() const -> Matrix;
         void transpose();
-    	auto transposed() const -> Matrix;
+        auto transposed() const -> Matrix;
 
         auto scale() const -> Vector3;
         auto rotation() const -> Quaternion;
         auto translation() const -> Vector3;
 
-        auto upVector() const -> Vector3 { return {data_[1][0], data_[1][1], data_[1][2]}; }
-        auto downVector() const -> Vector3 { return {-data_[1][0], -data_[1][1], -data_[1][2]}; }
-        auto leftVector() const -> Vector3 { return {-data_[0][0], -data_[0][1], -data_[0][2]}; }
-        auto rightVector() const -> Vector3 { return {data_[0][0], data_[0][1], data_[0][2]}; }
-        auto forwardVector() const -> Vector3 { return {-data_[2][0], -data_[2][1], -data_[2][2]}; }
-        auto backVector() const -> Vector3 { return {data_[2][0], data_[2][1], data_[2][2]}; }
+        auto upVector() const -> Vector3
+        {
+            return {data_[1][0], data_[1][1], data_[1][2]};
+        }
+        auto downVector() const -> Vector3
+        {
+            return { -data_[1][0], -data_[1][1], -data_[1][2]};
+        }
+        auto leftVector() const -> Vector3
+        {
+            return { -data_[0][0], -data_[0][1], -data_[0][2]};
+        }
+        auto rightVector() const -> Vector3
+        {
+            return {data_[0][0], data_[0][1], data_[0][2]};
+        }
+        auto forwardVector() const -> Vector3
+        {
+            return { -data_[2][0], -data_[2][1], -data_[2][2]};
+        }
+        auto backVector() const -> Vector3
+        {
+            return {data_[2][0], data_[2][1], data_[2][2]};
+        }
 
         void rotateByQuaternion(const Quaternion &q);
         void rotateByAxisAngle(const Vector3 &axis, const Radians &angle);

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -17,7 +17,10 @@ namespace solo
     public:
         explicit BulletBoxCollider(const Vector3 &halfExtents);
 
-        auto shape() -> btCollisionShape* override final { return shape_.get(); }
+        auto shape() -> btCollisionShape *override final
+        {
+            return shape_.get();
+        }
 
     private:
         uptr<btBoxShape> shape_;

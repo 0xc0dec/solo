@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -38,18 +38,27 @@ namespace solo
         VulkanRenderPass(VulkanRenderPass &&other) = default;
         ~VulkanRenderPass() = default;
 
-        auto clearValues() const -> const vec<VkClearValue>& { return clearValues_; }
-        auto colorAttachmentCount() const -> u32 { return colorAttachmentCount_; }
+        auto clearValues() const -> const vec<VkClearValue> & { return clearValues_; }
+        auto colorAttachmentCount() const -> u32
+        {
+            return colorAttachmentCount_;
+        }
 
         void begin(VkCommandBuffer cmdBuf, VkFramebuffer framebuffer, u32 canvasWidth, u32 canvasHeight);
         void end(VkCommandBuffer cmdBuf);
 
-        auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass& = delete;
-        auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass& = default;
+        auto operator=(const VulkanRenderPass &other) -> VulkanRenderPass & = delete;
+        auto operator=(VulkanRenderPass &&other) -> VulkanRenderPass & = default;
 
-    	auto handle() const -> VkRenderPass { return pass_; }
+        auto handle() const -> VkRenderPass
+        {
+            return pass_;
+        }
 
-        operator const VkRenderPass() const { return pass_; }
+        operator const VkRenderPass() const
+        {
+            return pass_;
+        }
 
     private:
         VulkanResource<VkRenderPass> pass_;

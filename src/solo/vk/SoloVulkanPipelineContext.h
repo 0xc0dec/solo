@@ -1,6 +1,6 @@
-﻿/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+﻿/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,43 +15,58 @@
 
 namespace solo
 {
-	class VulkanMaterial;
-	class VulkanMesh;
-	class VulkanRenderPass;
-	class Camera;
-	class Transform;
-	
-	class VulkanPipelineContext
-	{
-	public:
-		VulkanPipelineContext(VulkanDriverDevice *device, size_t key);
-		VulkanPipelineContext(const VulkanPipelineContext &other) = delete;
-		VulkanPipelineContext(VulkanPipelineContext &&other) noexcept;
+    class VulkanMaterial;
+    class VulkanMesh;
+    class VulkanRenderPass;
+    class Camera;
+    class Transform;
 
-		auto operator=(const VulkanPipelineContext &other) -> VulkanPipelineContext& = delete;
-		auto operator=(VulkanPipelineContext &&other) noexcept -> VulkanPipelineContext& = delete;
+    class VulkanPipelineContext
+    {
+    public:
+        VulkanPipelineContext(VulkanDriverDevice *device, size_t key);
+        VulkanPipelineContext(const VulkanPipelineContext &other) = delete;
+        VulkanPipelineContext(VulkanPipelineContext &&other) noexcept;
 
-		auto frameOfLastUse() const -> u32 { return frameOfLastUse_; }
-		void setFrameOfLastUse(u32 frame) { frameOfLastUse_ = frame; }
+        auto operator=(const VulkanPipelineContext &other) -> VulkanPipelineContext & = delete;
+        auto operator=(VulkanPipelineContext &&other) noexcept -> VulkanPipelineContext & = delete;
 
-		auto key() const -> size_t { return key_; }
+        auto frameOfLastUse() const -> u32
+        {
+            return frameOfLastUse_;
+        }
+        void setFrameOfLastUse(u32 frame)
+        {
+            frameOfLastUse_ = frame;
+        }
 
-		auto pipeline() const -> const VulkanPipeline& { return pipeline_; }
-		auto descriptorSet() const -> const VulkanDescriptorSet& { return descSet_; }
+        auto key() const -> size_t
+        {
+            return key_;
+        }
 
-		void update(VulkanMaterial *material, VulkanMesh *mesh, VulkanRenderPass *renderPass,
-			Camera *camera, Transform *transform);
+        auto pipeline() const -> const VulkanPipeline &
+        {
+            return pipeline_;
+        }
+        auto descriptorSet() const -> const VulkanDescriptorSet &
+        {
+            return descSet_;
+        }
 
-	private:
-		VulkanDriverDevice *device_ = nullptr;
-		umap<str, VulkanBuffer> uniformBuffers_;
-		VulkanPipeline pipeline_;
-		VulkanDescriptorSet descSet_;
-		size_t lastMaterialStateHash_ = 0;
-		size_t lastMeshLayoutHash_ = 0;
-		size_t key_ = 0;
-		u32 frameOfLastUse_ = 0;
-	};
+        void update(VulkanMaterial *material, VulkanMesh *mesh, VulkanRenderPass *renderPass,
+                    Camera *camera, Transform *transform);
+
+    private:
+        VulkanDriverDevice *device_ = nullptr;
+        umap<str, VulkanBuffer> uniformBuffers_;
+        VulkanPipeline pipeline_;
+        VulkanDescriptorSet descSet_;
+        size_t lastMaterialStateHash_ = 0;
+        size_t lastMeshLayoutHash_ = 0;
+        size_t key_ = 0;
+        u32 frameOfLastUse_ = 0;
+    };
 }
 
 #endif

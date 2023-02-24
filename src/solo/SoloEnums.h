@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -9,7 +9,7 @@
 
 namespace solo
 {
-	enum class KeyCode
+    enum class KeyCode
     {
         Digit0,
         Digit1,
@@ -41,7 +41,7 @@ namespace solo
         // ...
     };
 
-	enum class MouseButton
+    enum class MouseButton
     {
         Left,
         Middle,
@@ -54,7 +54,7 @@ namespace solo
         Vulkan
     };
 
-	enum class FaceCull
+    enum class FaceCull
     {
         None = 0,
         Front,
@@ -110,7 +110,7 @@ namespace solo
         CameraWorldPosition
     };
 
-	enum class PrimitiveType
+    enum class PrimitiveType
     {
         Triangles,
         TriangleStrip,
@@ -119,13 +119,13 @@ namespace solo
         Points
     };
 
-	enum class IndexElementSize
-	{
-		Bits16 = sizeof(u16),
-		Bits32 = sizeof(u32)
-	};
+    enum class IndexElementSize
+    {
+        Bits16 = sizeof(u16),
+        Bits32 = sizeof(u32)
+    };
 
-	enum class TextureWrap
+    enum class TextureWrap
     {
         ClampToEdge = 0,
         ClampToBorder,
@@ -155,21 +155,21 @@ namespace solo
         RGBA16F
     };
 
-	enum class TextureDataFormat
+    enum class TextureDataFormat
     {
         Red,
         RGB,
         RGBA
     };
 
-	enum class TransformSpace
+    enum class TransformSpace
     {
         Self,
         Parent,
         World
     };
 
-	enum class VertexAttributeUsage
+    enum class VertexAttributeUsage
     {
         Unknown,
         Position,

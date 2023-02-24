@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloOpenGLFrameBuffer.h"
@@ -26,8 +26,14 @@ static void validateNewAttachments(const vec<sptr<Texture2D>> &attachments)
 
 auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments) -> sptr<OpenGLFrameBuffer>
 {
-	asrt([&attachments]() { validateNewAttachments(attachments); });
-	asrt([&attachments]() { ::validateNewAttachments(attachments); });
+    asrt([&attachments]()
+    {
+        validateNewAttachments(attachments);
+    });
+    asrt([&attachments]()
+    {
+        ::validateNewAttachments(attachments);
+    });
 
     auto result = sptr<OpenGLFrameBuffer>(new OpenGLFrameBuffer());
 
@@ -42,7 +48,7 @@ auto OpenGLFrameBuffer::fromAttachments(const vec<sptr<Texture2D>> &attachments)
 
     glGenFramebuffers(1, &result->handle_);
     panicIf(!result->handle_, "Unable to create frame buffer handle");
-    
+
     glBindFramebuffer(GL_FRAMEBUFFER, result->handle_);
 
     vec<GLenum> drawBuffers;

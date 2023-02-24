@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanDebugInterface.h"
@@ -18,38 +18,39 @@
 using namespace solo;
 
 VulkanDebugInterface::VulkanDebugInterface(Device *device):
-	SDLDebugInterface(device),
-	device_(dynamic_cast<VulkanDevice*>(device)),
-	renderer_(dynamic_cast<VulkanRenderer*>(device->renderer()))
+    SDLDebugInterface(device),
+    device_(dynamic_cast<VulkanDevice *>(device)),
+    renderer_(dynamic_cast<VulkanRenderer *>(device->renderer()))
 {
-	ImGui_ImplSDL2_InitForVulkan(device_->window());
+    ImGui_ImplSDL2_InitForVulkan(device_->window());
 
-	// Desc pool
-	{
-		std::vector<VkDescriptorPoolSize> poolSizes = {
-			{ VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
-	        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
-	        { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
-	        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
-	        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
-	        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
-		};
-		
-	    VkDescriptorPoolCreateInfo poolInfo = {};
-	    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-	    poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-	    poolInfo.maxSets = 1000 * poolSizes.size();
-	    poolInfo.poolSizeCount = static_cast<u32>(poolSizes.size());
-	    poolInfo.pPoolSizes = poolSizes.data();
+    // Desc pool
+    {
+        std::vector<VkDescriptorPoolSize> poolSizes =
+        {
+            { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+            { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+            { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+            { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+            { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+            { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+            { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+            { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+            { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+            { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+            { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+        };
 
-		descPool_ = VulkanResource<VkDescriptorPool>{renderer_->device(), vkDestroyDescriptorPool};
-		vk::assertResult(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
-	}
+        VkDescriptorPoolCreateInfo poolInfo = {};
+        poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+        poolInfo.maxSets = 1000 * poolSizes.size();
+        poolInfo.poolSizeCount = static_cast<u32>(poolSizes.size());
+        poolInfo.pPoolSizes = poolSizes.data();
+
+        descPool_ = VulkanResource<VkDescriptorPool> {renderer_->device(), vkDestroyDescriptorPool};
+        vk::assertResult(vkCreateDescriptorPool(renderer_->device(), &poolInfo, nullptr, descPool_.cleanRef()));
+    }
 
     ImGui_ImplVulkan_InitInfo initInfo{};
     initInfo.Instance = device_->instance();
@@ -64,24 +65,24 @@ VulkanDebugInterface::VulkanDebugInterface(Device *device):
     initInfo.ImageCount = renderer_->swapchain().imageCount();
     initInfo.CheckVkResultFn = [](VkResult) {};
 
-	ImGui_ImplVulkan_Init(&initInfo, renderer_->swapchain().renderPass());
+    ImGui_ImplVulkan_Init(&initInfo, renderer_->swapchain().renderPass());
 
-	// Load fonts
-	auto cmdBuf = VulkanCmdBuffer(renderer_->device());
-	cmdBuf.begin(true);
-	ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
-	cmdBuf.endAndFlush();
-	ImGui_ImplVulkan_DestroyFontUploadObjects();
+    // Load fonts
+    auto cmdBuf = VulkanCmdBuffer(renderer_->device());
+    cmdBuf.begin(true);
+    ImGui_ImplVulkan_CreateFontsTexture(cmdBuf);
+    cmdBuf.endAndFlush();
+    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 VulkanDebugInterface::~VulkanDebugInterface()
 {
-	ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplVulkan_Shutdown();
 }
 
 void VulkanDebugInterface::renderInto(VkCommandBuffer targetCmdBuffer) const
 {
-	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);
+    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), targetCmdBuffer);
 }
 
 #endif

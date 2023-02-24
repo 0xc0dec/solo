@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -24,10 +24,16 @@ namespace solo
         void render() override;
 
         auto mesh() const -> sptr<Mesh> { return mesh_; }
-        void setMesh(const sptr<Mesh> &mesh) { this->mesh_ = mesh; }
+        void setMesh(const sptr<Mesh> &mesh)
+        {
+            this->mesh_ = mesh;
+        }
 
         auto material(u32 index) const -> sptr<Material>;
-        auto materialCount() const -> u32 { return materialCount_; }
+        auto materialCount() const -> u32
+        {
+            return materialCount_;
+        }
         void setMaterial(u32 index, const sptr<Material> &material);
         void setDefaultMaterial(const sptr<Material> &material);
 

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloScene.h"
@@ -25,10 +25,10 @@ Scene::Scene(Device *device):
 void Scene::cleanupDeleted()
 {
     // "Garbage collect" deleted stuff
-    for (auto &nodeComponents: deletedComponents_)
+    for (auto &nodeComponents : deletedComponents_)
     {
         auto nodeId = nodeComponents.first;
-        for (auto cmpId: nodeComponents.second)
+        for (auto cmpId : nodeComponents.second)
             nodes_.at(nodeId).erase(cmpId);
         if (nodes_.at(nodeId).empty())
             nodes_.erase(nodeId);
@@ -48,7 +48,7 @@ void Scene::removeNodeById(u32 nodeId)
 {
     if (nodes_.count(nodeId))
     {
-        for (auto &component: nodes_.at(nodeId))
+        for (auto &component : nodes_.at(nodeId))
             removeComponent(nodeId, component.second.component->typeId());
     }
 }
@@ -62,17 +62,17 @@ void Scene::addComponent(u32 nodeId, sptr<Component> cmp)
 {
     const auto typeId = cmp->typeId();
 
-	asrt([this, nodeId, typeId]()
-	{
-		const auto node = nodes_.find(nodeId);
-		return node != nodes_.end() ? node->second.find(typeId) == node->second.end() : true;
-	}, "Node already contains component with same id");
+    asrt([this, nodeId, typeId]()
+    {
+        const auto node = nodes_.find(nodeId);
+        return node != nodes_.end() ? node->second.find(typeId) == node->second.end() : true;
+    }, "Node already contains component with same id");
 
     nodes_[nodeId][typeId].component = cmp;
     cmp->init();
 
     if (cmp->typeId() == Camera::getId())
-        cameras_.push_back(dynamic_cast<Camera*>(cmp.get()));
+        cameras_.push_back(dynamic_cast<Camera *>(cmp.get()));
 }
 
 void Scene::removeComponent(u32 nodeId, u32 typeId)
@@ -97,19 +97,19 @@ void Scene::removeComponent(u32 nodeId, u32 typeId)
         cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), cmp.component.get()));
 }
 
-void Scene::visit(const std::function<void(Component*)> &accept)
+void Scene::visit(const std::function<void(Component *)> &accept)
 {
     return visitByTags(~0, accept);
 }
 
-void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &accept)
+void Scene::visitByTags(u32 tagMask, const std::function<void(Component *)> &accept)
 {
-    for (const auto &node: nodes_)
+    for (const auto &node : nodes_)
     {
         for (const auto &cmp : node.second)
         {
             if (!cmp.second.deleted && cmp.second.component->enabled() &&
-				(cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
+                    (cmp.second.component->tag() & tagMask) == cmp.second.component->tag())
                 accept(cmp.second.component.get());
         }
     }
@@ -119,15 +119,21 @@ void Scene::visitByTags(u32 tagMask, const std::function<void(Component*)> &acce
 
 void Scene::update()
 {
-	visit([](auto cmp) { cmp->update(); });
+    visit([](auto cmp)
+    {
+        cmp->update();
+    });
 }
 
 void Scene::render(u32 tagMask)
 {
-	visitByTags(tagMask, [](auto cmp) { cmp->render(); });
+    visitByTags(tagMask, [](auto cmp)
+    {
+        cmp->render();
+    });
 }
 
-auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component*
+auto Scene::findComponent(u32 nodeId, u32 typeId) const -> Component *
 {
     const auto node = nodes_.find(nodeId);
     if (node == nodes_.end())

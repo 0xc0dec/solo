@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -26,19 +26,28 @@ namespace solo
         VulkanSwapchain(VulkanSwapchain &&other) = default;
         ~VulkanSwapchain() = default;
 
-        auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain& = delete;
-        auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain& = default;
+        auto operator=(const VulkanSwapchain &other) -> VulkanSwapchain & = delete;
+        auto operator=(VulkanSwapchain &&other) -> VulkanSwapchain & = default;
 
-        operator VkSwapchainKHR() { return swapchain_; }
-        operator VkSwapchainKHR() const { return swapchain_; }
+        operator VkSwapchainKHR()
+        {
+            return swapchain_;
+        }
+        operator VkSwapchainKHR() const
+        {
+            return swapchain_;
+        }
 
         auto currentFrameBuffer() -> VkFramebuffer { return steps_[currentStep_].framebuffer; }
-        auto renderPass() -> VulkanRenderPass& { return renderPass_; }
+        auto renderPass() -> VulkanRenderPass & { return renderPass_; }
 
         auto moveNext() -> VkSemaphore;
         void present(VkQueue queue, u32 waitSemaphoreCount, const VkSemaphore *waitSemaphores);
 
-    	auto imageCount() const -> u32 { return steps_.size(); }
+        auto imageCount() const -> u32
+        {
+            return steps_.size();
+        }
 
     private:
         struct Step

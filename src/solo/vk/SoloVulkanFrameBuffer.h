@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -21,12 +21,18 @@ namespace solo
     {
     public:
         static auto fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<VulkanFrameBuffer>;
-        
+
         ~VulkanFrameBuffer() = default;
 
-        auto handle() const -> VkFramebuffer { return frameBuffer_; }
-        auto renderPass() -> VulkanRenderPass& { return renderPass_; }
-        auto colorAttachmentCount() const -> u32 { return static_cast<u32>(colorAttachments_.size()); }
+        auto handle() const -> VkFramebuffer
+        {
+            return frameBuffer_;
+        }
+        auto renderPass() -> VulkanRenderPass & { return renderPass_; }
+        auto colorAttachmentCount() const -> u32
+        {
+            return static_cast<u32>(colorAttachments_.size());
+        }
 
     private:
         VulkanRenderPass renderPass_;

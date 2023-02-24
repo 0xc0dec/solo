@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -29,24 +29,36 @@ namespace solo
             swap(other);
         }
 
-        explicit VulkanResource(std::function<void(T, VkAllocationCallbacks*)> del)
+        explicit VulkanResource(std::function<void(T, VkAllocationCallbacks *)> del)
         {
-            this->del_ = [=](T handle) { del(handle, nullptr); };
+            this->del_ = [ = ](T handle)
+            {
+                del(handle, nullptr);
+            };
         }
 
-        VulkanResource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks*)> del)
+        VulkanResource(VkInstance instance, std::function<void(VkInstance, T, VkAllocationCallbacks *)> del)
         {
-            this->del_ = [instance, del](T obj) { del(instance, obj, nullptr); };
+            this->del_ = [instance, del](T obj)
+            {
+                del(instance, obj, nullptr);
+            };
         }
 
-        VulkanResource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks*)> del)
+        VulkanResource(VkDevice device, std::function<void(VkDevice, T, VkAllocationCallbacks *)> del)
         {
-            this->del_ = [device, del](T obj) { del(device, obj, nullptr); };
+            this->del_ = [device, del](T obj)
+            {
+                del(device, obj, nullptr);
+            };
         }
 
-        VulkanResource(VkDevice device, VkCommandPool cmdPool, std::function<void(VkDevice, VkCommandPool, u32, T*)> del)
+        VulkanResource(VkDevice device, VkCommandPool cmdPool, std::function<void(VkDevice, VkCommandPool, u32, T *)> del)
         {
-            this->del_ = [device, cmdPool, del](T obj) { del(device, cmdPool, 1, &obj); };
+            this->del_ = [device, cmdPool, del](T obj)
+            {
+                del(device, cmdPool, 1, &obj);
+            };
         }
 
         ~VulkanResource()
@@ -54,27 +66,39 @@ namespace solo
             cleanup();
         }
 
-        auto operator=(VulkanResource<T> other) noexcept -> VulkanResource<T>&
+        auto operator=(VulkanResource<T> other) noexcept -> VulkanResource<T> &
         {
             swap(other);
             return *this;
         }
 
-        auto operator&() const -> const T* { return &handle_; }
-        auto operator&() -> T* { return &handle_; }
+        auto operator&() const -> const T *
+        {
+            return &handle_;
+        }
+        auto operator&() -> T * { return &handle_; }
 
-        auto cleanRef() -> T*
+        auto cleanRef() -> T *
         {
             ensureInitialized();
             cleanup();
             return &handle_;
         }
 
-        operator T() const { return handle_; }
-        operator bool() const { return handle_ != VK_NULL_HANDLE; }
+        operator T() const
+        {
+            return handle_;
+        }
+        operator bool() const
+        {
+            return handle_ != VK_NULL_HANDLE;
+        }
 
         template<typename V>
-        bool operator==(V rhs) { return handle_ == T(rhs); }
+        bool operator==(V rhs)
+        {
+            return handle_ == T(rhs);
+        }
 
     private:
         T handle_ = VK_NULL_HANDLE;

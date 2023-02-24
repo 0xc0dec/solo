@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloTexture.h"
@@ -61,10 +61,13 @@ auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipm
 {
     auto handle = std::make_shared<AsyncHandle<Texture2D>>();
 
-    auto producers = JobBase<Texture2DData>::Producers{[=]() { return Texture2DData::fromFile(device, path); }};
+    auto producers = JobBase<Texture2DData>::Producers{[ = ]()
+        {
+            return Texture2DData::fromFile(device, path);
+        }};
     auto consumer = [handle, device, generateMipmaps](const vec<sptr<Texture2DData>> &results)
     {
-	    const auto texture = fromData(device, results[0], generateMipmaps);
+        const auto texture = fromData(device, results[0], generateMipmaps);
         handle->resolve(texture);
     };
 
@@ -78,16 +81,16 @@ auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat forma
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return OpenGLTexture2D::empty(width, height, format);
+    case DeviceMode::OpenGL:
+        return OpenGLTexture2D::empty(width, height, format);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanTexture2D::empty(device, width, height, format);
+    case DeviceMode::Vulkan:
+        return VulkanTexture2D::empty(device, width, height, format);
 #endif
-		default:
-    		panic("Unknown device mode");
-    		return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 
@@ -96,16 +99,16 @@ auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generate
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return OpenGLTexture2D::fromData(data, generateMipmaps);
+    case DeviceMode::OpenGL:
+        return OpenGLTexture2D::fromData(data, generateMipmaps);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanTexture2D::fromData(device, data, generateMipmaps);
+    case DeviceMode::Vulkan:
+        return VulkanTexture2D::fromData(device, data, generateMipmaps);
 #endif
-		default:
-    		panic("Unknown device mode");
-			return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 
@@ -117,9 +120,9 @@ Texture2D::Texture2D(TextureFormat format, Vector2 dimensions):
 
 auto CubeTexture::fromFaceFiles(
     Device *device,
-    const str& positiveXPath, const str& negativeXPath,
-    const str& positiveYPath, const str& negativeYPath,
-    const str& positiveZPath, const str& negativeZPath) -> sptr<CubeTexture>
+    const str &positiveXPath, const str &negativeXPath,
+    const str &positiveYPath, const str &negativeYPath,
+    const str &positiveZPath, const str &negativeZPath) -> sptr<CubeTexture>
 {
     const auto data = CubeTextureData::fromFaceFiles(
         device,
@@ -131,24 +134,25 @@ auto CubeTexture::fromFaceFiles(
 
 auto CubeTexture::fromFaceFilesAsync(
     Device *device,
-    const str& positiveXPath, const str& negativeXPath,
-    const str& positiveYPath, const str& negativeYPath,
-    const str& positiveZPath, const str& negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
+    const str &positiveXPath, const str &negativeXPath,
+    const str &positiveYPath, const str &negativeYPath,
+    const str &positiveZPath, const str &negativeZPath) -> sptr<AsyncHandle<CubeTexture>>
 {
     auto handle = std::make_shared<AsyncHandle<CubeTexture>>();
 
-    auto producers = JobBase<CubeTextureData>::Producers{[=]()
-    {
-        // TODO run each face loading in separate jobs
-        return CubeTextureData::fromFaceFiles(
-            device,
-            positiveXPath, negativeXPath,
-            positiveYPath, negativeYPath,
-            positiveZPath, negativeZPath);
-    }};
+    auto producers = JobBase<CubeTextureData>::Producers{
+        [ = ]()
+        {
+            // TODO run each face loading in separate jobs
+            return CubeTextureData::fromFaceFiles(
+                device,
+                positiveXPath, negativeXPath,
+                positiveYPath, negativeYPath,
+                positiveZPath, negativeZPath);
+        }};
     auto consumer = [handle, device](const vec<sptr<CubeTextureData>> &results)
     {
-	    const auto texture = fromData(device, results[0]);
+        const auto texture = fromData(device, results[0]);
         handle->resolve(texture);
     };
 
@@ -162,16 +166,16 @@ auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<C
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return OpenGLCubeTexture::fromData(data);
+    case DeviceMode::OpenGL:
+        return OpenGLCubeTexture::fromData(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanCubeTexture::fromData(device, data);
+    case DeviceMode::Vulkan:
+        return VulkanCubeTexture::fromData(device, data);
 #endif
-    	default:
-    		panic("Unknown device mode");
-			return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 

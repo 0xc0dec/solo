@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -20,8 +20,14 @@ namespace solo
     class VulkanTexture
     {
     public:
-        auto image() const -> VulkanImage const& { return image_; }
-        auto sampler() const -> VkSampler { return sampler_; }
+        auto image() const -> VulkanImage const &
+        {
+            return image_;
+        }
+        auto sampler() const -> VkSampler
+        {
+            return sampler_;
+        }
 
     protected:
         VulkanRenderer *renderer_ = nullptr;

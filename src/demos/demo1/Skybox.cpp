@@ -2,7 +2,7 @@
 
 using namespace solo;
 
-auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
+auto createSkybox(Device *device, Scene *scene) -> MeshRenderer *
 {
     auto layout = VertexBufferLayout();
     layout.addAttribute(VertexAttributeUsage::Position);
@@ -25,13 +25,13 @@ auto createSkybox(Device *device, Scene *scene) -> MeshRenderer*
     renderer->setMaterial(0, material);
 
     const auto texture = CubeTexture::fromFaceFiles(device,
-        "../../../assets/textures/skyboxes/deep-space/+x.png",
-        "../../../assets/textures/skyboxes/deep-space/-x.png",
-        "../../../assets/textures/skyboxes/deep-space/+y.png",
-        "../../../assets/textures/skyboxes/deep-space/-y.png",
-        "../../../assets/textures/skyboxes/deep-space/+z.png",
-        "../../../assets/textures/skyboxes/deep-space/-z.png"
-    );
+    "../../../assets/textures/skyboxes/deep-space/+x.png",
+    "../../../assets/textures/skyboxes/deep-space/-x.png",
+    "../../../assets/textures/skyboxes/deep-space/+y.png",
+    "../../../assets/textures/skyboxes/deep-space/-y.png",
+    "../../../assets/textures/skyboxes/deep-space/+z.png",
+    "../../../assets/textures/skyboxes/deep-space/-z.png"
+                                                   );
     texture->setWrap(TextureWrap::ClampToEdge);
 
     material->setTextureParameter("colorMap", texture);

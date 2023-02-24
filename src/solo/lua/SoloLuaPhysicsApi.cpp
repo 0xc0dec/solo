@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloLuaCommon.h"
@@ -32,7 +32,7 @@ static void registerRigidBody(CppBindModule<LuaBinding> &module)
     REG_METHOD_NULLABLE_1ST_ARG(binding, RigidBody, setCollider, sptr<Collider>);
     REG_METHOD(binding, RigidBody, isKinematic);
     REG_METHOD(binding, RigidBody, setKinematic);
-	REG_METHOD(binding, RigidBody, isStatic);
+    REG_METHOD(binding, RigidBody, isStatic);
     REG_METHOD(binding, RigidBody, setStatic);
     REG_PTR_EQUALITY(binding, RigidBody);
     binding.endClass();
@@ -73,7 +73,7 @@ static void registerColliders(CppBindModule<LuaBinding> &module)
 
     {
         auto binding = module.beginExtendClass<StaticMeshCollider, Collider>("StaticMeshCollider");
-    	REG_STATIC_METHOD(binding, StaticMeshCollider, fromMesh);
+        REG_STATIC_METHOD(binding, StaticMeshCollider, fromMesh);
         REG_PTR_EQUALITY(binding, StaticMeshCollider);
         binding.endClass();
     }

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanDevice.h"
@@ -17,7 +17,7 @@ using namespace solo;
 VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     SDLDevice(setup)
 {
-	initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
+    initWindow(setup.fullScreen, setup.windowTitle.c_str(), setup.canvasWidth, setup.canvasHeight, 0);
 
     VkApplicationInfo appInfo {};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -25,7 +25,8 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     appInfo.pEngineName = "";
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    vec<const s8*> enabledExtensions {
+    vec<const s8 *> enabledExtensions
+    {
         VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef SL_WINDOWS
         VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
@@ -35,7 +36,8 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
 #endif
     };
 
-    vec<const s8*> enabledLayers {
+    vec<const s8 *> enabledLayers
+    {
 #ifdef SL_DEBUG
         "VK_LAYER_LUNARG_standard_validation",
 #endif
@@ -58,7 +60,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
         instanceInfo.ppEnabledExtensionNames = enabledExtensions.data();
     }
 
-    instance_ = VulkanResource<VkInstance>{vkDestroyInstance};
+    instance_ = VulkanResource<VkInstance> {vkDestroyInstance};
     vk::assertResult(vkCreateInstance(&instanceInfo, nullptr, instance_.cleanRef()));
 
 #ifdef SL_WINDOWS
@@ -76,7 +78,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
     surfaceInfo.hinstance = hinstance;
     surfaceInfo.hwnd = hwnd;
 
-    surface_ = VulkanResource<VkSurfaceKHR>{instance_, vkDestroySurfaceKHR};
+    surface_ = VulkanResource<VkSurfaceKHR> {instance_, vkDestroySurfaceKHR};
     vk::assertResult(vkCreateWin32SurfaceKHR(instance_, &surfaceInfo, nullptr, surface_.cleanRef()));
 #endif
 }

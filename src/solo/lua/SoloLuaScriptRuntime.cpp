@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloLuaScriptRuntime.h"
@@ -63,24 +63,24 @@ LuaScriptRuntime::~LuaScriptRuntime()
     lua_.close();
 }
 
-void LuaScriptRuntime::execFile(const str& path)
+void LuaScriptRuntime::execFile(const str &path)
 {
     if (lua_.loadFile(path.c_str()))
     {
         const auto msg = lua_.getString(-1);
-    	Logger::global().logError(fmt("Script failed to load: ", msg));
+        Logger::global().logError(fmt("Script failed to load: ", msg));
     }
 
     // TODO use FileSystem to read the file
     lua_.doFile(path.c_str());
 }
 
-auto LuaScriptRuntime::eval(const str& code) -> str
+auto LuaScriptRuntime::eval(const str &code) -> str
 {
     return lua_.eval<str>(code.c_str());
 }
 
-auto LuaScriptRuntime::fetchString(const str& name) -> str
+auto LuaScriptRuntime::fetchString(const str &name) -> str
 {
     return LuaRef(lua_, name.c_str()).toValue<str>();
 }

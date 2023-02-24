@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloSDLDevice.h"
@@ -16,23 +16,23 @@ SDLDevice::SDLDevice(const DeviceSetup &setup) :
 
 void SDLDevice::initWindow(bool fullScreen, const char *title, u32 canvasWidth, u32 canvasHeight, u32 additionalFlags)
 {
-	auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI | additionalFlags);
+    auto flags = static_cast<u32>(SDL_WINDOW_ALLOW_HIGHDPI | additionalFlags);
     if (fullScreen)
         flags |= SDL_WINDOW_FULLSCREEN;
 
     window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        canvasWidth, canvasHeight, flags);
+                               canvasWidth, canvasHeight, flags);
     panicIf(!window_, "Failed to create device window");
 }
 
 SDLDevice::~SDLDevice()
 {
-	if (window_)
+    if (window_)
     {
         SDL_DestroyWindow(window_);
         window_ = nullptr;
     }
-	
+
     SDL_Quit();
 }
 
@@ -103,7 +103,7 @@ void SDLDevice::prepareMouseState()
     SDL_GetMouseState(&x, &y);
     mousePos_.x() = x;
     mousePos_.y() = y;
-    
+
     mouseDelta_.x() = mouseDelta_.y() = 0;
     releasedMouseButtons_.clear();
     if (hasMouseFocus_)
@@ -133,8 +133,8 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
 
     switch (evt.type)
     {
-        case SDL_KEYUP:
-        case SDL_KEYDOWN:
+    case SDL_KEYUP:
+    case SDL_KEYDOWN:
         {
             const auto it = SDLKeyMap.find(evt.key.keysym.sym);
             if (it == SDLKeyMap.end())
@@ -152,8 +152,8 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt)
             }
             break;
         }
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -164,7 +164,7 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
 
     switch (evt.type)
     {
-        case SDL_MOUSEMOTION:
+    case SDL_MOUSEMOTION:
         {
             mouseDelta_.x() += evt.motion.xrel;
             mouseDelta_.y() += evt.motion.yrel;
@@ -172,14 +172,14 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
             mousePos_.y() = evt.motion.y;
             break;
         }
-        case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONDOWN:
         {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
             pressedMouseButtons_[button] = true; // pressed for the first time
             releasedMouseButtons_.erase(button);
             break;
         }
-        case SDL_MOUSEBUTTONUP:
+    case SDL_MOUSEBUTTONUP:
         {
             const auto button = SDLMouseButtonsMap.at(evt.button.button);
             if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end())
@@ -189,8 +189,8 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt)
             }
             break;
         }
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -198,11 +198,11 @@ void SDLDevice::processWindowEvent(const SDL_Event &evt)
 {
     switch (evt.window.event)
     {
-        case SDL_WINDOWEVENT_CLOSE:
-            windowCloseRequested_ = true;
-            break;
-        default:
-            break;
+    case SDL_WINDOWEVENT_CLOSE:
+        windowCloseRequested_ = true;
+        break;
+    default:
+        break;
     }
 }
 
@@ -212,19 +212,19 @@ void SDLDevice::readEvents()
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
     {
-		if (onEvent_)
-			onEvent_(evt);
-    	
+        if (onEvent_)
+            onEvent_(evt);
+
         switch (evt.type)
         {
-            case SDL_QUIT:
-                quitRequested_ = true;
-                break;
-            case SDL_WINDOWEVENT:
-                processWindowEvent(evt);
-                break;
-            default:
-                break;
+        case SDL_QUIT:
+            quitRequested_ = true;
+            break;
+        case SDL_WINDOWEVENT:
+            processWindowEvent(evt);
+            break;
+        default:
+            break;
         }
         if (!firstTime)
         {

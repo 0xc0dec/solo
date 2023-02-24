@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloSTBTrueTypeFont.h"
@@ -20,7 +20,7 @@ auto STBTrueTypeFont::glyphInfo(u32 character, float offsetX, float offsetY) -> 
 
     stbtt_aligned_quad quad;
     stbtt_GetPackedQuad(charInfo_.get(), static_cast<u32>(dimensions.x()), static_cast<u32>(dimensions.y()),
-        character - firstChar_, &offsetX, &offsetY, &quad, 1);
+    character - firstChar_, &offsetX, &offsetY, &quad, 1);
 
     auto xmin = quad.x0;
     auto xmax = quad.x1;
@@ -54,7 +54,7 @@ bool STBTrueTypeFont::canLoadFromFile(const str &path)
 }
 
 auto STBTrueTypeFont::loadFromFile(Device *device, const str &path, u32 size, u32 atlasWidth, u32 atlasHeight,
-    u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>
+                                   u32 firstChar, u32 charCount, u32 oversampleX, u32 oversampleY) -> sptr<STBTrueTypeFont>
 {
     auto data = device->fileSystem()->readBytes(path);
 

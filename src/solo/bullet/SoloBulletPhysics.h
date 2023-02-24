@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -22,7 +22,10 @@ namespace solo
         auto rayTestFirst(const Vector3 &from, const Vector3 &to) -> RayTestResult override final;
         auto rayTestAll(const Vector3 &from, const Vector3 &to) -> vec<RayTestResult> override final;
 
-        auto world() const -> btDiscreteDynamicsWorld* { return world_.get(); }
+        auto world() const -> btDiscreteDynamicsWorld *
+        {
+            return world_.get();
+        }
 
     private:
         // Note: order matters for proper destruction

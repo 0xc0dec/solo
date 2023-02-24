@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -13,22 +13,22 @@
 
 namespace solo
 {
-	class Device;
-	class OpenGLDevice;
+    class Device;
+    class OpenGLDevice;
 
-	class OpenGLDebugInterface final: public SDLDebugInterface
-	{
-	public:
-		explicit OpenGLDebugInterface(Device *device);
-		~OpenGLDebugInterface();
+    class OpenGLDebugInterface final: public SDLDebugInterface
+    {
+    public:
+        explicit OpenGLDebugInterface(Device *device);
+        ~OpenGLDebugInterface();
 
-		void render() const;
-		
-	private:
-		OpenGLDevice *device_;
+        void render() const;
 
-		void beginFrame() override;
-	};
+    private:
+        OpenGLDevice *device_;
+
+        void beginFrame() override;
+    };
 }
 
 #endif

@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -20,11 +20,23 @@ namespace solo
         void init() override final;
         void update() override final;
 
-        auto movementSpeed() const -> float { return movementSpeed_; }
-        void setMovementSpeed(float speed) { movementSpeed_ = speed; }
+        auto movementSpeed() const -> float
+        {
+            return movementSpeed_;
+        }
+        void setMovementSpeed(float speed)
+        {
+            movementSpeed_ = speed;
+        }
 
-        auto mouseSensitivity() const -> float { return mouseSensitivity_; }
-        void setMouseSensitivity(float sensitivity) { mouseSensitivity_ = sensitivity; }
+        auto mouseSensitivity() const -> float
+        {
+            return mouseSensitivity_;
+        }
+        void setMouseSensitivity(float sensitivity)
+        {
+            mouseSensitivity_ = sensitivity;
+        }
 
     private:
         Device *device_ = nullptr;

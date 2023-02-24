@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloVulkanPipeline.h"
@@ -11,7 +11,7 @@
 
 using namespace solo;
 
-static auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8* entryPoint) -> VkPipelineShaderStageCreateInfo
+static auto createShaderStageInfo(bool vertex, VkShaderModule shader, const s8 *entryPoint) -> VkPipelineShaderStageCreateInfo
 {
     VkPipelineShaderStageCreateInfo info{};
     info.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -35,7 +35,7 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     layoutInfo.pushConstantRangeCount = 0;
     layoutInfo.pPushConstantRanges = nullptr;
 
-    layout_ = VulkanResource<VkPipelineLayout>{device, vkDestroyPipelineLayout};
+    layout_ = VulkanResource<VkPipelineLayout> {device, vkDestroyPipelineLayout};
     vk::assertResult(vkCreatePipelineLayout(device, &layoutInfo, nullptr, layout_.cleanRef()));
 
     VkPipelineMultisampleStateCreateInfo multisampleState{};
@@ -121,7 +121,7 @@ VulkanPipeline::VulkanPipeline(VkDevice device, VkRenderPass renderPass, const V
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineInfo.basePipelineIndex = -1;
 
-    pipeline_ = VulkanResource<VkPipeline>{device, vkDestroyPipeline};
+    pipeline_ = VulkanResource<VkPipeline> {device, vkDestroyPipeline};
     vk::assertResult(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pipeline_.cleanRef()));
 }
 
@@ -173,7 +173,7 @@ auto VulkanPipelineConfig::withColorBlendAttachmentCount(u32 count) -> VulkanPip
     return *this;
 }
 
-auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig&
+auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkFormat format, u32 offset) -> VulkanPipelineConfig &
 {
     VkVertexInputAttributeDescription desc{};
     desc.location = location;
@@ -184,7 +184,7 @@ auto VulkanPipelineConfig::withVertexAttribute(u32 location, u32 binding, VkForm
     return *this;
 }
 
-auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig&
+auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexInputRate inputRate) -> VulkanPipelineConfig &
 {
     VkVertexInputBindingDescription desc{};
     desc.binding = binding;
@@ -194,7 +194,7 @@ auto VulkanPipelineConfig::withVertexBinding(u32 binding, u32 stride, VkVertexIn
     return *this;
 }
 
-auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelineConfig&
+auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelineConfig &
 {
     depthStencilStateInfo_.depthWriteEnable = write;
     depthStencilStateInfo_.depthTestEnable = test;
@@ -202,11 +202,11 @@ auto VulkanPipelineConfig::withDepthTest(bool write, bool test) -> VulkanPipelin
 }
 
 auto VulkanPipelineConfig::withBlend(bool enabled,
-    VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
-    VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig&
+                                     VkBlendFactor srcColorFactor, VkBlendFactor dstColorFactor,
+                                     VkBlendFactor srcAlphaFactor, VkBlendFactor dstAlphaFactor) -> VulkanPipelineConfig &
 {
     // TODO Better
-    for (auto &state: colorBlendAttachmentStates_)
+    for (auto &state : colorBlendAttachmentStates_)
     {
         state.blendEnable = enabled ? VK_TRUE : VK_FALSE;
         state.srcColorBlendFactor = srcColorFactor;

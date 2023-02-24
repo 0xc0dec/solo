@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloFrameBuffer.h"
@@ -16,16 +16,16 @@ auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &at
     switch (device->mode())
     {
 #ifdef SL_OPENGL_RENDERER
-        case DeviceMode::OpenGL:
-            return OpenGLFrameBuffer::fromAttachments(attachments);
+    case DeviceMode::OpenGL:
+        return OpenGLFrameBuffer::fromAttachments(attachments);
 #endif
 #ifdef SL_VULKAN_RENDERER
-        case DeviceMode::Vulkan:
-            return VulkanFrameBuffer::fromAttachments(device, attachments);
+    case DeviceMode::Vulkan:
+        return VulkanFrameBuffer::fromAttachments(device, attachments);
 #endif
-    	default:
-    		panic("Unknown device mode");
-    		return nullptr;
+    default:
+        panic("Unknown device mode");
+        return nullptr;
     }
 }
 
@@ -49,7 +49,7 @@ void FrameBuffer::validateNewAttachments(const vec<sptr<Texture2D>> &attachments
         else
         {
             panicIf(static_cast<u32>(size.x()) != width && static_cast<u32>(size.y()) == height,
-                "Frame buffer attachments must have same dimentions");
+                    "Frame buffer attachments must have same dimentions");
         }
     }
 }

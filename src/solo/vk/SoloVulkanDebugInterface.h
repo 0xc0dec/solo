@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #pragma once
@@ -15,23 +15,23 @@
 
 namespace solo
 {
-	class VulkanDevice;
-	class VulkanRenderer;
-	class Device;
+    class VulkanDevice;
+    class VulkanRenderer;
+    class Device;
 
-	class VulkanDebugInterface final: public SDLDebugInterface
-	{
-	public:
-		explicit VulkanDebugInterface(Device *device);
-		~VulkanDebugInterface();
+    class VulkanDebugInterface final: public SDLDebugInterface
+    {
+    public:
+        explicit VulkanDebugInterface(Device *device);
+        ~VulkanDebugInterface();
 
-		void renderInto(VkCommandBuffer targetCmdBuffer) const;
-	
-	private:
-		VulkanDevice *device_;
-		VulkanRenderer *renderer_;
-		VulkanResource<VkDescriptorPool> descPool_;
-	};
+        void renderInto(VkCommandBuffer targetCmdBuffer) const;
+
+    private:
+        VulkanDevice *device_;
+        VulkanRenderer *renderer_;
+        VulkanResource<VkDescriptorPool> descPool_;
+    };
 }
 
 #endif

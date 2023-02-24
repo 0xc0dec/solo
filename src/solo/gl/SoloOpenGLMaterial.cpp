@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloOpenGLMaterial.h"
@@ -22,16 +22,16 @@ OpenGLMaterial::OpenGLMaterial(const sptr<Effect> &effect):
 
 void OpenGLMaterial::applyParams(const Camera *camera, const Transform *nodeTransform) const
 {
-    for (const auto &d: descriptors_)
+    for (const auto &d : descriptors_)
         d.second.write(d.second.location, d.second.samplerIndex, camera, nodeTransform);
 }
 
 void OpenGLMaterial::setFloatParameter(const str &name, float value)
 {
-	setParameter(name, [value](GLuint location, GLuint, const Camera *, const Transform *)
-	{
-		glUniform1f(location, value);
-	});
+    setParameter(name, [value](GLuint location, GLuint, const Camera *, const Transform *)
+    {
+        glUniform1f(location, value);
+    });
 }
 
 void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
@@ -45,8 +45,8 @@ void OpenGLMaterial::setVector2Parameter(const str &name, const Vector2 &value)
 void OpenGLMaterial::setVector3Parameter(const str &name, const Vector3 &value)
 {
     setParameter(name, [value](GLuint location, GLuint, const Camera *, const Transform *)
-	{
-    	glUniform3f(location, value.x(), value.y(), value.z());
+    {
+        glUniform3f(location, value.x(), value.y(), value.z());
     });
 }
 
@@ -79,7 +79,7 @@ void OpenGLMaterial::setTextureParameter(const str &name, sptr<Texture> value)
 
 void OpenGLMaterial::bindFloatParameter(const str &name, const std::function<float()> &valueGetter)
 {
-	setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
+    setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
     {
         glUniform1f(location, valueGetter());
     });
@@ -87,7 +87,7 @@ void OpenGLMaterial::bindFloatParameter(const str &name, const std::function<flo
 
 void OpenGLMaterial::bindVector2Parameter(const str &name, const std::function<Vector2()> &valueGetter)
 {
-	setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
+    setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
     {
         const auto val = valueGetter();
         glUniform2f(location, val.x(), val.y());
@@ -96,7 +96,7 @@ void OpenGLMaterial::bindVector2Parameter(const str &name, const std::function<V
 
 void OpenGLMaterial::bindVector3Parameter(const str &name, const std::function<Vector3()> &valueGetter)
 {
-	setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
+    setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
     {
         const auto val = valueGetter();
         glUniform3f(location, val.x(), val.y(), val.z());
@@ -105,7 +105,7 @@ void OpenGLMaterial::bindVector3Parameter(const str &name, const std::function<V
 
 void OpenGLMaterial::bindVector4Parameter(const str &name, const std::function<Vector4()> &valueGetter)
 {
-	setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
+    setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
     {
         const auto val = valueGetter();
         glUniform4f(location, val.x(), val.y(), val.z(), val.w());
@@ -114,7 +114,7 @@ void OpenGLMaterial::bindVector4Parameter(const str &name, const std::function<V
 
 void OpenGLMaterial::bindMatrixParameter(const str &name, const std::function<Matrix()> &valueGetter)
 {
-	setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
+    setParameter(name, [valueGetter](GLuint location, GLuint, const Camera *, const Transform *)
     {
         glUniformMatrix4fv(location, 1, GL_FALSE, valueGetter().columns());
     });
@@ -124,9 +124,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
 {
     switch (binding)
     {
-        case ParameterBinding::WorldMatrix:
+    case ParameterBinding::WorldMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform *nodeTransform)
+            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -137,9 +137,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ViewMatrix:
+    case ParameterBinding::ViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -150,9 +150,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ProjectionMatrix:
+    case ParameterBinding::ProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -163,9 +163,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::WorldViewMatrix:
+    case ParameterBinding::WorldViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -176,9 +176,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::ViewProjectionMatrix:
+    case ParameterBinding::ViewProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -189,9 +189,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::WorldViewProjectionMatrix:
+    case ParameterBinding::WorldViewProjectionMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -202,9 +202,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::InverseTransposedWorldMatrix:
+    case ParameterBinding::InverseTransposedWorldMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform *nodeTransform)
+            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform)
             {
                 if (nodeTransform)
                 {
@@ -215,9 +215,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::InverseTransposedWorldViewMatrix:
+    case ParameterBinding::InverseTransposedWorldViewMatrix:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *nodeTransform)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform)
             {
                 if (nodeTransform && camera)
                 {
@@ -228,9 +228,9 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-        case ParameterBinding::CameraWorldPosition:
+    case ParameterBinding::CameraWorldPosition:
         {
-            setParameter(name, [](GLuint location, GLuint, const Camera *camera, const Transform *)
+            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *)
             {
                 if (camera)
                 {
@@ -241,20 +241,20 @@ void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding)
             break;
         }
 
-    	default:
-    		panic("Unsupported parameter binding");
+    default:
+        panic("Unsupported parameter binding");
     }
 }
 
 void OpenGLMaterial::setParameter(const str &paramName, const ParameterWriter &writer)
 {
-	auto name = paramName;
+    auto name = paramName;
     const auto idx = paramName.find_last_of(':');
     if (idx != std::string::npos)
         name.replace(idx, 1, "_");
-	panicIf(!effect_->hasUniform(name), "Unknown material parameter ", paramName);
+    panicIf(!effect_->hasUniform(name), "Unknown material parameter ", paramName);
     const auto info = effect_->uniformInfo(name);
-	descriptors_[paramName] = { info.location, info.samplerIndex, writer };
+    descriptors_[paramName] = { info.location, info.samplerIndex, writer };
 }
 
 #endif

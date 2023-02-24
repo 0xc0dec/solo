@@ -1,6 +1,6 @@
-/* 
- * Copyright (c) Aleksey Fedotov 
- * MIT license 
+/*
+ * Copyright (c) Aleksey Fedotov
+ * MIT license
  */
 
 #include "SoloLuaScriptComponent.h"
@@ -14,23 +14,23 @@ LuaScriptComponent::LuaScriptComponent(const Node &node, LuaRef ref):
     ref_(ref)
 {
     typeId_ = sanitizeTypeId(ref.get<u32>("typeId"));
-    
+
     initFunc_ = ref.has("init")
-        ? ref.get<std::function<void(LuaRef)>>("init")
-        : [](const LuaRef &) {};
-    
+                ? ref.get<std::function<void(LuaRef)>>("init")
+    : [](const LuaRef &) {};
+
     updateFunc_ = ref.has("update")
-        ? ref.get<std::function<void(LuaRef)>>("update")
-        : [](const LuaRef &) {};
+                  ? ref.get<std::function<void(LuaRef)>>("update")
+    : [](const LuaRef &) {};
 
     renderFunc_ = ref.has("render")
-        ? ref.get<std::function<void(LuaRef)>>("render")
-        : [](const LuaRef &) {};
-    
+                  ? ref.get<std::function<void(LuaRef)>>("render")
+    : [](const LuaRef &) {};
+
     terminateFunc_ = ref.has("terminate")
-        ? ref.get<std::function<void(LuaRef)>>("terminate")
-        : [](const LuaRef &) {};
-    
+                     ? ref.get<std::function<void(LuaRef)>>("terminate")
+    : [](const LuaRef &) {};
+
     ref.set("node", node);
 }
 
