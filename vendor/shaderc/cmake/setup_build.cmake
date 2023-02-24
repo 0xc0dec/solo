@@ -40,7 +40,7 @@ find_host_package(PythonInterp)
 find_host_package(BISON)
 endif()
 
-foreach(PROGRAM echo python)
+foreach(PROGRAM python)
   string(TOUPPER ${PROGRAM} PROG_UC)
   if (ANDROID)
     find_host_program(${PROG_UC}_EXE ${PROGRAM} REQUIRED)
