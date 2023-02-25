@@ -36,7 +36,7 @@ VulkanDevice::VulkanDevice(const DeviceSetup &setup):
 
     vec<const s8 *> enabledLayers {
 #ifdef SL_DEBUG
-        "VK_LAYER_LUNARG_standard_validation",
+        "VK_LAYER_KHRONOS_validation",
 #endif
     };
 
