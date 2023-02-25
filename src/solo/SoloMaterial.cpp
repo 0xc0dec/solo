@@ -14,16 +14,16 @@ using namespace solo;
 auto Material::fromEffect(Device *device, sptr<Effect> effect) -> sptr<Material> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMaterial>(effect);
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMaterial>(effect);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return std::make_shared<VulkanMaterial>(effect);
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanMaterial>(effect);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

@@ -17,15 +17,15 @@ using namespace solo;
 
 static auto toVulkanFormat(TextureFormat format) -> VkFormat {
     switch (format) {
-    case TextureFormat::R8:
-        return VK_FORMAT_R8_UNORM;
-    case TextureFormat::RGB8: // TODO real 24-bit? They crash my driver...
-    case TextureFormat::RGBA8:
-        return VK_FORMAT_R8G8B8A8_UNORM;
-    case TextureFormat::RGBA16F:
-        return VK_FORMAT_R16G16B16A16_SFLOAT;
-    case TextureFormat::Depth24:
-        return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
+        case TextureFormat::R8:
+            return VK_FORMAT_R8_UNORM;
+        case TextureFormat::RGB8: // TODO real 24-bit? They crash my driver...
+        case TextureFormat::RGBA8:
+            return VK_FORMAT_R8G8B8A8_UNORM;
+        case TextureFormat::RGBA16F:
+            return VK_FORMAT_R16G16B16A16_SFLOAT;
+        case TextureFormat::Depth24:
+            return VK_FORMAT_D32_SFLOAT; // TODO real 24-bit depth?
     }
 
     panic("Unsupported texture format");

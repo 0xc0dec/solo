@@ -15,43 +15,43 @@ using namespace solo;
 
 static auto toFilter(TextureFilter filter) -> VkFilter {
     switch (filter) {
-    case TextureFilter::Linear:
-        return VK_FILTER_LINEAR;
-    case TextureFilter::Nearest:
-        return VK_FILTER_NEAREST;
-    default:
-        panic("Unsupported texture filter");
-        return VK_FILTER_MAX_ENUM;
+        case TextureFilter::Linear:
+            return VK_FILTER_LINEAR;
+        case TextureFilter::Nearest:
+            return VK_FILTER_NEAREST;
+        default:
+            panic("Unsupported texture filter");
+            return VK_FILTER_MAX_ENUM;
     }
 }
 
 static auto toMipmapMode(TextureMipFilter mipFilter) -> VkSamplerMipmapMode {
     switch (mipFilter) {
-    case TextureMipFilter::Linear:
-        return VK_SAMPLER_MIPMAP_MODE_LINEAR;
-    case TextureMipFilter::Nearest:
-        return VK_SAMPLER_MIPMAP_MODE_NEAREST;
-    case TextureMipFilter::None:
-        return VK_SAMPLER_MIPMAP_MODE_NEAREST;
-    default:
-        panic("Unsupported mip filter");
-        return VK_SAMPLER_MIPMAP_MODE_MAX_ENUM ;
+        case TextureMipFilter::Linear:
+            return VK_SAMPLER_MIPMAP_MODE_LINEAR;
+        case TextureMipFilter::Nearest:
+            return VK_SAMPLER_MIPMAP_MODE_NEAREST;
+        case TextureMipFilter::None:
+            return VK_SAMPLER_MIPMAP_MODE_NEAREST;
+        default:
+            panic("Unsupported mip filter");
+            return VK_SAMPLER_MIPMAP_MODE_MAX_ENUM ;
     }
 }
 
 static auto toAddressMode(TextureWrap wrap) -> VkSamplerAddressMode {
     switch (wrap) {
-    case TextureWrap::ClampToEdge:
-        return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-    case TextureWrap::ClampToBorder:
-        return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
-    case TextureWrap::MirrorRepeat:
-        return VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
-    case TextureWrap::Repeat:
-        return VK_SAMPLER_ADDRESS_MODE_REPEAT;
-    default:
-        panic("Unsupported wrap mode");
-        return VK_SAMPLER_ADDRESS_MODE_MAX_ENUM;
+        case TextureWrap::ClampToEdge:
+            return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+        case TextureWrap::ClampToBorder:
+            return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+        case TextureWrap::MirrorRepeat:
+            return VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
+        case TextureWrap::Repeat:
+            return VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        default:
+            panic("Unsupported wrap mode");
+            return VK_SAMPLER_ADDRESS_MODE_MAX_ENUM;
     }
 }
 

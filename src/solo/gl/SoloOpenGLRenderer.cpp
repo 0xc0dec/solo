@@ -19,32 +19,32 @@ using namespace solo;
 
 static auto toBlendFactor(BlendFactor factor) -> GLenum {
     switch (factor) {
-    case BlendFactor::Zero:
-        return GL_ZERO;
-    case BlendFactor::One:
-        return GL_ONE;
-    case BlendFactor::SrcColor:
-        return GL_SRC_COLOR;
-    case BlendFactor::OneMinusSrcColor:
-        return GL_ONE_MINUS_SRC_COLOR;
-    case BlendFactor::DstColor:
-        return GL_DST_COLOR;
-    case BlendFactor::OneMinusDstColor:
-        return GL_ONE_MINUS_DST_COLOR;
-    case BlendFactor::SrcAlpha:
-        return GL_SRC_ALPHA;
-    case BlendFactor::OneMinusSrcAlpha:
-        return GL_ONE_MINUS_SRC_ALPHA;
-    case BlendFactor::DstAlpha:
-        return GL_DST_ALPHA;
-    case BlendFactor::OneMinusDstAlpha:
-        return GL_ONE_MINUS_DST_ALPHA;
-    case BlendFactor::ConstantAlpha:
-        return GL_CONSTANT_ALPHA;
-    case BlendFactor::OneMinusConstantAlpha:
-        return GL_ONE_MINUS_CONSTANT_ALPHA;
-    case BlendFactor::SrcAlphaSaturate:
-        return GL_SRC_ALPHA_SATURATE;
+        case BlendFactor::Zero:
+            return GL_ZERO;
+        case BlendFactor::One:
+            return GL_ONE;
+        case BlendFactor::SrcColor:
+            return GL_SRC_COLOR;
+        case BlendFactor::OneMinusSrcColor:
+            return GL_ONE_MINUS_SRC_COLOR;
+        case BlendFactor::DstColor:
+            return GL_DST_COLOR;
+        case BlendFactor::OneMinusDstColor:
+            return GL_ONE_MINUS_DST_COLOR;
+        case BlendFactor::SrcAlpha:
+            return GL_SRC_ALPHA;
+        case BlendFactor::OneMinusSrcAlpha:
+            return GL_ONE_MINUS_SRC_ALPHA;
+        case BlendFactor::DstAlpha:
+            return GL_DST_ALPHA;
+        case BlendFactor::OneMinusDstAlpha:
+            return GL_ONE_MINUS_DST_ALPHA;
+        case BlendFactor::ConstantAlpha:
+            return GL_CONSTANT_ALPHA;
+        case BlendFactor::OneMinusConstantAlpha:
+            return GL_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendFactor::SrcAlphaSaturate:
+            return GL_SRC_ALPHA_SATURATE;
     }
 
     panic("Unsupported blend factor");
@@ -74,32 +74,32 @@ static void setDepthTest(bool enabled) {
 static void setDepthFunction(DepthFunction func) {
     GLenum glfunc = 0;
     switch (func) {
-    case DepthFunction::Never:
-        glfunc = GL_NEVER;
-        break;
-    case DepthFunction::Less:
-        glfunc = GL_LESS;
-        break;
-    case DepthFunction::Equal:
-        glfunc = GL_EQUAL;
-        break;
-    case DepthFunction::LEqual:
-        glfunc = GL_LEQUAL;
-        break;
-    case DepthFunction::Greater:
-        glfunc = GL_GREATER;
-        break;
-    case DepthFunction::NotEqual:
-        glfunc = GL_NOTEQUAL;
-        break;
-    case DepthFunction::GEqual:
-        glfunc = GL_GEQUAL;
-        break;
-    case DepthFunction::Always:
-        glfunc = GL_ALWAYS;
-        break;
-    default:
-        break;
+        case DepthFunction::Never:
+            glfunc = GL_NEVER;
+            break;
+        case DepthFunction::Less:
+            glfunc = GL_LESS;
+            break;
+        case DepthFunction::Equal:
+            glfunc = GL_EQUAL;
+            break;
+        case DepthFunction::LEqual:
+            glfunc = GL_LEQUAL;
+            break;
+        case DepthFunction::Greater:
+            glfunc = GL_GREATER;
+            break;
+        case DepthFunction::NotEqual:
+            glfunc = GL_NOTEQUAL;
+            break;
+        case DepthFunction::GEqual:
+            glfunc = GL_GEQUAL;
+            break;
+        case DepthFunction::Always:
+            glfunc = GL_ALWAYS;
+            break;
+        default:
+            break;
     }
     if (glfunc)
         glDepthFunc(glfunc);
@@ -108,17 +108,17 @@ static void setDepthFunction(DepthFunction func) {
 static void setPolygonMode(PolygonMode mode) {
     GLenum glMode;
     switch (mode) {
-    case PolygonMode::Fill:
-        glMode = GL_FILL;
-        break;
-    case PolygonMode::Wireframe:
-        glMode = GL_LINE;
-        break;
-    case PolygonMode::Points:
-        glMode = GL_POINT;
-        break;
-    default:
-        return;
+        case PolygonMode::Fill:
+            glMode = GL_FILL;
+            break;
+        case PolygonMode::Wireframe:
+            glMode = GL_LINE;
+            break;
+        case PolygonMode::Points:
+            glMode = GL_POINT;
+            break;
+        default:
+            return;
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, glMode);
@@ -126,19 +126,19 @@ static void setPolygonMode(PolygonMode mode) {
 
 static void setFaceCull(FaceCull cull) {
     switch (cull) {
-    case FaceCull::None:
-        glDisable(GL_CULL_FACE);
-        break;
-    case FaceCull::Back:
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CCW);
-        break;
-    case FaceCull::Front:
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CW);
-        break;
-    default:
-        break;
+        case FaceCull::None:
+            glDisable(GL_CULL_FACE);
+            break;
+        case FaceCull::Back:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CCW);
+            break;
+        case FaceCull::Front:
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CW);
+            break;
+        default:
+            break;
     }
 }
 

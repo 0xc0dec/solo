@@ -30,15 +30,15 @@ using namespace solo;
 
 static auto toTextureFormat(TextureDataFormat format) -> TextureFormat {
     switch (format) {
-    case TextureDataFormat::Red:
-        return TextureFormat::R8;
-    case TextureDataFormat::RGB:
-        return TextureFormat::RGB8;
-    case TextureDataFormat::RGBA:
-        return TextureFormat::RGBA8;
-    default:
-        panic("Texture data format not convertible to texture format");
-        return TextureFormat::RGBA8;
+        case TextureDataFormat::Red:
+            return TextureFormat::R8;
+        case TextureDataFormat::RGB:
+            return TextureFormat::RGB8;
+        case TextureDataFormat::RGBA:
+            return TextureFormat::RGBA8;
+        default:
+            panic("Texture data format not convertible to texture format");
+            return TextureFormat::RGBA8;
     }
 }
 

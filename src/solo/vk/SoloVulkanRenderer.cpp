@@ -31,13 +31,13 @@ static auto contextKey(Transform *transform, Camera *camera, VulkanMaterial *mat
 
 static auto toIndexType(IndexElementSize elementSize) -> VkIndexType {
     switch (elementSize) {
-    case IndexElementSize::Bits16:
-        return VK_INDEX_TYPE_UINT16;
-    case IndexElementSize::Bits32:
-        return VK_INDEX_TYPE_UINT32;
-    default:
-        panic(false, "Unknown index element size");
-        return VK_INDEX_TYPE_MAX_ENUM;
+        case IndexElementSize::Bits16:
+            return VK_INDEX_TYPE_UINT16;
+        case IndexElementSize::Bits32:
+            return VK_INDEX_TYPE_UINT32;
+        default:
+            panic(false, "Unknown index element size");
+            return VK_INDEX_TYPE_MAX_ENUM;
     }
 }
 

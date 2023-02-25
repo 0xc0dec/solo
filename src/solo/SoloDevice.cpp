@@ -21,18 +21,18 @@ auto Device::create(const DeviceSetup &setup) -> uptr<Device> {
 
     switch (setup.mode) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        device = std::make_unique<OpenGLDevice>(setup);
-        break;
+        case DeviceMode::OpenGL:
+            device = std::make_unique<OpenGLDevice>(setup);
+            break;
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        device = std::make_unique<VulkanDevice>(setup);
-        break;
+        case DeviceMode::Vulkan:
+            device = std::make_unique<VulkanDevice>(setup);
+            break;
 #endif
-    default:
-        panic("Unknown device mode");
-        break;
+        default:
+            panic("Unknown device mode");
+            break;
     }
 
     if (device)

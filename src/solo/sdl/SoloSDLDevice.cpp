@@ -111,23 +111,23 @@ void SDLDevice::processKeyboardEvent(const SDL_Event &evt) {
         return;
 
     switch (evt.type) {
-    case SDL_KEYUP:
-    case SDL_KEYDOWN: {
-            const auto it = SDLKeyMap.find(evt.key.keysym.sym);
-            if (it == SDLKeyMap.end())
+        case SDL_KEYUP:
+        case SDL_KEYDOWN: {
+                const auto it = SDLKeyMap.find(evt.key.keysym.sym);
+                if (it == SDLKeyMap.end())
+                    break;
+                const auto code = it->second;
+                if (evt.type == SDL_KEYUP) {
+                    releasedKeys_.insert(code);
+                    pressedKeys_.erase(code);
+                } else {
+                    pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end();
+                    releasedKeys_.erase(code);
+                }
                 break;
-            const auto code = it->second;
-            if (evt.type == SDL_KEYUP) {
-                releasedKeys_.insert(code);
-                pressedKeys_.erase(code);
-            } else {
-                pressedKeys_[code] = pressedKeys_.find(code) == pressedKeys_.end();
-                releasedKeys_.erase(code);
             }
+        default:
             break;
-        }
-    default:
-        break;
     }
 }
 
@@ -136,39 +136,39 @@ void SDLDevice::processMouseEvent(const SDL_Event &evt) {
         return;
 
     switch (evt.type) {
-    case SDL_MOUSEMOTION: {
-            mouseDelta_.x() += evt.motion.xrel;
-            mouseDelta_.y() += evt.motion.yrel;
-            mousePos_.x() = evt.motion.x;
-            mousePos_.y() = evt.motion.y;
-            break;
-        }
-    case SDL_MOUSEBUTTONDOWN: {
-            const auto button = SDLMouseButtonsMap.at(evt.button.button);
-            pressedMouseButtons_[button] = true; // pressed for the first time
-            releasedMouseButtons_.erase(button);
-            break;
-        }
-    case SDL_MOUSEBUTTONUP: {
-            const auto button = SDLMouseButtonsMap.at(evt.button.button);
-            if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end()) {
-                releasedMouseButtons_.insert(button);
-                pressedMouseButtons_.erase(button);
+        case SDL_MOUSEMOTION: {
+                mouseDelta_.x() += evt.motion.xrel;
+                mouseDelta_.y() += evt.motion.yrel;
+                mousePos_.x() = evt.motion.x;
+                mousePos_.y() = evt.motion.y;
+                break;
             }
+        case SDL_MOUSEBUTTONDOWN: {
+                const auto button = SDLMouseButtonsMap.at(evt.button.button);
+                pressedMouseButtons_[button] = true; // pressed for the first time
+                releasedMouseButtons_.erase(button);
+                break;
+            }
+        case SDL_MOUSEBUTTONUP: {
+                const auto button = SDLMouseButtonsMap.at(evt.button.button);
+                if (pressedMouseButtons_.find(button) != pressedMouseButtons_.end()) {
+                    releasedMouseButtons_.insert(button);
+                    pressedMouseButtons_.erase(button);
+                }
+                break;
+            }
+        default:
             break;
-        }
-    default:
-        break;
     }
 }
 
 void SDLDevice::processWindowEvent(const SDL_Event &evt) {
     switch (evt.window.event) {
-    case SDL_WINDOWEVENT_CLOSE:
-        windowCloseRequested_ = true;
-        break;
-    default:
-        break;
+        case SDL_WINDOWEVENT_CLOSE:
+            windowCloseRequested_ = true;
+            break;
+        default:
+            break;
     }
 }
 
@@ -180,14 +180,14 @@ void SDLDevice::readEvents() {
             onEvent_(evt);
 
         switch (evt.type) {
-        case SDL_QUIT:
-            quitRequested_ = true;
-            break;
-        case SDL_WINDOWEVENT:
-            processWindowEvent(evt);
-            break;
-        default:
-            break;
+            case SDL_QUIT:
+                quitRequested_ = true;
+                break;
+            case SDL_WINDOWEVENT:
+                processWindowEvent(evt);
+                break;
+            default:
+                break;
         }
         if (!firstTime) {
             processKeyboardEvent(evt);

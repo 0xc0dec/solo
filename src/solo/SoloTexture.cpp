@@ -70,32 +70,32 @@ auto Texture2D::fromFileAsync(Device *device, const str &path, bool generateMipm
 auto Texture2D::empty(Device *device, u32 width, u32 height, TextureFormat format) -> sptr<Texture2D> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return OpenGLTexture2D::empty(width, height, format);
+        case DeviceMode::OpenGL:
+            return OpenGLTexture2D::empty(width, height, format);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return VulkanTexture2D::empty(device, width, height, format);
+        case DeviceMode::Vulkan:
+            return VulkanTexture2D::empty(device, width, height, format);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 
 auto Texture2D::fromData(Device *device, sptr<Texture2DData> data, bool generateMipmaps) -> sptr<Texture2D> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return OpenGLTexture2D::fromData(data, generateMipmaps);
+        case DeviceMode::OpenGL:
+            return OpenGLTexture2D::fromData(data, generateMipmaps);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return VulkanTexture2D::fromData(device, data, generateMipmaps);
+        case DeviceMode::Vulkan:
+            return VulkanTexture2D::fromData(device, data, generateMipmaps);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 
@@ -146,16 +146,16 @@ const str &positiveZPath, const str &negativeZPath) -> sptr<AsyncHandle<CubeText
 auto CubeTexture::fromData(Device *device, sptr<CubeTextureData> data) -> sptr<CubeTexture> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return OpenGLCubeTexture::fromData(data);
+        case DeviceMode::OpenGL:
+            return OpenGLCubeTexture::fromData(data);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return VulkanCubeTexture::fromData(device, data);
+        case DeviceMode::Vulkan:
+            return VulkanCubeTexture::fromData(device, data);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

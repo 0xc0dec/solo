@@ -48,32 +48,32 @@ public:
                 for (u32 k = 0; k < bufferLayout.attributeCount(); k++) {
                     const auto attr = bufferLayout.attribute(k);
                     switch (attr.usage) {
-                    case VertexAttributeUsage::Position:
-                        data->vertexData_.push_back(pos->x);
-                        data->vertexData_.push_back(pos->y);
-                        data->vertexData_.push_back(pos->z);
-                        break;
-                    case VertexAttributeUsage::Normal:
-                        data->vertexData_.push_back(normal->x);
-                        data->vertexData_.push_back(normal->y);
-                        data->vertexData_.push_back(normal->z);
-                        break;
-                    case VertexAttributeUsage::TexCoord:
-                        data->vertexData_.push_back(texCoord->x);
-                        data->vertexData_.push_back(texCoord->y);
-                        break;
-                    case VertexAttributeUsage::Tangent:
-                        data->vertexData_.push_back(tangent->x);
-                        data->vertexData_.push_back(tangent->y);
-                        data->vertexData_.push_back(tangent->z);
-                        break;
-                    case VertexAttributeUsage::Binormal:
-                        data->vertexData_.push_back(biTangent->x);
-                        data->vertexData_.push_back(biTangent->y);
-                        data->vertexData_.push_back(biTangent->z);
-                        break;
-                    default:
-                        break;
+                        case VertexAttributeUsage::Position:
+                            data->vertexData_.push_back(pos->x);
+                            data->vertexData_.push_back(pos->y);
+                            data->vertexData_.push_back(pos->z);
+                            break;
+                        case VertexAttributeUsage::Normal:
+                            data->vertexData_.push_back(normal->x);
+                            data->vertexData_.push_back(normal->y);
+                            data->vertexData_.push_back(normal->z);
+                            break;
+                        case VertexAttributeUsage::TexCoord:
+                            data->vertexData_.push_back(texCoord->x);
+                            data->vertexData_.push_back(texCoord->y);
+                            break;
+                        case VertexAttributeUsage::Tangent:
+                            data->vertexData_.push_back(tangent->x);
+                            data->vertexData_.push_back(tangent->y);
+                            data->vertexData_.push_back(tangent->z);
+                            break;
+                        case VertexAttributeUsage::Binormal:
+                            data->vertexData_.push_back(biTangent->x);
+                            data->vertexData_.push_back(biTangent->y);
+                            data->vertexData_.push_back(biTangent->z);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -133,16 +133,16 @@ private:
 auto Mesh::empty(Device *device) -> sptr<Mesh> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLMesh>();
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLMesh>();
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return std::make_shared<VulkanMesh>(device);
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanMesh>(device);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

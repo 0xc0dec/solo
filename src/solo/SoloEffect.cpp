@@ -49,16 +49,16 @@ auto Effect::fromSource(Device *device, const str &source) -> sptr<Effect> {
 
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLEffect>(vsBytes, vsSize, fsBytes, fsSize);
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLEffect>(vsBytes, vsSize, fsBytes, fsSize);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
+        case DeviceMode::Vulkan:
+            return VulkanEffect::fromSources(device, vsBytes, vsSize, fsBytes, fsSize);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

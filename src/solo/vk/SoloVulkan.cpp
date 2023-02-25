@@ -102,62 +102,62 @@ auto vk::makeImagePipelineBarrier(VkImage image, VkImageLayout oldImageLayout, V
     barrier.subresourceRange = subresourceRange;
 
     switch (oldImageLayout) {
-    case VK_IMAGE_LAYOUT_UNDEFINED:
-        barrier.srcAccessMask = 0;
-        break;
+        case VK_IMAGE_LAYOUT_UNDEFINED:
+            barrier.srcAccessMask = 0;
+            break;
 
-    case VK_IMAGE_LAYOUT_PREINITIALIZED:
-        barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_PREINITIALIZED:
+            barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-        barrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-        barrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-        barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-        barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-        barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-        break;
-    default:
-        break;
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+            barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            break;
+        default:
+            break;
     }
 
     switch (newImageLayout) {
-    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
-        barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
-        barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-        barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+            barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-        barrier.dstAccessMask = barrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+            barrier.dstAccessMask = barrier.dstAccessMask | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            break;
 
-    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-        if (barrier.srcAccessMask == 0)
-            barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
-        barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-        break;
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+            if (barrier.srcAccessMask == 0)
+                barrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+            barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return barrier;

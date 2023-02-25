@@ -15,15 +15,15 @@ using namespace solo;
 
 static auto toFormat(int components) -> TextureDataFormat {
     switch (components) {
-    case 1:
-        return TextureDataFormat::Red;
-    case 3:
-        return TextureDataFormat::RGB;
-    case 4:
-        return TextureDataFormat::RGBA;
-    default:
-        panic("Components count ", components, " not converible to texture data format");
-        return TextureDataFormat::RGB;
+        case 1:
+            return TextureDataFormat::Red;
+        case 3:
+            return TextureDataFormat::RGB;
+        case 4:
+            return TextureDataFormat::RGBA;
+        default:
+            panic("Components count ", components, " not converible to texture data format");
+            return TextureDataFormat::RGB;
     }
 }
 

@@ -17,23 +17,23 @@ void VertexBufferLayout::addAttribute(u32 elementCount, const str &name, VertexA
 
 void VertexBufferLayout::addAttribute(VertexAttributeUsage usage) {
     switch (usage) {
-    case VertexAttributeUsage::Position:
-        addAttribute(3, "sl_Position", VertexAttributeUsage::Position);
-        break;
-    case VertexAttributeUsage::Normal:
-        addAttribute(3, "sl_Normal", VertexAttributeUsage::Normal);
-        break;
-    case VertexAttributeUsage::TexCoord:
-        addAttribute(2, "sl_TexCoord", VertexAttributeUsage::TexCoord);
-        break;
-    case VertexAttributeUsage::Tangent:
-        addAttribute(3, "sl_Tangent", VertexAttributeUsage::Tangent);
-        break;
-    case VertexAttributeUsage::Binormal:
-        addAttribute(3, "sl_Binormal", VertexAttributeUsage::Binormal);
-        break;
-    default:
-        panic("Unsupported vertex attribute usage");
+        case VertexAttributeUsage::Position:
+            addAttribute(3, "sl_Position", VertexAttributeUsage::Position);
+            break;
+        case VertexAttributeUsage::Normal:
+            addAttribute(3, "sl_Normal", VertexAttributeUsage::Normal);
+            break;
+        case VertexAttributeUsage::TexCoord:
+            addAttribute(2, "sl_TexCoord", VertexAttributeUsage::TexCoord);
+            break;
+        case VertexAttributeUsage::Tangent:
+            addAttribute(3, "sl_Tangent", VertexAttributeUsage::Tangent);
+            break;
+        case VertexAttributeUsage::Binormal:
+            addAttribute(3, "sl_Binormal", VertexAttributeUsage::Binormal);
+            break;
+        default:
+            panic("Unsupported vertex attribute usage");
     }
 }
 

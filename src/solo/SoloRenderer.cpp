@@ -59,16 +59,16 @@ static const auto ERROR_EFFECT_SRC = R"(
 auto Renderer::fromDevice(Device *device) -> sptr<Renderer> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return std::make_shared<OpenGLRenderer>(device);
+        case DeviceMode::OpenGL:
+            return std::make_shared<OpenGLRenderer>(device);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return std::make_shared<VulkanRenderer>(device);
+        case DeviceMode::Vulkan:
+            return std::make_shared<VulkanRenderer>(device);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

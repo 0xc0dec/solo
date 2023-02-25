@@ -142,98 +142,98 @@ void VulkanMaterial::bindMatrixParameter(const str &name, const std::function<Ma
 
 void VulkanMaterial::bindParameter(const str &name, ParameterBinding binding) {
     switch (binding) {
-    case ParameterBinding::WorldMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform) {
-                if (nodeTransform) {
-                    auto value = nodeTransform->worldMatrix();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform) {
+                    if (nodeTransform) {
+                        auto value = nodeTransform->worldMatrix();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ViewMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
-                if (camera) {
-                    auto value = camera->viewMatrix();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ViewMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        auto value = camera->viewMatrix();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ProjectionMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
-                if (camera) {
-                    auto value = camera->projectionMatrix();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ProjectionMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        auto value = camera->projectionMatrix();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::WorldViewMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
-                if (camera && nodeTransform) {
-                    auto value = nodeTransform->worldViewMatrix(camera);
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldViewMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
+                    if (camera && nodeTransform) {
+                        auto value = nodeTransform->worldViewMatrix(camera);
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ViewProjectionMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
-                if (camera) {
-                    auto value = camera->viewProjectionMatrix();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ViewProjectionMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
+                    if (camera) {
+                        auto value = camera->viewProjectionMatrix();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::WorldViewProjectionMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
-                if (nodeTransform && camera) {
-                    auto value = nodeTransform->worldViewProjMatrix(camera);
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldViewProjectionMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
+                    if (nodeTransform && camera) {
+                        auto value = nodeTransform->worldViewProjMatrix(camera);
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::InverseTransposedWorldMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform) {
-                if (nodeTransform) {
-                    auto value = nodeTransform->invTransposedWorldMatrix();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::InverseTransposedWorldMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera *, const Transform * nodeTransform) {
+                    if (nodeTransform) {
+                        auto value = nodeTransform->invTransposedWorldMatrix();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::InverseTransposedWorldViewMatrix: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
-                if (nodeTransform && camera) {
-                    auto value = nodeTransform->invTransposedWorldViewMatrix(camera);
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::InverseTransposedWorldViewMatrix: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform * nodeTransform) {
+                    if (nodeTransform && camera) {
+                        auto value = nodeTransform->invTransposedWorldViewMatrix(camera);
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::CameraWorldPosition: {
-            setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
-                if (camera) {
-                    auto value = camera->transform()->worldPosition();
-                    buffer.updatePart(&value, offset, size);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::CameraWorldPosition: {
+                setParameter(name, [](VulkanBuffer & buffer, u32 offset, u32 size, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        auto value = camera->transform()->worldPosition();
+                        buffer.updatePart(&value, offset, size);
+                    }
+                });
+                break;
+            }
 
-    default:
-        panic("Unsupported parameter binding");
+        default:
+            panic("Unsupported parameter binding");
     }
 }
 

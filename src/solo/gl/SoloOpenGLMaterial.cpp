@@ -98,98 +98,98 @@ void OpenGLMaterial::bindMatrixParameter(const str &name, const std::function<Ma
 
 void OpenGLMaterial::bindParameter(const str &name, ParameterBinding binding) {
     switch (binding) {
-    case ParameterBinding::WorldMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform) {
-                if (nodeTransform) {
-                    const auto data = nodeTransform->worldMatrix().columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform) {
+                    if (nodeTransform) {
+                        const auto data = nodeTransform->worldMatrix().columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ViewMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
-                if (camera) {
-                    const auto data = camera->viewMatrix().columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ViewMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        const auto data = camera->viewMatrix().columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ProjectionMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
-                if (camera) {
-                    const auto data = camera->projectionMatrix().columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ProjectionMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        const auto data = camera->projectionMatrix().columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::WorldViewMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
-                if (nodeTransform && camera) {
-                    const auto data = nodeTransform->worldViewMatrix(camera).columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldViewMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
+                    if (nodeTransform && camera) {
+                        const auto data = nodeTransform->worldViewMatrix(camera).columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::ViewProjectionMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
-                if (camera) {
-                    const auto data = camera->viewProjectionMatrix().columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::ViewProjectionMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        const auto data = camera->viewProjectionMatrix().columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::WorldViewProjectionMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
-                if (nodeTransform && camera) {
-                    const auto data = nodeTransform->worldViewProjMatrix(camera).columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::WorldViewProjectionMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
+                    if (nodeTransform && camera) {
+                        const auto data = nodeTransform->worldViewProjMatrix(camera).columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::InverseTransposedWorldMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform) {
-                if (nodeTransform) {
-                    const auto data = nodeTransform->invTransposedWorldMatrix().columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::InverseTransposedWorldMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera *, const Transform * nodeTransform) {
+                    if (nodeTransform) {
+                        const auto data = nodeTransform->invTransposedWorldMatrix().columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::InverseTransposedWorldViewMatrix: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
-                if (nodeTransform && camera) {
-                    const auto data = nodeTransform->invTransposedWorldViewMatrix(camera).columns();
-                    glUniformMatrix4fv(location, 1, GL_FALSE, data);
-                }
-            });
-            break;
-        }
+        case ParameterBinding::InverseTransposedWorldViewMatrix: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform * nodeTransform) {
+                    if (nodeTransform && camera) {
+                        const auto data = nodeTransform->invTransposedWorldViewMatrix(camera).columns();
+                        glUniformMatrix4fv(location, 1, GL_FALSE, data);
+                    }
+                });
+                break;
+            }
 
-    case ParameterBinding::CameraWorldPosition: {
-            setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
-                if (camera) {
-                    auto pos = camera->transform()->worldPosition();
-                    glUniform3f(location, pos.x(), pos.y(), pos.z());
-                }
-            });
-            break;
-        }
+        case ParameterBinding::CameraWorldPosition: {
+                setParameter(name, [](GLuint location, GLuint, const Camera * camera, const Transform *) {
+                    if (camera) {
+                        auto pos = camera->transform()->worldPosition();
+                        glUniform3f(location, pos.x(), pos.y(), pos.z());
+                    }
+                });
+                break;
+            }
 
-    default:
-        panic("Unsupported parameter binding");
+        default:
+            panic("Unsupported parameter binding");
     }
 }
 

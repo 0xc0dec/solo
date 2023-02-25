@@ -19,101 +19,101 @@ using namespace solo;
 
 static auto toVertexFormat(const VertexAttribute &attr) -> VkFormat {
     switch (attr.elementCount) {
-    case 1:
-        return VK_FORMAT_R32_SFLOAT;
-    case 2:
-        return VK_FORMAT_R32G32_SFLOAT;
-    case 3:
-        return VK_FORMAT_R32G32B32_SFLOAT;
-    case 4:
-        return VK_FORMAT_R32G32B32A32_SFLOAT;
-    default:
-        panic("Unsupported vertex attribute element count");
-        return VK_FORMAT_UNDEFINED;
+        case 1:
+            return VK_FORMAT_R32_SFLOAT;
+        case 2:
+            return VK_FORMAT_R32G32_SFLOAT;
+        case 3:
+            return VK_FORMAT_R32G32B32_SFLOAT;
+        case 4:
+            return VK_FORMAT_R32G32B32A32_SFLOAT;
+        default:
+            panic("Unsupported vertex attribute element count");
+            return VK_FORMAT_UNDEFINED;
     }
 }
 
 static auto toBlendFactor(BlendFactor factor) -> VkBlendFactor {
     switch (factor) {
-    case BlendFactor::Zero:
-        return VK_BLEND_FACTOR_ZERO;
-    case BlendFactor::One:
-        return VK_BLEND_FACTOR_ONE;
-    case BlendFactor::SrcColor:
-        return VK_BLEND_FACTOR_SRC_COLOR;
-    case BlendFactor::OneMinusSrcColor:
-        return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
-    case BlendFactor::DstColor:
-        return VK_BLEND_FACTOR_DST_COLOR;
-    case BlendFactor::OneMinusDstColor:
-        return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
-    case BlendFactor::SrcAlpha:
-        return VK_BLEND_FACTOR_SRC_ALPHA;
-    case BlendFactor::OneMinusSrcAlpha:
-        return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-    case BlendFactor::DstAlpha:
-        return VK_BLEND_FACTOR_DST_ALPHA;
-    case BlendFactor::OneMinusDstAlpha:
-        return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
-    case BlendFactor::ConstantAlpha:
-        return VK_BLEND_FACTOR_CONSTANT_ALPHA;
-    case BlendFactor::OneMinusConstantAlpha:
-        return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
-    case BlendFactor::SrcAlphaSaturate:
-        return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
-    default:
-        panic("Unsupported blend factor");
-        return VK_BLEND_FACTOR_MAX_ENUM;
+        case BlendFactor::Zero:
+            return VK_BLEND_FACTOR_ZERO;
+        case BlendFactor::One:
+            return VK_BLEND_FACTOR_ONE;
+        case BlendFactor::SrcColor:
+            return VK_BLEND_FACTOR_SRC_COLOR;
+        case BlendFactor::OneMinusSrcColor:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+        case BlendFactor::DstColor:
+            return VK_BLEND_FACTOR_DST_COLOR;
+        case BlendFactor::OneMinusDstColor:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
+        case BlendFactor::SrcAlpha:
+            return VK_BLEND_FACTOR_SRC_ALPHA;
+        case BlendFactor::OneMinusSrcAlpha:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        case BlendFactor::DstAlpha:
+            return VK_BLEND_FACTOR_DST_ALPHA;
+        case BlendFactor::OneMinusDstAlpha:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
+        case BlendFactor::ConstantAlpha:
+            return VK_BLEND_FACTOR_CONSTANT_ALPHA;
+        case BlendFactor::OneMinusConstantAlpha:
+            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendFactor::SrcAlphaSaturate:
+            return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
+        default:
+            panic("Unsupported blend factor");
+            return VK_BLEND_FACTOR_MAX_ENUM;
     }
 }
 
 static void configurePipeline(VulkanPipelineConfig &cfg, VulkanMesh *mesh, VulkanMaterial *material) {
     switch (material->polygonMode()) {
-    case PolygonMode::Points:
-        cfg.withPolygonMode(VK_POLYGON_MODE_POINT);
-        break;
-    case PolygonMode::Fill:
-        cfg.withPolygonMode(VK_POLYGON_MODE_FILL);
-        break;
-    case PolygonMode::Wireframe:
-        cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
-        break;
-    default:
-        panic("Unsupported polygon mode");
+        case PolygonMode::Points:
+            cfg.withPolygonMode(VK_POLYGON_MODE_POINT);
+            break;
+        case PolygonMode::Fill:
+            cfg.withPolygonMode(VK_POLYGON_MODE_FILL);
+            break;
+        case PolygonMode::Wireframe:
+            cfg.withPolygonMode(VK_POLYGON_MODE_LINE);
+            break;
+        default:
+            panic("Unsupported polygon mode");
     }
 
     switch (mesh->primitiveType()) {
-    case PrimitiveType::Triangles:
-        cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
-        break;
-    case PrimitiveType::TriangleStrip:
-        cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP);
-        break;
-    case PrimitiveType::Lines:
-        cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
-        break;
-    case PrimitiveType::LineStrip:
-        cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_STRIP);
-        break;
-    case PrimitiveType::Points:
-        cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
-        break;
-    default:
-        panic("Unsupported primitive type");
+        case PrimitiveType::Triangles:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+            break;
+        case PrimitiveType::TriangleStrip:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP);
+            break;
+        case PrimitiveType::Lines:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
+            break;
+        case PrimitiveType::LineStrip:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_LINE_STRIP);
+            break;
+        case PrimitiveType::Points:
+            cfg.withTopology(VK_PRIMITIVE_TOPOLOGY_POINT_LIST);
+            break;
+        default:
+            panic("Unsupported primitive type");
     }
 
     switch (material->faceCull()) {
-    case FaceCull::None:
-        cfg.withCullMode(VK_CULL_MODE_NONE);
-        break;
-    case FaceCull::Front:
-        cfg.withCullMode(VK_CULL_MODE_FRONT_BIT);
-        break;
-    case FaceCull::Back:
-        cfg.withCullMode(VK_CULL_MODE_BACK_BIT);
-        break;
-    default:
-        panic("Unsupported face cull mode");
+        case FaceCull::None:
+            cfg.withCullMode(VK_CULL_MODE_NONE);
+            break;
+        case FaceCull::Front:
+            cfg.withCullMode(VK_CULL_MODE_FRONT_BIT);
+            break;
+        case FaceCull::Back:
+            cfg.withCullMode(VK_CULL_MODE_BACK_BIT);
+            break;
+        default:
+            panic("Unsupported face cull mode");
     }
 
     cfg.withDepthTest(material->hasDepthWrite(), material->hasDepthTest());

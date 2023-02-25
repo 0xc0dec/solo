@@ -14,16 +14,16 @@ using namespace solo;
 auto FrameBuffer::fromAttachments(Device *device, const vec<sptr<Texture2D>> &attachments) -> sptr<FrameBuffer> {
     switch (device->mode()) {
 #ifdef SL_OPENGL_RENDERER
-    case DeviceMode::OpenGL:
-        return OpenGLFrameBuffer::fromAttachments(attachments);
+        case DeviceMode::OpenGL:
+            return OpenGLFrameBuffer::fromAttachments(attachments);
 #endif
 #ifdef SL_VULKAN_RENDERER
-    case DeviceMode::Vulkan:
-        return VulkanFrameBuffer::fromAttachments(device, attachments);
+        case DeviceMode::Vulkan:
+            return VulkanFrameBuffer::fromAttachments(device, attachments);
 #endif
-    default:
-        panic("Unknown device mode");
-        return nullptr;
+        default:
+            panic("Unknown device mode");
+            return nullptr;
     }
 }
 

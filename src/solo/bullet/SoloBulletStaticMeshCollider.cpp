@@ -11,10 +11,10 @@ using namespace solo;
 
 static auto toIndexType(IndexElementSize indexElementSize) -> PHY_ScalarType {
     switch (indexElementSize) {
-    case IndexElementSize::Bits16:
-        return PHY_SHORT;
-    case IndexElementSize::Bits32:
-        return PHY_INTEGER;
+        case IndexElementSize::Bits16:
+            return PHY_SHORT;
+        case IndexElementSize::Bits32:
+            return PHY_INTEGER;
     }
 
     panic("Unknown index element size");

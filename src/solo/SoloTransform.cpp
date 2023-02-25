@@ -99,19 +99,19 @@ void Transform::rotate(const Quaternion &rotation, TransformSpace space) {
     const auto normalizedRotation = rotation.normalized();
 
     switch (space) {
-    case TransformSpace::Self:
-        localRotation_ = localRotation_ * normalizedRotation;
-        break;
-    case TransformSpace::Parent:
-        localRotation_ = normalizedRotation * localRotation_;
-        break;
-    case TransformSpace::World: {
-            const auto invWorldRotation = worldRotation().inverted();
-            localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * worldRotation();
+        case TransformSpace::Self:
+            localRotation_ = localRotation_ * normalizedRotation;
             break;
-        }
-    default:
-        break;
+        case TransformSpace::Parent:
+            localRotation_ = normalizedRotation * localRotation_;
+            break;
+        case TransformSpace::World: {
+                const auto invWorldRotation = worldRotation().inverted();
+                localRotation_ = localRotation_ * invWorldRotation * normalizedRotation * worldRotation();
+                break;
+            }
+        default:
+            break;
     }
 
     setDirtyWithChildren();
