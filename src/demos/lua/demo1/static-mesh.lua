@@ -28,7 +28,6 @@ return function(scene)
         local bodyParams = sl.RigidBodyParams()
         bodyParams.mass = 0
         bodyParams.friction = 0.5
-
         body = node:addComponent('RigidBody', bodyParams)
         body:setStatic(true)
 

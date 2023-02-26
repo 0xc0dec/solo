@@ -47,9 +47,7 @@ namespace solo {
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
 
-        auto errorMaterial() const -> Material * {
-            return errorMaterial_.get();
-        }
+        auto errorMaterial() const -> Material * { return errorMaterial_.get(); }
 
     private:
         Device *device_ = nullptr;
