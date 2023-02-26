@@ -20,6 +20,7 @@ static auto createDebugCallback(VkInstance instance, PFN_vkDebugReportCallbackEX
     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
     createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
     createInfo.pfnCallback = callbackFunc;
+    createInfo.pNext = nullptr;
 
     const auto create = reinterpret_cast<PFN_vkCreateDebugReportCallbackEXT>(vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT"));
     panicIf(!create, "Unable to load pointer to vkCreateDebugReportCallbackEXT");
