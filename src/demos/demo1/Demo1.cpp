@@ -34,9 +34,10 @@ int main() {
         });
 
         if (device->isQuitRequested() ||
-                device->isKeyPressed(KeyCode::Escape, true) ||
-                device->isWindowCloseRequested())
+            device->isKeyPressed(KeyCode::Escape, true) ||
+            device->isWindowCloseRequested()) {
             break;
+        }
     }
 
     return 0;

@@ -169,8 +169,7 @@ void applyMaterial(Material *material) {
     setBlendFactor(material->srcBlendFactor(), material->dstBlendFactor());
 }
 
-OpenGLRenderer::OpenGLRenderer(Device *device):
-    Renderer(device) {
+OpenGLRenderer::OpenGLRenderer(Device*): Renderer() {
     const auto ver = version();
     name_ = fmt("OpenGL ", ver.first, ".", ver.second);
     panicIf(!GLEW_VERSION_4_1, "Min supported OpenGL version is 4.1, this device supports ", ver.first, ".", ver.second);
@@ -203,7 +202,6 @@ void OpenGLRenderer::endCamera(Camera *camera) {
 }
 
 void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material) {
-    material = material ? material : errorMaterial();
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect *>(material->effect().get());
     dynamic_cast<OpenGLMaterial *>(material)->applyParams(currentCamera_, transform);
@@ -211,7 +209,6 @@ void OpenGLRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
 }
 
 void OpenGLRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) {
-    material = material ? material : errorMaterial();
     applyMaterial(material);
     const auto effect = dynamic_cast<OpenGLEffect *>(material->effect().get());
     dynamic_cast<OpenGLMaterial *>(material)->applyParams(currentCamera_, transform);

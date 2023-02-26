@@ -30,7 +30,9 @@ namespace solo {
         void setDefaultMaterial(const sptr<Material> &material);
 
     private:
-        static sptr<Mesh> errorMesh_;
+        static sptr<Mesh> fallbackMesh_;
+        static sptr<Material> fallbackMaterial_;
+
         sptr<Mesh> mesh_;
         Transform *transform_ = nullptr;
         Renderer *renderer_ = nullptr;

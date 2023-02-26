@@ -27,9 +27,6 @@ namespace solo {
         auto operator=(const Renderer &other) -> Renderer & = delete;
         auto operator=(Renderer &&other) -> Renderer & = delete;
 
-        void bootstrap();
-        void cleanup();
-
         virtual void beginCamera(Camera *camera) = 0;
         virtual void endCamera(Camera *camera) = 0;
         virtual void renderMesh(Mesh *mesh, Transform *transform, Material *material) = 0;
@@ -42,15 +39,9 @@ namespace solo {
         void renderFrame(const std::function<void()> &render);
 
     protected:
-        Renderer(Device *device);
+        Renderer() {}
 
         virtual void beginFrame() = 0;
         virtual void endFrame() = 0;
-
-        auto errorMaterial() const -> Material * { return errorMaterial_.get(); }
-
-    private:
-        Device *device_ = nullptr;
-        sptr<Material> errorMaterial_;
     };
 }

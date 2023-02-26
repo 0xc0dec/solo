@@ -18,7 +18,7 @@ namespace solo {
     class OpenGLRenderer final : public Renderer {
     public:
         explicit OpenGLRenderer(Device *device);
-        ~OpenGLRenderer() = default;
+        ~OpenGLRenderer() override = default;
 
         void beginCamera(Camera *camera) override;
         void endCamera(Camera *camera) override;

@@ -42,7 +42,7 @@ static auto toIndexType(IndexElementSize elementSize) -> VkIndexType {
 }
 
 VulkanRenderer::VulkanRenderer(Device *device):
-    Renderer(device),
+    Renderer(),
     device_(dynamic_cast<VulkanDevice *>(device)) {
     const auto canvasSize = device->canvasSize();
 
@@ -105,7 +105,6 @@ void VulkanRenderer::endCamera(Camera *) {
 }
 
 void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *material) {
-    material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh *>(mesh);
 
     bindPipelineAndMesh(material, transform, mesh);
@@ -114,7 +113,6 @@ void VulkanRenderer::renderMesh(Mesh *mesh, Transform *transform, Material *mate
 }
 
 void VulkanRenderer::renderMeshIndex(Mesh *mesh, u32 index, Transform *transform, Material *material) {
-    material = material ? material : errorMaterial();
     const auto vkMesh = dynamic_cast<VulkanMesh *>(mesh);
 
     bindPipelineAndMesh(material, transform, mesh);

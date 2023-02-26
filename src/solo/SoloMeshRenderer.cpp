@@ -11,19 +11,69 @@
 
 using namespace solo;
 
-sptr<Mesh> MeshRenderer::errorMesh_ = nullptr;
+// TODO Move into separate file
+static const auto FALLBACK_EFFECT_SRC = R"(
+{
+    vertex = {
+        uniformBuffers = {
+            matrices = {
+                wvp = "mat4"
+            }
+        },
+
+        inputs = {
+            sl_Position = "vec4"
+        },
+
+        outputs = {
+        },
+
+        code = [[
+            void main()
+            {
+                gl_Position = #matrices:wvp# * sl_Position;
+                SL_FIX_Y#gl_Position#;
+            }
+        ]]
+    },
+
+    fragment = {
+        samplers = {
+        },
+
+        outputs = {
+            fragColor = { type = "vec4", target = 0 }
+        },
+
+        code = [[
+            void main()
+            {
+                fragColor = vec4(1, 0, 1, 1);
+            }
+        ]]
+    }
+})";
+
+sptr<Mesh> MeshRenderer::fallbackMesh_ = nullptr;
+sptr<Material> MeshRenderer::fallbackMaterial_ = nullptr;
 
 MeshRenderer::MeshRenderer(const Node &node):
     ComponentBase(node),
     renderer_(node.scene()->device()->renderer()) {
-    transform_ = node.findComponent<Transform>();
+    const auto device = node.scene()->device();
 
-    if (!errorMesh_) {
-        errorMesh_ = Mesh::empty(node.scene()->device());
+    if (!fallbackMaterial_) {
+        const auto errorEffect = Effect::fromDescription(device, FALLBACK_EFFECT_SRC);
+        fallbackMaterial_ = Material::fromEffect(device, errorEffect);
+        fallbackMaterial_->bindParameter("matrices:wvp", ParameterBinding::WorldViewProjectionMatrix);
+    }
+
+    if (!fallbackMesh_) {
+        fallbackMesh_ = Mesh::empty(device);
         auto layout = VertexBufferLayout();
         layout.addAttribute(VertexAttributeUsage::Position);
 
-        errorMesh_->addVertexBuffer(layout, {
+        fallbackMesh_->addVertexBuffer(layout, {
             // front
             -1.0, -1.0,  1.0,
              1.0, -1.0,  1.0,
@@ -35,7 +85,7 @@ MeshRenderer::MeshRenderer(const Node &node):
              1.0,  1.0, -1.0,
             -1.0,  1.0, -1.0
         }, 8);
-        errorMesh_->addIndexBuffer({
+        fallbackMesh_->addIndexBuffer({
             // front
 		    0, 1, 2,
 		    2, 3, 0,
@@ -55,17 +105,19 @@ MeshRenderer::MeshRenderer(const Node &node):
 		    3, 2, 6,
 		    6, 7, 3
         }, 36);
-        errorMesh_->setPrimitiveType(PrimitiveType::Triangles);
+        fallbackMesh_->setPrimitiveType(PrimitiveType::Triangles);
     }
+
+    transform_ = node.findComponent<Transform>();
 }
 
 auto MeshRenderer::material(u32 index) const -> sptr<Material> {
     auto mat = index < materials_.size() ? materials_[index] : nullptr;
-    return mat ? mat : defaultMaterial_;
+    return mat ? mat : (defaultMaterial_ ? defaultMaterial_ : fallbackMaterial_);
 }
 
 void MeshRenderer::render() {
-    const auto mesh = mesh_ ? mesh_ : errorMesh_;
+    const auto mesh = mesh_ ? mesh_ : fallbackMesh_;
 
     const auto indexCount = mesh->indexBufferCount();
     if (!indexCount) {

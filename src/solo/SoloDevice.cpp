@@ -56,13 +56,9 @@ void Device::initSubsystems(const DeviceSetup &setup) {
     scriptRuntime_ = ScriptRuntime::fromDevice(this);
     renderer_ = Renderer::fromDevice(this);
     debugInterface_ = DebugInterface::fromDevice(this);
-
-    renderer_->bootstrap();
 }
 
 void Device::shutdownSubsystems() {
-    renderer_->cleanup();
-
     // Order matters
     debugInterface_.reset();
     jobPool_.reset();
