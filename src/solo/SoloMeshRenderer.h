@@ -22,18 +22,15 @@ namespace solo {
         void render() override;
 
         auto mesh() const -> sptr<Mesh> { return mesh_; }
-        void setMesh(const sptr<Mesh> &mesh) {
-            this->mesh_ = mesh;
-        }
+        void setMesh(const sptr<Mesh> &mesh) { this->mesh_ = mesh; }
 
         auto material(u32 index) const -> sptr<Material>;
-        auto materialCount() const -> u32 {
-            return materialCount_;
-        }
+        auto materialCount() const -> u32 { return materialCount_; }
         void setMaterial(u32 index, const sptr<Material> &material);
         void setDefaultMaterial(const sptr<Material> &material);
 
     private:
+        static sptr<Mesh> errorMesh_;
         sptr<Mesh> mesh_;
         Transform *transform_ = nullptr;
         Renderer *renderer_ = nullptr;
