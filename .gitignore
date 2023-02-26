@@ -19,3 +19,4 @@
 *VC.db
 *VC.opendb
 temp/**/*
+cmake-build*
