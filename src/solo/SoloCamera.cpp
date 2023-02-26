@@ -14,12 +14,12 @@
 
 using namespace solo;
 
-static const u32 DIRTY_BIT_VIEW = 1;
-static const u32 DIRTY_BIT_PROJECTION = 1 << 1;
-static const u32 DIRTY_BIT_VIEW_PROJECTION = 1 << 2;
-static const u32 DIRTY_BIT_INV_VIEW = 1 << 3;
-static const u32 DIRTY_BIT_INV_VIEW_PROJECTION = 1 << 4;
-static const u32 DIRTY_BIT_ALL_PROJECTION = DIRTY_BIT_PROJECTION | DIRTY_BIT_VIEW_PROJECTION | DIRTY_BIT_INV_VIEW_PROJECTION;
+static constexpr u32 DIRTY_BIT_VIEW = 1;
+static constexpr u32 DIRTY_BIT_PROJECTION = 1 << 1;
+static constexpr u32 DIRTY_BIT_VIEW_PROJECTION = 1 << 2;
+static constexpr u32 DIRTY_BIT_INV_VIEW = 1 << 3;
+static constexpr u32 DIRTY_BIT_INV_VIEW_PROJECTION = 1 << 4;
+static constexpr u32 DIRTY_BIT_ALL_PROJECTION = DIRTY_BIT_PROJECTION | DIRTY_BIT_VIEW_PROJECTION | DIRTY_BIT_INV_VIEW_PROJECTION;
 
 auto Camera::create(const Node &node) -> sptr<Camera> {
     return std::shared_ptr<Camera>(new Camera(node));

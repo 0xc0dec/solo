@@ -35,12 +35,12 @@ static auto compileToSpv(const void *src, u32 srcLen, const str &fileName, bool 
     const shaderc::Compiler compiler{};
     const shaderc::CompileOptions options{};
     auto result = compiler.CompileGlslToSpv(
-                      static_cast<const s8 *>(src),
-                      srcLen,
-                      vertex ? shaderc_glsl_vertex_shader : shaderc_glsl_fragment_shader,
-                      fileName.c_str(),
-                      options
-                  );
+        static_cast<const s8 *>(src),
+        srcLen,
+        vertex ? shaderc_glsl_vertex_shader : shaderc_glsl_fragment_shader,
+        fileName.c_str(),
+        options
+    );
 
     const auto compilationStatus = result.GetCompilationStatus();
     const auto errorMessage = result.GetErrorMessage();
@@ -59,7 +59,7 @@ auto VulkanEffect::fromSources(Device *device, const void *vsSrc, u32 vsSrcLen, 
         device,
         vsCompilationResult.begin(), static_cast<u32>(vsSize),
         fsCompilationResult.begin(), static_cast<u32>(fsSize)
-    );
+        );
 }
 
 VulkanEffect::VulkanEffect(Device *device, const void *vsSrc, u32 vsSrcLen, const void *fsSrc, u32 fsSrcLen) {

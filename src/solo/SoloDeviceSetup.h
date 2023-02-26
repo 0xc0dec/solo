@@ -22,6 +22,6 @@ namespace solo {
         bool vsync = false;
 
         str windowTitle;
-        str logFilePath = "";
+        str logFilePath;
     };
 }
