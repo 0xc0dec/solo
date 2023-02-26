@@ -31,9 +31,8 @@ return function(material)
             renderer:setMesh(assetCache.meshes.box())
             renderer:setMaterial(0, material)
 
-            local size = 1
             local transform = node:findComponent('Transform')
-            transform:setLocalScale(vec3(size, size, size))
+            transform:setLocalScale(vec3(1, 1, 1))
             transform:setLocalPosition(initialPos)
             transform:setLocalRotation(initialRotation)
     

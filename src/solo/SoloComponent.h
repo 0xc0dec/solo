@@ -36,23 +36,13 @@ namespace solo {
         virtual void update() {}
         virtual void render() {}
 
-        auto node() const -> Node {
-            return node_;
-        }
+        auto node() const -> Node { return node_; }
 
-        auto tag() const -> u32 {
-            return tag_;
-        }
-        void setTag(u32 tag) {
-            this->tag_ = tag;
-        }
+        auto tag() const -> u32 { return tag_; }
+        void setTag(u32 tag) { this->tag_ = tag; }
 
-        auto enabled() const -> bool {
-            return enabled_;
-        }
-        void setEnabled(bool enabled) {
-            enabled_ = enabled;
-        }
+        auto enabled() const -> bool { return enabled_; }
+        void setEnabled(bool enabled) { enabled_ = enabled; }
 
     protected:
         Node node_;

@@ -15,9 +15,11 @@ return function()
             if sl.device:isKeyPressed(sl.KeyCode.G, true) then
                 if self.node then
                     self.node:findComponent('Transform'):setParent(nil)
+                    self.node:findComponent('RigidBody'):setKinematic(false)
                     self.node = nil
                 elseif self.tracer.hitNode then
                     self.node = self.tracer.hitNode
+                    self.node:findComponent('RigidBody'):setKinematic(true)
                     self.node:findComponent('Transform'):setParent(self.transform)
                 end
             end
