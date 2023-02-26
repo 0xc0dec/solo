@@ -113,13 +113,11 @@ public:
     }
 
     auto vertexData() const -> const vec<float> & { return vertexData_; }
-    auto vertexCount() const -> u32 {
-        return vertexCount_;
-    }
-    auto indexesCount() const -> u32 {
-        return indexData_.size();
-    }
+    auto vertexCount() const -> u32 { return vertexCount_; }
+
+    auto indexesCount() const -> u32 { return indexData_.size(); }
     auto indexData(u32 index) const -> const vec<u32> & { return indexData_.at(index); }
+
     auto indexElementCount(u32 index) const -> u32 {
         return indexData_.at(index).size();
     }

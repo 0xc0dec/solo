@@ -87,19 +87,19 @@ namespace solo {
     }
 
     template <class T>
-    constexpr auto fmt(std::ostringstream &out, T &&arg) -> str {
+    auto fmt(std::ostringstream &out, T &&arg) -> str {
         out << arg << std::endl;
         return out.str();
     }
 
     template <class TFirst, class... TArgs>
-    constexpr auto fmt(std::ostringstream &out, TFirst &&first, TArgs &&...args) -> str {
+    auto fmt(std::ostringstream &out, TFirst &&first, TArgs &&...args) -> str {
         out << first;
         return fmt(out, std::forward<TArgs>(args)...);
     }
 
     template <class... TArgs>
-    constexpr auto fmt(TArgs &&...args) -> str {
+    auto fmt(TArgs &&...args) -> str {
         std::ostringstream out;
         return fmt(out, std::forward<TArgs>(args)...);
     }

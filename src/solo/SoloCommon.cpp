@@ -13,12 +13,12 @@ using namespace solo;
 namespace solo {
     class LoggerImpl : public Logger {
     public:
-        ~LoggerImpl() {
+        ~LoggerImpl() override {
             if (file.is_open())
                 file.close();
         }
 
-        void setOutputFile(const str &path) override final {
+        void setOutputFile(const str &path) final {
             if (file.is_open())
                 file.close();
             if (!path.empty()) {
@@ -27,23 +27,23 @@ namespace solo {
             }
         }
 
-        void logDebug(const str &msg) override final {
+        void logDebug(const str &msg) final {
             log(msg, "debug");
         }
 
-        void logInfo(const str &msg) override final {
+        void logInfo(const str &msg) final {
             log(msg, "info");
         }
 
-        void logWarning(const str &msg) override final {
+        void logWarning(const str &msg) final {
             log(msg, "warn");
         }
 
-        void logError(const str &msg) override final {
+        void logError(const str &msg) final {
             log(msg, "error");
         }
 
-        void logCritical(const str &msg) override final {
+        void logCritical(const str &msg) final {
             log(msg, "crit");
         }
 

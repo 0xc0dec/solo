@@ -14,10 +14,10 @@ namespace solo {
             data_(data) {
         }
 
-        auto size() const -> u32 override final {
+        auto size() const -> u32 final {
             return data_.size();
         }
-        auto data() const -> const void *override final {
+        auto data() const -> const void* final {
             return data_.data();
         }
 
@@ -67,7 +67,8 @@ auto CubeTextureData::fromFaceFiles(
     const str &positiveZPath, const str &negativeZPath) -> sptr<CubeTextureData> {
     panicIf(!STBCubeTextureData::canLoadFromFaceFiles(
         positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath),
-    "Unsupported cube texture face files ", positiveXPath, ", ...");
+        "Unsupported cube texture face files ", positiveXPath, ", ..."
+    );
     return STBCubeTextureData::fromFaceFiles(device, positiveXPath, negativeXPath, positiveYPath, negativeYPath, positiveZPath, negativeZPath);
 }
 

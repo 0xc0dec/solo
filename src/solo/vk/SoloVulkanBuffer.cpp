@@ -13,9 +13,10 @@
 using namespace solo;
 
 auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, const void *initialData) -> VulkanBuffer {
-    auto buffer = VulkanBuffer(dev, size,
-    VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+    auto buffer = VulkanBuffer(dev,
+                               size,
+                               VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                               VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
     if (initialData)
         buffer.updateAll(initialData);
@@ -24,9 +25,12 @@ auto VulkanBuffer::staging(const VulkanDriverDevice &dev, VkDeviceSize size, con
 }
 
 auto VulkanBuffer::uniformHostVisible(const VulkanDriverDevice &dev, VkDeviceSize size) -> VulkanBuffer {
-    return VulkanBuffer(dev, size,
-    VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+    return {
+        dev,
+        size,
+        VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+    };
 }
 
 auto VulkanBuffer::deviceLocal(const VulkanDriverDevice &dev, VkDeviceSize size, VkBufferUsageFlags usageFlags, const void *data) -> VulkanBuffer {
