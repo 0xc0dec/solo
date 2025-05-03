@@ -10,7 +10,7 @@ These days mostly abandoned and serves as a historical artifact.
 - Loading of several popular mesh and texture formats, also TTF fonts.
 - Bullet physics.
 - Vulkan/OpenGL 4 rendering backend.
-- Same API for both Lua and C++.
+- Same-ish API for both Lua and C++.
 - Dear ImGui UI.
 
 ## Building
