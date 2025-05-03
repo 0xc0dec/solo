@@ -1,6 +1,6 @@
 ## About
 "I have no idea how to write game engines"-style game engine - a playground for my gamedev experiments.
-Basically a wrapper around several low-level libraries/APIs in an attempt to make an abstract API on top of them.
+Basically a wrapper around several low-level libraries/APIs in an attempt to make an abstraction on top of them.
 These days mostly abandoned and serves as a historical artifact.
 
 ![1](/screenshots/screenshot13.png?raw=true)
