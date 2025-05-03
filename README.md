@@ -1,15 +1,17 @@
 ## About
-"I have no idea how to write game engines"-style game engine. A playground for my gamedev experiments.
+"I have no idea how to write game engines"-style game engine - a playground for my gamedev experiments.
+Basically a wrapper around several low-level libraries/APIs in an attempt to make an abstract API on top of them.
+These days mostly abandoned and serves as a historical artifact.
 
 ![1](/screenshots/screenshot13.png?raw=true)
 
 ## Features
-- [Unity](https://unity.com)-inspired component system.
+- Unity-inspired component system.
 - Loading of several popular mesh and texture formats, also TTF fonts.
-- [Bullet](https://github.com/bulletphysics/bullet3) physics.
+- Bullet physics.
 - Vulkan/OpenGL 4 rendering backend.
 - Same API for both Lua and C++.
-- [Dear ImGui](https://github.com/ocornut/imgui) UI.
+- Dear ImGui UI.
 
 ## Building
 - Install dependencies:
